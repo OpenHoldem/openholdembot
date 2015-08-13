@@ -38,13 +38,11 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
   int smallblind_chair()       { return _smallblind_chair; }
   int bigblind_chair()         { return _bigblind_chair; }
   int cutoff_chair()           { return _cutoff_chair; }
-  int firstraiser_chair()      { return _firstraiser_chair; }
  private:
   void CalculateOpponentHeadsupChair();
   void CalculateSmallBlindChair();
   void CalculateBigBlindChair();
   void CalculateCutOffChair();
-  void CalculateFirstRaiserChair();
  private:
   int GetChairByDealposition(int dealposition);
  private:
@@ -52,7 +50,6 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
   int _smallblind_chair;
   int _bigblind_chair;
   int _cutoff_chair;
-  int _firstraiser_chair;
  private:
   int _nchairs;
 };

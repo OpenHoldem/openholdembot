@@ -70,6 +70,7 @@ void CSymbolEngineRaisers::ResetOnHandreset() {
     _lastraised[i] = kUndefined;
 	}
 	_raischair = kUndefined;
+	_firstraiser_chair = kUndefined;
 	_nplayerscallshort  = 0;
 	_nopponentsbetting  = 0;
 	_nopponentstruelyraising = 0;
@@ -78,6 +79,7 @@ void CSymbolEngineRaisers::ResetOnHandreset() {
 }
 
 void CSymbolEngineRaisers::ResetOnNewRound() {
+	_firstraiser_chair = kUndefined;
 }
 
 void CSymbolEngineRaisers::ResetOnMyTurn() {
@@ -164,12 +166,16 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 		int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
 		_raisbits[BETROUND] = new_raisbits;
 		assert(chair != USER_CHAIR);
+			if (_firstraiser_chair == kUndefined ){
+			_firstraiser_chair = chair;
+		}
 		++_nopponentstruelyraising;
 	}
 	AssertRange(_raischair, kUndefined, kLastChair);
   _lastraised[BETROUND] = _raischair;
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] raischair: %i\n", _raischair);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers]  firstraiser_chair (empty if no raiser) : %i\n", _firstraiser_chair);
 }
 
 int CSymbolEngineRaisers::FirstPossibleRaiser() {
@@ -306,8 +312,11 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	{
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nplayerscallshort();
-	}	else if (memcmp(name, "raischair", 9)==0 && strlen(name)==9) {
+	}
+	else if (memcmp(name, "raischair", 9) == 0 && strlen(name) == 9) {
 		*result = raischair();
+	}else if (memcmp(name, "firstraiser_chair", 17) == 0) {
+		*result = firstraiser_chair();
 	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = raisbits(name[8]-'0');
@@ -327,7 +336,7 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 CString CSymbolEngineRaisers::SymbolsProvided() {
   CString list = "nopponentschecking "
     "nopponentstruelyraising nopponentsbetting nopponentsfolded "
-    "nplayerscallshort raischair ";
+    "nplayerscallshort raischair firstraiser_chair  ";
   list += RangeOfSymbols("raisbits%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("foldbits%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("lastraised%i", kBetroundPreflop, kBetroundRiver);

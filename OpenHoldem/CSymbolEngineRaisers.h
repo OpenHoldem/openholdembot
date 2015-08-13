@@ -36,6 +36,7 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 	CString SymbolsProvided();
  public:
 	int raischair()	{ return _raischair; }
+	int firstraiser_chair()      { return _firstraiser_chair; }
 	int raisbits(int betround) {
 		if ((betround >= kBetroundPreflop)
 			  && (betround <= kBetroundRiver)) {
@@ -59,6 +60,7 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 	int nopponentsbetting()			{ return _nopponentsbetting; }
 	int nopponentsfolded()			{ return _nopponentsfolded; }
 	int nopponentschecking()		{ return _nopponentschecking; }
+
  private:
 	void CalculateRaisers();
 	void CalculateFoldBits();
@@ -73,6 +75,7 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
   int LastRaised(const int round);
  private:
 	int _raischair;
+	int _firstraiser_chair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
 	int _nopponentstruelyraising;

@@ -1,3 +1,14 @@
+
+tmp branch devbot:
+==================
+- move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
+- delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
+- update CSymbolEnginePokerTracker.cpp 
+
+NOTE: should check betposition of firstraiser_chair at flop/turn/river stage to avoid wrong
+nopponentstruelyraising and firstraiser_chair ?!
+
+
 v7.7.7 2015-08-11
 ==================
 BUG FIXES:

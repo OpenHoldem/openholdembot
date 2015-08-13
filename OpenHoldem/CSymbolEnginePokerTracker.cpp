@@ -222,7 +222,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	}
   // PokerTracker symbols for the firstraiser chair
 	else if (s.Right(12) == "_firstraiser") {
-    chair = p_symbol_engine_chairs->firstraiser_chair();
+		chair = p_symbol_engine_raisers->firstraiser_chair();
 	}
   // PokerTracker symbols for the dealerchair chair
 	else if (s.Right(7) == "_dealer") {
