@@ -10,7 +10,7 @@
 // Purpose:
 //
 //********************************************************************************
-
+testchange pipo
 
 #include "StdAfx.h"
 #include "CTablemap.h"
