@@ -1,5 +1,7 @@
 Spirit parser library; http://www.boost.org
 
+like change 
+
 Graphics Math Template Library; http://ggt.sourceforge.net
 
 HScrollListBox; Nebula Technologies, Inc.; http://www.nebutech.com
@@ -15,7 +17,7 @@ Visual Leak Detector; http://dmoulding.googlepages.com/vld
 Normalized distribution Java class; Indiana; http://pokerai.org/pj2/index.php
 
 Scintilla source code editing component; http://www.scintilla.org
-Scintilla MFC C++ wrapper class; Horst Brückner; http://www.codeproject.com/editctrl/scintillawnd.asp?select=1475770
+Scintilla MFC C++ wrapper class; Horst BrÃ¼ckner; http://www.codeproject.com/editctrl/scintillawnd.asp?select=1475770
 
 Progress Indicator Dialog; P.GopalaKrishna; http://www.codeproject.com/win32/UPDialog.asp
 
