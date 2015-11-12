@@ -80,10 +80,16 @@
 #define PT4_QUERY_SUPPORT__TURN_CHECK_RAISE				(TRUE)	// "turn_checkraise"
 #define PT4_QUERY_SUPPORT__TURN_CHECK_CALL				(TRUE)	// "turn_checkcall"
 
-//RIVER Other stats
+// RIVER Other stats
 #define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B				(FALSE)	// "river_fold_to_3bet" // 3b is a reraise, we should have a "river_fold_to_raise" stat first.
 #define PT4_QUERY_SUPPORT__RIVER_BET     				(TRUE)	// "river_bet"
 
+// GENERAL by position
+#define PT4_QUERY_SUPPORT__SB_RFI						(TRUE)	// "sb_rfi"
+#define PT4_QUERY_SUPPORT__BTN_RFI						(TRUE)	// "btn_rfi"
+#define PT4_QUERY_SUPPORT__CO_RFI						(TRUE)	// "co_rfi"
+#define PT4_QUERY_SUPPORT__MP3_RFI						(TRUE)	// "mp_rfi"
+#define PT4_QUERY_SUPPORT__MP2_RFI						(TRUE)	// "ep_rfi"
 
 
 const int k_number_of_pokertracker_stats =  //GENERAL STATS
@@ -153,7 +159,12 @@ const int k_number_of_pokertracker_stats =  //GENERAL STATS
 
 											//  River Other stats
 											(PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__RIVER_BET ? 1 : 0) ;
+											(PT4_QUERY_SUPPORT__RIVER_BET ? 1 : 0) +
+											(PT4_QUERY_SUPPORT__SB_RFI ? 1 : 0) +
+											(PT4_QUERY_SUPPORT__BTN_RFI ? 1 : 0) +
+											(PT4_QUERY_SUPPORT__CO_RFI ? 1 : 0) +
+											(PT4_QUERY_SUPPORT__MP3_RFI ? 1 : 0) +
+											(PT4_QUERY_SUPPORT__MP2_RFI ? 1 : 0);
 
 
 // PokerTracker support
@@ -1343,6 +1354,111 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
+		// stat_group
+		pt_group_advanced
+	},
+#endif
+
+#if PT4_QUERY_SUPPORT__SB_RFI
+	/* PT4  query to get SmallBlind raise first in */
+	{
+		//name
+		"sb_rfi",
+		// description_for_editor
+		"Poker Tracker small blind raise first in",
+		//query
+		"SELECT (case when  (sum((case when(s.flg_p_open_opp and s.position=9) then  1 else  0 end))) = 0 then -1\ else cast(sum(case when(s.flg_p_first_raise AND \
+		           s.flg_p_open_opp and s.position=9) then  1 else  0 end)As Real)/  \
+		           (sum((case when(s.flg_p_open_opp and s.position=9) then  1 else  0 end))) end) as result \
+		FROM   player as P, %TYPE%_hand_player_statistics as S \
+		         WHERE  S.id_player = P.id_player AND \
+		                S.id_gametype = %GAMETYPE% AND \
+		                P.id_site = %SITEID% AND \
+		                P.player_name LIKE '%SCREENNAME%'",
+		// stat_group
+		pt_group_advanced
+	},
+#endif
+
+#if PT4_QUERY_SUPPORT__BTN_RFI
+	/* PT4  query to get Button raise first in */
+	{
+		//name
+		"btn_rfi",
+		// description_for_editor
+		"Poker Tracker button raise first in",
+		//query
+		"SELECT (case when  (sum((case when(s.flg_p_open_opp and s.position=0) then  1 else  0 end))) = 0 then -1\ else cast(sum(case when(s.flg_p_first_raise AND \
+		           s.flg_p_open_opp and s.position=0) then  1 else  0 end)As Real)/  \
+		           (sum((case when(s.flg_p_open_opp and s.position=0) then  1 else  0 end))) end) as result \
+		FROM   player as P, %TYPE%_hand_player_statistics as S \
+		         WHERE  S.id_player = P.id_player AND \
+		                S.id_gametype = %GAMETYPE% AND \
+		                P.id_site = %SITEID% AND \
+		                P.player_name LIKE '%SCREENNAME%'",
+		// stat_group
+		pt_group_advanced
+	},
+#endif
+
+#if PT4_QUERY_SUPPORT__CO_RFI
+	/* PT4  query to get Cut-Off raise first in */
+	{
+		//name
+		"co_rfi",
+		// description_for_editor
+		"Poker Tracker cut off raise first in",
+		//query
+		"SELECT (case when  (sum((case when(s.flg_p_open_opp and s.position=1) then  1 else  0 end))) = 0 then -1\ else cast(sum(case when(s.flg_p_first_raise AND \
+		           s.flg_p_open_opp and s.position=1) then  1 else  0 end)As Real)/  \
+		           (sum((case when(s.flg_p_open_opp and s.position=1) then  1 else  0 end))) end) as result \
+		FROM   player as P, %TYPE%_hand_player_statistics as S \
+		         WHERE  S.id_player = P.id_player AND \
+		                S.id_gametype = %GAMETYPE% AND \
+		                P.id_site = %SITEID% AND \
+		                P.player_name LIKE '%SCREENNAME%'",
+		// stat_group
+		pt_group_advanced
+	},
+#endif
+
+#if PT4_QUERY_SUPPORT__MP3_RFI
+	/* PT4  query to get Middle Position 3 raise first in */
+	{
+		//name
+		"mp3_rfi",
+		// description_for_editor
+		"Poker Tracker middle position 3 raise first in",
+		//query
+		"SELECT (case when  (sum((case when(s.flg_p_open_opp and s.position=2) then  1 else  0 end))) = 0 then -1\ else cast(sum(case when(s.flg_p_first_raise AND \
+		           s.flg_p_open_opp and s.position=2) then  1 else  0 end)As Real)/  \
+		           (sum((case when(s.flg_p_open_opp and s.position=2) then  1 else  0 end))) end) as result \
+		FROM   player as P, %TYPE%_hand_player_statistics as S \
+		         WHERE  S.id_player = P.id_player AND \
+		                S.id_gametype = %GAMETYPE% AND \
+		                P.id_site = %SITEID% AND \
+		                P.player_name LIKE '%SCREENNAME%'",
+		// stat_group
+		pt_group_advanced
+	},
+#endif
+
+#if PT4_QUERY_SUPPORT__MP2_RFI
+	/* PT4  query to get Middle Position 2 raise first in */
+	{
+		//name
+		"mp2_rfi",
+		// description_for_editor
+		"Poker Tracker middle position 2 raise first in",
+		//query
+		"SELECT (case when  (sum((case when(s.flg_p_open_opp and s.position=3) then  1 else  0 end))) = 0 then -1\ else cast(sum(case when(s.flg_p_first_raise AND \
+		           s.flg_p_open_opp and s.position=3) then  1 else  0 end)As Real)/  \
+		           (sum((case when(s.flg_p_open_opp and s.position=3) then  1 else  0 end))) end) as result \
+		FROM   player as P, %TYPE%_hand_player_statistics as S \
+		         WHERE  S.id_player = P.id_player AND \
+		                S.id_gametype = %GAMETYPE% AND \
+		                P.id_site = %SITEID% AND \
+		                P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
 		pt_group_advanced
 	},
