@@ -73,7 +73,7 @@ void CTableState::set_pot(int sidepot_index, double new_value) {
 }
 
 Card *CTableState::CommonCards(int common_card_index) {
-  AssertRange(int common_card_index, 0, kIndexOfLastCommunityCard);
+  AssertRange(common_card_index, 0, kIndexOfLastCommunityCard);
   return &_common_cards[common_card_index];
 }
 
