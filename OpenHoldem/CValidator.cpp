@@ -77,7 +77,7 @@ bool CValidator::InExcludedTests(CString testcase_id) {
   {
 		if (strToken == testcase_id)
 				return true;
-    strToken = list.Tokenize(_T("+"), tokenPos);	
+    strToken = list.Tokenize(_T(" "), tokenPos);	
   }
 	return false;
 }
