@@ -708,11 +708,13 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,37,166,8
     CONTROL         "Shoot replay-frames on error",IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,51,189,8
-    LTEXT           "The validator is a tool that tests the combination of",IDC_STATIC,6,79,216,8
-    LTEXT           "  * scraper",IDC_STATIC,6,91,216,8
-    LTEXT           "  * symbol engine",IDC_STATIC,6,101,216,8
-    LTEXT           "  * tablemap",IDC_STATIC,6,111,216,8
-    LTEXT           "to detect incosistencies, usually caused by bad tablemaps.",IDC_STATIC,6,123,215,8
+    LTEXT           "The validator is a tool that tests the combination of",IDC_STATIC,3,106,216,8
+    LTEXT           "  * scraper",IDC_STATIC,3,114,216,8
+    LTEXT           "  * symbol engine",IDC_STATIC,3,122,216,8
+    LTEXT           "  * tablemap",IDC_STATIC,3,129,216,8
+    LTEXT           "to detect incosistencies, usually caused by bad tablemaps.",IDC_STATIC,4,145,215,8
+    EDITTEXT        IDC_VALIDATOR_EXCLUDED_TESTS,8,78,203,12,ES_AUTOHSCROLL
+    LTEXT           "Excluded tests (space delimitted):",IDC_STATIC,3,68,216,8
 END
 
 IDD_SAPREFS13 DIALOGEX 0, 0, 270, 188
