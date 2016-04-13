@@ -58,6 +58,7 @@ private:
 	void				SetStatGroups();
 	bool				AllConnectionDataSpecified();
 	void				Connect();
+	void				Reconnect();
 	void				Disconnect();
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
 	bool				CheckIfNameExistsInDB(int chair);

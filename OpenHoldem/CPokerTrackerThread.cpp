@@ -159,6 +159,27 @@ void CPokerTrackerThread::Connect(void) {
 	}
 }
 
+void CPokerTrackerThread::Reconnect(void)
+{
+	if (_pgconn)
+	{
+		if (PQstatus(_pgconn) != CONNECTION_OK)
+		{
+			PQreset(_pgconn);
+			if (PQstatus(_pgconn) == CONNECTION_OK) {
+				write_log(preferences.debug_pokertracker(), "[PokerTracker] PostgreSQL DB reconnected after bad connection");
+				_connected = true;
+			}
+			else {
+				write_log(preferences.debug_pokertracker(), "[PokerTracker] ERROR reconnecting to PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
+				PQfinish(_pgconn);
+				_connected = false;
+				_pgconn = NULL;
+			}
+		}
+	}
+}
+
 void CPokerTrackerThread::Disconnect(void)
 {
 	if(_pgconn)
@@ -166,6 +187,7 @@ void CPokerTrackerThread::Disconnect(void)
       if (PQstatus(_pgconn) == CONNECTION_OK)
         {
           PQfinish(_pgconn);
+		  write_log(preferences.debug_pokertracker(), "[PokerTracker] Disconnected");
         }
     }
 	_pgconn = NULL;
@@ -737,6 +759,10 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		if (!pParent->_connected)
 		{
 			pParent->Connect();
+		}
+		else if (PQstatus(pParent->_pgconn) != CONNECTION_OK)
+		{
+			pParent->Reconnect();
 		}
 	
 		double players = p_symbol_engine_active_dealt_playing->nopponentsseated() 
