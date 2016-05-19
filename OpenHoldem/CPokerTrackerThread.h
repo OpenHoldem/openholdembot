@@ -63,7 +63,7 @@ private:
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
 	bool				CheckIfNameExistsInDB(int chair);
 	bool				CheckIfNameHasChanged(int chair);
-	double			UpdateStat(const int m_chair, const int stat);
+	double				UpdateStat(const int m_chair, const int stat);
 	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
 	bool				FindName(const char *scraped_name, char *best_name);

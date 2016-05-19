@@ -22,7 +22,7 @@
 
 #include "atlstr.h"
 
-const int kNumberOfPokerTrackerPostfixes = 10;
+const int kNumberOfPokerTrackerPostfixes = 11;
 const char* const kPokerTrackerPostfixes[kNumberOfPokerTrackerPostfixes] = {
   "_raischair",
   "_headsup",
@@ -33,17 +33,21 @@ const char* const kPokerTrackerPostfixes[kNumberOfPokerTrackerPostfixes] = {
   "_user",
   "_firstraiser",
   "_firstcaller",
-  "_lastcaller"
+  "_lastcaller",
+  "_avg"
 };
 
+POKERTRACKER_DLL_API	void	  PT_DLL_Initialise();
 POKERTRACKER_DLL_API	int		  PT_DLL_GetNumberOfStats();
+POKERTRACKER_DLL_API	int		  PT_DLL_GetNumberOfStatTypes();
 POKERTRACKER_DLL_API	CString PT_DLL_GetDescription(int stats_index);
 POKERTRACKER_DLL_API	CString PT_DLL_GetBasicSymbolNameWithoutPTPrefix(int stats_index);
 POKERTRACKER_DLL_API	bool	  PT_DLL_IsBasicStat(int stats_index);
 POKERTRACKER_DLL_API	bool	  PT_DLL_IsPositionalPreflopStat(int stats_index);
 POKERTRACKER_DLL_API	bool	  PT_DLL_IsAdvancedStat(int stats_index);
 POKERTRACKER_DLL_API	double	PT_DLL_GetStat(CString symbol_name, int chair);
-POKERTRACKER_DLL_API	void	  PT_DLL_SetStat(int stats_index, int chair, double value);
+POKERTRACKER_DLL_API	double	PT_DLL_GetStatOpp(CString symbol_name, int chair);
+POKERTRACKER_DLL_API	void	  PT_DLL_SetStat(int stats_index, int chair, double value, int opp);
 POKERTRACKER_DLL_API	bool	  PT_DLL_IsValidSymbol(CString symbol_name);
 POKERTRACKER_DLL_API	void	  PT_DLL_ClearPlayerStats(int chair);
 POKERTRACKER_DLL_API	void	  PT_DLL_ClearAllPlayerStats();

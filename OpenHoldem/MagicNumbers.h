@@ -33,7 +33,8 @@ const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
 
 // Undefined (-1)
 const int kNotFound      = -1;
-const int kUndefined     = -1;
+const int kUndefined	 = -1;
+const int kAverage		 = 99;
 const int kUndefinedZero =  0;
 const int kNoAbsoluteLineNumberExists = 1;
 

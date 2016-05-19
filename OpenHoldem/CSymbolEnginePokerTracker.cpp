@@ -131,7 +131,8 @@ int CSymbolEnginePokerTracker::PlayerIcon(const int chair) {
 
 bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
-  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
+	bool opp = false;
+	FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name,"pt_",3)!=0)
 	{
 		// Symbol of a different symbol-engine
@@ -192,6 +193,10 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 
 	CString standard_symbol_name;
 	assert(StringAIsPrefixOfStringB("pt_", s));
+	if (s.Right(4) == "_opp") {
+		opp = true;
+		s = s.Left(s.GetLength()-4);
+	}
 	// PokerTracker symbols for the raise-chair
 	if (s.Right(10) == "_raischair") {
 		chair = p_symbol_engine_raisers->raischair();
@@ -228,9 +233,13 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	else if (s.Right(7) == "_dealer") {
     chair = p_symbol_engine_dealerchair->dealerchair();
 	}
-  // PokerTracker symbols for the  chair
+	// PokerTracker symbols for the chair
 	else if (s.Right(5) == "_user") {
-    chair = p_symbol_engine_userchair->userchair();
+		chair = p_symbol_engine_userchair->userchair();
+	}
+	// PokerTracker symbols for the average
+	else if (s.Right(4) == "_avg") {
+		chair = kAverage;
 	}
   // PokerTracker symbols for chair X
 	else {
@@ -251,8 +260,14 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
     *result = kUndefined;
     return true;
   }
+  if (chair != kAverage)
+  {
 	AssertRange(chair, kFirstChair, kLastChair);
-	*result = PT_DLL_GetStat(s, chair); 
+  }
+  if(opp)
+	*result = PT_DLL_GetStatOpp(s, chair); 
+  else
+	*result = PT_DLL_GetStat(s, chair);
 	return true;
 }
 
@@ -262,26 +277,50 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
     CString basic_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
     // Add symbol for raise-chair
     CString new_symbol = "pt_" + basic_symbol_name + "_raischair";
+	list.AppendFormat(" %s", new_symbol);
+	new_symbol = "pt_" + basic_symbol_name + "_raischair_opp";
     list.AppendFormat(" %s", new_symbol);
     // Add symbol for headsup-chair...
     new_symbol = "pt_" + basic_symbol_name + "_headsup";
+	list.AppendFormat(" %s", new_symbol);
+	new_symbol = "pt_" + basic_symbol_name + "_headsup_opp";
 	  list.AppendFormat(" %s", new_symbol);
     // ... and all similar symbols
     new_symbol = "pt_" + basic_symbol_name + "_smallblind";
+	list.AppendFormat(" %s", new_symbol);
+	new_symbol = "pt_" + basic_symbol_name + "_smallblind_opp";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_bigblind";
+	  new_symbol = "pt_" + basic_symbol_name + "_bigblind";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_cutoff";
+	  new_symbol = "pt_" + basic_symbol_name + "_bigblind_opp";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_firstcaller";
+	  new_symbol = "pt_" + basic_symbol_name + "_cutoff";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_lastcaller";
+	  new_symbol = "pt_" + basic_symbol_name + "_cutoff_opp";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_firstraiser";
+	  new_symbol = "pt_" + basic_symbol_name + "_firstcaller";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_dealer";
+	  new_symbol = "pt_" + basic_symbol_name + "_firstcaller_opp";
 	  list.AppendFormat(" %s", new_symbol);
-    new_symbol = "pt_" + basic_symbol_name + "_user";
+	  new_symbol = "pt_" + basic_symbol_name + "_lastcaller";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_lastcaller_opp";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_firstraiser";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_firstraiser_opp";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_dealer";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_dealer_opp";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_user";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_user_opp";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_avg";
+	  list.AppendFormat(" %s", new_symbol);
+	  new_symbol = "pt_" + basic_symbol_name + "_avg_opp";
 	  list.AppendFormat(" %s", new_symbol);
 
     // Add symbols for all chairs, indexed by trailing numbers

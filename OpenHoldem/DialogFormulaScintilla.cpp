@@ -1962,6 +1962,53 @@ void CDlgFormulaScintilla::PopulatePokerTrackerSymbols()
 		description.Format("%s for headsup opponent chair", PT_DLL_GetDescription(i));
 		AddSymbol(parent, symbol, description);
 	}
+
+	parent = AddSymbolSubTitle(mainParent, "Symbols for averages");
+	for (int i = 0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString description, symbol;
+		symbol.Format("pt_%s_avg", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		description.Format("%s average", PT_DLL_GetDescription(i));
+		AddSymbol(parent, symbol, description);
+	}
+
+	//Opportunities
+	mainParent = parent = AddSymbolTitle("Poker Tracker opportunity symbols", NULL, hCatItem);
+	parent = AddSymbolSubTitle(mainParent, "Opportunity Symbols for chair X");
+	for (int i = 0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString description, symbol;
+		symbol.Format("pt_%sX_opp (X=0..9)", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		description.Format("%s opportunities for chair X", PT_DLL_GetDescription(i));
+		AddSymbol(parent, symbol, description);
+	}
+
+	parent = AddSymbolSubTitle(mainParent, "Symbols for the last raiser");
+	for (int i = 0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString description, symbol;
+		symbol.Format("pt_%s_raischair_opp", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		description.Format("%s opportunities for the last raiser", PT_DLL_GetDescription(i));
+		AddSymbol(parent, symbol, description);
+	}
+
+	parent = AddSymbolSubTitle(mainParent, "Symbols for headsup opponent chair");
+	for (int i = 0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString description, symbol;
+		symbol.Format("pt_%s_headsup_opp", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		description.Format("%s opportunities for headsup opponent chair", PT_DLL_GetDescription(i));
+		AddSymbol(parent, symbol, description);
+	}
+
+	parent = AddSymbolSubTitle(mainParent, "Symbols for averages");
+	for (int i = 0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString description, symbol;
+		symbol.Format("pt_%s_avg_opp", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		description.Format("%s average opportunities", PT_DLL_GetDescription(i));
+		AddSymbol(parent, symbol, description);
+	}
 }
 
 void CDlgFormulaScintilla::PopulateSymbols()
