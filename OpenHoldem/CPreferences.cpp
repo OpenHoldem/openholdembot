@@ -153,6 +153,7 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] =
 	"path_ohf",
 	"path_tm",
 	"path_dll",
+	"validator_excluded_list",
 	// Finally an empty string
 	// This correspondents to k_prefs_last_numerical_value (unused)
 	// It will cause an assertion if used
@@ -245,6 +246,7 @@ void CPreferences::InitDefaults(void)
 	prefs_CString_values[k_prefs_rebuy_script] = "Rebuy.exe";
 	prefs_CString_values[k_prefs_window_class_name] = "OpenHoldem";
 	prefs_CString_values[k_prefs_mutex_name] = "OHAntiColl";
+	prefs_CString_values[k_prefs_validator_excluded_tests] = "";
 }
 
 //

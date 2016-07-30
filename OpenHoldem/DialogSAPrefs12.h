@@ -31,6 +31,7 @@ public:
 
 // Dialog Data
 	enum { IDD = IDD_SAPREFS12 };
+	CEdit	_excluded_tests_edit;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

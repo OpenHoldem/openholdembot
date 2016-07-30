@@ -164,6 +164,7 @@ enum
 	k_prefs_path_ohf,
 	k_prefs_path_tm,
 	k_prefs_path_dll,
+	k_prefs_validator_excluded_tests,
 	// leave this always at the last position
 	k_prefs_last_CString_value,
 };
@@ -287,6 +288,7 @@ public:
 	const bool validator_stop_on_error() { return prefs_numerical_values[k_prefs_validator_stop_on_error]; }
 	const bool validator_use_heuristic_rules() { return prefs_numerical_values[k_prefs_validator_use_heuristic_rules]; }
 	const bool validator_shoot_replayframe_on_error() { return prefs_numerical_values[k_prefs_validator_shoot_replayframe_on_error]; }
+	const CString validator_excluded_tests() { return prefs_CString_values[k_prefs_validator_excluded_tests]; } 
 	// Auto-connector
 	const int autoconnector_when_to_connect() { return prefs_numerical_values[k_prefs_autoconnector_when_to_connect]; }
 	const bool autoconnector_close_when_table_disappears() { return prefs_numerical_values[k_prefs_autoconnector_close_when_table_disappears]; }

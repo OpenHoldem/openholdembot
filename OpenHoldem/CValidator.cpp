@@ -68,11 +68,28 @@ CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected) 
 	return Result;
 }
 
+bool CValidator::InExcludedTests(CString testcase_id) {
+  CString list = preferences.validator_excluded_tests();
+
+	int tokenPos = 0;
+  CString strToken = list.Tokenize(_T(" "), tokenPos);
+  while (!strToken.IsEmpty())
+  {
+		if (strToken == testcase_id)
+				return true;
+    strToken = list.Tokenize(_T(" "), tokenPos);	
+  }
+	return false;
+}
+
 void CValidator::ValidateSingleRule() {
 	// Heuristic rules and not to be tested?
 	if (_heuristic && !preferences.validator_use_heuristic_rules()) {
 		return;
 	}
+	// Test in excluded list?
+	if (InExcludedTests(CString(_testcase_id)))
+			return;
 	// Test to be executed?
 	if (_precondition) { 
 		// Test failed?
