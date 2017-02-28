@@ -111,7 +111,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)window_functions.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)string_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Debug\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)window_functions.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)string_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -152,7 +152,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;(OutDir)string_functions.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)string_functions.lib%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -187,7 +187,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;..\Release\string_functions.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\window_functions.lib;$(OutDir)Reference User DLL.lib;..\Release\string_functions.lib%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -224,7 +224,7 @@
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
-	<ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
@@ -250,7 +250,7 @@
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CTableTitle.cpp" />
-	<ClCompile Include="CTitleEvaluator.cpp" />
+    <ClCompile Include="CTitleEvaluator.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="CWhiteInfoBox.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -265,7 +265,7 @@
     <ClCompile Include="CWatchdog.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
-	<ClCompile Include="stdafx.cpp">
+    <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -507,7 +507,7 @@
     <ClInclude Include="CParseTreeOperatorNode.h" />
     <ClInclude Include="CParseTreeTerminalNode.h" />
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
-	<ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
+    <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
     <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
     <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />
@@ -533,7 +533,7 @@
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CTableTitle.h" />
-	<ClInclude Include="CTitleEvaluator.h" />
+    <ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
     <ClInclude Include="debug.h" />
@@ -734,7 +734,7 @@
       <Project>{e757a486-9770-4db4-8299-00e22986e604}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\StringFunctionsDLL\string_functions.vcxproj_____">
+    <ProjectReference Include="..\StringFunctionsDLL\string_functions.vcxproj">
       <Project>{9a3a25e1-3045-4ec3-be51-5bd55f1f94b9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\WindowFunctionsDLL\window_functions.vcxproj">
