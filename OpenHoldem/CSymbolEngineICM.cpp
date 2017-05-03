@@ -197,7 +197,9 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 		}
 		else if (strcmp(name,"D")==0)
 		{
-                 chair = sym_dealerchair;
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated))
+					chair = i;
 		}
 		else if ((strcmp(name,"CO")==0) && (sym_nplayersseated >=4))
 		{
