@@ -34,13 +34,15 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
+protected:
+  afx_msg void OnBnClickedToggleAllDebug();
 private:
   void AlignbuttonsInAlphabeticalOrder();
   void AlignButton(int button_ID);
+  void ToggleButton(int button_ID);
 private:
   int _buttons_aligned;
 };

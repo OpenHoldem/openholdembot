@@ -8,6 +8,16 @@
 //******************************************************************************
 //
 // Purpose: Finding best matches to partially known blind-levels
+//   * some casinos don't display blinds at all
+//   * others display garbage like 0/0
+//   * others display the first level in tournaments, 
+//     then freeze and overpaint the titlebar with something 
+//     that looks like a title
+//   * some display sb/bb, some display bb/BB 
+//     and others use the same title-format for both, depending on game-type
+//   * ...
+//   There are no easy solutions unfortunately if you want to make OH work 
+//   at every casino out there.
 //
 //******************************************************************************
 
@@ -18,7 +28,7 @@
 
 // Small-blind, big-blind, big-bet
 const int kNumberOfValuesPerLevel =   3; 
-const int kNumberOfBlindLevels    = 205;
+const int kNumberOfBlindLevels    = 207;
 const int kLastBlindLevel         = kNumberOfBlindLevels - 1;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
@@ -45,6 +55,7 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {        0.10,         0.20,         0.40},
    {        0.10,         0.25,         0.50},
    {        0.12,         0.25,         0.50},
+   {        0.15,         0.25,         0.50},
    {        0.15,         0.30,         0.60},
    {        0.25,         0.50,         1.00},
    {        0.50,         1.00,         2.00},
@@ -55,6 +66,7 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {        4.00,         8.00,        16.00},
    {        5.00,        10.00,        20.00},
    {       10.00,        20.00,        40.00},
+   {       15.00,        25.00,        50.00},
    {       15.00,        30.00,        60.00},
    {       20.00,        40.00,        80.00},
    {       25.00,        50.00,       100.00},

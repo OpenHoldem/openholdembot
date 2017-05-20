@@ -245,7 +245,7 @@ double CSymbolEngineChipAmounts::SortedBalance(const int rank) {
   return stacks[rank];
 }
 
-bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineChipAmounts::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "pot", 3)==0) {
 		// CHIP AMOUNTS 1(2)

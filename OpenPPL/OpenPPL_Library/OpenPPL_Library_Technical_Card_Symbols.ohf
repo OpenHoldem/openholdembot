@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -75,7 +75,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -135,34 +135,34 @@
 
 ##OneCardStraightPossibleOnTurn_AceHigh##
 //........................AKQJT98765432a-
-(`(RankBitsCommonTurn & 0b111110000000000) >= 4)   
+(BitCount(RankBitsCommonTurn & 0b111110000000000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_KingHigh##
-(`(RankBitsCommonTurn & 0b011111000000000) >= 4)  
+(BitCount(RankBitsCommonTurn & 0b011111000000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_QueenHigh##
-(`(RankBitsCommonTurn & 0b001111100000000) >= 4)  
+(BitCount(RankBitsCommonTurn & 0b001111100000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_JackHigh##
-(`(RankBitsCommonTurn & 0b000111110000000) >= 4)  
+(BitCount(RankBitsCommonTurn & 0b000111110000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_TenHigh##
-(`(RankBitsCommonTurn & 0b000011111000000) >= 4)  
+(BitCount(RankBitsCommonTurn & 0b000011111000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_NineHigh##
-(`(RankBitsCommonTurn & 0b000001111100000) >= 4)  
+(BitCount(RankBitsCommonTurn & 0b000001111100000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_EightHigh##
-(`(RankBitsCommonTurn & 0b000000111110000) >= 4)   
+(BitCount(RankBitsCommonTurn & 0b000000111110000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_SevenHigh##
-(`(RankBitsCommonTurn & 0b000000011111000) >= 4)   
+(BitCount(RankBitsCommonTurn & 0b000000011111000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_SixHigh##
-(`(RankBitsCommonTurn & 0b000000001111100) >= 4)   
+(BitCount(RankBitsCommonTurn & 0b000000001111100) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_FiveHigh##
-(`(RankBitsCommonTurn & 0b000000000111110) >= 4)
+(BitCount(RankBitsCommonTurn & 0b000000000111110) >= 4)
 
 ##RankBitsAce##
 // Including ace low
@@ -174,13 +174,13 @@
 (rankbitscommon & 0b111111110)
 
 ##RankBitsCommonFlop##
-  (FirstFlopCard != ConstCardAce ? 2**FirstFlopCard : RankBitsAce)
-| (SecondFlopCard != ConstCardAce ? 2**SecondFlopCard : RankBitsAce)
-| (ThirdFlopCard != ConstCardAce ? 2**ThirdFlopCard : RankBitsAce)
+  (FirstFlopCard != ace ? 2**FirstFlopCard : RankBitsAce)
+| (SecondFlopCard != ace ? 2**SecondFlopCard : RankBitsAce)
+| (ThirdFlopCard != ace ? 2**ThirdFlopCard : RankBitsAce)
 
 ##RankBitsCommonTurn##
   RankBitsCommonFlop
-| (TurnCard != ConstCardAce ? 2**TurnCard : RankBitsAce)
+| (TurnCard != ace ? 2**TurnCard : RankBitsAce)
 
 ##RankBitsCommonRiver##
 // As this can only be called at the river it is identical to rankbiscommon
@@ -205,8 +205,8 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 -1
 
 ##Srankbitshero##
- (($$ps0==tsuit ? (RankOfFirstHoleCard!=ConstCardAce ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
-| ($$ps1==tsuit ? (RankOfSecondHoleCard!=ConstCardAce ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
+ (($$ps0==tsuit ? (RankOfFirstHoleCard!=ace ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
+| ($$ps1==tsuit ? (RankOfSecondHoleCard!=ace ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
 
 ##Srankbitsavailable##
 // Available suited cards for other players,
@@ -216,3 +216,37 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 // plus ace-low and the unused lowest bit.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19262
 (~(srankbitscommon | Srankbitshero)) & ConstAllRanksWithoutAceLow
+
+##RankOfTopPairOnBoard##
+// Searching board pairs top down
+board$AA ? ace :
+board$KK ? king :
+board$QQ ? queen :
+board$JJ ? jack :
+board$TT ? ten :
+board$99 ? 9 :
+board$88 ? 8 :
+board$77 ? 7 :
+board$66 ? 6 :
+board$55 ? 5 :
+board$44 ? 4 :
+board$33 ? 3 :
+board$22 ? 2 :
+HINT_There_Is_No_Pair_On_The_Board
+
+##RankOfBottomPairOnBoard##
+// Searching board pairs bottom up
+board$22 ? 2 :
+board$33 ? 3 :
+board$44 ? 4 :
+board$55 ? 5 :
+board$66 ? 6 :
+board$77 ? 7 :
+board$88 ? 8 :
+board$99 ? 9 :
+board$TT ? ten :
+board$JJ ? jack :
+board$QQ ? queen :
+board$KK ? king :
+board$AA ? ace :
+HINT_There_Is_No_Pair_On_The_Board

@@ -55,7 +55,8 @@ double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
 		write_log(preferences.debug_formula(), 
-      "[CParseTreeTerminalNode] Identifier evaluates to %6.3f\n", value);
+      "[CParseTreeTerminalNode] Identifier %s evaluates to %.3f\n", 
+      _terminal_name, value);
     // In case of f$-functions the line changed inbetween,
     // so we have to set it to the current location (again)
     // for the next log.
@@ -110,9 +111,9 @@ bool CParseTreeTerminalNodeIdentifier::IsBinaryIdentifier() {
     "rankbitscommon",      "rankbitsplayer",     "rankbitspoker",
     "srankbits",           "srankbitscommon",    "srankbitsplayer",
     "srankbitspoker",      "myturnbits",         "pcbits"};
-  const int kNumberOfParameterizedBinaryIdentifiers = 4;
+  const int kNumberOfParameterizedBinaryIdentifiers = 5;
   static const char* kParameterizedBinaryIdentifiers[kNumberOfParameterizedBinaryIdentifiers] = {
-    "chairbit$", "raisbits", "callbits", "foldbits"};
+    "chairbit$", "raisbits", "callbits", "foldbits", "suitbits"};
 
   if (_node_type != kTokenIdentifier) return false;
   assert(_terminal_name != "");

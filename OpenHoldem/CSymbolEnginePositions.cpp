@@ -106,14 +106,16 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
 		  i<=(DEALER_CHAIR+p_tablemap->nchairs());
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)
-		  	&& IsBitSet(p_symbol_engine_active_dealt_playing->playersseatedbits(), next_chair)) {
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20746
+		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), next_chair)) {
 			_betpositionrais++;
 		}
     if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) {
 			_dealpositionrais++;
 		}
-		if (next_chair == p_symbol_engine_raisers->raischair()) break;	
+    if (next_chair == p_symbol_engine_raisers->raischair()) {
+      break;
+    }
 	}
 	AssertRange(_betpositionrais,  kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_dealpositionrais, kUndefined, kMaxNumberOfPlayers);
@@ -147,12 +149,21 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 			_callposition++;
 		}
 	}
+
+  // calculate _callposition; _betpositionrais must have been calculated at this point
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20746
+  int nplayers = p_symbol_engine_active_dealt_playing->nplayersplaying();
+  int offset = (_betposition + nplayers - _betpositionrais);
+  if (nplayers > 0) {
+    _callposition = offset % nplayers;
+  }
+
 	AssertRange(_betposition,  kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_dealposition, kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_callposition, kUndefined, kMaxNumberOfPlayers);
 }
 
-bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CSymbolEnginePositions::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nchairsdealt", 12)==0)

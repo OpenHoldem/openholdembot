@@ -164,6 +164,7 @@ const int k_rank_ace                  = 14;
 const int k_rank_king                 = k_rank_ace - 1;
 const int k_rank_queen                = k_rank_ace - 2;
 const int k_rank_jack                 = k_rank_ace - 3; 
+const int k_rank_ten                  = k_rank_ace - 4;
 const int k_rank_ace_low              =  1;
 const int k_rankbits_all_cards_111_111_111_111_110 = 0x7FFE;
 
@@ -235,7 +236,6 @@ enum StandardFunctionConstants {
   k_standard_function_chat,
 	k_standard_function_delay,
   k_standard_function_allin_on_betsize_balance_ratio,
-  k_standard_function_betsize_enable_rounding,
   k_standard_function_shoot_replay_frame,
 	// Ini-functions	
 	k_init_on_startup,
@@ -308,7 +308,6 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
   "f$chat",
 	"f$delay",
   "f$allin_on_betsize_balance_ratio",
-  "f$betsize_enable_rounding",
   "f$shoot_replay_frame",
 	// Ini-functions	
 	"f$ini_function_on_startup",
@@ -585,13 +584,9 @@ static UINT basic_statusba_indicators[] = {
 
 static UINT indicators[] = {
   ID_INDICATOR_STATUS_ACTION,
-	ID_INDICATOR_STATUS_PLCARDS,
-	ID_INDICATOR_STATUS_COMCARDS,
-	ID_INDICATOR_STATUS_POKERHAND,
+  ID_INDICATOR_STATUS_DUMMY,
 	ID_INDICATOR_STATUS_HANDRANK,
 	ID_INDICATOR_STATUS_PRWIN,
-	ID_INDICATOR_STATUS_NOPP,
-	ID_INDICATOR_STATUS_NIT,
 };
 
 #endif // _INC_MAGICNUMBERS_H

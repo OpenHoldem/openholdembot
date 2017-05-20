@@ -21,6 +21,7 @@ ReplaceOutlandischCurrencyByDollarsandCents
 RightCharacter
 RightDigitCharacterToNumber
 StringAIsPrefixOfStringB
+StringAIsPostfixOfStringB
 StringIsExactMatch
 StringToMoney
 WarnAboutNonASCIICharacters

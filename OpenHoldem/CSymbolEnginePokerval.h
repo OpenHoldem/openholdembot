@@ -38,7 +38,7 @@ public:
 	int CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();;
 public:
 	// Pokerval
@@ -94,6 +94,10 @@ public:
 	int srankloplayer()		{ return GetRankLo(_srankbitsplayer); }
 	int sranklopoker()		{ return GetRankLo(_srankbitspoker); }
 public:
+  // mainly for Omaha
+  int suitbitsplayer(int suit);
+  int suitbitscommon(int suit);
+public:
 	CString HandType();
 private:
 	void CalculateRankBits();
@@ -104,6 +108,14 @@ private:
 	int GetRankHi(int rankbits);
 	int GetRankLo(int rankbits);
 	void SetRankBit(int* rankbits, int rank);
+private:
+  void PrepareConstantSuitMasks();
+  void CalculateCardMasks();
+private:
+  int HandEval(CardMask c);
+  int CardCount(CardMask c);
+  int CardMaskToRankBits(CardMask c);
+  int SuitBits(CardMask c, int suit);
 private:
 	int _pokerval;
 	int _pokervalplayer;
@@ -132,10 +144,13 @@ private:
 	int _srankbitspoker;
 private:
 	// for ishandup and ishandupcommon symbol calcs
-	HandVal	_phandval[kNumberOfBetrounds];
-	HandVal	_chandval[kNumberOfBetrounds];	 
+  // Index 0 is unused
+	HandVal	_phandval[kNumberOfBetrounds + 1];
+	HandVal	_chandval[kNumberOfBetrounds + 1];	
 private:
-	int nCards;
+  CardMask _heartsCards, _diamondsCards, _clubsCards, _spadesCards;
+  CardMask _player_cards, _board_cards, _all_cards;
+private:
 	HandVal	handval; 
 };
 

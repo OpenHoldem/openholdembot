@@ -124,12 +124,12 @@ class CTablemap {
   bool SupportsOmaha(); 
  public:
 	// public accessors
-	const ZMap *z$() { return &_z$; }
-	const SMap *s$() { return &_s$; }
-	const TMap *t$(const int i) { if (i>=0 && i<k_max_number_of_font_groups_in_tablemap) return &_t$[i]; else return NULL; }
-	const PMap *p$(const int i) { if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) return &_p$[i]; else return NULL; }
-	const HMap *h$(const int i) { if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) return &_h$[i]; else return NULL; }
-	const IMap *i$() { return &_i$; }
+	ZMap *z$() { return &_z$; }
+	SMap *s$() { return &_s$; }
+	TMap *t$(const int i) { if (i>=0 && i<k_max_number_of_font_groups_in_tablemap) return &_t$[i]; else return NULL; }
+	PMap *p$(const int i) { if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) return &_p$[i]; else return NULL; }
+	HMap *h$(const int i) { if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) return &_h$[i]; else return NULL; }
+	IMap *i$() { return &_i$; }
 	// Ongoing work: Making all the iterators private and providing
 	// accessor-functions in CTablemapAccess.
 	const RMap *r$() { return &_r$; }
@@ -153,6 +153,7 @@ class CTablemap {
 	const int swagconfirmationmethod() { return GetTMSymbol("betsizeconfirmationmethod", BETCONF_ENTER); }
 	const int buttonclickmethod()	     { return GetTMSymbol("buttonclickmethod", BUTTON_SINGLECLICK); }
 	const int betpotmethod()		       { return GetTMSymbol("betpotmethod", BETPOT_DEFAULT); }
+  const int cardscrapemethod()       { return GetTMSymbol("cardscrapemethod", 0); }
 	const int HandNumberMinExpectedDigits()	{ return GetTMSymbol("handnumber_min_expected_digits", 0); }
 	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
   const bool use_comma_instead_of_dot()   { return GetTMSymbol("use_comma_instead_of_dot", false); }

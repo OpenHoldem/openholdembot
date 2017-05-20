@@ -21,7 +21,6 @@
 #endif
 
 #include <atlstr.h>
-//!!!!!#include <afxstr.h>
 
 STRING_FUNCTIONS_API CString Bool2CString(bool b);
 STRING_FUNCTIONS_API CString CStringRemoveLeft(CString string, int number_of_characters_to_remove);
@@ -46,6 +45,7 @@ STRING_FUNCTIONS_API void ReplaceOutlandischCurrencyByDollarsandCents(CString *s
 STRING_FUNCTIONS_API char RightCharacter(CString string, int index_from_right = 0);
 STRING_FUNCTIONS_API int  RightDigitCharacterToNumber(CString string, int index_from_right = 0);
 STRING_FUNCTIONS_API bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b);
+STRING_FUNCTIONS_API bool StringAIsPostfixOfStringB(const char *string_a, const char *string_b);
 STRING_FUNCTIONS_API void StringFunctionsTest();
 STRING_FUNCTIONS_API double StringToMoney(const CString inStr);
 STRING_FUNCTIONS_API bool StringIsExactMatch(const char *string_a, const char *string_b);

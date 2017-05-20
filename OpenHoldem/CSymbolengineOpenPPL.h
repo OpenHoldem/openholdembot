@@ -34,7 +34,7 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
   void UpdateAfterAutoplayerAction(int autoplayer_action_code);
  public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString IdentifiersProvided();;
  public:
   void VerifyExistenceOfOpenPPLInitializationInLibrary();

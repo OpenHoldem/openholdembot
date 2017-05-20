@@ -37,22 +37,22 @@ CSymbolEngineFormulaLoading::~CSymbolEngineFormulaLoading() {
 }
 
 void CSymbolEngineFormulaLoading::InitOnStartup() {
-	ResetOnConnection();
+	IpdateOnConnection();
 }
 
-void CSymbolEngineFormulaLoading::ResetOnConnection() {
+void CSymbolEngineFormulaLoading::IpdateOnConnection() {
 }
 
-void CSymbolEngineFormulaLoading::ResetOnHandreset() {
+void CSymbolEngineFormulaLoading::IpdateOnHandIpdate() {
 }
 
-void CSymbolEngineFormulaLoading::ResetOnNewRound() {
+void CSymbolEngineFormulaLoading::IpdateOnNewRound() {
 }
 
-void CSymbolEngineFormulaLoading::ResetOnMyTurn() {
+void CSymbolEngineFormulaLoading::IpdateOnMyTurn() {
 }
 
-void CSymbolEngineFormulaLoading::ResetOnHeartbeat() {
+void CSymbolEngineFormulaLoading::IpdateOnHeartbeat() {
 }
 
 bool CSymbolEngineFormulaLoading::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

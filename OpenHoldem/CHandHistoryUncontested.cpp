@@ -70,7 +70,7 @@ void CHandHistoryUncontested::UpdateOnHeartbeat() {
   }
 }
 
-bool CHandHistoryUncontested::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CHandHistoryUncontested::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // No symbols provided
 	return false;
 }

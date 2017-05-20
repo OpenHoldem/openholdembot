@@ -61,7 +61,7 @@ double CSymbolEngineRandom::Random_0_1() {
 	return result;
 }
 
-bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineRandom::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   if (memcmp(name, "Random", 6) == 0 && strlen(name) == 6) {
     // The OpenPPL-symbol "Random" is no longer implemented in the library
     // but as a built-in symbol to prevent symbol-caching.

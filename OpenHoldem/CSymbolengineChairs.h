@@ -31,27 +31,24 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
 	void UpdateOnHeartbeat();
  public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();
- public:
-  int opponent_headsup_chair() { return _opponent_headsup_chair; }
-  int smallblind_chair()       { return _smallblind_chair; }
-  int bigblind_chair()         { return _bigblind_chair; }
-  int cutoff_chair()           { return _cutoff_chair; }
  private:
-  void CalculateOpponentHeadsupChair();
-  void CalculateSmallBlindChair();
-  void CalculateBigBlindChair();
-  void CalculateCutOffChair();
+   int HeadsupChair();
+  int SmallBlindChair();
+  int BigBlindChair();
+  int UTGChair();
  private:
-  int GetChairByDealposition(int dealposition);
+  bool MissingSmallBlind();
+  int CalculateMissingSmallBlind();
+  bool PlayersBehindDealPosition2ChairDidAct();
  private:
-  int _opponent_headsup_chair;
-  int _smallblind_chair;
-  int _bigblind_chair;
-  int _cutoff_chair;
+  int ChairByDealposition(int dealposition);
+  int ChairByLogicalPosition(int offset_from_dealer);
  private:
   int _nchairs;
+  bool _missing_smallblind;
+  bool _missing_smallblind_calculated;
 };
 
 extern CSymbolEngineChairs *p_symbol_engine_chairs;

@@ -167,52 +167,34 @@ Then add the symbol name.
 \end_layout
 
 \begin_layout Itemize
-Finally add one of those postfix: 
+Finally add a chair number or one of the many postfixes described in the
+ chapter about the multiplexer-engine.
+ The list gets extended over time, here are some examples:
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-_raischair
+_smallblindchair
 \end_layout
 
 \begin_layout Itemize
-_headsup
+_dealerchair
 \end_layout
 
 \begin_layout Itemize
-_smallblind
+_firstcallerchair
 \end_layout
 
 \begin_layout Itemize
-_bigblind
+_lastraiserchair
 \end_layout
 
 \begin_layout Itemize
-_dealer
+_userchair
 \end_layout
 
 \begin_layout Itemize
-_cutoff
-\end_layout
-
-\begin_layout Itemize
-_firstcaller
-\end_layout
-
-\begin_layout Itemize
-_lastcaller
-\end_layout
-
-\begin_layout Itemize
-_firstraiser
-\end_layout
-
-\begin_layout Itemize
-_dealer
-\end_layout
-
-\begin_layout Itemize
-_user
+_headsupchair
 \end_layout
 
 \end_deeper

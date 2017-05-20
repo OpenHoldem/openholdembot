@@ -95,7 +95,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    - You are not connected to a table.\n"
 			"\n"
 			" To connect to a table three conditions must be met:\n"
-			"    - You need a tablemap for that casino and game-type.\n"
+			"    - You need a tablemap for this casino and game-type.\n"
 			"    - The table must match z$clientsizemin and z$clientsizemax.\n"
       "         OpenScrape -> Menu -> View\n"
 			"    - The s$titletext must match.\n"

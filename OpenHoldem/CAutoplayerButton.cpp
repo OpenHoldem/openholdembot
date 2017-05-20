@@ -45,7 +45,7 @@ bool CAutoplayerButton::Click() {
   if (_clickable) {
     // Try to send a hotkey first, if specified in tablemap
     if (_hotkey.PressHotkey()) {
-     write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
+      write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
       return true;
     }
     // Lookup the region
@@ -185,5 +185,11 @@ void CAutoplayerButton::PrecomputeButtonType() {
     _button_type = k_hopper_function_rematch;
   } else if (IsLabelPrefold()) { 
     _button_type = k_standard_function_prefold;
+  } else if (_label == "") {
+    // Clear button
+    _button_type = kUndefined;
+  } else {
+    write_log(preferences.debug_autoplayer(), 
+      "[CasinoInterface] WARNING! Unknown button type %s\n", _label);
   }
 }

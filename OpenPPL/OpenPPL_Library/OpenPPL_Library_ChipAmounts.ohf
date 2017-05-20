@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -65,32 +65,14 @@
 ##BigBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
 (bet <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-(BigBlindChair == 0) ? (currentbet0 / bet) :
-(BigBlindChair == 1) ? (currentbet1 / bet) :
-(BigBlindChair == 2) ? (currentbet2 / bet) :
-(BigBlindChair == 3) ? (currentbet3 / bet) :
-(BigBlindChair == 4) ? (currentbet4 / bet) :
-(BigBlindChair == 5) ? (currentbet5 / bet) :
-(BigBlindChair == 6) ? (currentbet6 / bet) :
-(BigBlindChair == 7) ? (currentbet7 / bet) :
-(BigBlindChair == 8) ? (currentbet8 / bet) :
-(BigBlindChair == 9) ? (currentbet9 / bet) :
-ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+(currentbet_bigblindchair / bet)
 
 ##SmallBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
 (bet <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-(SmallBlindChair == 0) ? (currentbet0 / bet) :
-(SmallBlindChair == 1) ? (currentbet1 / bet) :
-(SmallBlindChair == 2) ? (currentbet2 / bet) :
-(SmallBlindChair == 3) ? (currentbet3 / bet) :
-(SmallBlindChair == 4) ? (currentbet4 / bet) :
-(SmallBlindChair == 5) ? (currentbet5 / bet) :
-(SmallBlindChair == 6) ? (currentbet6 / bet) :
-(SmallBlindChair == 7) ? (currentbet7 / bet) :
-(SmallBlindChair == 8) ? (currentbet8 / bet) :
-(SmallBlindChair == 9) ? (currentbet9 / bet) :
-ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
+(smallblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+(currentbet_smallblindchair / bet)
 
 ##DollarsToCallForMisScrapedEverything##
 // My balance and opponents bet miss-scraped
@@ -114,11 +96,11 @@ isfl ? bet : currentbet
 // Therefore we create multiple functions for multiple cases of bad input.
 (ismyturn AND balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
 // Preflop and I already did act in a raised pot, but nothing to call
-((betround == ConstBetRoundPreflop) AND (ncurrentbets >= 1.01) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+((betround == preflop) AND (ncurrentbets >= 1.01) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
 // Preflop and I am not big-blind and there is nothing to call
-((betround == ConstBetRoundPreflop) AND (ncurrentbets < 1) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+((betround == preflop) AND (ncurrentbets < 1) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
 // Postflop and I already did act, but nothing to call
-((betround > ConstBetRoundPreflop) AND (ncurrentbets > 0) AND (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
+((betround > preflop) AND (ncurrentbets > 0) AND (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
 // The normal case (including correct and incorrect abilities to check)
 (call <= balance) ? call : balance
 

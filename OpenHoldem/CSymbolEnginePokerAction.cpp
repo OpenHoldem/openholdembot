@@ -323,7 +323,7 @@ const bool CSymbolEnginePokerAction::AgchairAfter() {
 	}
 }
 
-bool CSymbolEnginePokerAction::EvaluateSymbol(const char *name, double *result, bool log/* = false*/) {
+bool CSymbolEnginePokerAction::EvaluateSymbol(const CString name, double *result, bool log/* = false*/) {
   if (memcmp(name,"ac_", 3) != 0) {
     // Symbol of a different symbol-engine
     return false;

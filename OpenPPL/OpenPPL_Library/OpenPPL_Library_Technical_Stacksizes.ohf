@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -65,61 +65,81 @@
 //
 //*****************************************************************************
 
-##Chair0StartingStackSize##
+##StartingStackSize0##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance0 + currentbet0 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair1StartingStackSize##
+##StartingStackSize1##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance1 + currentbet1 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair2StartingStackSize##
+##StartingStackSize2##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance2 + currentbet2 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair3StartingStackSize##
+##StartingStackSize3##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance3 + currentbet3 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair4StartingStackSize##
+##StartingStackSize4##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance4 + currentbet4 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair5StartingStackSize##
+##StartingStackSize5##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance5 + currentbet5 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair6StartingStackSize##
+##StartingStackSize6##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance6 + currentbet6 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair7StartingStackSize##
+##StartingStackSize7##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance7 + currentbet7 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair8StartingStackSize##
+##StartingStackSize8##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance8 + currentbet8 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##Chair9StartingStackSize##
+##StartingStackSize9##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance9 + currentbet9 + ante) / bet) :
@@ -128,83 +148,83 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 ##MaxStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
 // Per definition for first orbit preflop only.
-BigBlindStartingStackSize
+StartingStackSize_bigblindchair
 
 ##MaxStillToActStackSizeAfterButton##
 // Per definition for first orbit preflop only
-SmallBlindStartingStackSize > MaxStillToActStackSizeAfterSmallBlind ?
-  SmallBlindStartingStackSize : MaxStillToActStackSizeAfterSmallBlind
+StartingStackSize_smallblindchair > MaxStillToActStackSizeAfterSmallBlind ?
+  StartingStackSize_smallblindchair : MaxStillToActStackSizeAfterSmallBlind
 
 ##MaxStillToActStackSizeAfterCutOff##
 // Per definition for first orbit preflop only
-ButtonStartingStackSize > MaxStillToActStackSizeAfterButton ?
-  ButtonStartingStackSize : MaxStillToActStackSizeAfterButton
+StartingStackSize_buttonchair > MaxStillToActStackSizeAfterButton ?
+  StartingStackSize_buttonchair : MaxStillToActStackSizeAfterButton
 
 ##MaxStillToActStackSizeAfterMiddlePosition3##
 // Per definition for first orbit preflop only
-CutOffStartingStackSize > MaxStillToActStackSizeAfterCutOff?
-  CutOffStartingStackSize : MaxStillToActStackSizeAfterCutOff
+StartingStackSize_cutoffchair > MaxStillToActStackSizeAfterCutOff?
+  StartingStackSize_cutoffchair : MaxStillToActStackSizeAfterCutOff
 
 ##MaxStillToActStackSizeAfterMiddlePosition2##
 // Per definition for first orbit preflop only
-MiddlePosition3StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition3 ?
-  MiddlePosition3StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition3
+StartingStackSize_mp3chair > MaxStillToActStackSizeAfterMiddlePosition3 ?
+  StartingStackSize_mp3chair : MaxStillToActStackSizeAfterMiddlePosition3
 
 ##MaxStillToActStackSizeAfterMiddlePosition1##
 // Per definition for first orbit preflop only
-MiddlePosition2StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition2 ?
-  MiddlePosition2StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition2
+StartingStackSize_mp2chair > MaxStillToActStackSizeAfterMiddlePosition2 ?
+  StartingStackSize_mp2chair : MaxStillToActStackSizeAfterMiddlePosition2
 
 ##MaxStillToActStackSizeAfterEarlyPosition3##
 // Per definition for first orbit preflop only
-MiddlePosition1StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition1 ?
-  MiddlePosition1StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition1
+StartingStackSize_mp1chair > MaxStillToActStackSizeAfterMiddlePosition1 ?
+  StartingStackSize_mp1chair : MaxStillToActStackSizeAfterMiddlePosition1
 
 ##MaxStillToActStackSizeAfterEarlyPosition2##
 // Per definition for first orbit preflop only
-EarlyPosition3StartingStackSize > MaxStillToActStackSizeAfterEarlyPosition3 ?
-  EarlyPosition3StartingStackSize : MaxStillToActStackSizeAfterEarlyPosition3
+StartingStackSize_ep3chair > MaxStillToActStackSizeAfterEarlyPosition3 ?
+  StartingStackSize_ep3chair : MaxStillToActStackSizeAfterEarlyPosition3
 
 ##MaxStillToActStackSizeAfterEarlyPosition1##
 // Per definition for first orbit preflop only
-EarlyPosition2StartingStackSize > MaxStillToActStackSizeAfterEarlyPosition2 ?
-  EarlyPosition2StartingStackSize : MaxStillToActStackSizeAfterEarlyPosition2
+StartingStackSize_ep2chair > MaxStillToActStackSizeAfterEarlyPosition2 ?
+  StartingStackSize_ep2chair : MaxStillToActStackSizeAfterEarlyPosition2
 
 ##MinStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
-BigBlindStartingStackSize
+StartingStackSize_bigblindchair
 
 ##MinStillToActStackSizeAfterButton##
-SmallBlindStartingStackSize < MinStillToActStackSizeAfterSmallBlind ?
-  SmallBlindStartingStackSize : MinStillToActStackSizeAfterSmallBlind
+StartingStackSize_smallblindchair < MinStillToActStackSizeAfterSmallBlind ?
+  StartingStackSize_smallblindchair : MinStillToActStackSizeAfterSmallBlind
 
 ##MinStillToActStackSizeAfterCutOff##
-ButtonStartingStackSize < MinStillToActStackSizeAfterButton ?
-  ButtonStartingStackSize : MinStillToActStackSizeAfterButton
+StartingStackSize_buttonchair < MinStillToActStackSizeAfterButton ?
+  StartingStackSize_buttonchair : MinStillToActStackSizeAfterButton
 
 ##MinStillToActStackSizeAfterMiddlePosition3##
-CutOffStartingStackSize < MinStillToActStackSizeAfterCutOff ?
-  CutOffStartingStackSize : MinStillToActStackSizeAfterCutOff
+StartingStackSize_cutoffchair < MinStillToActStackSizeAfterCutOff ?
+  StartingStackSize_cutoffchair : MinStillToActStackSizeAfterCutOff
 
 ##MinStillToActStackSizeAfterMiddlePosition2##
-MiddlePosition3StartingStackSize < MinStillToActStackSizeAfterMiddlePosition3 ?
-  MiddlePosition3StartingStackSize : MinStillToActStackSizeAfterMiddlePosition3
+StartingStackSize_mp3chair < MinStillToActStackSizeAfterMiddlePosition3 ?
+  StartingStackSize_mp3chair : MinStillToActStackSizeAfterMiddlePosition3
 
 ##MinStillToActStackSizeAfterMiddlePosition1##
-MiddlePosition2StartingStackSize < MinStillToActStackSizeAfterMiddlePosition2 ?
-  MiddlePosition2StartingStackSize : MinStillToActStackSizeAfterMiddlePosition2
+StartingStackSize_mp2chair < MinStillToActStackSizeAfterMiddlePosition2 ?
+  StartingStackSize_mp2chair : MinStillToActStackSizeAfterMiddlePosition2
 
 ##MinStillToActStackSizeAfterEarlyPosition3##
-MiddlePosition1StartingStackSize < MinStillToActStackSizeAfterMiddlePosition1 ?
-  MiddlePosition1StartingStackSize : MinStillToActStackSizeAfterMiddlePosition1
+StartingStackSize_mp1chair < MinStillToActStackSizeAfterMiddlePosition1 ?
+  StartingStackSize_mp1chair : MinStillToActStackSizeAfterMiddlePosition1
 
 ##MinStillToActStackSizeAfterEarlyPosition2##
-EarlyPosition3StartingStackSize < MinStillToActStackSizeAfterEarlyPosition3 ?
-  EarlyPosition3StartingStackSize : MinStillToActStackSizeAfterEarlyPosition3
+StartingStackSize_ep3chair < MinStillToActStackSizeAfterEarlyPosition3 ?
+  StartingStackSize_ep3chair : MinStillToActStackSizeAfterEarlyPosition3
 
 ##MinStillToActStackSizeAfterEarlyPosition1##
-EarlyPosition2StartingStackSize < MinStillToActStackSizeAfterEarlyPosition2 ?
-  EarlyPosition2StartingStackSize : MinStillToActStackSizeAfterEarlyPosition2
+StartingStackSize_ep2chair < MinStillToActStackSizeAfterEarlyPosition2 ?
+  StartingStackSize_ep2chair : MinStillToActStackSizeAfterEarlyPosition2
 
 ##CalculateMaxOpponentStackSize##
 WHEN (nopponentsseated <= 0) RETURN 0 FORCE

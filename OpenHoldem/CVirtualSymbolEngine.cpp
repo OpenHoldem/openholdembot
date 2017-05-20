@@ -16,6 +16,7 @@
 
 #include "CCasinoInterface.h"
 #include "CFormulaParser.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "OH_MessageBox.h"
 
 CVirtualSymbolEngine::CVirtualSymbolEngine()
@@ -45,7 +46,7 @@ void CVirtualSymbolEngine::UpdateOnHeartbeat()
 void CVirtualSymbolEngine::UpdateAfterAutoplayerAction(int autoplayer_action_code)
 {}
 
-bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
 	// We don't provide any symbols
 	return false;
@@ -76,5 +77,16 @@ void CVirtualSymbolEngine::WarnIfSymbolRequiresMyTurn(CString name) {
   }
 }
 
-
+void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
+  if (p_symbol_engine_isomaha->isomaha()) {
+    CString error_message;
+    error_message.Format("%s%s%s%s%s%s%s",
+      "The symbol \"", name, "\"\n",
+      "is currently only available for Hold'em games.\n",
+      "\n",
+      "Please get in contact with the development team\n",
+      "if you volunteer to implement it for Omaha.");
+    OH_MessageBox_Error_Warning(error_message, "Warning");
+  }
+}
 

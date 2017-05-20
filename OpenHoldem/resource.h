@@ -9,13 +9,10 @@
 #define IDCLEAR5                        7
 #define IDD_ABOUTBOX                    100
 #define IDR_MAINFRAME                   128
-#define ID_INDICATOR_STATUS_COMCARDS    129
 #define IDI_ICON1                       130
-#define ID_INDICATOR_STATUS_PRWIN       130
-#define ID_INDICATOR_STATUS_NOPP        131
-#define ID_INDICATOR_STATUS_ACTION      132
-#define ID_INDICATOR_STATUS_NIT         133
-#define ID_INDICATOR_STATUS_POKERHAND   134
+#define ID_INDICATOR_STATUS_PRWIN       131
+#define ID_INDICATOR_STATUS_DUMMY       132
+#define ID_INDICATOR_STATUS_ACTION      133
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
 #define IDD_RENAME                      136
@@ -439,6 +436,9 @@
 #define IDC_DEBUG_TIMERS                1417
 #define IDC_USE_AUTO_STARTER            1418
 #define IDC_USE_AUTO_SHUTDOWN           1419
+#define IDC_DEBUG_NUTFULLHOUSE          1420
+#define IDC_DEBUG_MULTIPLEXER           1421
+#define IDC_TOGGLE_ALL_DEBUG            1422
 #define IDC_ICM_1                       1121
 #define IDC_ICM_2                       1122
 #define IDC_ICM_3                       1123
@@ -549,7 +549,6 @@
 #define ID_EDIT_VIEWLOG                 32997
 #define ID_EDIT_TAGLOG                  32998
 #define ID_EDIT_CLEARLOG                32999
-#define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
 // 
@@ -557,7 +556,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         33000
-#define _APS_NEXT_CONTROL_VALUE         1430
+#define _APS_NEXT_CONTROL_VALUE         1423
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

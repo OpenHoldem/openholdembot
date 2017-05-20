@@ -25,6 +25,7 @@ s$sitename                  ddpoker
 s$betsizeconfirmationmethod    Enter
 s$betsizedeletionmethod        Delete
 s$betsizeinterpretationmethod  1
+s$betsizeselectionmethod       Nothing
 s$t0type                    0
 s$t1type                    0
 s$t2type                    0

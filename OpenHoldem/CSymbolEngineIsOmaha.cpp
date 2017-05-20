@@ -85,7 +85,7 @@ void CSymbolEngineIsOmaha::UpdateOnHeartbeat() {
   write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] No indications for Omaha found\n");
 }
 
-bool CSymbolEngineIsOmaha::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineIsOmaha::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "isomaha", 7)==0 && strlen(name)==7)	{
     // Up to now only Hold'Em supported

@@ -62,22 +62,28 @@ CSharedMem::CSharedMem() {
 	// We can verify the mutex here,
 	// because preferences have already been loaded.
 	VerifyMainMutexName();
-	// Share our process ID for autostarter, watchdog and popup-blocker
-	assert(p_sessioncounter != NULL);
-	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
-	int my_PID = GetCurrentProcessId();
-	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
-  if (my_PID == 0) {
-    OH_MessageBox_Error_Warning("Unable to query my own process ID.\n"
-      "This might be caused by Windows XP security settings.\n"
-      "Going to terminate.\n"
-      ""); //www!!!!!
-    PostQuitMessage(-1);
-  }
+  AquireOwnProcessID();
 }
 
 CSharedMem::~CSharedMem() {
   write_log(preferences.debug_sharedmem(), "[CSharedMem] Terminating %d\n", p_sessioncounter->session_id());
+}
+
+void CSharedMem::AquireOwnProcessID() {
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] Aquiring own process IG\n");
+  assert(p_sessioncounter != NULL);
+  AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS - 1);
+  int my_PID = GetCurrentProcessId();
+  // Share our process ID for autostarter, watchdog and popup-blocker
+  openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
+  if (my_PID == 0) {
+    // GetCurrentProcessId() can fail on some systems,
+    // on startup or in general.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20520
+    write_log(k_always_log_errors, "ERROR getting my own process ID.\n");
+    write_log(k_always_log_errors, "This might be caused by Windows XP security settings.\n");
+    write_log(k_always_log_errors, "Features like the auto-starter will be temporary disabled\n");
+  }
 }
 
 bool CSharedMem::PokerWindowAttached(HWND Window) {
@@ -323,5 +329,23 @@ void CSharedMem::Dump() {
 int CSharedMem::OpenHoldemProcessID(int session_ID) {
   assert(session_ID >= 0);
   assert(session_ID < MAX_SESSION_IDS);
-  return openholdem_PIDs[session_ID];
+  int process_ID = openholdem_PIDs[session_ID];
+  assert(p_sessioncounter != NULL);
+  if ((session_ID == p_sessioncounter->session_id())
+    && (process_ID == 0)) {
+    // Own process ID not available
+    // Try to aquire new one
+    AquireOwnProcessID();
+    // Continue with new result, no matter what,
+    // as some systems might fail completely.
+    // Features like the auto-starter might be turned off.
+    process_ID = openholdem_PIDs[session_ID];
+  }
+  return process_ID;
+}
+
+int CSharedMem::OpenHoldemProcessID() {
+  assert(p_sessioncounter != NULL);
+  int my_session_ID = p_sessioncounter->session_id();
+  return openholdem_PIDs[my_session_ID];
 }

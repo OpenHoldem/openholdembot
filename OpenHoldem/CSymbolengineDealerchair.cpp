@@ -67,18 +67,23 @@ void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
 	// Do not reset, as this might cause a hand-reset.
 }
 
-bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CSymbolEngineDealerchair::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "dealerchair", 11)==0 && strlen(name)==11)	
+	if (name == "dealerchair")	
 	{
 		*result = p_symbol_engine_dealerchair->dealerchair();
 		return true;
 	}
+  if (name == "buttonchair")
+  {
+    *result = p_symbol_engine_dealerchair->dealerchair();
+    return true;
+  }
 	return false;
 }
 
 CString CSymbolEngineDealerchair::SymbolsProvided() {
-  return "dealerchair ";
+  return "dealerchair buttonchair ";
 }
 	

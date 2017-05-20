@@ -86,6 +86,8 @@ void CSymbolEngineHistory::UpdateOnConnection() {
 }
 
 void CSymbolEngineHistory::UpdateOnHandreset() {
+  write_log(preferences.debug_symbolengine(),
+    "[SymbolEngineHistory] Update on handreset\n");
   _prevaction = k_prevaction_undefined;
 	// Element 0 is unused
 	for (int i=0; i<(kNumberOfBetrounds+1); ++i) {
@@ -107,6 +109,8 @@ void CSymbolEngineHistory::UpdateOnNewRound() {
 void CSymbolEngineHistory::UpdateOnMyTurn() {
   // Collect symbol if ismyturn.
   // Per definition we need to get the value at last myturn in betround N.
+  write_log(preferences.debug_symbolengine(),
+    "[SymbolEngineHistory] Update on my turn\n");
   int	betround = p_betround_calculator->betround();
 	for (int i=0; i<k_hist_sym_count; ++i)	{
 		double result;
@@ -209,20 +213,22 @@ void CSymbolEngineHistory::CalculateHistory() {
 		maxbet /= bet;
 		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
 	}	else {
-		write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
+		write_log(preferences.debug_symbolengine(), "[SymbolEngineHistory] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
 	}
 }
 
-double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
+double CSymbolEngineHistory::HistorySymbol(const CString sym, const int round) {
+  write_log(preferences.debug_symbolengine(),
+    "[SymbolEngineHistory] Looking up %s for round %i\n", sym, round);
 	for (int i=0; i<k_hist_sym_count; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
-			return _hist_sym[i][round-1];
+			return _hist_sym[i][round];
 		}
 	}
 	return kUndefinedZero;
 }
 
-bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineHistory::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "did", 3) == 0)	{
 		if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	{
@@ -273,15 +279,12 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 		*result = nbetsround(p_betround_calculator->betround());
 	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==11)	{
 		*result = nbetsround(RightDigitCharacterToNumber(name));
-	}  else if (memcmp(name, "hi_", 3)==0) {
+	} else if (memcmp(name, "hi_", 3)==0) {
     // History symbols
-    int	round = RightDigitCharacterToNumber(name, 1);
-    char *pure_name = (char*)name + 3;
-    char pure_name_without_betround[256];
-    int length = strlen(pure_name);
-    assert(length < 256);
-    memcpy(pure_name_without_betround, pure_name, length); 
-    pure_name_without_betround[length - 1] = '\0';
+    int	round = RightDigitCharacterToNumber(name);
+    CString pure_name_without_betround = name.Mid(3);
+    int length = pure_name_without_betround.GetLength();
+    pure_name_without_betround.Truncate(length - 1);
     *result = HistorySymbol(pure_name_without_betround, round);
     return true;
   }	else {

@@ -735,7 +735,7 @@
     <ClCompile Include="CTableTitle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="CTitleEvaluator.cpp">
+    <ClCompile Include="CTitleEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mtrand.cpp">
@@ -753,7 +753,7 @@
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
-	<ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp">
+    <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp">
@@ -782,6 +782,21 @@
     </ClCompile>
     <ClCompile Include="DialogSAPrefs9.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineNutFullHouseOrFourOfAKind.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineMultiplexer.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineConstants.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp">
+      <Filter>Source Files\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1618,7 +1633,7 @@
     <ClInclude Include="CTableTitle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-	<ClInclude Include="CTitleEvaluator.h">
+    <ClInclude Include="CTitleEvaluator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mtrand.h">
@@ -1642,7 +1657,7 @@
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
-	<ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h">
+    <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
     <ClInclude Include="CHeartbeatDelay.h">
@@ -1662,6 +1677,21 @@
     </ClInclude>
     <ClInclude Include="DialogSAPrefs7.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="CTablepointChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineNutFullhouseOrFourOfAKind.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineMultiplexer.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineConstants.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h">
+      <Filter>Header Files\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

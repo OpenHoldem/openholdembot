@@ -15,6 +15,7 @@
 #include "stdafx.h" 
 #include "CParseTreeNode.h"
 
+#include "CFunction.h"
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
 
@@ -145,6 +146,26 @@ bool CParseTreeNode::IsOpenEndedWhenCondition() {
     return true;
   }
   return false;
+}
+
+void  CParseTreeNode::VerifyBooleanOperand(double value) {
+  // A very common user-mistake:
+  // People doing logical operations on umbers
+  // as they don't understand the precedence of operators well emough.
+  // Example: .., AND NOT betrund > 1 ...
+  // www!!!!!
+  if (value == double(true)) {
+    return;
+  }
+  if (value == double(false)) {
+    return;
+  }
+  write_log(k_always_log_errors, "WARNING! Logical operator %s working on numbers\n",
+    TokenString(_node_type));
+  write_log(k_always_log_errors, "  Function: %s\n",
+    CFunction::CurrentlyEvaluatedFunction()->name());
+  write_log(k_always_log_errors, "  Line:     %i\n",
+    _relative_line_number);
 }
 
 // virtual 

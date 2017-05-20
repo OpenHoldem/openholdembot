@@ -63,7 +63,7 @@ void CSymbolEngineDebug::SetValue(int index, double value) {
   _debug_values[index] = value;
 }
 
-bool CSymbolEngineDebug::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineDebug::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "debug", 5) != 0) {
 		// Symbol of a different symbol-engine

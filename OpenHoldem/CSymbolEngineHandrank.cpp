@@ -15,7 +15,9 @@
 #include "CSymbolEngineHandrank.h"
 
 #include <assert.h>
+#include "COpenHoldemStatusbar.h"
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
@@ -78,37 +80,44 @@ void CSymbolEngineHandrank::UpdateOnHandreset()
 	_handrankp    = 0;
 }
 
-void CSymbolEngineHandrank::UpdateOnNewRound()
-{}
+void CSymbolEngineHandrank::UpdateOnNewRound() {
+  CalculateHandrank();
+}
 
 void CSymbolEngineHandrank::UpdateOnMyTurn() {
-	char		cardstr[10] = {0};
-
-	// Get name string containing the players' current cards
-	GetCardstring(cardstr, 
-    p_table_state->User()->hole_cards(0)->GetValue(),
-		p_table_state->User()->hole_cards(1)->GetValue());
-
-	// if nopponents<1 or >9 then default to a sane value
-	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
-		
-	for (int i=0; i<kNumberOfStartingHands; i++)
-	{
-		if (strcmp(cardstr, handrank_table_169[_nopponents-1][i])==0)
-		{
-			_handrank169  = i + 1;													
-			_handrank2652 = handrank_table_2652[_nopponents-1][i];								
-			break;
-		}
-	}
-
-	_handrank1326 = _handrank2652 / 2;											
-	_handrank1000 = 1000 * _handrank2652 / 2652;									
-	_handrankp    = 2652.0 / (1.0 + (double)_nopponents);	
+  CalculateHandrank();
 }
 
 void CSymbolEngineHandrank::UpdateOnHeartbeat()
-{}
+{  
+  if (_handrank169 <= 0) {
+    CalculateHandrank();
+  }
+}
+
+void CSymbolEngineHandrank::CalculateHandrank() {
+  char		cardstr[10] = { 0 };
+  // Get name string containing the players' current cards
+  GetCardstring(cardstr,
+    p_table_state->User()->hole_cards(0)->GetValue(),
+    p_table_state->User()->hole_cards(1)->GetValue());
+  // !!!! looks wrong
+  // !!!! int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+  int nopponents = p_symbol_engine_active_dealt_playing->nopponentsdealt();
+  for (int i = 0; i<kNumberOfStartingHands; i++)
+  {
+    if (strcmp(cardstr, handrank_table_169[nopponents - 1][i]) == 0)
+    {
+      _handrank169 = i + 1;
+      _handrank2652 = handrank_table_2652[nopponents - 1][i];
+      break;
+    }
+  }
+  p_openholdem_statusbar->SetHandrank(_handrank169);
+  _handrank1326 = _handrank2652 / 2;
+  _handrank1000 = 1000 * _handrank2652 / 2652;
+  _handrankp = 2652.0 / (1.0 + (double)nopponents);
+}
 
 void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int c1)
 {
@@ -139,7 +148,7 @@ void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int
 	c[3]='\0';
 }
 
-bool CSymbolEngineHandrank::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CSymbolEngineHandrank::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "handrank", 8) == 0)

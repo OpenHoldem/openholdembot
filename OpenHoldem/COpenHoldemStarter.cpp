@@ -35,6 +35,11 @@ COpenHoldemStarter::~COpenHoldemStarter() {
 }
 
 void COpenHoldemStarter::StartNewInstanceIfNeeded() {
+  assert(p_sharedmem != NULL);
+  if (p_sharedmem->OpenHoldemProcessID() == 0) {
+    write_log(k_always_log_errors, "WARNING! Auto-starter turned off, unavailable process ID\n");
+    return;
+  }
   if (p_sharedmem->NUnoccupiedBots() >= kMinNumberOfUnoccupiedBotsNeeded) {
     // Enough instance available for new connections / popup handling
     write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] No bots needed, enough free instances.\n");
@@ -70,6 +75,11 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
 }
 
 void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
+  assert(p_sharedmem != NULL);
+  if (p_sharedmem->OpenHoldemProcessID() == 0) {
+    write_log(k_always_log_errors, "WARNING! Auto-shutdown turned off, unavailable process ID\n");
+    return;
+  }
   if (p_autoconnector->IsConnectedToAnything()) {
     write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Playing, therefore still needed.\n");
     // Instance needed for playing

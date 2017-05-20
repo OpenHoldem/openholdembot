@@ -25,108 +25,137 @@
 IMPLEMENT_DYNAMIC(CDlgSAPrefs20, CDialog)
 
 CDlgSAPrefs20::CDlgSAPrefs20(CWnd* pParent /*=NULL*/)
-	: CSAPrefsSubDlg(CDlgSAPrefs20::IDD, pParent)
-{
-
+	: CSAPrefsSubDlg(CDlgSAPrefs20::IDD, pParent) {
 }
 
-CDlgSAPrefs20::~CDlgSAPrefs20()
-{
+CDlgSAPrefs20::~CDlgSAPrefs20() {
 }
 
-void CDlgSAPrefs20::DoDataExchange(CDataExchange* pDX)
-{
+void CDlgSAPrefs20::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	// No need for any DDX.
 	// We do it the good old Win95-way. :)
 }
 
-
 BEGIN_MESSAGE_MAP(CDlgSAPrefs20, CDialog)
+  ON_BN_CLICKED(IDC_TOGGLE_ALL_DEBUG, &CDlgSAPrefs20::OnBnClickedToggleAllDebug)
 END_MESSAGE_MAP()
 
 // Button position
-const int kPositionFirstX =   4;
-const int kPositionFirstY =  23;
-const int kPositionDeltaX = 155;
-const int kPositionDeltaY =  22;
-const int kButtonWidthX   = 150;
-const int kButtonWidthY   =  10;
+const int kPositionFirstX         =   4;
+const int kPositionFirstY         =  23;
+const int kPositionDeltaX         = 155;
+const int kPositionDeltaY         =  22;
+const int kButtonWidthX           = 150;
+const int kButtonWidthY           =  10;
+const int kButtonWidthToggleAllY  = 20;
 const int kMaxButtonsInYDirection = 23;
+
+// List of button IS,
+// alphabetically sorted by button text
+const int kNumberOfCheckboxes = 52;
+const int kCheckboxIDs[kNumberOfCheckboxes] = {
+  IDC_DEBUG_ALLIN_ADJUSTMENT,
+  IDC_DEBUG_AST_PRIORITY_ORDERING,
+  IDC_DEBUG_AUTOCONNECTOR,
+  IDC_DEBUG_AUTOPLAYER,
+  IDC_DEBUG_AUTO_TRACE,
+  IDC_DEBUG_AUTOSTARTER,
+  IDC_DEBUG_BETSIZE_ADJUSTMENT,
+  IDC_DEBUG_BLINDLOCKING,
+  IDC_DEBUG_BOARD_EXPRESSIONS,
+  IDC_DEBUG_DLL_EXTENSION,
+  IDC_DEBUG_ENGINE_CONTAINER,
+  IDC_DEBUG_FILENAMES,
+  IDC_DEBUG_FORMULA,
+  IDC_DEBUG_GUI,
+  IDC_DEBUG_HANDHISTORY,
+  IDC_DEBUG_HANDRESET_DETECTOR,
+  IDC_DEBUG_HEARTBEAT,
+  IDC_DEBUG_HOPPER_MESSAGES,
+  IDC_DEBUG_ICM,
+  IDC_DEBUG_ISTOURNAMENT,
+  IDC_DEBUG_LAZY_SCRAPER,
+  IDC_DEBUG_MEMORY_SYMBOLS,
+  IDC_DEBUG_MEMORY_USAGE,
+  IDC_DEBUG_MULTIPLEXER,
+  IDC_DEBUG_NUTFULLHOUSE,
+  IDC_DEBUG_OCCLUSSION,
+  IDC_DEBUG_OPENHOLDEM,
+  IDC_DEBUG_PARSER,
+  IDC_DEBUG_POKERTRACKER,
+  IDC_DEBUG_POPUP_BLOCKER,
+  IDC_DEBUG_PREFERENCES,
+  IDC_DEBUG_PRWIN,
+  IDC_DEBUG_REBUY,
+  IDC_DEBUG_REPLAYFRAMES,
+  IDC_DEBUG_SCRAPER,
+  // Called "scraper directory monitor"
+  IDC_DEBUG_FILESYSTEM_MONITOR,
+  IDC_DEBUG_SCRAPER_PREPROCESSOR,
+  IDC_DEBUG_SESSIONCOUNTER,
+  IDC_DEBUG_SHAREDMEM,
+  IDC_DEBUG_SINGLETONS,
+  IDC_DEBUG_STABLEFRAMESCOUNTER,
+  IDC_DEBUG_SYMBOLENGINE,
+  IDC_DEBUG_SYMBOLENGINE_OPENPPL,
+  IDC_DEBUG_TABLE_LIMITS,
+  IDC_DEBUG_TABLEMAP_LOADER,
+  IDC_DEBUG_TABLEPOINTS,
+  IDC_DEBUG_TABLE_POSITIONER,
+  IDC_DEBUG_TIMERS,
+  IDC_DEBUG_TOKENIZER,
+  IDC_DEBUG_VERSUS,
+  IDC_DEBUG_WATCHDOG,
+  // "all the rest" at the very end.
+  // It contains all temp-debug.
+  IDC_DEBUG_ALLTHEREST
+};
 
 void CDlgSAPrefs20::AlignButton(int button_ID) {
   assert(_buttons_aligned >= 0);
-  assert(_buttons_aligned <= 100);
+  assert(_buttons_aligned < (kNumberOfCheckboxes + 2));
   int x_slot = _buttons_aligned / kMaxButtonsInYDirection;
   int y_slot = _buttons_aligned % kMaxButtonsInYDirection;
   int x_position = kPositionFirstX + x_slot * kPositionDeltaX;
   int y_position = kPositionFirstY + y_slot * kPositionDeltaY;
   CWnd* button = GetDlgItem(button_ID);
   assert(button != NULL);
-  button->SetWindowPos(NULL, x_position, y_position, kButtonWidthX, kButtonWidthY, SWP_SHOWWINDOW);
+  if (button_ID == IDC_TOGGLE_ALL_DEBUG) {
+    // Some extra space for this special button (no checkbox)
+    ++_buttons_aligned;
+    button->SetWindowPos(NULL, x_position, y_position, kButtonWidthX, kButtonWidthToggleAllY, SWP_SHOWWINDOW);
+  } else {
+    button->SetWindowPos(NULL, x_position, y_position, kButtonWidthX, kButtonWidthY, SWP_SHOWWINDOW);
+  }
   ++_buttons_aligned;
 }
 
 void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   _buttons_aligned = 0;
-  AlignButton(IDC_DEBUG_ALLIN_ADJUSTMENT);
-  AlignButton(IDC_DEBUG_AST_PRIORITY_ORDERING);
-  AlignButton(IDC_DEBUG_AUTOCONNECTOR);
-  AlignButton(IDC_DEBUG_AUTOPLAYER);
-  AlignButton(IDC_DEBUG_AUTO_TRACE);
-  AlignButton(IDC_DEBUG_AUTOSTARTER);
-  AlignButton(IDC_DEBUG_BETSIZE_ADJUSTMENT);
-  AlignButton(IDC_DEBUG_BLINDLOCKING);
-  AlignButton(IDC_DEBUG_BOARD_EXPRESSIONS);
-  AlignButton(IDC_DEBUG_DLL_EXTENSION);
-  AlignButton(IDC_DEBUG_ENGINE_CONTAINER);
-  AlignButton(IDC_DEBUG_FILENAMES);
-  AlignButton(IDC_DEBUG_FORMULA);
-  AlignButton(IDC_DEBUG_GUI);
-  AlignButton(IDC_DEBUG_HANDHISTORY);
-  AlignButton(IDC_DEBUG_HANDRESET_DETECTOR);
-  AlignButton(IDC_DEBUG_HEARTBEAT);
-  AlignButton(IDC_DEBUG_HOPPER_MESSAGES);
-  AlignButton(IDC_DEBUG_ICM);
-  AlignButton(IDC_DEBUG_ISTOURNAMENT);
-  AlignButton(IDC_DEBUG_LAZY_SCRAPER);
-  AlignButton(IDC_DEBUG_MEMORY_SYMBOLS);
-  AlignButton(IDC_DEBUG_MEMORY_USAGE);
-  AlignButton(IDC_DEBUG_OCCLUSSION);
-  AlignButton(IDC_DEBUG_OPENHOLDEM);
-  AlignButton(IDC_DEBUG_PARSER);
-  AlignButton(IDC_DEBUG_POKERTRACKER);
-  AlignButton(IDC_DEBUG_POPUP_BLOCKER);
-  AlignButton(IDC_DEBUG_PREFERENCES);
-  AlignButton(IDC_DEBUG_PRWIN);
-  AlignButton(IDC_DEBUG_REBUY);
-  AlignButton(IDC_DEBUG_REPLAYFRAMES);
-  AlignButton(IDC_DEBUG_SCRAPER);
-  // Called "scraper directory monitor"
-  AlignButton(IDC_DEBUG_FILESYSTEM_MONITOR);
-  AlignButton(IDC_DEBUG_SCRAPER_PREPROCESSOR);
-  AlignButton(IDC_DEBUG_SESSIONCOUNTER);
-  AlignButton(IDC_DEBUG_SHAREDMEM);
-  AlignButton(IDC_DEBUG_SINGLETONS);
-  AlignButton(IDC_DEBUG_STABLEFRAMESCOUNTER);
-  AlignButton(IDC_DEBUG_SYMBOLENGINE);
-  AlignButton(IDC_DEBUG_SYMBOLENGINE_OPENPPL);
-  AlignButton(IDC_DEBUG_TABLE_LIMITS);
-  AlignButton(IDC_DEBUG_TABLEMAP_LOADER);
-  AlignButton(IDC_DEBUG_TABLEPOINTS);
-  AlignButton(IDC_DEBUG_TABLE_POSITIONER);
-  AlignButton(IDC_DEBUG_TIMERS);
-  AlignButton(IDC_DEBUG_TOKENIZER);
-  AlignButton(IDC_DEBUG_VERSUS);
-  AlignButton(IDC_DEBUG_WATCHDOG);
-  // "all the rest" at the very end.
-  // It contains all temp-debug.
-  AlignButton(IDC_DEBUG_ALLTHEREST);
+  for (int i = 0; i < kNumberOfCheckboxes; ++i) {
+    AlignButton(kCheckboxIDs[i]);
+  }
+  AlignButton(IDC_TOGGLE_ALL_DEBUG);
+}
+
+void CDlgSAPrefs20::OnBnClickedToggleAllDebug() {
+  for (int i = 0; i < kNumberOfCheckboxes; ++i) {
+    ToggleButton(kCheckboxIDs[i]);
+  }
+}
+
+void CDlgSAPrefs20::ToggleButton(int button_ID) {
+  bool checked = IsDlgButtonChecked(button_ID);
+  if (checked) {
+    CheckDlgButton(button_ID, MF_UNCHECKED);
+  } else {
+    CheckDlgButton(button_ID, MF_CHECKED);
+  }
 }
 
 // CDlgSAPrefs20 message handlers
-BOOL CDlgSAPrefs20::OnInitDialog()
-{	
+BOOL CDlgSAPrefs20::OnInitDialog() {	
   AlignbuttonsInAlphabeticalOrder();
 	CheckDlgButton(IDC_DEBUG_AUTOCONNECTOR , preferences.debug_autoconnector() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_AUTOPLAYER, preferences.debug_autoplayer() ? MF_CHECKED : MF_UNCHECKED);
@@ -170,7 +199,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
   CheckDlgButton(IDC_DEBUG_AUTO_TRACE, preferences.debug_auto_trace() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_FILENAMES, preferences.debug_filenames() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_AST_PRIORITY_ORDERING, preferences.debug_ast_priority_ordering() ? MF_CHECKED : MF_UNCHECKED);
-  CheckDlgButton(IDC_DEBUG_BOARD_EXPRESSIONS, preferences.debug_hand_and_baord_expressions() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_BOARD_EXPRESSIONS, preferences.debug_hand_and_board_expressions() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_TOKENIZER, preferences.debug_tokenizer() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_TABLEPOINTS, preferences.debug_tablepoints() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_SHAREDMEM, preferences.debug_sharedmem() ? MF_CHECKED : MF_UNCHECKED);
@@ -178,12 +207,13 @@ BOOL CDlgSAPrefs20::OnInitDialog()
   CheckDlgButton(IDC_DEBUG_AUTOSTARTER, preferences.debug_autostarter() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_WATCHDOG, preferences.debug_watchdog() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_TIMERS, preferences.debug_timers() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_NUTFULLHOUSE, preferences.debug_nutfullhouse() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_MULTIPLEXER, preferences.debug_multiplexer() ? MF_CHECKED : MF_UNCHECKED);
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDlgSAPrefs20::OnOK()
-{
+void CDlgSAPrefs20::OnOK() {
 	preferences.SetValue(k_prefs_debug_autoconnector, IsDlgButtonChecked(IDC_DEBUG_AUTOCONNECTOR));
 	preferences.SetValue(k_prefs_debug_autoplayer, IsDlgButtonChecked(IDC_DEBUG_AUTOPLAYER));
 	preferences.SetValue(k_prefs_debug_heartbeat, IsDlgButtonChecked(IDC_DEBUG_HEARTBEAT));
@@ -226,7 +256,7 @@ void CDlgSAPrefs20::OnOK()
   preferences.SetValue(k_prefs_debug_auto_trace, IsDlgButtonChecked(IDC_DEBUG_AUTO_TRACE));
   preferences.SetValue(k_prefs_debug_filenames, IsDlgButtonChecked(IDC_DEBUG_FILENAMES));
   preferences.SetValue(k_prefs_debug_ast_priority_ordering, IsDlgButtonChecked(IDC_DEBUG_AST_PRIORITY_ORDERING));
-  preferences.SetValue(k_prefs_debug_hand_and_baord_expressions, IsDlgButtonChecked(IDC_DEBUG_BOARD_EXPRESSIONS));
+  preferences.SetValue(k_prefs_debug_hand_and_board_expressions, IsDlgButtonChecked(IDC_DEBUG_BOARD_EXPRESSIONS));
   preferences.SetValue(k_prefs_debug_tokenizer, IsDlgButtonChecked(IDC_DEBUG_TOKENIZER));
   preferences.SetValue(k_prefs_debug_tablepoints, IsDlgButtonChecked(IDC_DEBUG_TABLEPOINTS));
   preferences.SetValue(k_prefs_debug_sharedmem, IsDlgButtonChecked(IDC_DEBUG_SHAREDMEM));
@@ -234,6 +264,8 @@ void CDlgSAPrefs20::OnOK()
   preferences.SetValue(k_prefs_debug_autostarter, IsDlgButtonChecked(IDC_DEBUG_AUTOSTARTER));
   preferences.SetValue(k_prefs_debug_watchdog, IsDlgButtonChecked(IDC_DEBUG_WATCHDOG));
   preferences.SetValue(k_prefs_debug_timers, IsDlgButtonChecked(IDC_DEBUG_TIMERS));
+  preferences.SetValue(k_prefs_debug_nutfullhouse, IsDlgButtonChecked(IDC_DEBUG_NUTFULLHOUSE));
+  preferences.SetValue(k_prefs_debug_multiplexer, IsDlgButtonChecked(IDC_DEBUG_MULTIPLEXER));
 	CSAPrefsSubDlg::OnOK();
 }
 

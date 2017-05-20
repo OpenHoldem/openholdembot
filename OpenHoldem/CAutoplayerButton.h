@@ -41,6 +41,8 @@ class CAutoplayerButton {
   bool IsLeave()    { return _button_type == k_hopper_function_leave; }
   bool IsRematch()  { return _button_type == k_hopper_function_rematch; }
   bool IsPrefold()  { return _button_type == k_standard_function_prefold; }
+ public:
+  bool IsButtonType(int autoplayer_function_code) { return _button_type == autoplayer_function_code; }
  protected:
   // To be used by the scraper
   void SetClickable(bool clickable);

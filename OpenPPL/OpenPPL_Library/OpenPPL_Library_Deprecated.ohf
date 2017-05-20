@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -55,224 +55,9 @@
 //   Zolp
 //
 //*****************************************************************************
-
-//
 //
 // TO BE REMOVED
 //
-//
-
-##TrueDealPositionOfBigBlind##
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=257&t=19377
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19362
-WHEN TableIsHeadsup RETURN 1 FORCE
-WHEN MissingSmallBlind RETURN 1 FORCE
-WHEN Others RETURN 2 FORCE
-
-##BigBlindChair##
-ac_dealpos0 == TrueDealPositionOfBigBlind ? 0 :
-ac_dealpos1 == TrueDealPositionOfBigBlind ? 1 :
-ac_dealpos2 == TrueDealPositionOfBigBlind ? 2 :
-ac_dealpos3 == TrueDealPositionOfBigBlind ? 3 :
-ac_dealpos4 == TrueDealPositionOfBigBlind ? 4 :
-ac_dealpos5 == TrueDealPositionOfBigBlind ? 5 :
-ac_dealpos6 == TrueDealPositionOfBigBlind ? 6 :
-ac_dealpos7 == TrueDealPositionOfBigBlind ? 7 :
-ac_dealpos8 == TrueDealPositionOfBigBlind ? 8 :
-ac_dealpos9 == TrueDealPositionOfBigBlind ? 9 :
-ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
-  
-##SmallBlindChair##
-MissingSmallBlind ? HINT_There_Is_No_SmallBlind_In_This_Game :
-ac_dealpos0 == 1 ? 0 :
-ac_dealpos1 == 1 ? 1 :
-ac_dealpos2 == 1 ? 2 :
-ac_dealpos3 == 1 ? 3 :
-ac_dealpos4 == 1 ? 4 :
-ac_dealpos5 == 1 ? 5 :
-ac_dealpos6 == 1 ? 6 :
-ac_dealpos7 == 1 ? 7 :
-ac_dealpos8 == 1 ? 8 :
-ac_dealpos9 == 1 ? 9 :
-ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
-
-##ButtonChair##
-// We ignore the case of headsup,
-// where button = small blind or button = big blind,
-// as this seems to be different for each casino.
-// For us: button = bigblind, if the game is headsup.
-ac_dealpos0 == nplayersdealt ? 0 :
-ac_dealpos1 == nplayersdealt ? 1 :
-ac_dealpos2 == nplayersdealt ? 2 :
-ac_dealpos3 == nplayersdealt ? 3 :
-ac_dealpos4 == nplayersdealt ? 4 :
-ac_dealpos5 == nplayersdealt ? 5 :
-ac_dealpos6 == nplayersdealt ? 6 :
-ac_dealpos7 == nplayersdealt ? 7 :
-ac_dealpos8 == nplayersdealt ? 8 :
-ac_dealpos9 == nplayersdealt ? 9 :
-ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap
-
-##CutOffChair##
-// We have to make sure, that the userchair in question is not a blind,
-// which would be the case for CutOff, if the game was 3-handed.
-// For 3-handed games "CutOff" = BigBlind, but blinds take priority.
-// We could test for dealposition > 2, but counting players is more simple.
-(nplayersdealt <= 3) ? HINT_CutOff_Does_Not_Exist :
-ac_dealpos0 == (nplayersdealt - 1) ? 0 :
-ac_dealpos1 == (nplayersdealt - 1) ? 1 :
-ac_dealpos2 == (nplayersdealt - 1) ? 2 :
-ac_dealpos3 == (nplayersdealt - 1) ? 3 :
-ac_dealpos4 == (nplayersdealt - 1) ? 4 :
-ac_dealpos5 == (nplayersdealt - 1) ? 5 :
-ac_dealpos6 == (nplayersdealt - 1) ? 6 :
-ac_dealpos7 == (nplayersdealt - 1) ? 7 :
-ac_dealpos8 == (nplayersdealt - 1) ? 8 :
-ac_dealpos9 == (nplayersdealt - 1) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##MiddlePosition3Chair##
-(nplayersdealt <= 4) ? HINT_MiddlePosition3_Does_Not_Exist :
-ac_dealpos0 == (nplayersdealt - 2) ? 0 :
-ac_dealpos1 == (nplayersdealt - 2) ? 1 :
-ac_dealpos2 == (nplayersdealt - 2) ? 2 :
-ac_dealpos3 == (nplayersdealt - 2) ? 3 :
-ac_dealpos4 == (nplayersdealt - 2) ? 4 :
-ac_dealpos5 == (nplayersdealt - 2) ? 5 :
-ac_dealpos6 == (nplayersdealt - 2) ? 6 :
-ac_dealpos7 == (nplayersdealt - 2) ? 7 :
-ac_dealpos8 == (nplayersdealt - 2) ? 8 :
-ac_dealpos9 == (nplayersdealt - 2) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##MiddlePosition2Chair##
-(nplayersdealt <= 5) ? HINT_MiddlePosition2_Does_Not_Exist :
-ac_dealpos0 == (nplayersdealt - 3) ? 0 :
-ac_dealpos1 == (nplayersdealt - 3) ? 1 :
-ac_dealpos2 == (nplayersdealt - 3) ? 2 :
-ac_dealpos3 == (nplayersdealt - 3) ? 3 :
-ac_dealpos4 == (nplayersdealt - 3) ? 4 :
-ac_dealpos5 == (nplayersdealt - 3) ? 5 :
-ac_dealpos6 == (nplayersdealt - 3) ? 6 :
-ac_dealpos7 == (nplayersdealt - 3) ? 7 :
-ac_dealpos8 == (nplayersdealt - 3) ? 8 :
-ac_dealpos9 == (nplayersdealt - 3) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##MiddlePosition1Chair##
-(nplayersdealt <= 6) ? HINT_MiddlePosition1_Does_Not_Exist :
-ac_dealpos0 == (nplayersdealt - 4) ? 0 :
-ac_dealpos1 == (nplayersdealt - 4) ? 1 :
-ac_dealpos2 == (nplayersdealt - 4) ? 2 :
-ac_dealpos3 == (nplayersdealt - 4) ? 3 :
-ac_dealpos4 == (nplayersdealt - 4) ? 4 :
-ac_dealpos5 == (nplayersdealt - 4) ? 5 :
-ac_dealpos6 == (nplayersdealt - 4) ? 6 :
-ac_dealpos7 == (nplayersdealt - 4) ? 7 :
-ac_dealpos8 == (nplayersdealt - 4) ? 8 :
-ac_dealpos9 == (nplayersdealt - 4) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##EarlyPosition3Chair##
-(nplayersdealt <= 7) ? HINT_EarlyPosition3_Does_Not_Exist :
-ac_dealpos0 == (nplayersdealt - 5) ? 0 :
-ac_dealpos1 == (nplayersdealt - 5) ? 1 :
-ac_dealpos2 == (nplayersdealt - 5) ? 2 :
-ac_dealpos3 == (nplayersdealt - 5) ? 3 :
-ac_dealpos4 == (nplayersdealt - 5) ? 4 :
-ac_dealpos5 == (nplayersdealt - 5) ? 5 :
-ac_dealpos6 == (nplayersdealt - 5) ? 6 :
-ac_dealpos7 == (nplayersdealt - 5) ? 7 :
-ac_dealpos8 == (nplayersdealt - 5) ? 8 :
-ac_dealpos9 == (nplayersdealt - 5) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##EarlyPosition2Chair##
-(nplayersdealt <= 8) ? HINT_EarlyPosition2_Does_Not_Exist :
-(ac_dealpos0 == (nplayersdealt - 6)) ? 0 :
-(ac_dealpos1 == (nplayersdealt - 6)) ? 1 :
-(ac_dealpos2 == (nplayersdealt - 6)) ? 2 :
-(ac_dealpos3 == (nplayersdealt - 6)) ? 3 :
-(ac_dealpos4 == (nplayersdealt - 6)) ? 4 :
-(ac_dealpos5 == (nplayersdealt - 6)) ? 5 :
-(ac_dealpos6 == (nplayersdealt - 6)) ? 6 :
-(ac_dealpos7 == (nplayersdealt - 6)) ? 7 :
-(ac_dealpos8 == (nplayersdealt - 6)) ? 8 :
-(ac_dealpos9 == (nplayersdealt - 6)) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##EarlyPosition1Chair##
-(nplayersdealt <= 9) ? HINT_EarlyPosition1_Does_Not_Exist :
-ac_dealpos0 == (nplayersdealt - 7) ? 0 :
-ac_dealpos1 == (nplayersdealt - 7) ? 1 :
-ac_dealpos2 == (nplayersdealt - 7) ? 2 :
-ac_dealpos3 == (nplayersdealt - 7) ? 3 :
-ac_dealpos4 == (nplayersdealt - 7) ? 4 :
-ac_dealpos5 == (nplayersdealt - 7) ? 5 :
-ac_dealpos6 == (nplayersdealt - 7) ? 6 :
-ac_dealpos7 == (nplayersdealt - 7) ? 7 :
-ac_dealpos8 == (nplayersdealt - 7) ? 8 :
-ac_dealpos9 == (nplayersdealt - 7) ? 9 :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
-
-##DealPosition1Chair##
-ac_dealpos0 == 1 ? 0 :
-ac_dealpos1 == 1 ? 1 :
-ac_dealpos2 == 1 ? 2 :
-ac_dealpos3 == 1 ? 3 :
-ac_dealpos4 == 1 ? 4 :
-ac_dealpos5 == 1 ? 5 :
-ac_dealpos6 == 1 ? 6 :
-ac_dealpos7 == 1 ? 7 :
-ac_dealpos8 == 1 ? 8 :
-ac_dealpos9 == 1 ? 9 :
-ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
-
-##LastRaiserCurrentBet##
-raischair == 0 ? currentbet0 :
-raischair == 1 ? currentbet1 :
-raischair == 2 ? currentbet2 :
-raischair == 3 ? currentbet3 :
-raischair == 4 ? currentbet4 :
-raischair == 5 ? currentbet5 :
-raischair == 6 ? currentbet6 :
-raischair == 7 ? currentbet7 :
-raischair == 8 ? currentbet8 :
-raischair == 9 ? currentbet9 :
-HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
-
-##CurrentbetOfDealPosition1Chair##
-(DealPosition1Chair == 0) ? currentbet0 :
-(DealPosition1Chair == 1) ? currentbet1 :
-(DealPosition1Chair == 2) ? currentbet2 :
-(DealPosition1Chair == 3) ? currentbet3 :
-(DealPosition1Chair == 4) ? currentbet4 :
-(DealPosition1Chair == 5) ? currentbet5 :
-(DealPosition1Chair == 6) ? currentbet6 :
-(DealPosition1Chair == 7) ? currentbet7 :
-(DealPosition1Chair == 8) ? currentbet8 :
-(DealPosition1Chair == 9) ? currentbet9 :
-ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
-
-##PlayersBehindDealPosition2ChairDidAct##
-// Needed for detection of missing small blind.
-// First checking for folded players,
-// because lots of newbies won't scrape-players correctly and mix everything up.
-// This affects calculation of small blind, big blind,
-// all positions and finally lots of other things...
-(nopponentsfolded > 0) ? True :
-// Then check for active players with a zero bet
-[(playersplayingbits & 0b0000000001) AND (currentbet0 == 0)] ? False :
-[(playersplayingbits & 0b0000000010) AND (currentbet1 == 0)] ? False :
-[(playersplayingbits & 0b0000000100) AND (currentbet2 == 0)] ? False :
-[(playersplayingbits & 0b0000001000) AND (currentbet3 == 0)] ? False :
-[(playersplayingbits & 0b0000010000) AND (currentbet4 == 0)] ? False :
-[(playersplayingbits & 0b0000100000) AND (currentbet5 == 0)] ? False :
-[(playersplayingbits & 0b0001000000) AND (currentbet6 == 0)] ? False :
-[(playersplayingbits & 0b0010000000) AND (currentbet7 == 0)] ? False :
-[(playersplayingbits & 0b0100000000) AND (currentbet8 == 0)] ? False :
-[(playersplayingbits & 0b1000000000) AND (currentbet9 == 0)] ? False :
-True
 
 ##OpponentStacksizeHeadsUp##
 [bblind==0] ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
@@ -304,98 +89,98 @@ True
 ERROR_Game_Is_Not_HeadsUp
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
-`(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
-`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
-`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
-`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
-`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
-`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
-`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
-`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
-`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
-`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
-`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
-`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
-`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix  :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six  :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfBestPossibleStraight##
-`(rankbitscommon & 0b111110000000000) >= 3 ? ConstCardAce   :
-`(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
-`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
-`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
-`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+BitCount(rankbitscommon & 0b111110000000000) >= 3 ? ace   :
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 -1
 
 ##HighCardOfSecondBestPossibleStraight##
-(HighCardOfBestPossibleStraight == ConstCardAce)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
-(HighCardOfBestPossibleStraight == ConstCardKing)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
-(HighCardOfBestPossibleStraight == ConstCardQueen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
-(HighCardOfBestPossibleStraight == ConstCardJack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
-(HighCardOfBestPossibleStraight == ConstCardTen)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
-(HighCardOfBestPossibleStraight == ConstCardNine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
-(HighCardOfBestPossibleStraight == ConstCardEight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
-(HighCardOfBestPossibleStraight == ConstCardSeven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
-(HighCardOfBestPossibleStraight == ConstCardSix)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
+(HighCardOfBestPossibleStraight == ace)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
+(HighCardOfBestPossibleStraight == king)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
+(HighCardOfBestPossibleStraight == queen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
+(HighCardOfBestPossibleStraight == jack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
+(HighCardOfBestPossibleStraight == ten)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
+(HighCardOfBestPossibleStraight == Nine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
+(HighCardOfBestPossibleStraight == Eight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
+(HighCardOfBestPossibleStraight == Seven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
+(HighCardOfBestPossibleStraight == Six)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
 HINT_Such_A_Straight_Does_Not_Exist

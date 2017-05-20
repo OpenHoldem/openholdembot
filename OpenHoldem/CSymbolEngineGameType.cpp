@@ -97,7 +97,7 @@ CString CSymbolEngineGameType::GetGameTypeAsString() {
 	return result;
 }
 
-bool CSymbolEngineGameType::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineGameType::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "is", 2)==0)	{
 		if (memcmp(name, "isnl", 4)==0 && strlen(name)==4) {

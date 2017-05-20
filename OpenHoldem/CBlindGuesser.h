@@ -8,7 +8,17 @@
 //****************************************************************************** 
 //
 // Purpose: first guess of blind values for CTableLimits,
-//   which might be overridden bz blind-locking.
+//   which might be overridden by blind-locking.
+//   * some casinos don't display blinds at all
+//   * others display garbage like 0/0
+//   * others display the first level in tournaments, 
+//     then freeze and overpaint the titlebar with something 
+//     that looks like a title
+//   * some display sb/bb, some display bb/BB 
+//     and others use the same title-format for both, depending on game-type
+//   * ...
+//   There are no easy solutions unfortunately if you want to make OH work 
+//   at every casino out there.
 //
 //****************************************************************************** 
 

@@ -1,3 +1,170 @@
+﻿v﻿11.2.0 2017-05-xx
+==================
+NEW STUFF:
+- New OpenHoldem symbols suitbitsplayerN and suitbitscommonN
+  that provide the rankbits of all 4 suits (N = 0..3)
+  Especially meant to support Omaha better.
+  The symbols can of course also be addressed by more logical names
+  like suitbitsplayer_diamonds that get supported by the new multiplexer-engine.
+  [THF]
+- Introducing new constanmt symbols for more verbosity and for use with the multiplexer:
+  ace, king, queen, jack, ten, preflop, flop, turn, river, clubs, diamonds, hearts, spades,
+  true, false.
+  [THF]
+- New symbols previousround and currentround (same es betround),
+  especially meant for the multiplexer.
+  [THF]
+- Introducing a multiplexer engine, that supports poker-logical indexing  
+  for numbered symbols, e.g.
+  balance_raischair, suitbitcommon_diamonds, nbetsround_preflop.
+  The multiplexer also works with OpenPPl and user-defined functions.
+  Some PokerTracker symbols got renamed slightly, 
+  as Pokertracker gets now also served by the multiplexer.
+  For more details please refer to the updated manual.
+  [THF]
+- A button "toggle all" for the countless debug-options.
+  Thanks to ChuckneverMuck for the suggestion.
+  [THF]
+- New built-in chair symbols for the multiplexer-engine 
+  (most of them have been formerly implemented in OpenPPL)
+  bigblindchair, smallblindchair, cutoffchair,
+  mp3chair, mp2chair, mp1chair, ep3chair, ep2chair, ep1chair, 
+  utgchair, headsupchair and buttonchair (synonym for dealerchair).
+  Also "new" is missingsmallblind that is necessary e.g. for StillToAct.
+  [THF]
+- New tablemap option "cardscrapemethod".
+  The default is scraping-order is : cardback -> nocard -> cardfaces.
+  If cardscrapemethod is non-zero OpenHoldem will scrape
+  cardfaces -> cardback -> nocard
+  This option is less oerformant as the default,
+  but necessary at casinis that display both cardbacks and cardfaces at the same time.
+  Thanks to OpenGeek, Angelus, R2D2, Relhvy, poker_dog and Projecthpdv2
+  for reporting and the discussion.
+  [THF]
+
+BUG FIXES:
+- Hand-expressions with specifix suits worked only for HoldEm 
+  and 2 out of 4 cards in Omaha-games.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+- If a tablemap supported multiple buttons of the same type at different locations
+  then it could be that OpenHoldem stopped when it found the first (non-clickable) one
+  and missed the clickable button.
+  Thanks to Brass Knuckles for reporting, Darkmund, Relhby and ChuckNeverMuck for helping, 
+  Likeheadsup for providing replay-frames and testing and to AlexTheKing88 for providing the fix.
+  [THF]
+- Improved blind-guessing headsup.
+  Thanks to Relhby for the patch.
+  [THF]
+- Added 2 more blind-levels to the list of known blinds of the blind-guessing-module.
+  Thanks to Bitsy and Wetophelia for reporting.
+  [THF]
+- The lookup of "hi_XYZ" histoy-symbols was broken.
+  Thanks to Stout-man for reporting.
+  [THF]
+- The new title-evaluator considered only ttlimits and scraped r$c0limitsX
+  but bot additional title-formats ttlimitsX.
+  Thanks to Bitsy and Toto for reporting
+  and to Poker_Dog for finding the bug.
+  [THF]
+
+  
+MAINTENANCE:
+- Now detecting and warning if logical operators get fed with numerical values.
+  Way too many people don't understand the precedence of operators
+  and write bad code like "AND NOT betround > 1..."
+  which really means "AND ((NOT betround) > 1)..."
+  where betround is treated as a true/false value.
+  [THF]
+- Calculating the OpenPPL-symbol NutFullHouseOrFourOfAkind now internally
+  by iterating all possible cases, as the functions in the OpenbPPL-library
+  became way too complex and proved to be error-prone.
+  Also introducing nutfullhouseorfourofakind_ntotal.
+  Thanks to ChuckNeverMuck for testing.
+  [THF]
+- Removed the following OpenPPL-symbols due to the introduction of the multiplexer-engine:
+  * ButtonStartingStackSize, CutOffStartingStackSize,...
+    which are now available as StartingStackSize_buttonchair, ...
+- Warning if a built-in HoldEm-symbol gets used in Omaha-logic.
+  [THF]
+
+
+v11.1.3 2017-04-12
+==================
+BUG FIXES:
+- Fixed a bug in the initialization of MinOpponentStackSize.
+  Thanks to Relhby for reporting.
+  [THF]
+- Fixed unbelievable ten bugs and problems in NutFullHouseOrFourOfAKind.
+  Thanks to Stars83 and Smuroff for reporting several buggy cases.
+  Special thanks to ChuckNeverMuck who did all the review, fixing, testing.
+  [THF]
+- The keyboard-DLL executed one mouse-click too much.
+  Thanks to Gunfadoso for reporting and for suggesting the fix.
+  [THF]
+- The fix in the redacted version 11.1.2 to clear all data 
+  of a player who left the table broke scraping of the dealer-chair, 
+  as during a new scrape a player could get temporary marked as "not seated".
+  Thanks to ChuckNeverMuck and Eden for reporting.
+  [THF]
+- betpositionrais and callposition didn't work as expected.
+  Thanks to Mike for reporting, debugging and providing the fix.
+  [THF]
+- The MicroSoft function GetCurrentprocessID did at some
+  Windows XP system not work early on startup, 
+  thus causing the new auto-starter to go crazy.
+  We now try to get the process ID later 
+  and turn the auto-starter off if the process ID fails completely.
+  Thanks to Mike for reporting and providing log-files.
+  [THF]
+- The statusbar got completely re-implemented, as there was a deadlock
+  that could freeze OpenHoldem if debugging for the GUI and the formula
+  was enabled. The displayed information in the statusbar got reduced, 
+  as most info is visible in the table display.
+  [THF]
+
+
+﻿v11.1.3 2017-04-12
+==================
+BUG FIXES:
+- Fixed a bug in the initialization of MinOpponentStackSize.
+  Thanks to Relhby for reporting.
+  [THF]
+- Fixed unbelievable ten bugs and problems in NutFullHouseOrFourOfAKind.
+  Thanks to Stars83 and Smuroff for reporting several buggy cases.
+  Special thanks to ChuckNeverMuck who did all the review, fixing, testing.
+  [THF]
+- The keyboard-DLL executed one mouse-click too much.
+  Thanks to Gunfadoso for reporting and for suggesting the fix.
+  [THF]
+- The fix in the redacted version 11.1.2 to clear all data 
+  of a player who left the table broke scraping of the dealer-chair, 
+  as during a new scrape a player could get temporary marked as "not seated".
+  Thanks to ChuckNeverMuck and Eden for reporting.
+  [THF]
+- betpositionrais and callposition didn't work as expected.
+  Thanks to Mike for reporting, debugging and providing the fix.
+  [THF]
+- The MicroSoft function GetCurrentprocessID did at some
+  Windows XP system not work early on startup, 
+  thus causing the new auto-starter to go crazy.
+  We now try to get the process ID later 
+  and turn the auto-starter off if the process ID fails completely.
+  Thanks to Mike for reporting and providing log-files.
+  [THF]
+- The statusbar got completely re-implemented, as there was a deadlock
+  that could freeze OpenHoldem if debugging for the GUI and the formula
+  was enabled. The displayed information in the statusbar got reduced, 
+  as most info is visible in the table display.
+  [THF]
+
+MAINTENANCE:
+- The function f$betsize_enable_rounding got removed,
+  because the people who demanded to "control everything to the penny"
+  proved unable to handle the full power of WinHoldem-style misconfigurability.
+  [THF]
+
+
 v11.1.2 2017-02-13
 ==================
 NEW STUFF:

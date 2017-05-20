@@ -32,7 +32,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   CFunctionCollection();
   virtual ~CFunctionCollection();
  public:
-  bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  bool EvaluateSymbol(const CString name, double *result, bool log = false);
   double Evaluate(CString function_name, bool log = false);
   double EvaluateAutoplayerFunction(int function_code);
   bool EvaluatesToBinaryNumber(CString function_name);

@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -86,29 +86,29 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##MaxStillToActStackSize##
 // Per definition for first orbit preflop only
-userchair == BigBlindChair        ? 0 :
-userchair == SmallBlindChair      ? MaxStillToActStackSizeAfterSmallBlind      :
-userchair == ButtonChair          ? MaxStillToActStackSizeAfterButton          :
-userchair == CutOffChair          ? MaxStillToActStackSizeAfterCutOff          :
-userchair == MiddlePosition3Chair ? MaxStillToActStackSizeAfterMiddlePosition3 :
-userchair == MiddlePosition2Chair ? MaxStillToActStackSizeAfterMiddlePosition2 :
-userchair == MiddlePosition1Chair ? MaxStillToActStackSizeAfterMiddlePosition1 :
-userchair == EarlyPosition3Chair  ? MaxStillToActStackSizeAfterEarlyPosition3  :
-userchair == EarlyPosition2Chair  ? MaxStillToActStackSizeAfterEarlyPosition2  :
-userchair == EarlyPosition1Chair  ? MaxStillToActStackSizeAfterEarlyPosition1  :
+userchair == bigblindchair        ? 0 :
+userchair == smallblindchair      ? MaxStillToActStackSizeAfterSmallBlind      :
+userchair == buttonchair          ? MaxStillToActStackSizeAfterButton          :
+userchair == cutoffchair          ? MaxStillToActStackSizeAfterCutOff          :
+userchair == mp3chair ? MaxStillToActStackSizeAfterMiddlePosition3 :
+userchair == mp2chair ? MaxStillToActStackSizeAfterMiddlePosition2 :
+userchair == mp1chair ? MaxStillToActStackSizeAfterMiddlePosition1 :
+userchair == ep3chair  ? MaxStillToActStackSizeAfterEarlyPosition3  :
+userchair == ep2chair  ? MaxStillToActStackSizeAfterEarlyPosition2  :
+userchair == ep1chair  ? MaxStillToActStackSizeAfterEarlyPosition1  :
 HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 
 ##MinStillToActStackSize##
-userchair == BigBlindChair        ? 0:
-userchair == SmallBlindChair      ? MinStillToActStackSizeAfterSmallBlind      :
-userchair == ButtonChair          ? MinStillToActStackSizeAfterButton          :
-userchair == CutOffChair          ? MinStillToActStackSizeAfterCutOff          :
-userchair == MiddlePosition3Chair ? MinStillToActStackSizeAfterMiddlePosition3 :
-userchair == MiddlePosition2Chair ? MinStillToActStackSizeAfterMiddlePosition2 :
-userchair == MiddlePosition1Chair ? MinStillToActStackSizeAfterMiddlePosition1 :
-userchair == EarlyPosition3Chair  ? MinStillToActStackSizeAfterEarlyPosition3  :
-userchair == EarlyPosition2Chair  ? MinStillToActStackSizeAfterEarlyPosition2  :
-userchair == EarlyPosition1Chair  ? MinStillToActStackSizeAfterEarlyPosition1  :
+userchair == bigblindchair        ? 0:
+userchair == smallblindchair      ? MinStillToActStackSizeAfterSmallBlind      :
+userchair == buttonchair          ? MinStillToActStackSizeAfterButton          :
+userchair == cutoffchair          ? MinStillToActStackSizeAfterCutOff          :
+userchair == mp3chair ? MinStillToActStackSizeAfterMiddlePosition3 :
+userchair == mp2chair ? MinStillToActStackSizeAfterMiddlePosition2 :
+userchair == mp1chair ? MinStillToActStackSizeAfterMiddlePosition1 :
+userchair == ep3chair  ? MinStillToActStackSizeAfterEarlyPosition3  :
+userchair == ep2chair  ? MinStillToActStackSizeAfterEarlyPosition2  :
+userchair == ep1chair  ? MinStillToActStackSizeAfterEarlyPosition1  :
 HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 
 ##PotSize##
@@ -122,11 +122,11 @@ HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 StackSize + TotalInvestedThisRound
 
 ##TotalInvested##
-WHEN (betround == ConstBetRoundPreflop) RETURN (Ante + ncurrentbets) FORCE
-WHEN (betround == ConstBetRoundFlop)    RETURN (Ante + nbetsround1 + ncurrentbets) FORCE
-WHEN (betround == ConstBetRoundTurn)    RETURN (Ante + nbetsround1 + nbetsround2 + ncurrentbets) FORCE
-WHEN (betround == ConstBetRoundRiver)   RETURN (Ante + nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) FORCE 
+WHEN (betround == preflop) RETURN (Ante + ncurrentbets) FORCE
+WHEN (betround == flop)    RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
+WHEN (betround == turn)    RETURN (Ante + nbetsround_preflop + nbetsround_flop + ncurrentbets) FORCE
+WHEN (betround == river)   RETURN (Ante + nbetsround_preflop + nbetsround_flop + nbetsround_turn + ncurrentbets) FORCE 
 WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 
 ##TotalInvestedThisRound##
-(betround == ConstBetRoundPreflop) ? (ncurrentbets + Ante) : ncurrentbets
+(betround == preflop) ? (ncurrentbets + Ante) : ncurrentbets

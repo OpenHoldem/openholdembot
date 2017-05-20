@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -80,14 +80,14 @@
 
 ##Bets##
 // There are no bets preflop per Shanky definition
-WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+WHEN (betround == preflop) RETURN 0 FORCE
 // Known stored value
 WHEN (me_re_MemBets > 0) RETURN me_re_MemBets FORCE
 WHEN ((AmountToCall > 0) AND (TotalInvestedThisRound <= Ante)) RETURN 1 FORCE
 
 ##BotsLastAction##
 // Just to be extra safe...
-WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+WHEN [(betround == preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
 // Computing BotsLastAction from prevation
 // k_prevaction_undefined = -2
 // k_prevaction_fold = -1
@@ -126,7 +126,7 @@ WHEN (prevaction == -1) RETURN None FORCE
 WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 
 ##BotsLastPreflopAction##
-WHEN (betround == ConstBetRoundPreflop) RETURN BotsLastAction FORCE
+WHEN (betround == preflop) RETURN BotsLastAction FORCE
 WHEN Others RETURN me_re_MemBotsLastPreflopAction FORCE
 
 ##Calls##
@@ -138,7 +138,7 @@ WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
 ##Checks##
 // No checks preflop. Not even big blind can check (betround over).
 // We ignore additional blind-posters however.
-WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+WHEN (betround == preflop) RETURN 0 FORCE
 WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemChecks FORCE
 WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemChecks FORCE
 WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN ChecksInFrontOfHero FORCE
@@ -148,33 +148,30 @@ WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN (me_re_MemChecks + Chec
 WHEN Others RETURN me_re_MemChecks FORCE
 
 ##MaxOpponentStackSize##
-WHEN (me_re_MaxOpponentStackSize > 0) RETURN me_re_MaxOpponentStackSize FORCE
+WHEN (me_re_MemMaxOpponentStackSize > 0) RETURN me_re_MemMaxOpponentStackSize FORCE
 WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
 
 ##MinOpponentStackSize##
-WHEN (me_re_MinOpponentStackSize > 0) RETURN me_re_MinOpponentStackSize FORCE
+WHEN (me_re_MemMinOpponentStackSize > 0) RETURN me_re_MemMinOpponentStackSize FORCE
 WHEN Others RETURN CalculateMinOpponentStackSize FORCE
 
 ##MissingSmallBlind##
-// Gets initialized after our first action preflop
-WHEN (nplayersseated < 2) RETURN False FORCE
-WHEN (betround > ConstBetRoundPreflop) RETURN me_re_MemMissingSmallBlind FORCE
-WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN me_re_MemMissingSmallBlind FORCE
-WHEN Others RETURN CalculateMissingSmallBlind FORCE
+// Gets now calculated by OpenHoldem
+missingsmallblind
 
 ##NumberOfRaisesBeforeFlop##
-WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
-WHEN (betround >  ConstBetRoundPreflop) RETURN me_re_MemRaisesBeforeFlop FORCE
+WHEN (betround == preflop) RETURN Raises FORCE
+WHEN (betround >  preflop) RETURN me_re_MemRaisesBeforeFlop FORCE
 WHEN Others RETURN 0 FORCE
 
 ##NumberOfRaisesOnFlop##
-WHEN (betround == ConstBetRoundFlop) RETURN Raises FORCE
-WHEN (betround >  ConstBetRoundFlop) RETURN me_re_MemRaisesOnFlop FORCE
+WHEN (betround == flop) RETURN Raises FORCE
+WHEN (betround >  flop) RETURN me_re_MemRaisesOnFlop FORCE
 WHEN Others RETURN 0 FORCE
 
 ##NumberOfRaisesOnTurn##
-WHEN (betround == ConstBetRoundTurn) RETURN Raises FORCE
-WHEN (betround >  ConstBetRoundTurn) RETURN me_re_MemRaisesOnTurn FORCE
+WHEN (betround == turn) RETURN Raises FORCE
+WHEN (betround >  turn) RETURN me_re_MemRaisesOnTurn FORCE
 WHEN Others RETURN 0 FORCE
 
 ##Raises##
@@ -183,13 +180,13 @@ WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemRaises FORCE
 WHEN Others RETURN (me_re_MemRaises + RaisesSinceLastPlay) FORCE
 
 ##RaisesBeforeFlop##
-WHEN (NumberOfRaisesBeforeFlop > 0) RETURN True FORCE
+WHEN (NumberOfRaisesBeforeFlop > 0) RETURN true FORCE
 
 ##RaisesOnFlop##
-WHEN (NumberOfRaisesOnFlop > 0) RETURN True FORCE
+WHEN (NumberOfRaisesOnFlop > 0) RETURN true FORCE
 
 ##RaisesOnTurn##
-WHEN (NumberOfRaisesOnTurn > 0) RETURN True FORCE
+WHEN (NumberOfRaisesOnTurn > 0) RETURN true FORCE
 
 ##StartingChips##
 WHEN (me_re_MemStartingChips > 0) RETURN me_re_MemStartingChips FORCE

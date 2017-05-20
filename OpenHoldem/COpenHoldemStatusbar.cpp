@@ -32,115 +32,58 @@
 
 COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
 
-COpenHoldemStatusbar::COpenHoldemStatusbar(CWnd *main_window){
-	_main_window = main_window;
-  _last_action = "";
-  InitAdvancedStatusbar();
+COpenHoldemStatusbar::COpenHoldemStatusbar(CWnd *main_window) {
+  _main_window = main_window;
+  InitStatusbar();
+  SetLastAction("");
+  SetPrWin(0, 0, 0);
+  SetHandrank(0);
 }
 
 COpenHoldemStatusbar::~COpenHoldemStatusbar() {
 }
 
-void COpenHoldemStatusbar::InitAdvancedStatusbar() {
-	_status_bar.Create(_main_window);
-	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
-
-	_status_bar.SetPaneInfo(0, ID_INDICATOR_STATUS_ACTION, NULL, 100);
-	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 60);
-	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
-	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);	
-	_status_bar.SetPaneInfo(4, ID_INDICATOR_STATUS_HANDRANK, NULL, 55);
-	_status_bar.SetPaneInfo(5, ID_INDICATOR_STATUS_PRWIN, NULL, 62);
-	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
-	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 90);
+void COpenHoldemStatusbar::InitStatusbar() {
+  _status_bar.Create(_main_window);
+  _status_bar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
+  int position = 0;
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_ACTION, NULL, 100);
+  ++position;
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_HANDRANK, NULL, 100);
+  ++position;
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_PRWIN, NULL, 100);
+  ++position;
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_DUMMY, SBPS_STRETCH, 280);
+  ++position;
 }
 
 void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position) {
-	_status_bar.GetWindowRect(statusbar_position);
+  _status_bar.GetWindowRect(statusbar_position);
 }
 
 void COpenHoldemStatusbar::OnUpdateStatusbar() {
-	ComputeCurrentStatus(); 
+  if (p_table_state->User()->HasKnownCards()){
+    // Format data for display
+    // Handrank
+    _status_handrank.Format("%i/169", _handrank);
+    // PrWin: percentages instead of probabilities
+    _status_prwin.Format("PrWin %3.1f/%3.1f/%3.1f",
+      100 * _prwin, 100 * _prtie, 100 * _prlos);
+  } else if (p_symbol_engine_time->elapsedauto() > 5) {
+    // Reset display 5 seconds after last action
+    SetPrWin(0, 0, 0);
+    SetHandrank(0);
+    _status_handrank = "";
+    _status_prwin = "";
+    _last_action = "";
+  } else {
+    // No cards, but shortly after last action
+    // Don't change anything, keep information
+  }
+  // Display data
   _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), LastAction());
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NIT), _status_nit);
-}
-
-void COpenHoldemStatusbar::ComputeCurrentStatus() {
-	CardMask	Cards;
-	CString		temp; 
-	int userchair = p_symbol_engine_userchair->userchair();
-	// Player cards
-	CardMask_RESET(Cards);
-	int nCards = 0;
-	_status_plcards = "";
-	if (p_table_state->User()->HasKnownCards()) {
-		for (int i=0; i<NumberOfCardsPerPlayer(); i++) {	
-			// This condition got already checked: "playing"
-      Card* card = p_table_state->User()->hole_cards(i);
-      // Assertion removeed, because the scraper runs in a different thread.
-			// assert(card->IsKnownCard()); 
-		  _status_plcards.Append(card->ToString());
-      CardMask_SET(Cards, card->GetValue());
-			nCards++;
-		}
-		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
-	}	else 	{
-		for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
-			if (p_table_state->User()->HasKnownCards())	{
-				Card* card = p_table_state->User()->hole_cards(i);
-				_status_plcards.Append(card->ToString());
-        CardMask_SET(Cards, card->GetValue());
-				nCards++;
-			}
-		}
-		// Not playing, therefore no opponents to be considered for prwin.
-		_status_nopp = "";
-	}
-
-	// Common cards
-	_status_comcards = "";
-	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    Card *card = p_table_state->CommonCards(i);
-		if (card->IsKnownCard())	{
-			_status_comcards.Append(card->ToString());
-			CardMask_SET(Cards, card->GetValue());
-			nCards++;
-		}
-	}
-
-	// poker hand
-	HandVal hv = Hand_EVAL_N(Cards, nCards);
-	char hvstring[100] = {0};
-	HandVal_toString(hv, hvstring);
-	_status_pokerhand = hvstring;
-	_status_pokerhand = _status_pokerhand.Mid(0, _status_pokerhand.Find(" "));
-
-	// Always use handrank169 here
-	_status_handrank.Format("%.0f/169", p_symbol_engine_handrank->handrank169());
-
-	// Always update prwin/nit
-	if (p_symbol_engine_userchair->userchair_confirmed() 
-		  && p_table_state->User()->HasKnownCards()) {
-		_status_prwin.Format("%d/%d/%d", 
-			(int) (p_iterator_thread->prwin()*1000), 
-			(int) (p_iterator_thread->prtie()*1000),
-			(int) (p_iterator_thread->prlos()*1000));
-		double iterations;
-		p_engine_container->EvaluateSymbol("f$prwin_number_of_iterations", &iterations);
-		_status_nit.Format("%d/%s", 
-			p_iterator_thread->IteratorThreadProgress(),
-			Number2CString(iterations));
-	}	else {
-		_status_prwin = "0/0/0";
-		// No iteratrions without userchair or cards
-		_status_nit.Format("0");
-	}
 }
 
 CString COpenHoldemStatusbar::LastAction() {
@@ -152,13 +95,15 @@ CString COpenHoldemStatusbar::LastAction() {
 	if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
 		return "Not playing";
 	}
-  if (p_symbol_engine_time->elapsedauto() > 5) {
-    // Reset display of last action after 5 seconds
-    return "";
-  }
   // Return the last saved action.
   // This value should get set exactly once after autoplayer/actions
   // to avoid multiple evaluations of the autoplayer-functions,
   // especially at different heartbeats.
   return _last_action;
+}
+
+void COpenHoldemStatusbar::SetPrWin(double prwin, double prtie, double prlos) {
+  _prwin = prwin;
+  _prtie = prtie;
+  _prlos = prlos;
 }

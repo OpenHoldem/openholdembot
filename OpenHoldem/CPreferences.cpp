@@ -75,7 +75,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_auto_trace",
   "debug_ast_priority_ordering",
   "debug_filenames",
-  "debug_hand_and_baord_expressions",
+  "debug_hand_and_board_expressions",
   "debug_tokenizer",
   "debug_tablepoints",
   "debug_sharedmem",
@@ -83,6 +83,8 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_autostarter",
   "debug_watchdog",
   "debug_timers",
+  "debug_nutfullhouse",
+  "debug_multiplexer",
 	"engage_autoplayer",
 	"restore_position_and_focus",
 	"use_auto_replay",
@@ -200,7 +202,7 @@ void CPreferences::InitDefaults(void) {
 	prefs_numerical_values[k_prefs_restore_position_and_focus] = false;
 	prefs_numerical_values[k_prefs_use_auto_replay] = true;
   prefs_numerical_values[k_prefs_use_auto_starter] = true;
-  //!!!prefs_numerical_values[k_prefs_use_auto_shutdown] = true;
+  prefs_numerical_values[k_prefs_use_auto_shutdown] = true;
 	prefs_numerical_values[k_prefs_debug_preferences] = true; // To assure that we log at least the initialization of this value
 	prefs_numerical_values[k_prefs_rebuy_condition_no_cards] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;

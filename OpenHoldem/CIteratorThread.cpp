@@ -17,6 +17,7 @@
 #include <process.h>
 #include "CBetroundCalculator.h"
 #include "CFunctionCollection.h"
+#include "COpenHoldemStatusbar.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -329,6 +330,7 @@ void CIteratorThread::UpdateIteratorVarsForDisplay() {
 		_prlos = _los / (double) _iterations_calculated;
 		write_log(preferences.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
 			_iterations_calculated, _prwin, _prtie, _prlos);
+    p_openholdem_statusbar->SetPrWin(_prwin, _prtie, _prlos);
 	}
 }
 

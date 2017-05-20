@@ -258,7 +258,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	return ICM;
 }
 
-bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineICM::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // Fast exit on other symbols
   int	sym_userchair = p_symbol_engine_userchair->userchair();
   if (memcmp(name, "icm", 3) != 0) return false;
@@ -437,7 +437,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(name + 11);
+			int oppChair = GetChairFromDealPos(name.Mid(11));
 			if (oppChair == kUndefined || oppChair == sym_userchair) {
 				*result = kUndefined;
 				return true;
@@ -521,7 +521,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(name + 12);
+			int oppChair = GetChairFromDealPos(name.Mid(12));
 			if (oppChair == kUndefined || oppChair == sym_userchair) {
 				*result = kUndefined;
 				return true;
@@ -541,7 +541,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	else if (strncmp(name,"icm_allitie",11)==0)
 	{
 		//assume only one particular caller
-		int oppChair = GetChairFromDealPos(name + 11);
+		int oppChair = GetChairFromDealPos(name.Mid(11));
 		if (oppChair == kUndefined || oppChair == sym_userchair) {
 			*result = kUndefined;
 			return true;

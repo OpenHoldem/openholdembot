@@ -21,10 +21,10 @@ class CParserSymbolTable {
   CParserSymbolTable();
   ~CParserSymbolTable();
  public:
+  void Clear();
   void VerifySymbol(CString name);
   void VeryfyAllUsedFunctionsAtEndOfParse();
  private:
-  void Clear();
  private:
   std::map<CString, bool> _known_symbols;
   std::map<CString, bool> _used_functions;

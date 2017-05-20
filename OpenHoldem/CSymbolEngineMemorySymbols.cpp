@@ -204,7 +204,7 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
   return result;
 }
 
-bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineMemorySymbols::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // memory-commands
   // "name" = query
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);

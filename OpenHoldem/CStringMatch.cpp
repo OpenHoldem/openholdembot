@@ -1,4 +1,4 @@
-//******************************************************************************
+﻿//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //    Source code:           https://github.com/OpenHoldem/openholdembot/
@@ -66,6 +66,7 @@ const bool CStringMatch::IsStringActive(const CString s) {
   if (s_lower_case.Left(5) == "false"
 			|| s_lower_case.Left(8) == "inactive"
 			|| s_lower_case.Left(3) == "out"
+			|| s_lower_case.Left(6) == "sitout"
 			|| s_lower_case.Left(4) == "away") {
     return false;
   }

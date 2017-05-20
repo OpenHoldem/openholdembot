@@ -191,7 +191,7 @@ void CSymbolEngineCallers::CalculateCallers() {
   AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
 }
 
-bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineCallers::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17) {
 		*result = nopponentscalling();
@@ -199,10 +199,10 @@ bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool
 	}	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9) {
 		*result = callbits(RightDigitCharacterToNumber(name));
     return true;
-  } else if (memcmp(name, "firstcaller_chair", 17)==0) {
+  } else if (memcmp(name, "firstcallerchair", 16)==0) {
 		*result = _firstcaller_chair;
 		return true;
-	} else if (memcmp(name, "lastcaller_chair", 16)==0) {
+	} else if (memcmp(name, "lastcallerchair", 15)==0) {
 		*result = _lastcaller_chair;
 		return true;
   }
@@ -211,7 +211,7 @@ bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool
 }
 
 CString CSymbolEngineCallers::SymbolsProvided() {
-  CString list = "nopponentscalling firstcaller_chair lastcaller_chair ";
+  CString list = "nopponentscalling firstcallerchair lastcallerchair ";
   list += RangeOfSymbols("callbits%i", kBetroundPreflop, kBetroundRiver);
   return list;
 }

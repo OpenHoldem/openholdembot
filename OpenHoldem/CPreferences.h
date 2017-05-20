@@ -83,7 +83,7 @@ enum {
   k_prefs_debug_auto_trace,
   k_prefs_debug_ast_priority_ordering,
   k_prefs_debug_filenames,
-  k_prefs_debug_hand_and_baord_expressions,
+  k_prefs_debug_hand_and_board_expressions,
   k_prefs_debug_tokenizer,
   k_prefs_debug_tablepoints,
   k_prefs_debug_sharedmem,
@@ -91,6 +91,8 @@ enum {
   k_prefs_debug_autostarter,
   k_prefs_debug_watchdog,
   k_prefs_debug_timers,
+  k_prefs_debug_nutfullhouse,
+  k_prefs_debug_multiplexer,
 	k_prefs_engage_autoplayer,
 	k_prefs_restore_position_and_focus,
 	k_prefs_use_auto_replay,
@@ -264,7 +266,7 @@ class CPreferences {
   const bool  debug_auto_trace() { return prefs_numerical_values[k_prefs_debug_auto_trace]; }
   const bool  debug_ast_priority_ordering() { return prefs_numerical_values[k_prefs_debug_ast_priority_ordering]; }
   const bool  debug_filenames() { return prefs_numerical_values[k_prefs_debug_filenames]; }
-  const bool  debug_hand_and_baord_expressions() { return prefs_numerical_values[k_prefs_debug_hand_and_baord_expressions]; }
+  const bool  debug_hand_and_board_expressions() { return prefs_numerical_values[k_prefs_debug_hand_and_board_expressions]; }
   const bool  debug_tokenizer() { return prefs_numerical_values[k_prefs_debug_tokenizer]; }
   const bool  debug_tablepoints() { return prefs_numerical_values[k_prefs_debug_tablepoints]; }
   const bool  debug_sharedmem() { return prefs_numerical_values[k_prefs_debug_sharedmem]; }
@@ -272,6 +274,8 @@ class CPreferences {
   const bool  debug_autostarter() { return prefs_numerical_values[k_prefs_debug_autostarter]; }
   const bool  debug_watchdog() { return prefs_numerical_values[k_prefs_debug_watchdog]; }
   const bool  debug_timers() { return prefs_numerical_values[k_prefs_debug_timers]; }
+  const bool  debug_nutfullhouse() { return prefs_numerical_values[k_prefs_debug_nutfullhouse]; }
+  const bool  debug_multiplexer() { return prefs_numerical_values[k_prefs_debug_multiplexer]; }
 
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
@@ -288,7 +292,7 @@ class CPreferences {
 	const bool validator_shoot_replayframe_on_error() { return prefs_numerical_values[k_prefs_validator_shoot_replayframe_on_error]; }
   // Auto-starter
   const bool use_auto_starter() { return prefs_numerical_values[k_prefs_use_auto_starter]; }
-  const bool use_auto_shutdown() { return prefs_numerical_values[k_prefs_use_auto_starter]; }
+  const bool use_auto_shutdown() { return prefs_numerical_values[k_prefs_use_auto_shutdown]; }
 	// Auto-connector
 	const int autoconnector_when_to_connect() { return prefs_numerical_values[k_prefs_autoconnector_when_to_connect]; }
 	// GUI

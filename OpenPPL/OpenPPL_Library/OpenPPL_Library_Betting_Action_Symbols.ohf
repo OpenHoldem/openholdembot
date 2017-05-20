@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -72,83 +72,83 @@
 raischair
 
 ##BigBlindSittingOut##
-(BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
-((playersactivebits >> BigBlindChair & 1) == 0)
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> bigblindchair & 1) == 0)
 
 ##SmallBlindSittingOut##
-(BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
-((playersactivebits >> SmallBlindChair & 1) == 0)
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> smallblindchair & 1) == 0)
 
 ##OpponentsLeftSittingOut##
 (opponentsactivebits & opponentsplayingbits) == 0
 
 ##BotCalledBeforeFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didcallround1
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_preflop
 
 ##BotCalledOnFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didcallround2
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_flop
 
 ##BotCalledOnTurn##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didcallround3
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_turn
 
 ##BotCalledOnRiver##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didcallround4
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_river
 
 ##BotCheckedPreflop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didchecround1
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_preflop
 
 ##BotCheckedOnFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didchecround2
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_flop
 
 ##BotCheckedOnTurn##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didchecround3
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_turn
 
 ##BotCheckedOnRiver##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didchecround4
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_river
 
 ##BotIsLastRaiser##
 (AggressorChair==userchair)
 
 ##BotRaisedBeforeFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didraisround1 
-OR didbetsizeround1
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didraisround_preflop 
+OR didbetsizeround_preflop
 
 ##BotRaisedOnFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didraisround2 
-OR didbetsizeround2
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didraisround_flop 
+OR didbetsizeround_flop
 
 ##BotRaisedOnTurn##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-OR didraisround3 
-OR didbetsizeround3
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didraisround_turn 
+OR didbetsizeround_turn
 
 ##BotsActionsOnFlop##
-WHEN (betround == ConstBetRoundFlop) RETURN BotsActionsOnThisRound FORCE
+WHEN (betround == flop) RETURN BotsActionsOnThisRound FORCE
 WHEN Others RETURN
   ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
   // Checks are not counted
-  + didcallround2 
-  + didraisround2 
-  + didbetsizeround2) FORCE
+  + didcallround_flop 
+  + didraisround_flop 
+  + didbetsizeround_flop) FORCE
 
 ##BotsActionsOnTurn##
-WHEN (betround == ConstBetRoundTurn) RETURN BotsActionsOnThisRound FORCE
+WHEN (betround == turn) RETURN BotsActionsOnThisRound FORCE
 WHEN Others RETURN
   ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
   // Checks are not counted
-  + didcallround3 
-  + didraisround3 
-  + didbetsizeround3) FORCE
+  + didcallround_turn 
+  + didraisround_turn 
+  + didbetsizeround_turn) FORCE
   
 ##ActionCounterCorrectionForUpdateInProgress##
 // If we update OpenPPL memory symbols after an autoplayer-action
@@ -162,15 +162,15 @@ WHEN Others RETURN 0 FORCE
 ##BotsActionsOnThisRound##
 // Special condition to ease simulations at Manualmode 
 // without the need for hand-resets
-WHEN ((betround == ConstBetRoundPreflop) AND (currentbet < bblind)) RETURN 0 FORCE
-WHEN ((betround > ConstBetRoundPreflop) AND (currentbet == 0)) RETURN 0 FORCE
+WHEN ((betround == preflop) AND (currentbet < bblind)) RETURN 0 FORCE
+WHEN ((betround > preflop) AND (currentbet == 0)) RETURN 0 FORCE
 WHEN (BotsActionsOnThisRoundAdapted < 0) RETURN 0 FORCE
 WHEN Others RETURN BotsActionsOnThisRoundAdapted FORCE
  
 ##BotsActionsOnThisRoundIncludingChecks##
 // Special condition to ease simulations at Manualmode 
 // without the need for hand-resets
-WHEN ((betround == ConstBetRoundPreflop) AND (currentbet < bblind)) RETURN 0 FORCE
+WHEN ((betround == preflop) AND (currentbet < bblind)) RETURN 0 FORCE
 WHEN (BotsActionsOnThisRoundIncludingChecksAdapted < 0) RETURN 0 FORCE
 WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
 
@@ -193,14 +193,14 @@ WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
 + ActionCounterCorrectionForUpdateInProgress]
 
 ##BotsActionsPreflop##
-WHEN (betround == ConstBetRoundPreflop) RETURN BotsActionsOnThisRound FORCE
+WHEN (betround == preflop) RETURN BotsActionsOnThisRound FORCE
 WHEN Others RETURN
   ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
   // Checks are not counted per definition
   // and we can't check preflop without posting a blind out of order (first hand only).
-  + didcallround1 
-  + didraisround1 
-  + didbetsizeround1) FORCE
+  + didcallround_preflop 
+  + didraisround_preflop 
+  + didbetsizeround_preflop) FORCE
 
 ##CallsBeforeOurFirstAction##
 WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
@@ -215,10 +215,10 @@ WHEN (PlayersRaisingOrColdCallingTheLastRaise <= 0) RETURN HINT_There_Is_No_Rais
 WHEN Others RETURN (PlayersRaisingOrColdCallingTheLastRaise - 1) FORCE
 
 ##Folds##
-WHEN (betround == ConstBetRoundPreflop) RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
-WHEN (betround == ConstBetRoundFlop)    RETURN (nplayersround2 - nopponentsplaying - 1) FORCE
-WHEN (betround == ConstBetRoundTurn)    RETURN (nplayersround3 - nopponentsplaying - 1) FORCE
-WHEN (betround == ConstBetRoundRiver)   RETURN (nplayersround4 - nopponentsplaying - 1) FORCE
+WHEN (betround == preflop) RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
+WHEN (betround == flop)    RETURN (nplayersround_flop - nopponentsplaying - 1) FORCE
+WHEN (betround == turn)    RETURN (nplayersround_turn - nopponentsplaying - 1) FORCE
+WHEN (betround == river)   RETURN (nplayersround_river - nopponentsplaying - 1) FORCE
 WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 
 ##LastAggressorActsAfterUs##		
@@ -226,22 +226,23 @@ WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 AND NOT BotIsLastRaiser
 
 ##NoBettingOnFlop##
-(nbetsround2 == 0)
+(nbetsround_flop == 0)
 
 ##NoBettingOnTurn##
-(nbetsround3 == 0)
+(nbetsround_turn == 0)
 
 ##OpponentCalledOnFlop##
-    (betround > ConstBetRoundFlop)
-AND ((didraisround2 + didbetsizeround2) == 1)
-AND NOT didchecround2
-AND NOT didcallround2
+    (betround > flop)
+AND ((didraisround_flop + didbetsizeround_flop) == 1)
+AND NOT didchecround_flop
+AND NOT didcallround_flop
 AND NoVillainBetOrRaisedOnFlop
+
 ##OpponentCalledOnTurn##
-    (betround > ConstBetRoundTurn)
-AND ((didraisround3 + didbetsizeround3) == 1)
-AND NOT didchecround3
-AND NOT didcallround3
+    (betround > turn)
+AND ((didraisround_turn + didbetsizeround_turn) == 1)
+AND NOT didchecround_turn
+AND NOT didcallround_turn
 AND NoVillainBetOrRaisedOnTurn
 
 ##RaisesSinceLastPlay##

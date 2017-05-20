@@ -31,7 +31,6 @@ class CFormulaParser {
   ~CFormulaParser();
  public:
   void InitNewParse();
-  void FinishParse();
  public:
   // This function will
   // * load the OpenPPL-library, if needed and posisble
@@ -49,7 +48,7 @@ class CFormulaParser {
  public:
   static CString CurrentFunctionName();
   static CString CurrentFile();
-  bool IsParsing()	                      { return _is_parsing; }
+  bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }
  private:
@@ -89,12 +88,15 @@ class CFormulaParser {
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
  private:
+  void EnterParserCode();
+  void LeaveParserCode();
+ private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
   CParseTreeRotator _parse_tree_rotator;
  private:
   CString _token;
-  bool _is_parsing;
+  int _is_parsing_counter;
   bool _is_parsing_read_only_function_library;
   // The operator % can mean both modulo (OH-script) and percentage (OpenPPL).
   // Its meaning gets detected by function context.

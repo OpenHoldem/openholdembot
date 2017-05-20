@@ -31,7 +31,7 @@ public:
 	void UpdateOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
 public:
 	double handrank169()      { return _handrank169; }
@@ -40,6 +40,7 @@ public:
 	double handrank1000()     { return _handrank1000; }
 	double handrankp()        { return _handrankp; }
 private:
+  void CalculateHandrank();
 	void GetCardstring(char *c, unsigned int c0, unsigned int c1);
 private:
 	double _handrank169;

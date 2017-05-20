@@ -103,7 +103,7 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
   CString preprocessed_title = tabletitle.PreprocessedTitle();
   m_Titletext_preprocessed.SetWindowText(preprocessed_title);
   CTitleEvaluator title_evaluator;
-  title_evaluator.ProcessTitle(text, format);
+  title_evaluator.ProcessTitle(preprocessed_title, format);
   CString results = title_evaluator.GetAllCombinedResultsForOpenScrape();
 	m_ParseResults.SetWindowText(results.GetString());
 }
@@ -212,7 +212,12 @@ void CDlgEditSymbols::SetDefaultValues()
 		m_Value.AddString("Click Bet");
 		m_Value.AddString("Nothing");
 	}
-	
+	else if (name.MakeLower() == "betpotmethod")
+	{
+		m_Value.AddString("Enter");
+		m_Value.AddString("Click Bet");
+		m_Value.AddString("Nothing");
+	}
 	else if (name.MakeLower() == "buttonclickmethod")
 	{
 		m_Value.AddString("Single");

@@ -158,7 +158,7 @@ double CSymbolEngineTableStats::TablePfr() {
 	return SumUp(raised_preflop) / NumberOfHandsStored();
 }
 
-bool CSymbolEngineTableStats::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineTableStats::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   if (memcmp(name, "floppct", 7)==0 && strlen(name)==7) {  				
     *result = FlopTurnRiverPct(kBetroundFlop);
     return true;

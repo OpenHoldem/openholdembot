@@ -58,6 +58,12 @@ class CSharedMem {
   int NTablesConnected();
   int NUnoccupiedBots();
  public:
+  // Public, as this might fail on some systems, on startup or in geberal,
+  // so the watchdog might try to re-aquire while heartbeating.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20520
+  void AquireOwnProcessID();
+ public:
+  int OpenHoldemProcessID();
   int OpenHoldemProcessID(int session_ID);
  private:
 	void CreateDenseListOfConnectedPokerWindows();

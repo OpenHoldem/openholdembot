@@ -1,3 +1,11 @@
+v11.1.0 2017-05-xx
+==================
+BUG FIXES:
+- OpenScrapes title-evaluator used the original title
+  instead of the preprocessed title.
+  Thanks to Trish for reporting.
+  [THF]
+
 v11.1.0 2017-02-01
 ==================
 NEW STUFF:
@@ -42,7 +50,7 @@ v9.3.0 2016-10-29
 NEW STUFF:
 - Improved preprocessing of tiles, bets, balances and pots 
   to handle non-standard number formats (extra dots, spaces in numbers, ...)
-  Some ttlimits might needs small changes, please revisit your tablemaps.
+  Some ttlimits might need small changes, please revisit your tablemaps.
   For details please see http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
   [THF]
 MAINTENANCE:

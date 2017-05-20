@@ -207,11 +207,11 @@ void CScraper::ScrapeBetpotButtons() {
 }
 
 void CScraper::ScrapeSeatedActive() {
-	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
-		p_table_state->Player(i)->set_seated(false);
-		p_table_state->Player(i)->set_active(false);
-	}
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+    p_table_state->Player(i)->set_active(false);
+    // Me must NOT set_seated(false) here,
+    // as that would reset all player data.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
 		ScrapeSeated(i);
 		if (p_table_state->Player(i)->seated()) {
 			ScrapeActive(i);
@@ -242,8 +242,9 @@ void CScraper::ScrapeBetsAndBalances() {
 void CScraper::ScrapeSeated(int chair) {
 	CString seated;
 	CString result;
-
-	p_table_state->Player(chair)->set_seated(false);
+  // Me must NOT set_seated(false) here,
+  // as that would reset all player data.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
@@ -259,8 +260,11 @@ void CScraper::ScrapeSeated(int chair) {
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
 			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
+      return;
 		}
 	}
+  // Failed. Not seated
+  p_table_state->Player(chair)->set_seated(false);
 }
 
 void CScraper::ScrapeDealer() {
@@ -268,11 +272,9 @@ void CScraper::ScrapeDealer() {
 	// That's why we scrape all chairs
 	CString dealer;
 	CString result;
-
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		p_table_state->Player(i)->set_dealer(false);
 	}
-
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		dealer.Format("p%ddealer", i);
 		if (EvaluateRegion(dealer, &result)) {
@@ -437,30 +439,61 @@ int CScraper::ScrapeNoCard(CString base_name){
 //   * ranks and suits
 //   * cardbacks
 int CScraper::ScrapeCard(CString name) {
+  int result = CARD_UNDEFINED;
+  if (p_tablemap->cardscrapemethod() == 1) {
+    // Some casinos display additional cardbacks, 
+    // even if a player has card-faces
+    // For these casinos we have to scrape the faces first
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18539
+    // This order of scraping (faces, backs, nocard)
+    // always works, but has suboptimal performance
+    result = ScrapeCardface(name);
+    if (result != CARD_UNDEFINED) {
+	  return result;
+	}
+	// Nextz: try to scrape suits and ranks individually
+    result = ScrapeCardByRankAndSuit(name);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+  }
   // First: in case of player cards try to scrape card-backs
   // This has to be the very first one,
   // because some casinos use different locations for cardbacks and cards
-  // which would cause problems for the nocard-regioms
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17960
-  int result = ScrapeCardback(name);
-  if (result == CARD_BACK) return CARD_BACK;
+  result = ScrapeCardback(name);
+  if (result == CARD_BACK) {
+    return CARD_BACK;
+  }
   // Then try to scrape "no card"
   result = ScrapeNoCard(name);
-  if (result == CARD_NOCARD) return CARD_NOCARD;
-	// Then scrape "normal" cards (cardfaces) according to the specification
-	result = ScrapeCardface(name);
-  if (result != CARD_UNDEFINED) return result;
-	// Otherwise: try to scrape suits and ranks individually
-  result = ScrapeCardByRankAndSuit(name);
-  if (result != CARD_UNDEFINED) return result;
+  if (result == CARD_NOCARD) {
+    return CARD_NOCARD;
+  }
+  if (p_tablemap->cardscrapemethod() != 1) {
+    // If not already done so scrape card-faces
+    // This order of scraping (backs, nocard, faces)
+    // works for most casinos and has a very good performance
+    result = ScrapeCardface(name);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+	// Again: try to scrape suits and ranks individually
+    result = ScrapeCardByRankAndSuit(name);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+  }
   // Otherwise: in case of playercards try to scrape uXcardfaceY
-	CString uname = name;
-	if (name[0] == 'p')	{
-		uname.SetAt(0, 'u');
-	}
-  result = ScrapeCardface(uname);
-  if (result != CARD_UNDEFINED) return result;
-	// Nothing found
+  CString uname = name;
+  if (name[0] == 'p')	{
+    uname.SetAt(0, 'u');
+	result = ScrapeCardface(uname);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+  }
+  // Nothing found
   write_log(k_always_log_errors, 
     "[CScraper] WARNING ScrapeCard(%s) found nothing\n", name);
   write_log(k_always_log_errors, 

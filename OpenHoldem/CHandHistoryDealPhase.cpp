@@ -120,7 +120,7 @@ void CHandHistoryDealPhase::UpdateOnHeartbeat() {
   }
 }
 
-bool CHandHistoryDealPhase::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CHandHistoryDealPhase::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // No symbols provided
 	return false;
 }

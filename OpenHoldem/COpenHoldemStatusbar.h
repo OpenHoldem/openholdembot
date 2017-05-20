@@ -23,17 +23,25 @@ class COpenHoldemStatusbar {
 	void GetWindowRect(RECT *statusbar_position);
  public:
    void SetLastAction(CString action) { _last_action = action; }
+   void SetHandrank(int handrank)     { _handrank = handrank; }
+   void SetPrWin(double prwin, double prtie, double prlos);
  private:
-	void InitAdvancedStatusbar();
-	void ComputeCurrentStatus();
+	void InitStatusbar();
   CString LastAction();
  private:
 	CStatusBar _status_bar;
 	CWnd    *_main_window;
-	CString	_status_plcards,  _status_comcards, _status_pokerhand;
-	CString	_status_prwin,    _status_nopp,     _status_nit; 
-	CString	_status_handrank;
+ private:
+  int _handrank;
+  double _prwin;
+  double _prtie;
+  double _prlos;
+ private:
+  // Info to be displayed
   CString _last_action;
+  // to do!!! last line
+  CString	_status_handrank;
+  CString	_status_prwin;
 };
 
 extern COpenHoldemStatusbar *p_openholdem_statusbar;

@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -63,13 +63,13 @@
 //*****************************************************************************
 
 ##AcePresentOnFlop##
-WHEN (FirstFlopCard == ConstCardAce)  RETURN True FORCE
-WHEN (SecondFlopCard == ConstCardAce) RETURN True FORCE
-WHEN (ThirdFlopCard == ConstCardAce)  RETURN True FORCE
+WHEN (FirstFlopCard == ace)  RETURN true FORCE
+WHEN (SecondFlopCard == ace) RETURN true FORCE
+WHEN (ThirdFlopCard == ace)  RETURN true FORCE
 
 ##AcePresentOnTurn##
-WHEN AcePresentOnFlop RETURN True FORCE
-WHEN (TurnCard == ConstCardAce) RETURN True FORCE
+WHEN AcePresentOnFlop RETURN true FORCE
+WHEN (TurnCard == ace) RETURN true FORCE
 
 ##BestBoardCard##
 rankhicommon
@@ -112,7 +112,7 @@ OR (FirstFlopSuit  == ThirdFlopSuit  AND FirstFlopSuit  == TurnSuit)
 OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) ]
 
 ##FourCardsToWheelOnBoard##
-`(rankbitscommon & 0b0000000000111110) >= 4
+BitCount(rankbitscommon & 0b0000000000111110) >= 4
 
 ##FourOfOneSuitOnTurn##
 ((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (FirstFlopSuit == TurnSuit))
@@ -127,48 +127,48 @@ OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) ]
 -1
 
 ##KingPresentOnFlop##
-   (FirstFlopCard == ConstCardKing)
-OR (SecondFlopCard == ConstCardKing)
-OR (ThirdFlopCard == ConstCardKing)
+   (FirstFlopCard == king)
+OR (SecondFlopCard == king)
+OR (ThirdFlopCard == king)
 
 ##LowCardsOnBoard##
-`RankBitsCommonLowCardsOnly
+BitCount(RankBitsCommonLowCardsOnly)
 
 ##MoreThanOneStraightPossibleOnFlop##
 StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
 
 ##MoreThanOneStraightPossibleOnRiver##
-(betround == ConstBetRoundRiver AND (NumberOfStraightsPossibleOnRiver > 1))
+(betround == river AND (NumberOfStraightsPossibleOnRiver > 1))
 
 ##NumberOfStraightsPossibleOnTurn##
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 AND (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
+  (BitCount((RankBitsCommonTurn >> 10) & 0x1f) >= 3 AND (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  9) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  8) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  7) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  6) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  5) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  4) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  3) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  2) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  1) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
 
 ##NumberOfStraightsPossibleOnRiver##
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 AND (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
+  (BitCount((RankBitsCommonRiver >> 10) & 0x1f) >= 3 AND (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  9) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  8) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  7) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  6) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  5) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  4) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  3) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  2) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  1) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
 
 ##MoreThanOneOneCardStraightPossible##
 DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
@@ -207,15 +207,15 @@ DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
 OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
 
 ##OpenEndedStraightDrawOnBoard##
-(nstraightcommon == 4 AND (`((rankbitscommon >> 10) & 0x1f) < 4) AND (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
+(nstraightcommon == 4 AND (BitCount((rankbitscommon >> 10) & 0x1f) < 4) AND (BitCount((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##OpenEndedStraightDrawPossibleOnFlop##
-[(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard - SecondTopFlopCard > 0) AND (TopFlopCard != ConstCardAce)]
-OR [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard - LowestFlopCard >0) AND (LowestFlopCard >= ConstCardTwo)]
+[(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard - SecondTopFlopCard > 0) AND (TopFlopCard != ace)]
+OR [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard - LowestFlopCard >0) AND (LowestFlopCard >= Two)]
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
-`[rankbitscommon >> (rankhiplayer + 1)]
+BitCount[rankbitscommon >> (rankhiplayer + 1)]
 
 ##OvercardsOnBoard##
   ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
@@ -255,9 +255,9 @@ OR LowestFlopCardPairedOnTurn
 (nrankedcommon == 4)
 
 ##QueenPresentOnFlop##
-   (FirstFlopCard==ConstCardQueen)
-OR (SecondFlopCard==ConstCardQueen)
-OR (ThirdFlopCard==ConstCardQueen)
+   (FirstFlopCard==queen)
+OR (SecondFlopCard==queen)
+OR (ThirdFlopCard==queen)
 
 ##RiverCardIsOvercardToBoard##
 [   RiverCard > FirstFlopCard
@@ -280,38 +280,38 @@ NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 (nstraightflushfillcommon <= 2)
 
 ##SuitsOnBoard##
-(betround == ConstBetRoundFlop)  ? SuitsOnFlop :
-(betround == ConstBetRoundTurn)  ? SuitsOnTurn :
-(betround == ConstBetRoundRiver) ? SuitsOnRiver :
+(betround == flop)  ? SuitsOnFlop :
+(betround == turn)  ? SuitsOnTurn :
+(betround == river) ? SuitsOnRiver :
 HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 
 ##SuitsOnFlop##
-(betround < ConstBetRoundFlop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+(betround < flop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ (FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit) ? 1 :
  ((FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit != SecondFlopSuit) OR (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit)) ? 2 :
   (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit AND FirstFlopSuit != ThirdFlopSuit) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
 
 ##SuitsOnRiver##
-(betround < ConstBetRoundRiver) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+(betround < river) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnTurn
   + (((RiverSuit != FirstFlopSuit) AND (RiverSuit != SecondFlopSuit) AND (RiverSuit != ThirdFlopSuit) AND (RiverSuit != TurnSuit)) ? 1 : 0)]
   
 ##SuitsOnTurn##
-(betround < ConstBetRoundTurn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+(betround < turn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnFlop 
   + (((TurnSuit != FirstFlopSuit) AND (TurnSuit != SecondFlopSuit) AND (TurnSuit != ThirdFlopSuit)) ? 1 : 0)]
   
 ##StraightFlushPossible##
-`((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 9) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 8) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 7) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 6) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 5) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 4) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 3) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 2) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
+BitCount((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 9) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 8) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 7) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 6) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 5) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 4) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 3) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 2) & 0x1f) >= 3 ? 1 :
+BitCount((srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
 
 ##StraightOnBoard##
 (nstraightcommon >= 5)
@@ -322,46 +322,46 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 ##SecondBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
-(RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? ConstCardAce   :
-(RankBitsCommonWithoutTopBit & 0b010000000000000) != 0 ? ConstCardKing  :
-(RankBitsCommonWithoutTopBit & 0b001000000000000) != 0 ? ConstCardQueen :
-(RankBitsCommonWithoutTopBit & 0b000100000000000) != 0 ? ConstCardJack  :
-(RankBitsCommonWithoutTopBit & 0b000010000000000) != 0 ? ConstCardTen   :
-(RankBitsCommonWithoutTopBit & 0b000001000000000) != 0 ? ConstCardNine  :
-(RankBitsCommonWithoutTopBit & 0b000000100000000) != 0 ? ConstCardEight :
-(RankBitsCommonWithoutTopBit & 0b000000010000000) != 0 ? ConstCardSeven :
-(RankBitsCommonWithoutTopBit & 0b000000001000000) != 0 ? ConstCardSix   :
-(RankBitsCommonWithoutTopBit & 0b000000000100000) != 0 ? ConstCardFive  :
-(RankBitsCommonWithoutTopBit & 0b000000000010000) != 0 ? ConstCardFour  :
-(RankBitsCommonWithoutTopBit & 0b000000000001000) != 0 ? ConstCardThree :
-(RankBitsCommonWithoutTopBit & 0b000000000000100) != 0 ? ConstCardTwo   :
+(RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? ace   :
+(RankBitsCommonWithoutTopBit & 0b010000000000000) != 0 ? king  :
+(RankBitsCommonWithoutTopBit & 0b001000000000000) != 0 ? queen :
+(RankBitsCommonWithoutTopBit & 0b000100000000000) != 0 ? jack  :
+(RankBitsCommonWithoutTopBit & 0b000010000000000) != 0 ? ten   :
+(RankBitsCommonWithoutTopBit & 0b000001000000000) != 0 ? Nine  :
+(RankBitsCommonWithoutTopBit & 0b000000100000000) != 0 ? Eight :
+(RankBitsCommonWithoutTopBit & 0b000000010000000) != 0 ? Seven :
+(RankBitsCommonWithoutTopBit & 0b000000001000000) != 0 ? Six   :
+(RankBitsCommonWithoutTopBit & 0b000000000100000) != 0 ? Five  :
+(RankBitsCommonWithoutTopBit & 0b000000000010000) != 0 ? Four  :
+(RankBitsCommonWithoutTopBit & 0b000000000001000) != 0 ? Three :
+(RankBitsCommonWithoutTopBit & 0b000000000000100) != 0 ? Two   :
 // Last two bits are ace (low) and unused.
 // Both ignored.
 -1
 
 ##StraightPossibleOnFlop##
-(`((RankBitsCommonFlop >> 10) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  9) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  8) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  7) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  6) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  5) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  4) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  3) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  2) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  1) & 0x1f) >= 3) ? 1 : 0
+(BitCount((RankBitsCommonFlop >> 10) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  9) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  8) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  7) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  6) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  5) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  4) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  3) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  2) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonFlop >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##StraightPossibleOnTurn##
-(`((RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
+(BitCount((RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
+(BitCount((RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##ThreeCardStraightOnBoard##
 nstraightcommon >= 3
@@ -402,9 +402,9 @@ AND TurnCard > ThirdFlopCard ]
 (pokervalcommon & twopair) OR (pokervalcommon & fullhouse)
 
 ##TwoPairOnBoardOnTurn##
-   (betround>ConstBetRoundFlop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)
-OR (betround>ConstBetRoundFlop AND $$cr0==$$cr2 AND $$cr1==$$cr3 AND $$cr0!=$$cr1)
-OR (betround>ConstBetRoundFlop AND $$cr0==$$cr3 AND $$cr1==$$cr2 AND $$cr0!=$$cr1)
+   (betround>flop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)
+OR (betround>flop AND $$cr0==$$cr2 AND $$cr1==$$cr3 AND $$cr0!=$$cr1)
+OR (betround>flop AND $$cr0==$$cr3 AND $$cr1==$$cr2 AND $$cr0!=$$cr1)
 
 ##UncoordinatedFlop##
 NOT PairOnFlop
@@ -415,4 +415,4 @@ AND NOT StraightPossibleOnFlop
 AND NOT OpenEndedStraightDrawPossibleOnFlop
 
 ##WheelPossible##
-(`(rankbitscommon & 0b111110) >= 3)
+(BitCount(rankbitscommon & 0b111110) >= 3)

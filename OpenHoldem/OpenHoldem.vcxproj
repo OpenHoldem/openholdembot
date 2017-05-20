@@ -223,6 +223,7 @@
     <ClCompile Include="COcclusionCheck.cpp" />
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
@@ -239,10 +240,13 @@
     <ClCompile Include="CSymbolEngineChairs.cpp" />
     <ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
+    <ClCompile Include="CSymbolengineConstants.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineIsRush.cpp" />
     <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
+    <ClCompile Include="CSymbolEngineMultiplexer.cpp" />
+    <ClCompile Include="CSymbolengineNutFullHouseOrFourOfAKind.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineRaisers.cpp" />
@@ -506,6 +510,7 @@
     <ClInclude Include="COcclusionCheck.h" />
     <ClInclude Include="CParseTreeOperatorNode.h" />
     <ClInclude Include="CParseTreeTerminalNode.h" />
+    <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h" />
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
@@ -522,10 +527,13 @@
     <ClInclude Include="CSymbolengineChairs.h" />
     <ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
+    <ClInclude Include="CSymbolengineConstants.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineIsRush.h" />
     <ClInclude Include="CSymbolengineMTTInfo.h" />
+    <ClInclude Include="CSymbolengineMultiplexer.h" />
+    <ClInclude Include="CSymbolengineNutFullhouseOrFourOfAKind.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolEngineRaisers.h" />

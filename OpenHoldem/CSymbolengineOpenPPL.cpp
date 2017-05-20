@@ -105,7 +105,7 @@ void CSymbolEngineOpenPPL::UpdateAfterAutoplayerAction(int autoplayer_action_cod
     kAlwaysLogOpenPPLInitialization);
 }
 
-bool CSymbolEngineOpenPPL::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineOpenPPL::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
 	// This symbol-engine does not provide any symbols,
   // but triggers only the calculation of history/symbols, etc.
   // All OpenPPL-symbols are functions that get handled by the function-collection.

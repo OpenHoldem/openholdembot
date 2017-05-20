@@ -33,7 +33,7 @@ class CSymbolEngineOpenPPLUserVariables: public CVirtualSymbolEngine {
   void UpdateOnHeartbeat();
  public:
   void Set(CString symbol);
-  bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  bool EvaluateSymbol(const CString name, double *result, bool log = false);
  private:
   std::map<CString, bool> _user_variables;
 };

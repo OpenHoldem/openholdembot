@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -62,22 +62,22 @@ OR (prevaction == 5) // Jamming the slider
 
 ##PlayersRaisingOrColdCallingTheLastRaise##
 // Counting the last raiser + all cold callers
-(LastRaiserCurrentBet <= 0) ? 0 :
-  (currentbet0 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet1 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet2 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet3 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet4 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet5 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet6 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet7 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet8 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
+(currentbet_lastraiserchair <= 0) ? 0 :
+  (currentbet0 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet1 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet2 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet3 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet4 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet5 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet6 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet7 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet8 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet9 == currentbet_lastraiserchair ? 1 : 0)
 
 ##ChecksAfterHero##
 // No checks preflop. Not even big blind can check (game over).
 // We ignore additional blind-posters however.
-WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+WHEN (betround == preflop) RETURN 0 FORCE
 // We called or raised, therefore no longer any checks possible
 WHEN (currentbet > 0) RETURN 0 FORCE
 // We did not yet act, therefore no checks behind us possible
@@ -95,7 +95,7 @@ WHEN Others RETURN (nplayersplaying - betposition) FORCE
 ##ChecksInFrontOfHero##
 // No checks preflop. Not even big blind can check (game over).
 // We ignore additional blind-posters however.
-WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+WHEN (betround == preflop) RETURN 0 FORCE
 // I did already act, so no longer any posters in front of me
 // (at my 2nd turn)
 WHEN (currentbet > 0) RETURN 0 FORCE
@@ -106,17 +106,17 @@ WHEN (AmountToCall > 0) RETURN (BetPositionFirstRaiser - 1) FORCE
 WHEN Others RETURN [betposition - 1] FORCE
 
 ##BetPositionFirstRaiser##
-WHEN (firstraiser_chair < 0) RETURN HINT_No_FirstRaiser FORCE
-WHEN (firstraiser_chair == 0) RETURN ac_betpos0 FORCE
-WHEN (firstraiser_chair == 1) RETURN ac_betpos1 FORCE
-WHEN (firstraiser_chair == 2) RETURN ac_betpos2 FORCE
-WHEN (firstraiser_chair == 3) RETURN ac_betpos3 FORCE
-WHEN (firstraiser_chair == 4) RETURN ac_betpos4 FORCE
-WHEN (firstraiser_chair == 5) RETURN ac_betpos5 FORCE
-WHEN (firstraiser_chair == 6) RETURN ac_betpos6 FORCE
-WHEN (firstraiser_chair == 7) RETURN ac_betpos7 FORCE
-WHEN (firstraiser_chair == 8) RETURN ac_betpos8 FORCE
-WHEN (firstraiser_chair == 9) RETURN ac_betpos9 FORCE
+WHEN (firstraiserchair < 0) RETURN HINT_No_FirstRaiser FORCE
+WHEN (firstraiserchair == 0) RETURN ac_betpos0 FORCE
+WHEN (firstraiserchair == 1) RETURN ac_betpos1 FORCE
+WHEN (firstraiserchair == 2) RETURN ac_betpos2 FORCE
+WHEN (firstraiserchair == 3) RETURN ac_betpos3 FORCE
+WHEN (firstraiserchair == 4) RETURN ac_betpos4 FORCE
+WHEN (firstraiserchair == 5) RETURN ac_betpos5 FORCE
+WHEN (firstraiserchair == 6) RETURN ac_betpos6 FORCE
+WHEN (firstraiserchair == 7) RETURN ac_betpos7 FORCE
+WHEN (firstraiserchair == 8) RETURN ac_betpos8 FORCE
+WHEN (firstraiserchair == 9) RETURN ac_betpos9 FORCE
 
 ##NoVillainBetOrRaisedOnFlop##
 ((raisbits2 & ~(1<<userchair)) == 0)
@@ -145,20 +145,20 @@ OR [(currentbet9 > 0) AND (currentbet9 < sblind) AND (balance9 > 0)]
 // First orbit preflop only
 // Does not count the user
 // Does not count the big-blind, who can't limp
-  [(currentbet0 == bblind) AND (userchair != 0) AND (BigBlindChair != 0) ? 1 : 0]
-+ [(currentbet1 == bblind) AND (userchair != 1) AND (BigBlindChair != 1) ? 1 : 0]
-+ [(currentbet2 == bblind) AND (userchair != 2) AND (BigBlindChair != 2) ? 1 : 0]
-+ [(currentbet3 == bblind) AND (userchair != 3) AND (BigBlindChair != 3) ? 1 : 0]
-+ [(currentbet4 == bblind) AND (userchair != 4) AND (BigBlindChair != 4) ? 1 : 0]
-+ [(currentbet5 == bblind) AND (userchair != 5) AND (BigBlindChair != 5) ? 1 : 0]
-+ [(currentbet6 == bblind) AND (userchair != 6) AND (BigBlindChair != 6) ? 1 : 0]
-+ [(currentbet7 == bblind) AND (userchair != 7) AND (BigBlindChair != 7) ? 1 : 0]
-+ [(currentbet8 == bblind) AND (userchair != 8) AND (BigBlindChair != 8) ? 1 : 0]
-+ [(currentbet9 == bblind) AND (userchair != 9) AND (BigBlindChair != 9) ? 1 : 0]
+  [(currentbet0 == bblind) AND (userchair != 0) AND (bigblindchair != 0) ? 1 : 0]
++ [(currentbet1 == bblind) AND (userchair != 1) AND (bigblindchair != 1) ? 1 : 0]
++ [(currentbet2 == bblind) AND (userchair != 2) AND (bigblindchair != 2) ? 1 : 0]
++ [(currentbet3 == bblind) AND (userchair != 3) AND (bigblindchair != 3) ? 1 : 0]
++ [(currentbet4 == bblind) AND (userchair != 4) AND (bigblindchair != 4) ? 1 : 0]
++ [(currentbet5 == bblind) AND (userchair != 5) AND (bigblindchair != 5) ? 1 : 0]
++ [(currentbet6 == bblind) AND (userchair != 6) AND (bigblindchair != 6) ? 1 : 0]
++ [(currentbet7 == bblind) AND (userchair != 7) AND (bigblindchair != 7) ? 1 : 0]
++ [(currentbet8 == bblind) AND (userchair != 8) AND (bigblindchair != 8) ? 1 : 0]
++ [(currentbet9 == bblind) AND (userchair != 9) AND (bigblindchair != 9) ? 1 : 0]
 
 ##RaisesBeforeOurFirstAction##
 (BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
-(betround > ConstBetRoundPreflop) ? RaisesBeforeOurFirstActionThisRoundPostflop :
+(betround > preflop) ? RaisesBeforeOurFirstActionThisRoundPostflop :
 nopponentstruelyraising
 
 ##RaisesSinceLastPlayOnOurSecondAction##

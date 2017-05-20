@@ -52,7 +52,7 @@ void CSymbolEngineColourCodes::UpdateOnMyTurn(){
 void CSymbolEngineColourCodes::UpdateOnHeartbeat() {
 }
 
-bool CSymbolEngineColourCodes::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineColourCodes::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "colour", 6) != 0) {
 		// Symbol of a different symbol-engine

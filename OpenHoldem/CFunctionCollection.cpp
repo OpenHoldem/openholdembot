@@ -16,9 +16,11 @@
 
 #include "CAutoplayerTrace.h"
 #include "CDebugTab.h"
+#include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CFunction.h"
 #include "CParseErrors.h"
+#include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSelftestParserEvaluator.h"
 #include "MagicNumbers.h"
@@ -166,13 +168,31 @@ bool CFunctionCollection::Exists(CString name) {
 // Generates smart error-messages on failure
 // To be used by the parser
 void CFunctionCollection::VerifyExistence(CString name) {
+  write_log(preferences.debug_formula(),
+    "[CFunctionCollection] VerifyExistence: %s\n", name);
   // The OpenPPL-symbol "Random" is no longer implemented in the library
   // but as a built-in symbol to prevent symbol-caching.
   // Therefore we don't want to check if it is "missing" in the library.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19611
-  if (name == "Random") return;
-  if (Exists(name)) return;
+  if (name == "Random") {
+    return;
+  }
+  // First (and most common) case: simple symbol
+  if (Exists(name)) {
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] VerifyExistence: symbol exists in function collection\n");
+    return;
+  }
+  // Second case: multiplexed function or OpenPPL-symbol
+  double dummy_result;
+  if (p_engine_container->EvaluateSymbol(name, &dummy_result)) {
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] VerifyExistence: symbol exists in engine container\n");
+    return;
+  }
   // Error: function does not exist
+  write_log(preferences.debug_formula(),
+    "[CFunctionCollection] VerifyExistence: symbol does not exist\n");
   CString message;
   message.Format("Function used but never defined: %s\n\n", name);
   CString similar_name = GetSimilarNameWithDifferentCases(name);
@@ -376,15 +396,6 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "//  0.00 =  0% = disabled\n"
       "//  0.50 = 50%\n"
       "0.00\n";
-  } else if (function_name == k_standard_function_names[k_standard_function_betsize_enable_rounding]) {
-    function_text = 
-      "// Rounding betsizes to multiples of\n"
-      "//   * small blinds\n"
-      "//   * big blinds\n"
-      "//   * full dollars\n"
-      "//   * 10 / 100 / 1000 dollars\n"
-      "// Enabled per default\n"
-      "1\n";
   } else if (function_name == k_standard_function_names[k_init_on_startup]) {
     function_text = 
       "// Ini-functions are meant for\n"    
@@ -609,6 +620,7 @@ bool CFunctionCollection::ParseAll() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   CheckForDefaultFormulaEntries();
   p_formula_parser->InitNewParse();
+  p_parser_symbol_table->Clear();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
     // Skip library functions which got already parsed at start-up
@@ -622,7 +634,7 @@ bool CFunctionCollection::ParseAll() {
   // Finally parse the debug-tab,
   // that is no longer in the collection.
   p_debug_tab->Parse();
-  p_formula_parser->FinishParse();
+  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   return true;
 }
 
@@ -657,7 +669,7 @@ void CFunctionCollection::UpdateOnHeartbeat() {
   ClearCache();
 }
 
-bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CFunctionCollection::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   CSLock lock(m_critsec);
   if (COHScriptObject::IsFunction(name)
       || COHScriptObject::IsList(name)
@@ -681,16 +693,21 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
       }
       // Function does not exist
       *result = kUndefinedZero;
+      if (p_formula_parser->IsParsing()) {
+        // EvaluateSymbol() got called as part of the parse-time-verification
+        return false;
+      }
+      // Runtime-evaluatzion
+      // This symbol is something that HAS TO be evaluated here,
+      // We didn't find it, so we treat it as zero/false/whatever.
+      // Symbol-verification happens at parse-time,
+      // so this kind of error can only happen for DLL-guys
+      // who call ill-named OH-script-functions.
       if (log) {
         write_log(preferences.debug_auto_trace(),
           "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);
         p_autoplayer_trace->Add(name, *result);
       }
-      // This symbol is something that HAS TO be evaluated here,
-      // We didn't find it, so we treat it as zero/false/whatever.
-      // Symbol-verification happens at parse-time,
-      // so this kind of error can only happen for DLL-guys
-      // who call OH-script-functions.
       return true;
     }
     // Function/list found

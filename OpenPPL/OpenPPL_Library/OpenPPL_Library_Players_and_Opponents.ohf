@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -66,27 +66,23 @@
 TwoPlayersCompetingForThisPot
 
 ##TableIsHeadsup##
-WHEN istournament AND OnlyTwoPlayersLeftAtTournamentTable RETURN True FORCE
-WHEN (NOT istournament) AND (nplayersdealt = 2) RETURN True FORCE
+WHEN istournament AND OnlyTwoPlayersLeftAtTournamentTable RETURN true FORCE
+WHEN (NOT istournament) AND (nplayersdealt = 2) RETURN true FORCE
 
 ##TwoPlayersCompetingForThisPot##
 // Just to create some verbosity in HandIsHeadsup
-WHEN nplayersplaying = 2 RETURN True FORCE
+WHEN nplayersplaying = 2 RETURN true FORCE
 
 ##OnlyTwoPlayersLeftAtTournamentTable##
 // Just to create some verbosity in HandIsHeadsup
-WHEN (not istournament) RETURN False FORCE
+WHEN (not istournament) RETURN false FORCE
 // Players in tournaments get always dealt even if they are sitting out.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19778
 // So we check seated players
-WHEN (nplayersseated = 2) RETURN True FORCE
+WHEN (nplayersseated = 2) RETURN true FORCE
 
 ##PlayersAtStartOfThisRound##
-(betround == ConstBetRoundPreflop) ? nplayersround1 :
-(betround == ConstBetRoundFlop)    ? nplayersround2 :
-(betround == ConstBetRoundTurn)    ? nplayersround3 :
-(betround == ConstBetRoundRiver)   ? nplayersround4 :
-ERROR_Betround_Out_Of_Range
+nplayersround_currentround
 
 ##Opponents##
 OpponentsLeft
@@ -110,10 +106,10 @@ sitename$ongame
 NumberOfOpponentsAllin > 0
 
 ##Opponents_SumAllinBits##
-`Opponents_AllinBits
+BitCount(Opponents_AllinBits)
 
 ##Opponents_AllinBits##
-[(betround == ConstBetRoundPreflop) AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
+[(betround == preflop) AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
 // Player must be playing, his balance must be 0 and he must have a positive bet.
 [0
 |(((opponentsplayingbits & (1 << 0)) AND (currentbet0 > 0) AND (balance0 == 0)) ? 1 << 0 : 0)
@@ -151,13 +147,13 @@ NumberOfOpponentsAllin > 0
 nopponentsplaying
 
 ##OpponentsOnFlop##
-(nplayersround2 - 1)
+(nplayersround_flop - 1)
 
 ##OpponentsOnTurn##
-(nplayersround3 - 1)
+(nplayersround_turn - 1)
 
 ##OpponentsOnRiver##
-(nplayersround4 - 1)
+(nplayersround_river - 1)
 
 ##OpponentsWithLowerStack##
   (((balance0 + currentbet0) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0001) ? 1:0)
@@ -173,11 +169,11 @@ nopponentsplaying
 
 ##StillToActPreflop##
 // Precondition: first action, but this gets checked in StillToAct
-InBigBlind ? 0 :
-InSmallBlind ? 1 :
+WHEN InBigBlind RETURN 0 FORCE
+WHEN InSmallBlind RETURN 1 FORCE
 // Not in the blinds
-(MissingSmallBlind > 0) ? (nchairsdealtleft + 1) :
-(nchairsdealtleft + 2)
+WHEN (MissingSmallBlind > 0) RETURN (nchairsdealtleft + 1) FORCE
+WHEN Others RETURN (nchairsdealtleft + 2) FORCE
 
 ##StillToActPostflop##
 // Precondition: first action, but this gets checked in StillToAct
@@ -185,6 +181,6 @@ InSmallBlind ? 1 :
 
 ##StillToAct##
 (BotsActionsOnThisRoundIncludingChecks > 0) ? HINT_StillToAct_Is_Only_Valid_On_First_Orbit :
-((betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
-((betround != ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPostflop:
+((betround == preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
+((betround != preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPostflop:
 0

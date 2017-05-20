@@ -49,6 +49,8 @@ class CParseTreeNode {
   bool IsWhenConditionWithAction();
   bool IsOpenEndedWhenCondition();
  protected:
+  void VerifyBooleanOperand(double value);
+ protected:
   int _node_type;
  protected:
   // Strictly speaking not all nodes meed sibblings.

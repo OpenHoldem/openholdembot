@@ -115,6 +115,7 @@ bool CTablemapCompletenessChecker::IsNoLimitMap() {
   return (p_tablemap->ItemExists("i3edit")
     || p_tablemap->ItemExists("i3slider")
     || p_tablemap->ItemExists("betpotmethod")
+    || p_tablemap->ItemExists("betsizeselectionmethod")
     || p_tablemap->ItemExists("betsizedeletionmethod")
     || p_tablemap->ItemExists("betsizeinterpretationmethod")
     || p_tablemap->ItemExists("betsizeconfirmationmethod"));
@@ -277,6 +278,7 @@ if (number_of_buttons_seen < 3) {
 }
 // No Limit only
 if (IsNoLimitMap()) {
+  CheckItem("betsizeselectionmethod");
   CheckItem("betsizedeletionmethod");
   CheckItem("betsizeinterpretationmethod");
   CheckItem("betsizeconfirmationmethod");

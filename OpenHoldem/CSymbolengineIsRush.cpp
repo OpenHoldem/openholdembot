@@ -95,7 +95,7 @@ bool CSymbolEngineIsRush::isrush() {
   return true;
 }
 
-bool CSymbolEngineIsRush::EvaluateSymbol(const char *name, double *result, bool log /* = false */) { 
+bool CSymbolEngineIsRush::EvaluateSymbol(const CString name, double *result, bool log /* = false */) { 
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "isrush", 6)==0)  {
     *result = isrush();

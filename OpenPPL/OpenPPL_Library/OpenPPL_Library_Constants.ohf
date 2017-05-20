@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -160,91 +160,37 @@ RaiseMax
 //  Both ranks and suits according to the OpenHoldem docu
 //
 //*****************************************************************************
+//
+// ace..ten are built-in OpenHoldem constants
+// We only need named constants for 2..9 for more verbosity
 
-##ConstCardAce##
-14
+##Nine##
+9	
 
-##ConstCardKing##
-13
-
-##ConstCardQueen##
-12
-
-##ConstCardJack##
-11
-
-##ConstCardTen##
-10
-
-##ConstCardNine##
-9
-
-##ConstCardEight##
+##Eight##
 8
 
-##ConstCardSeven##
+##Seven##
 7
 
-##ConstCardSix##
+##Six##
 6
 
-##ConstCardFive##
+##Five##
 5
 
-##ConstCardFour##
+##Four##
 4
 
-##ConstCardThree##
+##Three##
 3
 
-##ConstCardTwo##
+##Two##
 2
-
-##ConstSuitClubs##
-2
-
-##ConstSuitDiamonds##
-1
-
-##ConstSuitHearts##
-0
-
-##ConstSuitSpades##
-3
 
 ##ConstAllRanksWithoutAceLow##
 // AKQJT98765432a-
 0b0111111111111100
-
-//*****************************************************************************
-//
-// OpenPPL - Betting Round Constants
-//
-//*****************************************************************************
-
-##ConstBetRoundPreflop##
-1
-
-##ConstBetRoundFlop##
-2
-
-##ConstBetRoundTurn##
-3
-
-##ConstBetRoundRiver##
-4
-
-//*****************************************************************************
-//
-// OpenPPL - Other Constants
-//
-//*****************************************************************************
-
-##True##
-1
-
-##False##
-0
 
 //*****************************************************************************
 //
@@ -277,37 +223,34 @@ RaiseMax
 ##ERROR_BotsActionsOnThisRound_Out_Of_Range##
 -1
 
-##ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap##
+##ERROR_buttonchair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_CutOffChair_Not_Recognized__Check_Your_TableMap##
+##ERROR_cutoffchair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_MiddlePosition3Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_mp3chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_MiddlePosition2Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_mp2chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_mp1chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_EarlyPosition3Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_ep3chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_EarlyPosition2Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_ep2chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_EarlyPosition1Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_ep1chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap##
+##ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap##
--1
-
-##ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap##
+##ERROR_smallblindchair_Not_Recognized__Check_Your_TableMap##
 -1
 
 ##ERROR_We_Dont_Have_Any_Straight__No_Not_Call_This_Function##
@@ -344,7 +287,7 @@ RaiseMax
 ##HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function##
 -1
 
-##HINT_There_Are_No_True_Raisers##
+##HINT_There_Are_No_true_Raisers##
 -1
 
 ##HINT_Such_A_Straight_Does_Not_Exist##
@@ -390,7 +333,7 @@ RaiseMax
 -1
 
 ##HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw##
-False
+false
 
 ##HINT_SuitsOnBoard_Undefined_For_This_Betting_Round##
 0
@@ -424,7 +367,7 @@ False
 -1
 
 ##HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out##
-False
+false
 
 ##HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions##
-False
+false

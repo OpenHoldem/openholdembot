@@ -49,7 +49,7 @@ void CHandHistoryAction::UpdateOnMyTurn() {
 void CHandHistoryAction::UpdateOnHeartbeat() {
 }
 
-bool CHandHistoryAction::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CHandHistoryAction::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // No symbols provided
 	return false;
 }

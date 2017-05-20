@@ -201,17 +201,23 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
     }
   }
   assert(p_symbol_engine_active_dealt_playing != NULL);
-  if ((second_bet_after_dealer <= 2 * first_bet_after_dealer) &&
-    (second_bet_after_dealer > 0.0) &&
-    (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2)) {
+  // Checking for reversed blinds.
+  // Using 0.61% here to support limits like 0.15/0.25
+  if ((second_bet_after_dealer < 0.61 * first_bet_after_dealer) &&
+	  (second_bet_after_dealer > 0.0) &&
+    p_symbol_engine_active_dealt_playing->nplayersdealt() == 2) {
     // Special handling for reveresed blinds headsup
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19102
     write_log(preferences.debug_table_limits(),
       "[CBlindGuesser] Game is headsup\n");
     write_log(preferences.debug_table_limits(),
       "[CBlindGuesser] Swapping reversed blinds\n");
-    *sblind = second_bet_after_dealer;
+    // settings sblind is bad idea, because sblind can call/raise
     *bblind = first_bet_after_dealer;
+  }
+  else if (second_bet_after_dealer < 2 * first_bet_after_dealer) {
+	  // sblind is raising/calling.
+	  *bblind = second_bet_after_dealer;
   }
   else if (first_chair_immediatelly_after_dealer_betting) {
     // Can't be a missing small-blind.
@@ -223,15 +229,21 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   else if (second_bet_after_dealer == 0.0) {
     // Only one blind, must be big-blind, small-blind missing
     *bblind = first_bet_after_dealer;
+	  write_log(preferences.debug_table_limits(),
+		  "[CBlindGuesser] Only one blind, must be big-blind, small-blind missing\n");
   }
   else if (second_bet_after_dealer > 2.5 * first_bet_after_dealer) {
     // Missing small blind and UTG raising to more than 2 big blinds.
     *bblind = first_bet_after_dealer;
+	  write_log(preferences.debug_table_limits(),
+		  "[CBlindGuesser] Missing small blind and UTG\n");
   }
   else if (second_bet_after_dealer == first_bet_after_dealer) {
     // Either completing small-blind
     // or missing small-blind and limping UTG
     *bblind = first_bet_after_dealer;
+	write_log(preferences.debug_table_limits(),
+		"[CBlindGuesser] Either completing small-blind\n");
   }
   else if (second_bet_after_dealer == 2 * first_bet_after_dealer) {
     // Could be either small-blind/bblind

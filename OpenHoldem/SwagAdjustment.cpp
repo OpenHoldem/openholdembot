@@ -150,15 +150,14 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
       "[BetsizeAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is allin.\n");
     return amount_to_raise_to;
   }
+  double result;
   // Don't round very small betsizes.
   // There might be aa reason for it in very small pots.
-  if (amount_to_raise_to < (2.0 * p_symbol_engine_tablelimits->bblind())) {
+  if (amount_to_raise_to < (2.6 * p_symbol_engine_tablelimits->bblind())) {
     write_log(preferences.debug_betsize_adjustment(),
-      "[BetsizeAdjustment] RoundToBeautifulBetsize: no rounding, because too small betsize\n");
-    return amount_to_raise_to;
-  }
-  double result;
-  if (amount_to_raise_to == Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind())) {
+      "[BetsizeAdjustment] RoundToBeautifulBetsize: no rounding to multiples of SB/BB, because too small betsize\n");
+    result = amount_to_raise_to;
+  } else if (amount_to_raise_to == Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind())) {
     // Don't round betsizes that are alreadz a multiple of big-blind.
     // This case deserves specdial attention, because big-blind
     // might be not a multiple of smallblind, e.g $2/$5
@@ -223,15 +222,10 @@ double MaximumBetsizeDueToMaxOppStack() {
 
 double AdjustedBetsize(double amount_to_raise_to) {
 	double original_amount_to_raise_to = amount_to_raise_to;
-  bool rounding_enabled = p_function_collection->EvaluateAutoplayerFunction(
-    k_standard_function_betsize_enable_rounding);
   write_log(preferences.debug_betsize_adjustment(),
-    "[BetsizeAdjustment] Rounding to beautiful numbers %s\n",
-    Bool2CString(rounding_enabled));
+    "[BetsizeAdjustment] Rounding to beautiful numbers\n");
   // Rounding to beautiful numbers but only if enabled
-  if (rounding_enabled) {
-    amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
-  }
+  amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
   double minimum;
   if (p_symbol_engine_casino->ConnectedToDDPoker()) {
     write_log(preferences.debug_betsize_adjustment(),
@@ -243,10 +237,8 @@ double AdjustedBetsize(double amount_to_raise_to) {
 	AdaptValueToMinMaxRange(&amount_to_raise_to, minimum, amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
-  // Rounding to beautiful numbers (here full dollars) but only if enabled
-  if (rounding_enabled) {
-	  AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
-  }
+  // Rounding to beautiful numbers (here full dollars)
+  AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
   // Special handling for DDPoker
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=19185&hilit=ddpoker
   if(p_symbol_engine_casino->ConnectedToDDPoker()){

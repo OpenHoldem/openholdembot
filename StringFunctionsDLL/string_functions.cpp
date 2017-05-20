@@ -39,8 +39,6 @@
 #define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
 #endif
 
-//#define _AFXDLL //!!!!!
-
 #include <afxwin.h>
 #include <assert.h>
 #include <math.h>
@@ -416,6 +414,11 @@ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b) {
   // Result of memcmp == 0 means: identical
   // See http://www.cplusplus.com/reference/clibrary/cstring/memcmp/
   return (memcmp(string_a, string_b, strlen(string_a)) == 0);
+}
+
+bool StringAIsPostfixOfStringB(const char *string_a, const char *string_b) {
+  //!!!!!
+  return false;
 }
 
 bool StringIsExactMatch(const char *string_a, const char *string_b) {

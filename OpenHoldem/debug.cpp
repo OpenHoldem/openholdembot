@@ -248,11 +248,6 @@ void clear_log() {
   start_log();
 }
 
-void update_log_filename() { //!!!!!
-  assert(log_fp != NULL);
-  rename("oh_0.log", "oh_0__PokerStars_NL_200.log");
-}
-
 void start_log(void) {
   if (log_fp != NULL) {
     return;

@@ -108,17 +108,24 @@ double CParseTreeOperatorNode::EvaluateUnaryExpression(bool log_symbol) {
   assert(_third_sibbling  == NULL);
   double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log_symbol);
     switch (_node_type) {
-    case kTokenOperatorUnaryMinus:     return (0 - value_of_first_sibbling);
-    case kTokenOperatorLog:            return log(value_of_first_sibbling);		
-    case kTokenOperatorLogicalNot:     return !value_of_first_sibbling;
-    case kTokenOperatorBinaryNot:      return ~ ((unsigned long)value_of_first_sibbling);
-    case kTokenOperatorBitCount:       return bitcount((unsigned long)value_of_first_sibbling);
+    case kTokenOperatorUnaryMinus:     
+      return (0 - value_of_first_sibbling);
+    case kTokenOperatorLog:            
+      return log(value_of_first_sibbling);		
+    case kTokenOperatorBinaryNot:      
+      return ~ ((unsigned long)value_of_first_sibbling);
+    case kTokenOperatorBitCount:       
+      return bitcount((unsigned long)value_of_first_sibbling);
     case kTokenBracketOpen_1: 
     case kTokenBracketOpen_2: 
-    case kTokenBracketOpen_3:          return value_of_first_sibbling;
+    case kTokenBracketOpen_3:          
+      return value_of_first_sibbling;
+    case kTokenOperatorLogicalNot:     
+      VerifyBooleanOperand(value_of_first_sibbling);
+      return !value_of_first_sibbling;
     default: 
-	  assert(false);
-	  return kUndefined;
+	    assert(false);
+	    return kUndefined;
   }
 }
 
@@ -144,21 +151,26 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
 	// Short circuiting
 	// Don't evaluate unnecessary parts of expressions
 	if (_node_type == kTokenOperatorLogicalAnd)	{
+    VerifyBooleanOperand(value_of_first_sibbling);
 		if (value_of_first_sibbling == double(false)) {
 			return false;
 		}
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
+    VerifyBooleanOperand(value_of_second_sibbling);
 		return (value_of_second_sibbling ? true : false);
 	}	else if (_node_type == kTokenOperatorLogicalOr)	{
     // Attention!
     // We can not look here for "value_of_first_sibbling == true"
-    // because this way we would only accept true (==1)
-    // but we want to accept any non-zero value.
+    // because this way we would only accept exactly true (==1)
+    // We want to accept any non-zero value.
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17899
+    // Nowadays we want to check at least.
+    VerifyBooleanOperand(value_of_first_sibbling);
 		if (value_of_first_sibbling) {
 			return true;
 		}
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
+    VerifyBooleanOperand(value_of_second_sibbling);
 		return (value_of_second_sibbling ? true : false);
 	}
 	// Short circuiting done
@@ -201,8 +213,11 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
 	  case kTokenOperatorGreaterOrEqual: 
 		  return IsGreaterOrEqual(value_of_first_sibbling, value_of_second_sibbling);
 	  case kTokenOperatorNotEqual: 
+      return value_of_first_sibbling != value_of_second_sibbling;
 	  case kTokenOperatorLogicalXOr: 
-		  return value_of_first_sibbling != value_of_second_sibbling;
+      VerifyBooleanOperand(value_of_first_sibbling);
+      VerifyBooleanOperand(value_of_second_sibbling);
+		  return bool(value_of_first_sibbling) != bool(value_of_second_sibbling);
 	  case kTokenOperatorBinaryAnd: 
 		  return (unsigned long)value_of_first_sibbling 
 			  & (unsigned long)value_of_second_sibbling;
@@ -238,6 +253,7 @@ double CParseTreeOperatorNode::EvaluateTernaryExpression(bool log) {
 	assert((_node_type == kTokenOperatorConditionalIf)
 		  || (_node_type == kTokenOperatorConditionalWhen));
 	double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log);
+  VerifyBooleanOperand(value_of_first_sibbling);
 	if (value_of_first_sibbling) {
 		double value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
     // Special behaviour for user-variables:
@@ -259,6 +275,9 @@ double CParseTreeOperatorNode::EvaluateSibbling(
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
   if (first_second_or_third_sibbling == NULL) {
+    // !!! This code must no longer be called,
+    // as we have a new node type CParseTreeTerminalNodeEndOfFunction
+    assert(kThisMustNotHappen);
     // When evaluating an empty tree we evaluate a special symbol
     // kEmptyxpression_False_Zero_WhenOthersFoldForce
     // for better readability of the log-file.

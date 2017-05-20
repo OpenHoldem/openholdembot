@@ -656,7 +656,7 @@ bool CSymbolEngineCards::IsHand(const char *name) {
   return true;
 }
 
-bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CSymbolEngineCards::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "$", 1)==0) {
@@ -694,6 +694,7 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 		}
 		else if (memcmp(name, "ncardsbetter", 12)==0 && strlen(name)==12)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ncardsbetter();
 		}
 		else
@@ -708,14 +709,17 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	{
 		if (memcmp(name, "ispair", 6)==0 && strlen(name)==6)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ispair();
 		}
 		else if (memcmp(name, "issuited", 8)==0 && strlen(name)==8)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = issuited();
 		}
 		else if (memcmp(name, "isconnector", 11)==0 && strlen(name)==11)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isconnector();
 		}
 		else
@@ -730,10 +734,12 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	{
 		if (memcmp(name, "nsuited", 7)==0 && strlen(name)==7)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nsuited();
 		}
 		else if (memcmp(name, "nsuitedcommon", 13)==0 && strlen(name)==13)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nsuitedcommon();
 		}
 		else
@@ -748,10 +754,12 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	{
 		if (memcmp(name, "tsuit", 5)==0 && strlen(name)==5)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = tsuit();
 		}
 		else if (memcmp(name, "tsuitcommon", 11)==0 && strlen(name)==11)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = tsuitcommon();
 		}
 		else
@@ -766,34 +774,42 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	{
 		if (memcmp(name, "nstraight", 9)==0 && strlen(name)==9)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraight();
 		}
 		else if (memcmp(name, "nstraightcommon", 15)==0 && strlen(name)==15)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightcommon();
 		}
 		else if (memcmp(name, "nstraightfill", 13)==0 && strlen(name)==13)		
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightfill();
 		}
 		else if (memcmp(name, "nstraightfillcommon", 19)==0 && strlen(name)==19)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightfillcommon();
 		}
 		else if (memcmp(name, "nstraightflush", 14)==0 && strlen(name)==14)		
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightflush();
 		}
 		else if (memcmp(name, "nstraightflushcommon", 20)==0 && strlen(name)==20)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightflushcommon();
 		}
 		else if (memcmp(name, "nstraightflushfill", 18)==0 && strlen(name)==18)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightflushfill();
 		}
 		else if (memcmp(name, "nstraightflushfillcommon", 24)==0 && strlen(name)==24)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightflushfillcommon();
 		}
 		else
@@ -808,10 +824,12 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	{
 		if (memcmp(name, "nranked", 7)==0 && strlen(name)==7)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nranked();
 		}
 		else if (memcmp(name, "nrankedcommon", 13)==0 && strlen(name)==13)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = nrankedcommon();
 		}
 		else
@@ -826,10 +844,12 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	{
 		if (memcmp(name, "trank", 5)==0 && strlen(name)==5)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = trank();
 		}
 		else if (memcmp(name, "trankcommon", 11)==0 && strlen(name)==11)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = trankcommon();
 		}
 		else
@@ -847,8 +867,9 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	}
   else if (memcmp(name, "nouts", 5)==0 && strlen(name)==5)						
 	{
-			*result = nouts();
-      return true;
+    WarnIfSymbolIsHoldemOnly(name);
+		*result = nouts();
+    return true;
 	}
 	// Symbol of a different symbol-engine
 	return false;

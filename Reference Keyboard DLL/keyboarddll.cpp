@@ -63,47 +63,6 @@ void PlayKeyboardEvent(int vkey, int bscan)
 
 KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma)
 {
-	INPUT			input[102];
-
-	POINT pt = RandomizeClickLocation(rect);
-	double fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-
-	// Translate click point to screen/mouse coords
-	ClientToScreen(hwnd, &pt);
-	double fx = pt.x*(65535.0f/fScreenWidth);
-	double fy = pt.y*(65535.0f/fScreenHeight);
-
-	// Set up the input structure
-
-	int input_count=0;
-
-	// First click in the rect to select it, if rect is not passed in as {-1, -1, -1, -1}
-	if (rect.left!=-1 || rect.top!=-1 || rect.right!=-1 || rect.bottom!=-1)
-	{
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = (LONG) fx;
-		input[input_count].mi.dy = (LONG) fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-		
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = (LONG) fx;
-		input[input_count].mi.dy = (LONG) fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-	}
-
-	// Set focus to target window
-	SetFocus(hwnd);
-	SetForegroundWindow(hwnd);
-	SetActiveWindow(hwnd);
-
-	// Send input
-	SendInput(input_count, input, sizeof(INPUT));
-
 	// Send each character of the string via PlayKeyboardEvent
 	char ch_str[100];
 	sprintf_s(ch_str, 100, "%s", s.GetString());

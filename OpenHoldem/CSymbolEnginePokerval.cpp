@@ -43,6 +43,7 @@ CSymbolEnginePokerval::~CSymbolEnginePokerval() {
 }
 
 void CSymbolEnginePokerval::InitOnStartup() {
+  PrepareConstantSuitMasks();
 }
 
 void CSymbolEnginePokerval::UpdateOnConnection() {
@@ -50,11 +51,10 @@ void CSymbolEnginePokerval::UpdateOnConnection() {
 }
 
 void CSymbolEnginePokerval::UpdateOnHandreset() {
-	for (int i=0; i<kNumberOfBetrounds; i++) {
+	for (int i=0; i<=kNumberOfBetrounds; ++i) {
 		_phandval[i] = kUndefinedZero;
 		_chandval[i] = kUndefinedZero;
 	}
-	nCards  = kUndefinedZero;
 	handval = kUndefinedZero;
 }
 
@@ -82,91 +82,145 @@ void CSymbolEnginePokerval::UpdateOnHeartbeat() {
 	_srankbitscommon = kUndefinedZero;
 	_srankbitscommonp = kUndefinedZero;
 	_srankbitspoker  = kUndefinedZero;
-
+  CalculateCardMasks();
 	CalculateRankBits();
 	CalcPokerValues();
 }
 
-void CSymbolEnginePokerval::CalcPokerValues() {
-	CardMask Cards = {0};
-	
-	///////////////////////////////////////////////////////////////////
-	// pokerval
-	nCards = 0;
-	CardMask_RESET(Cards);
-	for (int i=0; i<NumberOfCardsPerPlayer(); i++)	{
-		if (p_table_state->User()->HasKnownCards())	{
-      CardMask_SET(Cards, p_table_state->User()->hole_cards(i)->GetValue());
-			nCards++;
-		}
-	}
-  for (int i=0; i<kNumberOfCommunityCards; i++)	{
-		// common cards
-    Card *card = p_table_state->CommonCards(i);
-    if (card->IsKnownCard())	{
-      CardMask_SET(Cards, card->GetValue());
-			nCards++;
-		}
-	}
-  handval = Hand_EVAL_N(Cards, nCards);
+void CSymbolEnginePokerval::PrepareConstantSuitMasks() {
+  CardMask_RESET(_heartsCards);
+  CardMask_RESET(_diamondsCards);
+  CardMask_RESET(_spadesCards);
+  CardMask_RESET(_clubsCards);
+  for (int rank = Rank_2; rank <= Rank_ACE; ++rank) {
+    CardMask_SET(_heartsCards, StdDeck_MAKE_CARD(rank, Suit_HEARTS));
+    CardMask_SET(_diamondsCards, StdDeck_MAKE_CARD(rank, Suit_DIAMONDS));
+    CardMask_SET(_spadesCards, StdDeck_MAKE_CARD(rank, Suit_SPADES));
+    CardMask_SET(_clubsCards, StdDeck_MAKE_CARD(rank, Suit_CLUBS));
+  }
+}
 
+void CSymbolEnginePokerval::CalculateCardMasks() {
+  CardMask_RESET(_player_cards);
+  if (p_table_state->User()->HasKnownCards()) {
+    for (int i = 0; i<NumberOfCardsPerPlayer(); i++) {
+      CardMask_SET(_player_cards, p_table_state->User()->hole_cards(i)->GetValue());
+    }
+  }
+  CardMask_RESET(_board_cards);
+  for (int i = 0; i<kNumberOfCommunityCards; i++) {
+    // common cards
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard()) {
+      CardMask_SET(_board_cards, card->GetValue());
+    }
+  }
+  CardMask_RESET(_all_cards);
+  CardMask_OR(_all_cards, _player_cards, _board_cards);
+}
+
+int CSymbolEnginePokerval::HandEval(CardMask c) {
+  int n_cards = CardCount(c);
+  int hand_strength = Hand_EVAL_N(c, n_cards);
+  return hand_strength;
+}
+
+int CSymbolEnginePokerval::CardCount(CardMask c) {
+  int count = 0;
+  for (int suit = StdDeck_Suit_FIRST; suit <= StdDeck_Suit_LAST; ++suit) {
+    for (int rank = Rank_2; rank <= Rank_ACE; ++rank) {
+      int card = StdDeck_MAKE_CARD(rank, suit);
+      if (StdDeck_CardMask_CARD_IS_SET(c, card)) {
+        ++count;
+      }
+    }
+  }
+  return count;
+}
+
+int CSymbolEnginePokerval::CardMaskToRankBits(CardMask c) {
+  int rankbits = 0;
+  for (int suit = StdDeck_Suit_FIRST; suit <= StdDeck_Suit_LAST; ++suit) {
+    for (int rank = Rank_2; rank <= Rank_ACE; ++rank) {
+      int card = StdDeck_MAKE_CARD(rank, suit);
+      if (StdDeck_CardMask_CARD_IS_SET(c, card)) {
+        SetRankBit(&rankbits, rank);
+      }
+    }
+  }
+  return rankbits;
+}
+
+int CSymbolEnginePokerval::SuitBits(CardMask c, int suit) {
+  CardMask suited_cards;
+  CardMask_RESET(suited_cards);
+  switch (suit) {
+  case Suit_HEARTS:
+    CardMask_AND(suited_cards, c, _heartsCards);
+    break;
+  case Suit_DIAMONDS:
+    CardMask_AND(suited_cards, c, _diamondsCards);
+    break;
+  case Suit_SPADES:
+    CardMask_AND(suited_cards, c, _spadesCards);
+    break;
+  case Suit_CLUBS:
+    CardMask_AND(suited_cards, c, _clubsCards);
+    break;
+  // Otherwise: 
+  // Keep suited cards empty
+  }
+  return CardMaskToRankBits(suited_cards);
+}
+
+int CSymbolEnginePokerval::suitbitsplayer(int suit) {
+  return SuitBits(_player_cards, suit);
+}
+
+int CSymbolEnginePokerval::suitbitscommon(int suit) {
+  return SuitBits(_board_cards, suit);
+}
+
+void CSymbolEnginePokerval::CalcPokerValues() {
+  handval = HandEval(_all_cards);
 	_pcbits = 0;
-	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
+	_pokerval = CalculatePokerval(handval, CardCount(_all_cards), &_pcbits,				
     p_table_state->User()->hole_cards(0)->GetValue(), 
     p_table_state->User()->hole_cards(1)->GetValue());
 
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
+  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] nCards = %i\n", nCards);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
 	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
   if (BETROUND > kBetroundPreflop
-		&& _phandval[BETROUND-1] > _phandval[BETROUND-2]) {
+		&& _phandval[BETROUND] > _phandval[BETROUND-1]) {
 		_ishandup = true;														
 	}
   CalculateHandType(); 
 
 	///////////////////////////////////////////////////////////////////
 	// pokervalplayer
-	nCards = 0;
-	CardMask_RESET(Cards);
-	for (int i=0; i<NumberOfCardsPerPlayer(); i++)	{
-		// player cards
-		if (p_table_state->User()->HasKnownCards()) {
-			CardMask_SET(Cards, p_table_state->User()->hole_cards(i)->GetValue());
-			nCards++;
-		}
-	}
-	handval = Hand_EVAL_N(Cards, nCards);
-
+	handval = HandEval(_player_cards);
   int	dummy = 0;
-	_pokervalplayer = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD);
+	_pokervalplayer = CalculatePokerval(handval, CardCount(_player_cards), &dummy, CARD_NOCARD, CARD_NOCARD);
 
-  	///////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
 	// pokervalcommon
-	nCards = 0;
-	CardMask_RESET(Cards);
-	for (int i=0; i<kNumberOfCommunityCards; i++) {
-		// common cards
-    Card *card = p_table_state->CommonCards(i);
-    if (card->IsKnownCard())	{
-      CardMask_SET(Cards, card->GetValue());
-			nCards++;
-		}
-	}
-	handval = Hand_EVAL_N(Cards, nCards);
 
-	_pokervalcommon = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD); 
-  _chandval[BETROUND-1] = _pokervalcommon & 0xff000000; 
+	handval = HandEval(_board_cards);
+
+	_pokervalcommon = CalculatePokerval(handval, CardCount(_board_cards), &dummy, CARD_NOCARD, CARD_NOCARD); 
+  _chandval[BETROUND] = _pokervalcommon & 0xff000000; 
 	if (BETROUND > kBetroundPreflop 
-			&& _chandval[BETROUND-1] > _chandval[BETROUND-2])	{
+			&& _chandval[BETROUND] > _chandval[BETROUND-1])	{
 		_ishandupcommon = true;
 	}
 }
 
 void CSymbolEnginePokerval::CalculateHandType()
 {
+  int nCards = CardCount(_all_cards);
 	_hand_type = HandVal_HANDTYPE(handval);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handval = %i\n", handval);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handtype = %i\n", _hand_type);
@@ -254,13 +308,8 @@ CString CSymbolEnginePokerval::HandType() {
 
 void CSymbolEnginePokerval::CalculateRankBits() {
 	int	     _rank = 0, suit = 0 ;
-	CardMask plCards = {0}, comCards = {0}, plcomCards = {0};
 
-	CardMask_RESET(plCards);
-	CardMask_RESET(comCards);
-	CardMask_RESET(plcomCards);
-
-	_rankbitsplayer   = kUndefinedZero;
+  _rankbitsplayer   = kUndefinedZero;
 	_rankbitscommon   = kUndefinedZero;
 	_rankbitspoker    = kUndefinedZero;
 	_srankbitsplayer  = kUndefinedZero;
@@ -273,34 +322,8 @@ void CSymbolEnginePokerval::CalculateRankBits() {
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuit = %i\n", tsuit);
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
 	
-	// player cards
-	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
-		if (p_table_state->User()->HasKnownCards()) {
-      int card = p_table_state->User()->hole_cards(i)->GetValue();
-			CardMask_SET(plCards, card);
-			CardMask_SET(plcomCards, card);
-		}
-	}
-
-	// common cards
-	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    Card *card = p_table_state->CommonCards(i);
-    if (card->IsKnownCard())	{
-      CardMask_SET(comCards, card->GetValue());
-			CardMask_SET(plcomCards, card->GetValue());
-		}
-	}
-
-	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++) {
-		for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)	{
-			if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, suit))) {
-				SetRankBit(&_rankbitsplayer, _rank);
-			}
-			if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, suit)))	{
-				SetRankBit(&_rankbitscommon, _rank);
-			}
-		}
-	}
+  _rankbitsplayer = CardMaskToRankBits(_player_cards);
+  _rankbitscommon = CardMaskToRankBits(_board_cards);
 	_rankbitspoker = (1<<((_pokerval>>16)&0xf))
 		| (1<<((_pokerval>>12)&0xf)) 
 		| (1<<((_pokerval>>8)&0xf)) 
@@ -310,26 +333,26 @@ void CSymbolEnginePokerval::CalculateRankBits() {
 	_rankbitspoker |= ((_rankbitspoker&0x4000) ? (1<<1) : 0); 
 
 	for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)	{
-		if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, tsuit)))	{
+		if (CardMask_CARD_IS_SET(_player_cards, StdDeck_MAKE_CARD(_rank, tsuit)))	{
 			SetRankBit(&_srankbitsplayer, _rank);
 		}
-		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, tsuitcommon))) {
+		if (CardMask_CARD_IS_SET(_board_cards, StdDeck_MAKE_CARD(_rank, tsuitcommon))) {
 			SetRankBit(&_srankbitscommon, _rank);
 		}
-		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, tsuit))) {
+		if (CardMask_CARD_IS_SET(_board_cards, StdDeck_MAKE_CARD(_rank, tsuit))) {
 			SetRankBit(&_srankbitscommonp, _rank);
 		}
 	}
   _srankbitspoker =														
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, tsuit)) ?
+			(CardMask_CARD_IS_SET(_all_cards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>16)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>12)&0xf)-2, tsuit)) ?
+			(CardMask_CARD_IS_SET(_all_cards, StdDeck_MAKE_CARD(((_pokerval>>12)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>12)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>8)&0xf)-2, tsuit)) ?
+			(CardMask_CARD_IS_SET(_all_cards, StdDeck_MAKE_CARD(((_pokerval>>8)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>8)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>4)&0xf)-2, tsuit)) ?
+			(CardMask_CARD_IS_SET(_all_cards, StdDeck_MAKE_CARD(((_pokerval>>4)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>4)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, tsuit)) ?
+			(CardMask_CARD_IS_SET(_all_cards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, tsuit)) ?
 		 (1<<((_pokerval>>0)&0xf)) : 0);
   // Take care about ace (low bit)
 	_srankbitspoker |= ((_srankbitspoker&0x4000) ? (1<<1) : 0); 
@@ -386,32 +409,8 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	int _rank = 0, suit = 0;
 	unsigned int _rankbits_common = 0;
 
-	CardMask      comCards = {0};
-	CardMask_RESET(comCards);
+  _rankbits_common = CardMaskToRankBits(_board_cards);
 
-	// common cards
-	for (int i=0; i<kNumberOfCommunityCards; i++)
-	{
-    Card *card = p_table_state->CommonCards(i);
-    if (card->IsKnownCard())
-		{
-      CardMask_SET(comCards, card->GetValue());
-		}
-	}
-	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
-	{
-		for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)
-		{
-			if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, suit)))
-			{
-				_rankbits_common |= (1<<(_rank+2));
-				if (_rank == Rank_ACE)
-				{
-					_rankbits_common |= (1<<1);
-				}
-			}
-		}
-	}
 	int current_top_end = StdDeck_RANK(HandVal_TOP_CARD(handval))+2;
 
 	for (int k=14; k>current_top_end; k--)
@@ -429,73 +428,13 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 	double		pv = 0.;
 	int				i = 0, j = 0, k = 0, max = 0, c = 0, flush_suit = 0; //Matrix 2008-06-28
 	int				bits = 0;
-	CardMask	Cards = {0}, heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
+	CardMask	Cards = {0}, suittestCards = { 0 };
 
 	// If we have name straight flush or flush, figure out the suit
 	flush_suit = -1;
 	if (HandVal_HANDTYPE(hv)==HandType_STFLUSH || HandVal_HANDTYPE(hv)==HandType_FLUSH)
 	{
 		// Set up some suit masks
-		CardMask_RESET(heartsCards);
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_2, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_3, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_4, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_5, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_6, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_7, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_8, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_9, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_HEARTS));
-		CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_HEARTS));
-
-		CardMask_RESET(diamondsCards);
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_2, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_3, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_4, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_5, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_6, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_7, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_8, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_9, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_DIAMONDS));
-		CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_DIAMONDS));
-
-		CardMask_RESET(spadesCards);
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_2, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_3, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_4, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_5, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_6, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_7, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_8, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_9, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_KING, Suit_SPADES));
-		CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_SPADES));
-
-		CardMask_RESET(clubsCards);
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_2, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_3, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_4, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_5, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_6, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_7, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_8, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_9, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_CLUBS));
-		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_CLUBS));
-
 		CardMask_RESET(Cards);
 		for (int i=0; i<NumberOfCardsPerPlayer(); i++)
 		{
@@ -514,28 +453,28 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		}
 
 		max = 0;
-		CardMask_AND(suittestCards, Cards, spadesCards);
+		CardMask_AND(suittestCards, Cards, _spadesCards);
 		c = StdDeck_numCards(suittestCards);
 		if ( c>max && c>0)
 		{
 			max = c;
 			flush_suit = Suit_SPADES;
 		}
-		CardMask_AND(suittestCards, Cards, heartsCards);
+		CardMask_AND(suittestCards, Cards, _heartsCards);
 		c = StdDeck_numCards(suittestCards);
 		if ( c>max && c>0)
 		{
 			max = c;
 			flush_suit = Suit_HEARTS;
 		}
-		CardMask_AND(suittestCards, Cards, diamondsCards);
+		CardMask_AND(suittestCards, Cards, _diamondsCards);
 		c = StdDeck_numCards(suittestCards);
 		if ( c>max && c>0)
 		{
 			max = c;
 			flush_suit = Suit_DIAMONDS;
 		}
-		CardMask_AND(suittestCards, Cards, clubsCards);
+		CardMask_AND(suittestCards, Cards, _clubsCards);
 		c = StdDeck_numCards(suittestCards);
 		if ( c>max && c>0)
 		{
@@ -908,7 +847,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 	return pv;
 }
 
-bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "rankhi", 6) == 0)
@@ -927,6 +866,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		}
 		else if (memcmp(name, "rankhipoker", 11)==0 && strlen(name)==11)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = rankhipoker();
 		}
 		else
@@ -953,6 +893,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		}
 		else if (memcmp(name, "srankhipoker", 12)==0 && strlen(name)==12)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = srankhipoker();
 		}
 		else
@@ -979,6 +920,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		}
 		else if (memcmp(name, "ranklopoker", 11)==0 && strlen(name)==11)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ranklopoker();
 		}
 		else
@@ -1005,6 +947,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		}
 		else if (memcmp(name, "sranklopoker", 12)==0 && strlen(name)==12)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = sranklopoker();
 		}
 		else 
@@ -1019,14 +962,17 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 	{
 		if (memcmp(name, "pokerval", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = pokerval();
 		}
 		else if (memcmp(name, "pokervalplayer", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = pokervalplayer();
 		}
 		else if (memcmp(name, "pokervalcommon", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = pokervalcommon();
 		}
 		else 
@@ -1037,6 +983,25 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		// Valid symbol
 		return true;
 	}
+  else if (memcmp(name, "suitbits", 8) == 0)
+  {
+    int right_most_digit = RightDigitCharacterToNumber(name);
+    if (memcmp(name, "suitbitsplayer", 14) == 0 && strlen(name) == 15)
+    {
+      *result = suitbitsplayer(right_most_digit);
+    }
+    else if (memcmp(name, "suitbitscommon", 14) == 0 && strlen(name) == 15)
+    {
+      *result = suitbitscommon(right_most_digit);
+    }
+    else
+    {
+      // Invalid symbol
+      return false;
+    }
+    // Valid symbol
+    return true;
+  }
 	else if (memcmp(name, "rankbits", 8)==0)
 	{
 		if (memcmp(name, "rankbits", 8)==0 && strlen(name)==8)
@@ -1053,6 +1018,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		}
 		else if (memcmp(name, "rankbitspoker", 13)==0 && strlen(name)==13)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = rankbitspoker();
 		}
 		else 
@@ -1079,6 +1045,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		}
 		else if (memcmp(name, "srankbitspoker", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = srankbitspoker();
 		}
 		else 
@@ -1093,70 +1060,87 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 	{
 		if (memcmp(name, "ishandup", 8)==0 && strlen(name)==8)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishandup(); 
 		}
 		else if (memcmp(name, "ishandupcommon", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishandupcommon();
 		}
 		else if (memcmp(name, "ishicard", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishicard();
 		}
 		else if (memcmp(name, "isonepair", 9)==0 && strlen(name)==9)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isonepair();
 		}
 		else if (memcmp(name, "istwopair", 9)==0 && strlen(name)==9)		
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = istwopair();
 		}
 		else if (memcmp(name, "isthreeofakind", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isthreeofakind();
 		}
 		else if (memcmp(name, "isstraight", 10)==0 && strlen(name)==10)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isstraight();
 		}
 		else if (memcmp(name, "isflush", 7)==0 && strlen(name)==7)			
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isflush();
 		}
 		else if (memcmp(name, "isfullhouse", 11)==0 && strlen(name)==11)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isfullhouse();
 		}
 		else if (memcmp(name, "isfourofakind", 13)==0 && strlen(name)==13)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isfourofakind();
 		}
 		else if (memcmp(name, "isstraightflush", 15)==0 && strlen(name)==15)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isstraightflush();
 		}
 		else if (memcmp(name, "isroyalflush", 12)==0 && strlen(name)==12)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isroyalflush();
 		}
 		else if (memcmp(name, "ishipair", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishipair();
 		}
 		else if (memcmp(name, "islopair", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = islopair();
 		}
 		else if (memcmp(name, "ismidpair", 9)==0 && strlen(name)==9)		
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ismidpair();
 		}
 		else if (memcmp(name, "ishistraight", 12)==0 && strlen(name)==12)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishistraight();
 		}
 		else if (memcmp(name, "ishiflush", 9)==0 && strlen(name)==9)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishiflush();
 		}
 		else 
@@ -1170,10 +1154,12 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 	// Various symbols without grouping
 	else if (memcmp(name, "pcbits", 6)==0 && strlen(name)==6)	
 	{
+    WarnIfSymbolIsHoldemOnly(name);
 		*result = pcbits();
 	}
 	else if (memcmp(name, "npcbits", 7)==0 && strlen(name)==7)		
 	{
+    WarnIfSymbolIsHoldemOnly(name);
 		*result = npcbits();
 	}
 	else if (memcmp(name, "hicard", 6)==0 && strlen(name)==6)		
@@ -1226,7 +1212,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 }
 
 CString CSymbolEnginePokerval::SymbolsProvided() {
-  return "rankhi rankhicommon rankhiplayer rankhipoker "
+  CString list_of_symbols = "rankhi rankhicommon rankhiplayer rankhipoker "
     "srankhi srankhicommon srankhiplayer srankhipoker "
     "ranklo ranklocommon rankloplayer ranklopoker "
     "sranklo sranklocommon srankloplayer sranklopoker "
@@ -1241,4 +1227,8 @@ CString CSymbolEnginePokerval::SymbolsProvided() {
     "pcbits npcbits "
     "hicard onepair twopair threeofakind straight "
     "flush fullhouse fourofakind straightflush royalflush ";
+  // More verbose naming available via the multiplexer engine
+  list_of_symbols += RangeOfSymbols("suitbitsplayer%d", StdDeck_Suit_FIRST, StdDeck_Suit_LAST);
+  list_of_symbols += RangeOfSymbols("suitbitscommon%d", StdDeck_Suit_FIRST, StdDeck_Suit_LAST);
+  return list_of_symbols;
 }

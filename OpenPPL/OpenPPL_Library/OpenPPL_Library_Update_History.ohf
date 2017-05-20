@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -75,8 +75,8 @@
 // The most easy solution was this code-clone.
 //
 // We removed the first lines of BotsLastAction
-// WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
-// WHEN (betround != ConstBetRoundPreflop) RETURN BotsLastPreflopAction FORCE
+// WHEN [(betround == preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// WHEN (betround != preflop) RETURN BotsLastPreflopAction FORCE
 // because BotsActionsOnThisRoundIncludingChecks and BotsLastPreflopAction
 // could be [cached] after the first action and we could get wrong results.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20395
@@ -117,24 +117,6 @@ WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manua
 WHEN (prevaction == -1) RETURN None FORCE
 WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 
-##CalculateMissingSmallBlind##
-// True, if SB is missing, false otherwise
-// Should be called at our first action preflop only.
-WHEN [nopponentsdealt <= 0] RETURN False FORCE
-WHEN [CurrentbetOfDealPosition1Chair == sblind] RETURN False FORCE
-// If we are NOT the Second player to be dealt and see a bet 
-// of 1 big blind left to the dealer, then it is the big blind (SB missing)
-WHEN [(dealposition != 2) AND (CurrentbetOfDealPosition1Chair == bblind)] RETURN True FORCE
-// Problematic is only the case when I am in "big blind" (Second player to be dealt)
-// * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
-// * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
-// * if bet = 1 big blind and players behind me still to act, then SB is missing
-WHEN [(dealposition == 2) AND (CurrentbetOfDealPosition1Chair > bblind)] RETURN False FORCE
-// Case 2 and 3: precondition: bet = 1 big blind
-WHEN [(dealposition == 2) AND PlayersBehindDealPosition2ChairDidAct] RETURN False FORCE
-WHEN [(dealposition == 2) AND NOT PlayersBehindDealPosition2ChairDidAct] RETURN True FORCE
-WHEN Others RETURN ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY FORCE
-
 ##CalculateStartingChips##
 // Precondition: first hand, preflop
 (currentbet + balance + ante)
@@ -151,8 +133,8 @@ WHEN Others
 WHEN Others SET me_st_MemRaisesBeforeFlop_0
 WHEN Others SET me_st_MemRaisesOnFlop_0
 WHEN Others SET me_st_MemRaisesOnTurn_0
-WHEN Others SET me_st_MaxOpponentStackSize_0
-WHEN Others SET me_st_MinOpponentStackSize_0
+WHEN Others SET me_st_MemMaxOpponentStackSize_0
+WHEN Others SET me_st_MemMinOpponentStackSize_0
 WHEN Others SET me_st_MemBotsLastPreflopAction_None
 // Reset starting chips and stacksize once at the beginning of the session
 WHEN (handsplayed <= 1) SET me_st_MemStartingChips_0
@@ -170,26 +152,25 @@ WHEN Others SET me_st_MemBets_0
 // This function is the preferred place to store and update memory symbola
 // as it is our turn and we see stable frames, i.e. absence of casino animations
 //
-// At first we set the flag me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_True
+// At first we set the flag me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_true
 // as during the update we have partially inconsistent information,
 // as the OpenHoldem-symbols are already updated (e.g. didrais, ...).
 // This could cause some OpenPPl-symbols like BotsActionsOnThisRoundIncludingChecks
 // to be off by one, so we have to adapt.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=20275&p=142396#p142396
-WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_True
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_true
 WHEN Others SET me_st_MemRaises_Raises
 WHEN Others SET me_st_MemChecks_Checks
 WHEN Others SET me_st_MemCalls_Calls
 WHEN Others SET me_st_MemBets_Bets
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemRaisesBeforeFlop_Raises
-WHEN (betround == ConstBetRoundFlop) SET me_st_MemRaisesOnFlop_Raises
-WHEN (betround == ConstBetRoundTurn) SET me_st_MemRaisesOnTurn_Raises
+WHEN (betround == preflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN (betround == preflop) SET me_st_MemRaisesBeforeFlop_Raises
+WHEN (betround == flop) SET me_st_MemRaisesOnFlop_Raises
+WHEN (betround == turn) SET me_st_MemRaisesOnTurn_Raises
 WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
-WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MaxOpponentStackSize
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemMissingSmallBlind_MissingSmallBlind
+WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MinOpponentStackSize
 // Finally remember a heartbeat ID so that be become able to detect
 // if a symbol gets used before the next scrape (e.g by the debug-tab).
 // In this case we have to return the new value (e.g. of "Raises")
@@ -204,7 +185,7 @@ WHEN RememberCurrentGameStateAfterAutoplayeraction
 // Terminating the open-ended when-condition above
 // to execute the next one for sure.
 WHEN Others
-WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_false
 
 //*****************************************************************************
 //
@@ -216,7 +197,7 @@ WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
 // with the info of the current orbit).
 // This however does no longer work if we store a new "old" value
 // at the end of my turn after an autoplayer action.
-// True, all critical work is done, but code in other threads
+// true, all critical work is done, but code in other threads
 // (especially the debug-tab) might request these symbols.
 // Then Openholdem would temporarily display invalid info
 // and people would be confused.
@@ -237,7 +218,7 @@ WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
 me_st_heartbeatID_randomheartbeat
 
 ##OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction##
-WHEN (me_re_heartbeatID == randomheartbeat) RETURN True FORCE
+WHEN (me_re_heartbeatID == randomheartbeat) RETURN true FORCE
 
 //*****************************************************************************
 //
@@ -266,10 +247,13 @@ OR (betround    != me_re_MemOldGameStateBetround)
 // We can't use AND and OR here because of short circuiting.
 // We must use an operator that evaluates both sites.
 // The final result is meaningless.
-    me_st_MemOldGameStateDealerChair_dealerchair
-XOR me_st_MemOldGameStateCurrentBet_currentbet
+    me_st_MemOldGameStateCurrentBet_currentbet
 XOR me_st_MemOldGameStatePotSize_pot
 XOR me_st_MemOldGameStateBetround_betround
+// _dealerchair is a multiplexer-postfix nowadays
+// that gets textually replaced by its current value.
+// So we need an additional underscore here for a correct me_st_x_y-command.
+XOR me_st_MemOldGameStateDealerChair__dealerchair
 
 ##ResetOldGameStateAtHandReset##
 // We have to explicitly reset the old game-state at hand-reset,

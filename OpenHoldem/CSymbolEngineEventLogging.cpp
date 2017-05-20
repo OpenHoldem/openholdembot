@@ -65,7 +65,7 @@ void CSymbolEngineEventLogging::UpdateOnHeartbeat() {
   p_autoplayer_trace->Clear();
 }
 
-bool CSymbolEngineEventLogging::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineEventLogging::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
 	// We don't provide any symbols
 	return false;
 }

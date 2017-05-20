@@ -39,6 +39,7 @@
 #include "CSymbolEngineChecksBetsFolds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineColourCodes.h"
+#include "CSymbolEngineConstants.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineDebug.h"
 #include "CSymbolEngineEventLogging.h"
@@ -52,6 +53,8 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineMTTInfo.h"
+#include "CSymbolEngineMultiplexer.h"
+#include "CSymbolEngineNutFullhouseOrFourOfAKind.h"
 #include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -100,12 +103,14 @@ void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) 
 void CEngineContainer::CreateSymbolEngines() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
   CreateSpecialSymbolEngines();
-
   _number_of_symbol_engines_loaded = 0;
   // Some symbols to be calculated depend on symbols of other engines.
   // The engines inserted first will be called first later.
   // But we assure correct ordering by assertions in the constructors of the engines.
   //
+  // CSymbolengineMultiplexer.h
+  p_symbol_engine_multiplexer = new CSymbolEngineMultiplexer();
+  AddSymbolEngine(p_symbol_engine_multiplexer);
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);
@@ -118,6 +123,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineEventLogging
   p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
   AddSymbolEngine(p_symbol_engine_event_logging);
+  // CSymbolEngineConstants
+  p_symbol_engine_constants = new CSymbolEngineConstants();
+  AddSymbolEngine(p_symbol_engine_constants);
   // CSymbolEngineColourCodes
   p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
   AddSymbolEngine(p_symbol_engine_colourcodes);
@@ -190,6 +198,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCards
   p_symbol_engine_cards = new CSymbolEngineCards();
   AddSymbolEngine(p_symbol_engine_cards);
+  // CSymbolengineNutFullhouseOrFourOfAKind
+  p_symbol_engine_nutfullhouse_or_four_of_a_kind = new CSymbolEngineNutFullhouseOrFourOfAKind();
+  AddSymbolEngine(p_symbol_engine_nutfullhouse_or_four_of_a_kind);
   // CSymbolEnginePokerval
   p_symbol_engine_pokerval = new CSymbolEnginePokerval();
   AddSymbolEngine(p_symbol_engine_pokerval);
@@ -378,7 +389,7 @@ void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
   }
 }
 
-bool CEngineContainer::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
   if (IsOutdatedSymbol(name)) {
     *result = kUndefined;

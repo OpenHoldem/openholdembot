@@ -28,6 +28,7 @@ s$sitename                  pokeracademy
 s$betsizeconfirmationmethod    Click Bet
 s$betsizedeletionmethod        Nothing
 s$betsizeinterpretationmethod  1
+s$betsizeselectionmethod       Single Click
 s$t0type                    fuzzy
 s$t1type                    fuzzy
 s$t2type                    fuzzy

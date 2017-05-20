@@ -88,7 +88,7 @@ void CHandHistoryShowdown::UpdateOnHeartbeat() {
   _job_done = true;
 }
 
-bool CHandHistoryShowdown::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CHandHistoryShowdown::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // No symbols provided
 	return false;
 }

@@ -33,8 +33,9 @@ class CVirtualSymbolEngine {
   virtual void UpdateAfterAutoplayerAction(int autoplayer_action_code);
  public:
   void WarnIfSymbolRequiresMyTurn(CString name);
+  void WarnIfSymbolIsHoldemOnly(CString name);
  public:
-	virtual bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	virtual bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	// To build a list of identifiers for the editor
 	virtual CString SymbolsProvided();
 };

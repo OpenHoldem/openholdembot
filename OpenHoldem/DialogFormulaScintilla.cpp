@@ -1984,6 +1984,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "sitename$abc", "true if user defined string abc appears within the Table Map symbol _s$_sitename");
 	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
   AddSymbol(parent, "title$xyz", "true if user defined string xyz appears within the table title");
+  AddSymbol(parent, "islobby", "true if the tablemap is designed to connect to the lobby");
+  AddSymbol(parent, "ispopup", "true if the tablemap is designed to connect to known popup windows");
 
 	mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
 	AddSymbol(parent, "f$prwin_number_of_iterations", "number of iterations tested by the analyzer(s)");
@@ -2024,14 +2026,39 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 	mainParent = parent = AddSymbolTitle("Chairs", NULL, hCatItem);
 	AddSymbol(parent, "userchair", "user chair number (0-9)");
-	AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
-	AddSymbol(parent, "raischair", "raising chair number (0-9)");
-	AddSymbol(parent, "oppchair", "raising chair number (0-9)");
+  AddSymbol(parent, "headsupchair", "chair number of the one and only opponent headsup (0-9)");
+  AddSymbol(parent, "bigblindchair", "big blind chair number(0 - 9)");
+  AddSymbol(parent, "smallblindchair", "small blind chair number (0-9)");
+  AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
+  AddSymbol(parent, "buttonchair", "synonym for dealerchair (0-9)");
+  AddSymbol(parent, "cutoffchair", "cut off chair number (0-9)");
+  AddSymbol(parent, "mp3chair", "middle position 3 chair number (0-9)");
+  AddSymbol(parent, "mp2chair", "middle position  2 chair number (0-9)");
+  AddSymbol(parent, "mp1chair", "middle position  1 chair number (0-9)");
+  AddSymbol(parent, "ep3chair", "early  position 3 chair number (0-9)");
+  AddSymbol(parent, "ep2chair", "early  position 2 chair number (0-9)");
+  AddSymbol(parent, "ep1chair", "early  position 1 chair number (0-9)");
+  AddSymbol(parent, "utgchair", "under the gun chair number (0-9)");
+  // Chairs, raisers and callers
+  AddSymbol(parent, "firstcallerchair", "first caller chair number (0-9)");
+  AddSymbol(parent, "lastcallerchair", "last caller chair number (0-9)");
+  AddSymbol(parent, "firstraiserchair", "first raiser chair number (0-9)");
+  AddSymbol(parent, "lastraiserchair", "last raiser chair number (0-9)");
+  // lastraiserchair and raischair are synonyms
+	AddSymbol(parent, "raischair", "synonym for lastraiserchair (0-9)");
 	AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");
 	AddSymbol(parent, "chairbit$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
 
-	mainParent = parent = AddSymbolTitle("Rounds / Positions", NULL, hCatItem);
+	mainParent = parent = AddSymbolTitle("Betting Rounds / Positions", NULL, hCatItem);
 	AddSymbol(parent, "betround", "betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river");
+  AddSymbol(parent, "previousround", "previous betting round (1-3) 1=preflop, 2=flop, 3=turn");
+  AddSymbol(parent, "currentround", "synonym for betround (1-4) 1=preflop, 2=flop, 3=turn, 4=river");
+  AddSymbol(parent, "preflop", "verbose constant for the 1st betting round");
+  AddSymbol(parent, "flop", "verbose constant for the 2nd betting round");
+  AddSymbol(parent, "turn", "verbose constant for the 3rd betting round");
+  AddSymbol(parent, "river", "verbose constant for the 4th betting round");
+  
+  mainParent = parent = AddSymbolTitle("Positions", NULL, hCatItem);
 	AddSymbol(parent, "betposition", "your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer).  Betposition will change as players fold in front of you.");
 	AddSymbol(parent, "dealposition", "your deal position (1=sblind,2=bblind ... nplayersdealt=dealer).  Dealposition will not change as players fold.");
 	AddSymbol(parent, "callposition", "your numbered offset from the raising player (who is 0)");
@@ -2107,6 +2134,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "isfourofakind", "true when you have four of a kind");
 	AddSymbol(parent, "isstraightflush", "true when you have a straight flush");
 	AddSymbol(parent, "isroyalflush", "true when you have a royal flush");
+  AddSymbol(parent, "nutfullhouseorfourofakind", "OpenPPL symbol that ranks the strength of quads and full houses, 1 = best, 999 = not at all");
+  AddSymbol(parent, "nutfullhouseorfourofakind_ntotal", "total number of currently possible quads and full houses, for comparison");
 
 	mainParent = parent = AddSymbolTitle("Pocket Tests", NULL, hCatItem);
 	AddSymbol(parent, "ispair", "true when your two dealt pocket cards are rank equal (0-1)");
@@ -2198,6 +2227,14 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "srankbitscommon", "bit list of suited card ranks (commons tsuitcommon)");
 	AddSymbol(parent, "srankbitsplayer", "bit list of suited card ranks (yours tsuit)");
 	AddSymbol(parent, "srankbitspoker", "bit list of suited card ranks (pokerval tsuit)");
+  AddSymbol(parent, "suitbitsplayerN", "bit list of card ranks(yours) for suit N (N = 0..3)");
+  AddSymbol(parent, "suitbitscommonN", "bit list of card ranks(common) for suit N (N = 0..3)");
+
+  mainParent = parent = AddSymbolTitle("Suit Constants", NULL, hCatItem);
+  AddSymbol(parent, "clubs", "verbose constant to access suit symbols (value = 2)");
+  AddSymbol(parent, "diamonds", "verbose constant to access suit symbols (value = 1)");
+  AddSymbol(parent, "hearts", "verbose constant to access suit symbols (value = 0)");
+  AddSymbol(parent, "spades", "verbose constant to access suit symbols (value = 3)");
 
 	mainParent = parent = AddSymbolTitle("Rank Hi (aces are hi)", NULL, hCatItem);
 	AddSymbol(parent, "rankhi", "highest card rank (14-2) (yours and commons)");

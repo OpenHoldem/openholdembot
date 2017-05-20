@@ -82,7 +82,9 @@ void CTitleEvaluator::EvaluateTitleText() {
   ProcessTitle(titletext, title_format);
   // Now try alternative ttlimitsX
   for (int i = 0; i < k_max_number_of_titletexts; i++) {
-    title_format.Format("ttlimits%d", i);
+    CString ttlimitsX;
+    ttlimitsX.Format("ttlimits%d", i);
+    title_format = p_tablemap->GetTMSymbol(ttlimitsX);
     ProcessTitle(titletext, title_format);
   }
 }
@@ -375,7 +377,7 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
 #ifdef OPENHOLDEM_PROGRAM
   // Perfect match found.
   // Write temporary results back.
-  // Only if the lnown value is "undefined",
+  // Only if the known value is "undefined",
   // without any worries about the new value
   if (p_table_state->_s_limit_info.handnumber() == "") {
     p_table_state->_s_limit_info._handnumber = new_handnumber;

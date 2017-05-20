@@ -31,7 +31,7 @@ class CSymbolEngineGameType: public CVirtualSymbolEngine {
 	void UpdateOnHeartbeat();
 	void CalcTableLimits();
  public:
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
  public:
 	int gametype()	{ return _gametype; }	// former p_symbol_engine_various_data_lookup->sym()->lim

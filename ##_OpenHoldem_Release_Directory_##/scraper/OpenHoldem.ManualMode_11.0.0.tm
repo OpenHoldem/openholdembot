@@ -17,9 +17,10 @@ z$targetsize       574  335
 // strings
 //
 
-s$betsizeconfirmationmethod Click Bet
-s$betsizedeletionmethod     Nothing
-s$betsizeinterpretationmethod 3
+s$betsizeconfirmationmethod    Click Bet
+s$betsizedeletionmethod        Nothing
+s$betsizeinterpretationmethod  3
+s$betsizeselectionmethod       Nothing
 s$nchairs                   10
 s$network                   pokerstars
 s$sitename                  openholdem

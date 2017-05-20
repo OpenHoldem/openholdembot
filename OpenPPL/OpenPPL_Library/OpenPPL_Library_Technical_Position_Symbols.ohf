@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -69,66 +69,66 @@
 (AggressorChair == 7) ? ac_dealpos7 :
 (AggressorChair == 8) ? ac_dealpos8 :
 (AggressorChair == 9) ? ac_dealpos9 :
-HINT_There_Are_No_True_Raisers
+HINT_There_Are_No_true_Raisers
 
 ##EarlyPosition1Calling##
-(callbits1 >> EarlyPosition1Chair) & 1 == 1
+(callbits1 >> ep1chair) & 1 == 1
 
 ##EarlyPosition2Calling##
-(callbits1 >> EarlyPosition2Chair) & 1 == 1
+(callbits1 >> ep2chair) & 1 == 1
 
 ##EarlyPosition3Calling##
-(callbits1 >> EarlyPosition3Chair) & 1 == 1
+(callbits1 >> ep3chair) & 1 == 1
 
 ##MiddlePosition1Calling##
-(callbits1 >> MiddlePosition1Chair) & 1 == 1
+(callbits1 >> mp1chair) & 1 == 1
 
 ##MiddlePosition2Calling##
-(callbits1 >> MiddlePosition2Chair) & 1 == 1
+(callbits1 >> mp2chair) & 1 == 1
 
 ##MiddlePosition3Calling##
-(callbits1 >> MiddlePosition3Chair) & 1 == 1
+(callbits1 >> mp3chair) & 1 == 1
 
 ##CutOffCalling##
-(callbits1 >> CutOffChair) & 1 == 1
+(callbits1 >> cutoffchair) & 1 == 1
 
 ##ButtonCalling##
-(callbits1 >> ButtonChair) & 1 == 1
+(callbits1 >> buttonchair) & 1 == 1
 
 ##SmallBlindCalling##
-(callbits1 >> SmallBlindChair) & 1 == 1
+(callbits1 >> smallblindchair) & 1 == 1
 
 ##BigBlindCalling##
-(callbits1 >> BigBlindChair) & 1 == 1
+(callbits1 >> bigblindchair) & 1 == 1
 
 ##EarlyPosition1Raising##
-[(raisbits1 >> EarlyPosition1Chair) & 1 == 1]
+[(raisbits1 >> ep1chair) & 1 == 1]
 
 ##EarlyPosition2Raising##
-[(raisbits1 >> EarlyPosition2Chair) & 1 == 1]
+[(raisbits1 >> ep2chair) & 1 == 1]
 
 ##EarlyPosition3Raising##
-[(raisbits1 >> EarlyPosition3Chair) & 1 == 1]
+[(raisbits1 >> ep3chair) & 1 == 1]
 
 ##MiddlePosition1Raising##
-[(raisbits1 >> MiddlePosition1Chair) & 1 == 1]
+[(raisbits1 >> mp1chair) & 1 == 1]
 
 ##MiddlePosition2Raising##
-[(raisbits1 >> MiddlePosition2Chair) & 1 == 1]
+[(raisbits1 >> mp2chair) & 1 == 1]
 
 ##MiddlePosition3Raising##
-[(raisbits1 >> MiddlePosition3Chair) & 1 == 1]
+[(raisbits1 >> mp3chair) & 1 == 1]
 
 ##CutOffRaising##
-[(raisbits1 >> CutOffChair) & 1 == 1]
+[(raisbits1 >> cutoffchair) & 1 == 1]
 
 ##ButtonRaising##
-[(raisbits1 >> ButtonChair) & 1 == 1]
+[(raisbits1 >> buttonchair) & 1 == 1]
 
 ##SmallBlindRaising##
-    [(raisbits1 >> SmallBlindChair) & 1 == 1]
+    [(raisbits1 >> smallblindchair) & 1 == 1]
 AND [SmallBlindCurrentBet >= 1.01]
 
 ##BigBlindRaising##
-    [(raisbits1 >> BigBlindChair) & 1 == 1]
+    [(raisbits1 >> bigblindchair) & 1 == 1]
 AND [BigBlindCurrentBet >= 1.01]
