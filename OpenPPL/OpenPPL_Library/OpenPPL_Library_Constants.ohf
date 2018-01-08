@@ -284,6 +284,9 @@ Fold
 ##ERROR_IncorrectBotsLastAction##
 -1
 
+##ERROR_Buyin_Not_Recognized_Correctly__Check_Your_TableMap##
+-1
+
 ##HINT_We_Dont_Have_A_FullHouse_At_All##
 // Docu says: this case is 0; and this special case needs extra care.
 // However returning a high number instead of 0 seems better to us,

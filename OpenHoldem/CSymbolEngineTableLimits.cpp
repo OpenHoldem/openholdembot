@@ -262,6 +262,13 @@ double CSymbolEngineTableLimits::buyin() {
   return kUndefinedZero;
 }
 
+double CSymbolEngineTableLimits::prizepool() {
+	if (p_table_state->_s_limit_info.prizepool() > 0) {
+		return p_table_state->_s_limit_info.prizepool();
+	}
+	return kUndefinedZero;
+}
+
 double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= kBetroundPreflop);
 	assert(betround <= kBetroundRiver);
@@ -300,6 +307,8 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const CString name, double *result
 		*result = ante();
 	}	else if (memcmp(name, "buyin", 5)==0 && strlen(name)==5) {
 		*result = buyin();
+	}	else if (memcmp(name, "prizepool", 9) == 0 && strlen(name) == 9) {
+		*result = prizepool();
   }	else {
 		// Symbol of a different symbol-engine
 		return false;

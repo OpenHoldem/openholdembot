@@ -113,6 +113,7 @@ const bool CStringMatch::IsStringAllin(const CString s) {
     || s_lower_case == "allln"
     || s_lower_case == "a111n"
     || s_lower_case == "aiiin"
-    || s_lower_case == "buyin"
+	|| s_lower_case == "buyin"
+	|| s_lower_case == "prizepool"
     || s_lower_case.Left(3) == "max");
 }

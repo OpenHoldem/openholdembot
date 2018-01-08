@@ -68,6 +68,10 @@
 WHEN (bblind > 0) RETURN (ante / bblind) FORCE
 WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
 
+##PrizePoolMultiplier##
+WHEN (buyin > 0) RETURN (prizepool / buyin) FORCE
+WHEN Others RETURN ERROR_Buyin_Not_Recognized_Correctly__Check_Your_TableMap FORCE
+
 ##IsFinalTable##
 isfinaltable
 

@@ -2004,7 +2004,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "sblind", "the small blind amount");
   AddSymbol(parent, "bbet", "the big bet amount (fixed limit)");
 	AddSymbol(parent, "ante", "the current pre-deal ante requirement");
-  AddSymbol(parent, "buyin", "the tournament buyin in dollars");
+	AddSymbol(parent, "buyin", "the tournament buyin in dollars");
+	AddSymbol(parent, "prizepool", "the tournament prize-pool in dollars");
 	AddSymbol(parent, "lim", "the current table limit 0=NL 1=PL 2=FL");
 	AddSymbol(parent, "isnl", "(lim==0)");
 	AddSymbol(parent, "ispl", "(lim==1)");

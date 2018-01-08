@@ -51,7 +51,8 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	double ante();
 	double bet(int betround);
 	double bet(); // for current betting round
-  double buyin();
+	double buyin();
+	double prizepool();
  private:
   bool TableLimitsNeedToBeComputed();
  public:
