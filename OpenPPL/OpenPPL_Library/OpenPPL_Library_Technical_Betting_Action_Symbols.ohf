@@ -165,7 +165,7 @@ WHEN  Others RETURN nopponentstruelyraising FORCE
 
 ##RaisesSinceLastPlayOnOurSecondAction##
 // If we checked the first time the bettor sits behind us.
-[didchec AND (nopponentstruelyraising > 0) ] ? (nopponentstruelyraising - 1) :
+[didchec AND (nopponentstruelyraising > 0) AND NOT(betround=1 AND TotalInvested=1)] ? (nopponentstruelyraising - 1) :
 [didchec AND (nopponentstruelyraising == 0)] ? 0 :
 // Otherwise: either we were the first bettor
 // or there was a bet and maybe raises in front of us,
