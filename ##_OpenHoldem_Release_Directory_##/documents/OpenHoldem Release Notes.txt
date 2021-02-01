@@ -6,8 +6,8 @@ MAINTENANCE:
   [THF]
 
 BUG FIXES:
-- The prwin-functions of the new Winngy-default-bot for fixed limut
-  conflicted with Gecko. This has niw been fixxed.
+- The prwin-functions of the new Winngy-default-bot for fixed limit
+  conflicted with Gecko. This has now been fixed.
   [Trish]
   
 
@@ -17,7 +17,7 @@ NEW STUFF:
 - Termita_SNG, a new default bot that plays various types of
   sit-and-go-tournaments out of the box. Similar to Gecko 
   it can be used as a fallback-logic for other bots.
-  Please see he manual for more details.
+  Please see the manual for more details.
   [Trish, THF]
 - Winngy_Fixed_Limit, a new default-bot for fixed-limit full-ring games.
   [Winngy]
