@@ -25,13 +25,16 @@ class CWhiteInfoBox : public CSpaceOptimizedGlobalObject {
   // For log$-symbols
   void SetCustomLogMessage(CString message) { _custom_log_message = message; }
 
+  void SetLastAction(CString action) { _last_action = action; }
   void SetHandrank(int handrank) { _handrank = handrank; }
   void SetGto(double prwin, double prtie, double prlos, int nouts, double outodds, double impliedodds, double potodds, double myequity, double potequity, bool prwin_mustplay);
   void SetnOuts(int nouts);
  private:
+  CString LastAction();
   CString InfoText();
   CString GtoText();
   // Info to be displayed
+  CString _last_action;
   CString	_info_handrank;
   CString	_info_gto;;
   CString	_info_nouts;
