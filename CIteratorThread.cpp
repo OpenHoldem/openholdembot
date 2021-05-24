@@ -371,7 +371,7 @@ void CIteratorThread::UpdateIteratorVarsForDisplay() {
 		else _potequity = 0.0;
 
 		if (p_engine_container->EvaluateSymbol("f$prwin_mustplay", &_prwin_mustplay)) {
-			write_log(Preferences()->debug_prwin(), "[prwin_mustplay] Value: %.3f\n", (bool)_prwin_mustplay);
+			write_log(Preferences()->debug_prwin(), "[Prwin_Mustplay] Value: %s\n", (bool)_prwin_mustplay);
 		}
 		else _prwin_mustplay = FALSE;
 
