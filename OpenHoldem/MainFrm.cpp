@@ -62,6 +62,7 @@
 #include "DialogSAPrefs21.h"
 #include "DialogSAPrefs22.h"
 #include "DialogScraperOutput.h"
+#include "DialogSelectActions.h"
 #include "inlines/eval.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
@@ -97,6 +98,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_HELP_OPEN_PPL, &CMainFrame::OnHelpOpenPPL)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
+	ON_COMMAND(ID_TOOLS_ADDACTIONS, &CMainFrame::OnToolsAddActions)
 	ON_COMMAND(ID_VIEW_RTA, &CMainFrame::OnViewRta)
 
 	// Main toolbar 
@@ -436,7 +438,7 @@ void CMainFrame::OnFileOpen() {
 	CFileDialog			cfd(true);
   cfd.m_ofn.lpstrInitialDir = "";
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
-  cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.oppl, *.txt)\0*.ohf;*.oppl;*.txt\0All files (*.*)\0*.*\0\0";
+  cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.ohfd, *.oppl, *.txt)\0*.ohf;*.ohfd;*.oppl;*.txt\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK) {				
 		pDoc->OnOpenDocument(cfd.GetPathName());
@@ -444,6 +446,11 @@ void CMainFrame::OnFileOpen() {
 		// Update window title, registry
 		p_openholdem_title->UpdateTitle();
 		theApp.StoreLastRecentlyUsedFileList();
+		// Check if Debug Action Trace Profile is used
+		if (cfd.GetPathName().Right(1) == "d")
+			theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_CHECKED);
+		else
+			theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_UNCHECKED);
 	}
 }
 
@@ -578,7 +585,10 @@ void CMainFrame::KillTimers() {
 }
 
 void CMainFrame::ResetDisplay() {
-	InvalidateRect(NULL, true); 
+	InvalidateRect(NULL, true);
+	// Check if Debug Action Trace Profile is used
+	if (theApp.action_trace_profile == TRUE)
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_CHECKED);
 }
 
 void CMainFrame::OnHelp() {
@@ -597,6 +607,128 @@ void CMainFrame::OnHelpProblemSolver() {
 	CProblemSolver my_problem_solver;
 	my_problem_solver.TryToDetectBeginnersProblems();
 }
+
+void CMainFrame::OnToolsAddActions() {
+	COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
+	CStdioFile profile_file_temp, profile_file_debug;
+	CFileException mExcept;
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
+	bool autoplayer_stopped = FALSE;
+	if (!(fdwMenu & MF_CHECKED))
+	{
+		CDlgSelectActions selectActions;
+
+		if (selectActions.DoModal() == IDOK) {
+
+			CString profile_path = theApp.GetUsedProfilePath();
+			DWORD att = GetFileAttributes(profile_path);
+			if (att & FILE_ATTRIBUTE_READONLY || att & FILE_ATTRIBUTE_COMPRESSED || att & FILE_ATTRIBUTE_ENCRYPTED) {
+				MessageBox_Error_Warning("Original Profile file is either Read-Only, Compressed or Encrypted.\n"
+					"Maybe you are using DefaultBot or a Bot Logic formula.\n"
+					"Please use another personal Profile.");
+				return;
+			}
+			CString line_text, new_action_string;
+			CStringArray arrProfileText;
+			int pos, i;
+			if (profile_path.Right(1) == "d") {
+				MessageBox_Error_Warning("You are already using a Debug Action Trace Profile.\n"
+					"Please use a different Profile to add Action Traces.");
+				return;
+			}
+			if (p_autoplayer->autoplayer_engaged()) {
+				p_autoplayer->EngageAutoplayer(FALSE);
+				autoplayer_stopped = TRUE;
+			}
+			CopyFile(profile_path, profile_path + "t", FALSE);
+			profile_file_temp.Open(profile_path + "t", CFile::modeRead);
+			profile_file_debug.Open(profile_path + "d", CFile::modeWrite | CFile::typeText | CFile::modeCreate, &mExcept);
+
+			// Split lines
+			int line_number = 0, rel_line_number, j;
+			while (profile_file_temp.ReadString(line_text)) {
+				++line_number;
+				arrProfileText.Add(line_text);
+				for (i = 0; i < selectActions.arrActionStrings.GetCount(); ++i)
+				{
+					pos = line_text.Find(selectActions.arrActionStrings[i]);
+					if (pos < 0) {
+						// No Action String found. Empty line or not valid
+						continue;
+					}
+					else
+					{
+						rel_line_number = 0; j = line_number - 1;
+						while (arrProfileText[j--].Find("##") < 0) rel_line_number++;
+						new_action_string.Format(" AND log$_%i_%i%s", rel_line_number, line_number, selectActions.arrActionStrings[i]);
+						line_text.Replace(selectActions.arrActionStrings[i], new_action_string);
+					}
+				}
+				profile_file_debug.Seek(0, SEEK_CUR);
+				profile_file_debug.WriteString(line_text + "\n");
+				profile_file_debug.Flush();
+			}
+			profile_file_temp.Close();
+			profile_file_temp.Remove(profile_path + "t");
+			profile_file_debug.Close();
+			if (!pDoc->SaveModified()) {
+				MessageBox_Error_Warning("Modifications made on current Profile has not been yet saved.\n"
+					"Please save modifications before to proceed.");
+				return;        // leave the original one
+			}
+			pDoc->OnOpenDocument(profile_file_debug.GetFilePath());
+			pDoc->SetPathName(profile_file_debug.GetFilePath());
+			// Update window title, registry
+			p_openholdem_title->UpdateTitle();
+			theApp.StoreLastRecentlyUsedFileList();
+
+			theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_CHECKED);
+			if (autoplayer_stopped) {
+				p_autoplayer->EngageAutoplayer(TRUE);
+				autoplayer_stopped = FALSE;
+			}
+		}
+	}
+	else {
+
+		CString profile_path = theApp.GetUsedProfilePath();
+		profile_path.SetString(profile_path, profile_path.GetLength() - 1);
+		CFile f;
+		if (p_autoplayer->autoplayer_engaged()) {
+			p_autoplayer->EngageAutoplayer(FALSE);
+			autoplayer_stopped = TRUE;
+		}
+		// If file is there, set to open!
+		if (f.Open(profile_path, CFile::modeRead | CFile::shareDenyWrite)) {
+			f.Close();
+			if (!pDoc->SaveModified()) {
+				MessageBox_Error_Warning("Modifications made on current Profile has not been yet saved.\n"
+					"Please save modifications before to proceed.");
+				return;        // leave the original one
+			}
+			pDoc->OnOpenDocument(profile_path);
+			pDoc->SetPathName(profile_path);
+			// Update window title, registry
+			p_openholdem_title->UpdateTitle();
+			theApp.StoreLastRecentlyUsedFileList();
+			// Delete Debug Action Trace Profile
+			profile_file_debug.Remove(profile_path + "d");
+		}
+		else {
+			MessageBox_Error_Warning("Original Profile file no longer exists "
+				"or is locked by another application, and can't be restored.\n"
+				"Please restore and select it manually.");
+			return;
+		}
+
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_UNCHECKED);
+		if (autoplayer_stopped) {
+			p_autoplayer->EngageAutoplayer(TRUE);
+			autoplayer_stopped = FALSE;
+		}
+	}
+}
+
 void CMainFrame::OnViewRta() {
 
 	// Instruct to open RTA window

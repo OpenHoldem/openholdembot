@@ -40,9 +40,9 @@
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 
-// Table layouts
-int loop = 1;
 DWORD dwMenu;
+
+// Table layouts
 int		cc[kNumberOfCommunityCards][2] =
 {
 	{-(CARDSIZEX * 2 + 3 * 2 + CARDSIZEX / 2), -(CARDSIZEY / 2)},

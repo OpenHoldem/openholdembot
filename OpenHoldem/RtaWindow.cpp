@@ -18,6 +18,8 @@
 #include "OpenHoldem.h"
 #include "CTableState.h"
 #include "CAutoConnector.h"
+#include "CEngineContainer.h"
+#include "CSymbolengineUserchair.h"
 #include "RtaWindow.h"
 
 
@@ -78,7 +80,7 @@ void CRtaWindow::Close()
 void CRtaWindow::Init(CWnd * pWnd)
 {
 	// Register the window class.
-	const char CLASS_NAME[] = "OpenHoldem Real Time Assistant";
+	const char CLASS_NAME[] = "RTAClass";
 
 	WNDCLASS wc = { };
 	HINSTANCE hInstance = NULL;
@@ -91,16 +93,16 @@ void CRtaWindow::Init(CWnd * pWnd)
 	// Create the window
 
 	this->CreateEx(
-		NULL,                              // Optional window styles.
-		CLASS_NAME,                     // Window class
-		"Real Time Assistant",    // Window text
-		WS_OVERLAPPED | WS_VISIBLE,            // Window style
+		NULL,								// Optional window styles.
+		CLASS_NAME,							// Window class
+		"Real Time Advisor",				// Window text
+		WS_OVERLAPPED | WS_VISIBLE,         // Window style
 
 		// Size and position
 		//CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 		0, 0, 350, 700,
 		pWnd->m_hWnd,       // Parent window   
-		NULL       // Menu
+		NULL				// Menu
 	);
 
 	ShowWindow(TRUE);
@@ -202,7 +204,17 @@ void CRtaWindow::Draw() {
 			m_pPieGraphObject->Update2DPieGraphSegment(3, 100 * _prlos, RGB(255, 0, 0), "Prlos");
 
 			// Must Play
-			m_pPieGraphObject->SetGraphAlert(_prwin_mustplay);
+			//m_pPieGraphObject->SetGraphAlert(_prwin_mustplay);
+
+			// All-in
+			//if (LastAction() == "f$allin")				// For 1st version of SetGraphAlert() otherwise comment it
+			//	m_pPieGraphObject->SetGraphAlert(TRUE);		// For 1st version of SetGraphAlert() otherwise comment it
+					// For 2nd version of SetGraphAlert() otherwise comment it
+				DWORD fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
+				if (fdwMenu & MF_CHECKED)
+					_custom_log_message.Replace("log$_", "Line: "); _custom_log_message.Replace("_", " / ");
+				m_pPieGraphObject->SetGraphAlert(LastAction().Right(LastAction().GetLength() - 2).MakeUpper(), _custom_log_message);
+			//else m_pPieGraphObject->SetGraphAlert(FALSE);	// For 1st version of SetGraphAlert() otherwise comment it
 
 			// nOuts
 			_info_nouts.Format("%i", _nouts);
@@ -217,6 +229,22 @@ void CRtaWindow::Draw() {
 	}
 }
 
+CString CRtaWindow::LastAction() {
+	if (p_engine_container->symbol_engine_userchair() == NULL) {
+		// Very early phase of initialization
+		// Can't continue here.
+		return "Not playing";
+	}
+	if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
+		return "Not playing";
+	}
+	// Return the last saved action.
+	// This value should get set exactly once after autoplayer/actions
+	// to avoid multiple evaluations of the autoplayer-functions,
+	// especially at different heartbeats.
+	return _last_action;
+}
+
 
 void CRtaWindow::SetGto(double prwin, double prtie, double prlos, int nouts, double outodds, double impliedodds, double potodds, double myequity, double potequity, bool prwin_mustplay) {
 	_prwin = prwin;
@@ -229,7 +257,6 @@ void CRtaWindow::SetGto(double prwin, double prtie, double prlos, int nouts, dou
 	_myequity = myequity;
 	_potequity = potequity;
 	_prwin_mustplay = prwin_mustplay;
-
 }
 
 void CRtaWindow::SetnOuts(int nouts)

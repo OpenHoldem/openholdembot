@@ -20,7 +20,10 @@
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "COHScriptObject.h"
+#include "CFormulaParser.h"
 #include "CopenHoldemStatusbar.h"
+#include "CWhiteInfoBox.h"
+#include "RtaWindow.h"
 
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -118,7 +121,7 @@ void CAutoplayerTrace::Add(CString symbol, double value, bool undefined /* = fal
 }
 
 void CAutoplayerTrace::BackPatchValueAndLine(
-    int index, double value, int starting_line_of_function, CString path) {
+    int index, double value, CString function_text, int starting_line_of_function, CString path) {
   assert(index >= 0);
   assert(index < _number_of_log_lines);
   // Starting line should be > 0, but auto-generated missing 
@@ -128,13 +131,18 @@ void CAutoplayerTrace::BackPatchValueAndLine(
     + _last_evaluated_relative_line_number;
   // Already done:
   // Indentation, symbol, " = "
-  CString complete_message;
-  complete_message.Format("%s%.3f   [Line %d/%d, %s]", 
-    _symboltrace_collection.GetAt(index),
-    value,
-    _last_evaluated_relative_line_number,
-    executed_absolute_line,
-    FilenameWithoutPath(path));
+  CString  complete_message;
+  complete_message.Format("%s%.3f   [Line %d/%d, %s]",
+	  _symboltrace_collection.GetAt(index),
+	  value,
+	  _last_evaluated_relative_line_number,
+	  executed_absolute_line,
+	  FilenameWithoutPath(path));
+  if (path.Find("bot_logic") == -1) {
+	  CString function_line_text;
+	  AfxExtractSubString(function_line_text, function_text, _last_evaluated_relative_line_number - 1);
+	  complete_message.AppendFormat("  ==>>>  %s",  function_line_text);
+  }
   _symboltrace_collection.SetAt(index, complete_message);
 }
 
@@ -263,6 +271,8 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // This needs to be set exactly once to avoid multiple evaluations 
   // of the autoplayer functions
   p_openholdem_statusbar->SetLastAction(BestAction());
+  p_white_info_box->SetLastAction(BestAction());
+  p_rta_window->SetLastAction(BestAction());
 }
 
 void CAutoplayerTrace::LogPlayers() {

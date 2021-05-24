@@ -78,7 +78,7 @@ class CIteratorThread /*!!!!!: public CSpaceOptimizedGlobalObject */{
   static int _total_weight[kMaxNumberOfPlayers];
   static int _nopponents;;
  private:
-  static double _prwin, _prtie, _prlos, _nouts, _outodds, _impliedodds, _potodds, _myequity, _potequity, _prwin_mustplay;
+	 static double _prwin, _prtie, _prlos, _nouts, _outodds, _impliedodds, _potodds, _myequity, _potequity, _prwin_mustplay;	 
 };
 
 extern CIteratorThread *p_iterator_thread;

@@ -11,6 +11,8 @@
 #include "2DLineGraph.h"
 //
 
+#include "CHyperLink.h"
+
 #define GT_2DBAR		0
 #define	GT_2DPIE		1
 #define GT_2DLINE		2
@@ -83,6 +85,7 @@ public:
 	void SetGraphSubtitle( CString g_subtitle );
 	void SetGraphTitle( CString g_title );
 	void SetGraphAlert(BOOL g_alert);
+	void SetGraphAlert(CString g_action_string, CString g_action_line);
 	COLORREF GetGraphBackgroundColor();
 	void SetGraphBackgroundColor(COLORREF g_bgcolor);
 	BOOL GetGraphAnimation();
@@ -100,9 +103,11 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	DECLARE_MESSAGE_MAP()
 private:
 	BOOL m_ShowLegend;
+	BOOL init = TRUE;
 	COLORREF m_GraphSubtitleColor;
 	COLORREF m_GraphTitleColor;
 	COLORREF m_GraphAlertColor;
@@ -116,9 +121,10 @@ private:
 	CFont* m_GraphSubtitleFont;
 	CFont* m_GraphAlertFont;
 	CFont* m_GraphAlertFontTrue;
+	CFont* m_GraphAlertLineFont;
 	CString m_GraphSubtitle;
 	BOOL m_GraphAlert;
-	CString m_GraphAlertString;
+	CString m_GraphAlertString, m_GraphAlertLine;
 	CBitmap* m_GradientBitmap;
 	CDC* m_GradientDC;
 	CBitmap* m_GraphBitmap;
@@ -133,6 +139,8 @@ private:
 	C2DLineGraph* m_2DLineGraph;
 	C2DBarGraph* m_2DBarGraph;
 	C2DPieGraph* m_2DPieGraph;
+	CHyperLink	m_Link;
+	CRect			mLinkRect;
 };
 
 /////////////////////////////////////////////////////////////////////////////

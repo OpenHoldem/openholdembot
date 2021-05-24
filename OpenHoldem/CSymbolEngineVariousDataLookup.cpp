@@ -39,6 +39,7 @@
 #include "..\CTransform\CTransform.h"
 #include "CTableTitle.h"
 #include "CWhiteInfoBox.h"
+#include "RtaWindow.h"
 
 #include "OpenHoldem.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
@@ -123,6 +124,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
       write_log(Preferences()->debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_white_info_box->SetCustomLogMessage(name);
+	  p_rta_window->SetCustomLogMessage(name);
     }
     // True (1) is convenient in sequences of ANDed conditions
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19421

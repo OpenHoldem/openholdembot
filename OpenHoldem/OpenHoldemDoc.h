@@ -29,6 +29,8 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual ~COpenHoldemDoc();
+
+	BOOL init_load = TRUE;
 };
 
 #endif /* INC_OPENHOLDEMDOC_H */

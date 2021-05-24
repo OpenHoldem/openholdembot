@@ -55,6 +55,8 @@
 #define IDD_SAPREFS21                   187
 #define IDD_SAPREFS22                   188
 #define ID_INDICATOR_GENERAL_HINT       189
+#define IDD_SELECTACTIONS               190
+#define IDC_CURSOR_HAND                 193
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -450,7 +452,36 @@
 #define IDC_RADIO_GUI_FIRST_VISIBLE     1424
 #define IDC_RADIO_GUI_ALL_MINIMIZED     1425
 #define IDC_RADIO_GUI_LESS              1426
+#define IDC_STATIC_1                    1427
+#define IDC_STATIC_0                    1427
+#define IDC_STATIC_2                    1428
+#define IDC_STATIC_3                    1429
+#define IDC_STATIC_4                    1430
+#define IDSELECTALL                     1431
+#define IDC_STATIC_7                    1432
+#define IDC_STATIC_5                    1433
+#define IDC_STATIC_8                    1434
+#define IDC_STATIC_10                   1435
+#define IDC_STATIC_11                   1436
+#define IDC_STATIC_9                    1437
+#define IDC_STATIC_12                   1438
+#define IDC_STATIC_14                   1439
+#define IDC_CHECK0                      1440
+#define IDC_STATIC_13                   1441
+#define IDC_STATIC_15                   1442
+#define IDC_STATIC_17                   1444
+#define IDC_STATIC_16                   1445
+#define IDC_STATIC_18                   1446
+#define IDC_STATIC_20                   1448
+#define IDC_STATIC_19                   1449
+#define IDC_STATIC_21                   1450
+#define IDC_STATIC_6                    1451
+#define IDC_STATIC_23                   1452
+#define IDC_STATIC_22                   1453
+#define IDC_STATIC_24                   1454
+#define IDC_STATIC_25                   1455
 #define IDC_SCINCTRL                    2000
+#define IDC_LINK                        3000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
 #define ID_BUTTON32776                  32776
@@ -549,9 +580,8 @@
 #define ID_EDIT_VIEWLOG                 32997
 #define ID_EDIT_TAGLOG                  32998
 #define ID_EDIT_CLEARLOG                32999
-#define ID_VIEW_RTA                     33000
-#define ID_EDIT_REALTIMEASSISTANT       33002
-#define ID_ACCELERATOR33004             33004
+#define ID_TOOLS_ADDACTIONS             33000
+#define ID_VIEW_RTA                     33001
 #define ID_OBJECT_PIEGRAPH              40000
 #define ID_OBJECT_BARGRAPH              40001
 
@@ -559,9 +589,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        191
+#define _APS_NEXT_RESOURCE_VALUE        195
 #define _APS_NEXT_COMMAND_VALUE         33006
-#define _APS_NEXT_CONTROL_VALUE         1427
+#define _APS_NEXT_CONTROL_VALUE         1428
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
