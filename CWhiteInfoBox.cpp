@@ -25,24 +25,6 @@
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CWhiteInfoBox *p_white_info_box = NULL;
-BOOL init = TRUE;
-
-int CWhiteInfoBox::DoDataExchange(CDataExchange* pDX)
-{
-	//CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CControlContainerDlg)
-	DDX_Control(pDX, IDC_LINK, m_Link);
-	//}}AFX_DATA_MAP
-	return DoDataExchange(pDX);
-}
-
-//BEGIN_MESSAGE_MAP(CWhiteInfoBox, CSpaceOptimizedGlobalObject)
-	//{{AFX_MSG_MAP(CWhiteInfoBox)
-	//Message Trap - to trap message from the CHyperlink control
-//	ON_MESSAGE(_HYPERLINK_EVENT, OnChildFire)
-	//}}AFX_MSG_MAP
-//END_MESSAGE_MAP()
-
 
 CWhiteInfoBox::CWhiteInfoBox() {
 	SetHandrank(0);
@@ -61,6 +43,7 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	CFont		*oldfont = NULL, cFont;
 	int			left = 0, top = 0, right = 0, bottom = 0;
 		
+	bool sym_playing		= p_table_state->User()->HasKnownCards();
 	// "White box" in the OpenHoldem-GUI with basic important info
 	const int k_basic_height = 2;				// pixels
 	const int k_extra_height_per_line = 16;	// pixels
@@ -85,12 +68,6 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	pDC->SetBkMode(OPAQUE);
 	pDC->Rectangle(left, top, right, bottom);
 
-	// Set rectangle
-	rect.left = left;
-	rect.top = top+3;
-	rect.right = right;
-	rect.bottom = bottom;
-
 	// Set font basics
 	logfont.lfHeight = -14;
 	logfont.lfWeight = FW_NORMAL;
@@ -98,14 +75,11 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
 
-	// Set Hyperlink Static control
-	if (init) {
-		mLinkRect = CRect(left + 9, top + k_extra_height_per_line * 3.3, left + 9, top + k_extra_height_per_line * 3.5 - logfont.lfHeight);
-		m_Link.Create(NULL, WS_CHILD | WS_OVERLAPPED | WS_CLIPSIBLINGS | WS_VISIBLE,
-			mLinkRect, pDC->GetWindow());
-		m_Link.SetFire(TRUE);
-		init = FALSE;
-	}
+	// Set rectangle
+	rect.left = left;
+	rect.top = top+3;
+	rect.right = right;
+	rect.bottom = bottom;
 
   CString info_txt = InfoText();
 	// Draw it
@@ -180,32 +154,11 @@ CString CWhiteInfoBox::InfoText() {
 
 	// logged symbols
 	if (kMaxLogSymbolsForWhiteBox > 0) {
-		DWORD fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
-		if (fdwMenu & MF_CHECKED)
-		{
-			_custom_log_message.Replace("log$_", "Line: "); _custom_log_message.Replace("_", " / ");
-			WINDOWPLACEMENT wndpl;
-			m_Link.GetWindowPlacement(&wndpl);
-			wndpl.rcNormalPosition.right = mLinkRect.left + _custom_log_message.GetLength() * 8;
-			m_Link.SetWindowPlacement(&wndpl);
-			m_Link.SetLinkText(_custom_log_message);
-			//m_Link.SetWindowText(_custom_log_message);
-
-			LRESULT copyData;  //copyDataResult has value returned by OpenPad 
-			HWND hOpenPadWnd = ::FindWindow("OpenPadClass", NULL);
-
-			CString abs_line_number = _custom_log_message.Mid(_custom_log_message.ReverseFind('/') + 2);
-			if (hOpenPadWnd)
-			{
-				COPYDATASTRUCT cpd; // The structure mentioned above
-				cpd.dwData = 0;
-				cpd.cbData = abs_line_number.GetLength() + sizeof(wchar_t); // sizeof (wchar_t) refers to the length of \ 0.     
-				cpd.lpData = (void*)abs_line_number.GetBuffer(cpd.cbData);
-				copyData = ::SendMessage(hOpenPadWnd, WM_COPYDATA, (WPARAM)AfxGetMainWnd()->GetSafeHwnd(), (LPARAM)(LPVOID)&cpd);
-				abs_line_number.ReleaseBuffer();
-			}
-		}
-		else result.Append("  " + _custom_log_message);
+    result.Append("  ");
+	DWORD fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
+	if (fdwMenu & MF_CHECKED)
+		_custom_log_message.Replace("log$_", "Line: "); _custom_log_message.Replace("_", " / ");
+    result.Append(_custom_log_message);
 	}
 
   return result;
@@ -222,9 +175,9 @@ CString CWhiteInfoBox::GtoText() {
 		//	_info_handrank.Format("\n\n\n  Handrank:  %i / 169   MUST PLAY !\n", _handrank);
 		//	_info_handrank.Format("\n\n\n\n  Handrank:  %i / 169           PUSH !\n", _handrank);
 		//else
-			_info_handrank.Format("\n\n\n\n  %s\n  Rank:  %i/169  ", LastAction().Right(LastAction().GetLength()-2).MakeUpper(), _handrank);
+			_info_handrank.Format("\n\n\n\n  Rank:  %i / 169  <>  %s\n", _handrank, LastAction().Right(LastAction().GetLength()-2).MakeUpper());
 		// PrWin: percentages instead of probabilities
-		_info_gto.Format("  PrWin:  %3.1f/%3.1f/%3.1f\n  Outs:  %i    Out Odds:  %3.1f\n  Implied Odds:  %3.1f    PotOdds:  %3.1f\n  My Equity:  %3.1f    Pot Equity:  %3.1f",
+		_info_gto.Format("  PrWin:  %3.1f / %3.1f / %3.1f\n  Outs:  %i    Odds:  %3.1f\n  Implied Odds:  %3.1f    PotOdds:  %3.1f\n  My Equity:  %3.1f    Pot Equity:  %3.1f",
 			100 * _prwin, 100 * _prtie, 100 * _prlos, _nouts, 100 * _outodds, _impliedodds, 100 * _potodds, _myequity, _potequity);
 	}
 	result.Append(_info_handrank);
@@ -265,18 +218,4 @@ void CWhiteInfoBox::SetGto(double prwin, double prtie, double prlos, int nouts, 
 void CWhiteInfoBox::SetnOuts(int nouts)
 {
 	_nouts = nouts;
-}
-
-///////// Event From the child catch here//////////////////////
-///////// WAPARAM contains the ID of the control from which the event 
-//generates
-
-LRESULT CWhiteInfoBox::OnChildFire(WPARAM wparam, LPARAM lparam)
-{
-	CString csTmp;
-	csTmp.Format(" Child Fire Me ====>>with resource ID(#%d)", (int)wparam);
-
-//	MessageBox(csTmp.GetBuffer(MAX_PATH));
-	csTmp.ReleaseBuffer();
-	return lparam;
 }

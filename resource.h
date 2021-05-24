@@ -56,7 +56,6 @@
 #define IDD_SAPREFS22                   188
 #define ID_INDICATOR_GENERAL_HINT       189
 #define IDD_SELECTACTIONS               190
-#define IDC_CURSOR_HAND                 193
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -481,7 +480,6 @@
 #define IDC_STATIC_24                   1454
 #define IDC_STATIC_25                   1455
 #define IDC_SCINCTRL                    2000
-#define IDC_LINK                        3000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
 #define ID_BUTTON32776                  32776
@@ -589,9 +587,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        195
+#define _APS_NEXT_RESOURCE_VALUE        191
 #define _APS_NEXT_COMMAND_VALUE         33006
-#define _APS_NEXT_CONTROL_VALUE         1428
+#define _APS_NEXT_CONTROL_VALUE         1427
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
