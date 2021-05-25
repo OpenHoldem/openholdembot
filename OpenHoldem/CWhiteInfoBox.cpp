@@ -26,6 +26,9 @@
 CWhiteInfoBox *p_white_info_box = NULL;
 
 CWhiteInfoBox::CWhiteInfoBox() {
+	SetHandrank(0);
+	SetGto(0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, FALSE);
+	SetnOuts(0);
 }
 
 CWhiteInfoBox::~CWhiteInfoBox() {
@@ -43,7 +46,7 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	// "White box" in the OpenHoldem-GUI with basic important info
 	const int k_basic_height = 2;				// pixels
 	const int k_extra_height_per_line = 16;	// pixels
-	const int k_number_of_default_lines = 4;	// hand-number, game-type, ante, pot
+	const int k_number_of_default_lines = 8;	// hand-number, game-type, ante, pot, gto
 	int height = k_basic_height 
 		+ k_extra_height_per_line * k_number_of_default_lines;
 	if (kMaxLogSymbolsForWhiteBox > 0)	{
@@ -51,9 +54,9 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 		height += k_extra_height_per_line * kMaxLogSymbolsForWhiteBox;
 	}
   // Figure placement of box
-	left = client_rect.right/2-70;
-	top = 0;
-	right = client_rect.right/2+70;
+	left = client_rect.right/2-120;
+	top = 180;
+	right = client_rect.right/2+120;
 	bottom = top+height;
 
 	pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -65,7 +68,7 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	pDC->Rectangle(left, top, right, bottom);
 
 	// Set font basics
-	logfont.lfHeight = -12;
+	logfont.lfHeight = -14;
 	logfont.lfWeight = FW_NORMAL;
 	cFont.CreateFontIndirect(&logfont);
 	oldfont = pDC->SelectObject(&cFont);
@@ -78,6 +81,24 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	rect.bottom = bottom;
 
   CString info_txt = InfoText();
+	// Draw it
+	pDC->SetBkMode(TRANSPARENT);
+	pDC->DrawText(info_txt.GetString(), info_txt.GetLength(), &rect, NULL);
+
+	// Restore original pen, brush and font
+	pDC->SelectObject(oldpen);
+	pDC->SelectObject(oldbrush);
+	pDC->SelectObject(oldfont);
+	cFont.DeleteObject();
+
+	// Set font basics
+	logfont.lfHeight = -14;
+	logfont.lfWeight = FW_BOLD;
+	cFont.CreateFontIndirect(&logfont);
+	oldfont = pDC->SelectObject(&cFont);
+	pDC->SetTextColor(COLOR_MAROON);
+
+	info_txt = GtoText();
 	// Draw it
 	pDC->SetBkMode(TRANSPARENT);
 	pDC->DrawText(info_txt.GetString(), info_txt.GetLength(), &rect, NULL);
@@ -130,10 +151,50 @@ CString CWhiteInfoBox::InfoText() {
 	s.Format("  Pot: %s\n", Number2CString(sym_pot));
 	result.Append(s);
 
-  // logged symbols
+	// logged symbols
 	if (kMaxLogSymbolsForWhiteBox > 0) {
     result.Append("  ");
     result.Append(_custom_log_message);
 	}
+
   return result;
+}
+
+CString CWhiteInfoBox::GtoText() {
+	CString result;
+
+	//gto
+	if (p_table_state->User()->HasKnownCards()) {
+		// Format data for display
+		// Handrank
+		if (_prwin_mustplay)
+			_info_handrank.Format("\n\n\n  Handrank:  %i / 169   MUST PLAY !\n", _handrank);
+		else
+			_info_handrank.Format("\n\n\n  Handrank:  %i / 169\n", _handrank);
+		// PrWin: percentages instead of probabilities
+		_info_gto.Format("  PrWin:  %3.1f / %3.1f / %3.1f\n  Outs:  %i  Odds:  %3.1f\n  Implied Odds:  %3.1f  PotOdds:  %3.1f\n  My Equity:  %3.1f  Pot Equity:  %3.1f",
+			100 * _prwin, 100 * _prtie, 100 * _prlos, _nouts, 100 * _outodds, _impliedodds, 100 * _potodds, _myequity, _potequity);
+	}
+	result.Append(_info_handrank);
+	result.Append(_info_gto);
+
+	return result;
+}
+
+void CWhiteInfoBox::SetGto(double prwin, double prtie, double prlos, int nouts, double outodds, double impliedodds, double potodds, double myequity, double potequity, bool prwin_mustplay) {
+	_prwin = prwin;
+	_prtie = prtie;
+	_prlos = prlos;
+	_nouts = nouts;
+	_outodds = outodds;
+	_impliedodds = impliedodds;
+	_potodds = potodds;
+	_myequity = myequity;
+	_potequity = potequity;
+	_prwin_mustplay = prwin_mustplay;	
+}
+
+void CWhiteInfoBox::SetnOuts(int nouts)
+{
+	_nouts = nouts;
 }

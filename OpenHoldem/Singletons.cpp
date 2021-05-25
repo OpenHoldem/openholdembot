@@ -51,6 +51,7 @@
 #include "CVersionInfo.h"
 #include "CWatchdog.h"
 #include "CWhiteInfoBox.h"
+#include "RtaWindow.h"
 
 void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
@@ -147,6 +148,9 @@ void InstantiateAllSingletons() {
   write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CWhiteInfoBox\n");
   assert(!p_white_info_box);
   p_white_info_box = new CWhiteInfoBox;
+  write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CRtaWindow\n");
+  assert(!p_rta_window);
+  p_rta_window = new CRtaWindow;
   write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
@@ -221,6 +225,8 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_engine_container)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting white info box\n");
   DELETE_AND_CLEAR(p_white_info_box)
+	  write_log(Preferences()->debug_singletons(), "[Singletons] Deleting rta window\n");
+  DELETE_AND_CLEAR(p_rta_window)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting OpenHoldem title\n");
   DELETE_AND_CLEAR(p_openholdem_title)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting popup handler\n");

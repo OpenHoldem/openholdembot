@@ -17,6 +17,7 @@
 #include "afxwin.h"
 #include "resource.h"
 #include "StickyButton.h"
+#include "Led.h"
 
 // Region grouping types
 enum {BY_TYPE = 1, BY_NAME = 2};
@@ -80,6 +81,7 @@ protected:
 	void disable_and_clear_all(void);
 	void update_r$_display(bool dont_update_spinners);
 	void update_t$_display();
+	bool MissingFontsRoutine();
 	COLORREF get_color_under_mouse(UINT *nFlags, CPoint *point);
 	CString GetGroupName(CString regionName);
 	HTREEITEM FindRegionGroupItem(HTREEITEM hRegionNode, CString groupName);
@@ -112,6 +114,7 @@ protected:
 	HCURSOR				hCurPicker, hCurStandard;
 	bool				ignore_changes;
 	CStatic				m_status_cards, m_status_fonts;
+	CLed				m_MissingFontsAlert;
 
 public:
 	virtual BOOL DestroyWindow();
@@ -127,6 +130,7 @@ public:
 	void UpdateDisplayOfAllRegions();
 	HTREEITEM GetTypeNode(CString type);
 	HTREEITEM FindItem(CString s, HTREEITEM start);
+	void CollectFonts();
 
 	CTreeCtrl			m_TableMapTree;
 	CEdit				m_Left, m_Top, m_Bottom, m_Right, m_xy;

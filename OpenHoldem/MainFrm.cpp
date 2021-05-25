@@ -33,6 +33,7 @@
 #include "COpenHoldemTitle.h"
 
 #include "CProblemSolver.h"
+#include "RtaWindow.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
@@ -69,6 +70,8 @@
 
 // CMainFrame
 
+DWORD fdwMenu;
+
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
@@ -94,6 +97,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_HELP_OPEN_PPL, &CMainFrame::OnHelpOpenPPL)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
+	ON_COMMAND(ID_VIEW_RTA, &CMainFrame::OnViewRta)
 
 	// Main toolbar 
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_AUTOPLAYER, &CMainFrame::OnAutoplayer)
@@ -592,6 +596,21 @@ void CMainFrame::OnHelpForums() {
 void CMainFrame::OnHelpProblemSolver() {
 	CProblemSolver my_problem_solver;
 	my_problem_solver.TryToDetectBeginnersProblems();
+}
+void CMainFrame::OnViewRta() {
+
+	// Instruct to open RTA window
+	assert(p_rta_window != NULL);
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_VIEW_RTA, MF_BYCOMMAND);
+	if (!(fdwMenu & MF_CHECKED))
+	{
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_VIEW_RTA, MF_CHECKED);
+		p_rta_window->Init(this);
+	}
+	else {
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_VIEW_RTA, MF_UNCHECKED);
+		p_rta_window->Close();
+	}
 }
 
 

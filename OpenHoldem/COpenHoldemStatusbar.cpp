@@ -75,7 +75,7 @@ void COpenHoldemStatusbar::OnUpdateStatusbar() {
     // PrWin: percentages instead of probabilities
     _status_prwin.Format("PrWin %3.1f/%3.1f/%3.1f",
       100 * _prwin, 100 * _prtie, 100 * _prlos);
-  } else if (p_engine_container->symbol_engine_time()->elapsedauto() > 5) {
+  }/* else if (p_engine_container->symbol_engine_time()->elapsedauto() > 5) {
     // Reset display 5 seconds after last action
     SetPrWin(0, 0, 0);
     SetHandrank(0);
@@ -85,7 +85,7 @@ void COpenHoldemStatusbar::OnUpdateStatusbar() {
   } else {
     // No cards, but shortly after last action
     // Don't change anything, keep information
-  }
+  }*/
   // Display data
   _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), LastAction());
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
