@@ -19,6 +19,8 @@
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "COpenHoldemStatusbar.h"
+#include "CWhiteInfoBox.h"
+#include "RtaWindow.h"
 
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -48,6 +50,13 @@ int CIteratorThread::_nopponents;
 double CIteratorThread::_prwin;
 double CIteratorThread::_prtie;
 double CIteratorThread::_prlos;
+double CIteratorThread::_nouts;
+double CIteratorThread::_outodds;
+double CIteratorThread::_impliedodds;
+double CIteratorThread::_potodds;
+double CIteratorThread::_myequity;
+double CIteratorThread::_potequity;
+double CIteratorThread::_prwin_mustplay;
 int CIteratorThread::_total_weight[kMaxNumberOfPlayers];
 
 // weighted prwin lookup tables for non-suited and suited cards
@@ -330,7 +339,46 @@ void CIteratorThread::UpdateIteratorVarsForDisplay() {
 		_prlos = _los / (double) _iterations_calculated;
 		write_log(Preferences()->debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
 			_iterations_calculated, _prwin, _prtie, _prlos);
+
+		if (p_engine_container->EvaluateSymbol("f$nOuts", &_nouts)) {
+			write_log(Preferences()->debug_prwin(), "[nOuts] Value: %i\n", (int)_nouts);
+		}
+		else _nouts = 0;
+
+		if (p_engine_container->EvaluateSymbol("f$OutOdds", &_outodds)) {
+			write_log(Preferences()->debug_prwin(), "[OutOdds] Value: %.3f\n", _outodds);
+		}
+		else _outodds = 0.0;
+
+		if (p_engine_container->EvaluateSymbol("f$ImpliedOdds", &_impliedodds)) {
+			write_log(Preferences()->debug_prwin(), "[ImpliedOdds] Value: %.3f\n", _impliedodds);
+		}
+		else _impliedodds = 0.0;
+		
+		if (p_engine_container->EvaluateSymbol("f$PotOdds", &_potodds)) {
+			write_log(Preferences()->debug_prwin(), "[PotOdds] Value: %.3f\n", _potodds);
+		}
+		else _potodds = 0.0;
+
+		if (p_engine_container->EvaluateSymbol("f$MyEquity", &_myequity)) {
+			write_log(Preferences()->debug_prwin(), "[MyEquity] Value: %.3f\n", _myequity);
+		}
+		else _myequity = 0.0;
+
+		if (p_engine_container->EvaluateSymbol("f$PotEquity", &_potequity)) {
+			write_log(Preferences()->debug_prwin(), "[PotEquity] Value: %.3f\n", _potequity);
+		}
+		else _potequity = 0.0;
+
+		if (p_engine_container->EvaluateSymbol("f$prwin_mustplay", &_prwin_mustplay)) {
+
+			write_log(Preferences()->debug_prwin(), "[Prwin_Mustplay] Value: %s\n", (bool)_prwin_mustplay);
+		}
+		else _prwin_mustplay = FALSE;
+
     p_openholdem_statusbar->SetPrWin(_prwin, _prtie, _prlos);
+	p_white_info_box->SetGto(_prwin, _prtie, _prlos, (int)_nouts, _outodds, _impliedodds, _potodds, _myequity, _potequity, (bool)_prwin_mustplay);
+	p_rta_window->SetGto(_prwin, _prtie, _prlos, (int)_nouts, _outodds, _impliedodds, _potodds, _myequity, _potequity, (bool)_prwin_mustplay);
 	}
 }
 
@@ -338,6 +386,10 @@ void CIteratorThread::ResetIteratorVars() {
 	_prwin = 0.0;
 	_prtie = 0.0;
 	_prlos = 0.0;
+	_nouts = 0.0;
+	_outodds = 0.0;
+	_impliedodds = 0.0;
+	_potodds = 0.0;
   _iterations_calculated = 0;
   memset(_total_weight, 0, sizeof(_total_weight));  
 }
@@ -379,6 +431,7 @@ void CIteratorThread::CalculateTotalWeights()
 void CIteratorThread::InitNumberOfIterations() {
 	_iterations_required = p_function_collection->Evaluate(
 		k_standard_function_names[k_prwin_number_of_iterations], Preferences()->log_prwin_functions());
+	_iterations_required = _iterations_required / 5;   // added to increase calculation speed
 }
 
 void CIteratorThread::InitIteratorLoop() {

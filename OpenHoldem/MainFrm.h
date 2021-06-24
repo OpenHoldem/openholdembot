@@ -46,6 +46,8 @@ protected: // create from serialization only
 
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnHelpProblemSolver();
+	afx_msg void OnToolsAddActions();
+	afx_msg void OnViewRta();
 public:
 	afx_msg void OnHelp();
 	afx_msg void OnHelpOpenPPL();

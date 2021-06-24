@@ -55,6 +55,8 @@
 #define IDD_SAPREFS21                   187
 #define IDD_SAPREFS22                   188
 #define ID_INDICATOR_GENERAL_HINT       189
+#define IDD_SELECTACTIONS               190
+#define IDC_CURSOR_HAND                 193
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -144,14 +146,23 @@
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120
 #define IDC_CHECK8                      1121
+#define IDC_ICM_1                       1121
 #define IDC_CHECK9                      1122
+#define IDC_ICM_2                       1122
 #define IDC_CHECK10                     1123
+#define IDC_ICM_3                       1123
 #define IDC_CHECK11                     1124
+#define IDC_ICM_4                       1124
 #define IDC_CHECK12                     1125
+#define IDC_ICM_5                       1125
 #define IDC_CHECK13                     1126
+#define IDC_ICM_6                       1126
 #define IDC_CHECK14                     1127
+#define IDC_ICM_7                       1127
 #define IDC_CHECK15                     1128
+#define IDC_ICM_8                       1128
 #define IDC_CHECK16                     1129
+#define IDC_ICM_9                       1129
 #define IDC_CHECK17                     1130
 #define IDC_CHECK18                     1131
 #define IDC_CHECK19                     1132
@@ -413,14 +424,14 @@
 #define IDC_DEBUG_VERSUS                1396
 #define IDC_DEBUG_AUTO_TRACE            1397
 #define IDC_DEBUG_AST_PRIORITY_ORDERING 1398
-#define IDC_DEBUG_FILENAMES             1399	
+#define IDC_DEBUG_FILENAMES             1399
 #define IDC_DEBUG_BOARD_EXPRESSIONS     1400
 #define IDC_DEBUG_TOKENIZER             1401
 #define IDC_DEBUG_MEMORY_USAGE          1402
 #define IDC_DEBUG_ALLIN_ADJUSTMENT      1403
 #define IDC_ENABLE_DELAY_LOGGiNG        1404
-#define IDC_USE_AUTO_REPLAY				      1405
-#define IDC_RESTORE_POSITION_AND_FOCUS	1406
+#define IDC_USE_AUTO_REPLAY             1405
+#define IDC_RESTORE_POSITION_AND_FOCUS  1406
 #define IDC_LOG_DELAY_FUNCTION          1407
 #define IDC_LOG_HOPPER_FUNCTIONS        1408
 #define IDC_LOG_ICM_FUNCTIONS           1409
@@ -428,9 +439,9 @@
 #define IDC_LOG_PRWIN_FUNCTIONS         1411
 #define IDC_DEBUG_TABLEPOINTS           1412
 #define IDC_DEBUG_SHAREDMEM             1413
-#define IDC_DEBUG_SINGLETONS            1414  
-#define IDC_DEBUG_AUTOSTARTER           1415 
-#define IDC_DEBUG_WATCHDOG              1416 
+#define IDC_DEBUG_SINGLETONS            1414
+#define IDC_DEBUG_AUTOSTARTER           1415
+#define IDC_DEBUG_WATCHDOG              1416
 #define IDC_DEBUG_TIMERS                1417
 #define IDC_USE_AUTO_STARTER            1418
 #define IDC_USE_AUTO_SHUTDOWN           1419
@@ -441,16 +452,36 @@
 #define IDC_RADIO_GUI_FIRST_VISIBLE     1424
 #define IDC_RADIO_GUI_ALL_MINIMIZED     1425
 #define IDC_RADIO_GUI_LESS              1426
-#define IDC_ICM_1                       1121
-#define IDC_ICM_2                       1122
-#define IDC_ICM_3                       1123
-#define IDC_ICM_4                       1124
-#define IDC_ICM_5                       1125
-#define IDC_ICM_6                       1126
-#define IDC_ICM_7                       1127
-#define IDC_ICM_8                       1128
-#define IDC_ICM_9                       1129
+#define IDC_STATIC_1                    1427
+#define IDC_STATIC_0                    1427
+#define IDC_STATIC_2                    1428
+#define IDC_STATIC_3                    1429
+#define IDC_STATIC_4                    1430
+#define IDSELECTALL                     1431
+#define IDC_STATIC_7                    1432
+#define IDC_STATIC_5                    1433
+#define IDC_STATIC_8                    1434
+#define IDC_STATIC_10                   1435
+#define IDC_STATIC_11                   1436
+#define IDC_STATIC_9                    1437
+#define IDC_STATIC_12                   1438
+#define IDC_STATIC_14                   1439
+#define IDC_CHECK0                      1440
+#define IDC_STATIC_13                   1441
+#define IDC_STATIC_15                   1442
+#define IDC_STATIC_17                   1444
+#define IDC_STATIC_16                   1445
+#define IDC_STATIC_18                   1446
+#define IDC_STATIC_20                   1448
+#define IDC_STATIC_19                   1449
+#define IDC_STATIC_21                   1450
+#define IDC_STATIC_6                    1451
+#define IDC_STATIC_23                   1452
+#define IDC_STATIC_22                   1453
+#define IDC_STATIC_24                   1454
+#define IDC_STATIC_25                   1455
 #define IDC_SCINCTRL                    2000
+#define IDC_LINK                        3000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
 #define ID_BUTTON32776                  32776
@@ -549,14 +580,18 @@
 #define ID_EDIT_VIEWLOG                 32997
 #define ID_EDIT_TAGLOG                  32998
 #define ID_EDIT_CLEARLOG                32999
+#define ID_TOOLS_ADDACTIONS             33000
+#define ID_VIEW_RTA                     33001
+#define ID_OBJECT_PIEGRAPH              40000
+#define ID_OBJECT_BARGRAPH              40001
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        189
-#define _APS_NEXT_COMMAND_VALUE         33000
-#define _APS_NEXT_CONTROL_VALUE         1427
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_RESOURCE_VALUE        195
+#define _APS_NEXT_COMMAND_VALUE         33006
+#define _APS_NEXT_CONTROL_VALUE         1428
+#define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

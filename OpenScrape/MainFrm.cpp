@@ -25,6 +25,7 @@
 #include "CRegionCloner.h"
 #include "DialogCopyRegion.h"
 #include "DialogSelectTable.h"
+#include "DialogTableMap.h"
 #include "global.h"
 #include "ListOfSymbols.h"
 #include "OpenScrape.h"
@@ -39,6 +40,7 @@
 // CMainFrame
 
 const int kHotkeyRefresh = 1234;
+DWORD fdwMenu;
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
@@ -53,6 +55,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_VIEW_NEXT, &CMainFrame::OnViewNext)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_NEXT, &CMainFrame::OnViewNext)
 	ON_COMMAND(ID_TOOLS_CLONEREGIONS, &CMainFrame::OnToolsCloneRegions)
+	ON_COMMAND(ID_TOOLS_COLLECTFONTS, &CMainFrame::OnToolsCollectFonts)
 
 	ON_COMMAND(ID_EDIT_UPDATEHASHES, &CMainFrame::OnEditUpdatehashes)
 	ON_WM_TIMER()
@@ -254,6 +257,7 @@ void CMainFrame::OnViewConnecttowindow()
 	if (number_of_tablemaps==0) 
 	{
 		MessageBox("No valid windows found", "Cannot find window", MB_OK);
+		ForceRedraw();
 	}
 	else 
 	{
@@ -275,8 +279,13 @@ void CMainFrame::OnViewConnecttowindow()
 			SaveBmpPbits();
 			ResizeWindow(pDoc);	
 		}
+		ForceRedraw();
+
+	// Instruct table-map dialog to collect fonts
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+	if (fdwMenu & MF_CHECKED)
+		theApp.m_TableMapDlg->CollectFonts();
 	}
-	ForceRedraw();
 }
 
 void CMainFrame::OnEditUpdatehashes()
@@ -509,6 +518,11 @@ void CMainFrame::OnViewRefresh()
 
 		ForceRedraw();		
 		BringOpenScrapeBackToFront();
+
+	// Instruct table-map dialog to collect fonts
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+	if (fdwMenu & MF_CHECKED)
+			theApp.m_TableMapDlg->CollectFonts();
 	}
 
 	else 
@@ -597,6 +611,11 @@ void CMainFrame::OnViewPrev()
 		theApp.m_TableMapDlg->update_display();
 		ForceRedraw();
 		BringOpenScrapeBackToFront();
+
+		// Instruct table-map dialog to collect fonts
+		fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+		if (fdwMenu & MF_CHECKED)
+			theApp.m_TableMapDlg->CollectFonts();
 	}
 
 	else 
@@ -660,6 +679,11 @@ void CMainFrame::OnViewNext()
 		theApp.m_TableMapDlg->update_display();
 		ForceRedraw();
 		BringOpenScrapeBackToFront();
+
+		// Instruct table-map dialog to collect fonts
+		fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+		if (fdwMenu & MF_CHECKED)
+			theApp.m_TableMapDlg->CollectFonts();
 	}
 
 	else 
@@ -673,6 +697,21 @@ void CMainFrame::OnToolsCloneRegions()
 	CRegionCloner *p_region__cloner = new(CRegionCloner);
 	p_region__cloner->CloneRegions();
 	delete(p_region__cloner);
+}
+
+void CMainFrame::OnToolsCollectFonts()
+{
+	// Instruct table-map dialog to collect fonts
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+	if (!(fdwMenu & MF_CHECKED))
+	{
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_COLLECTFONTS, MF_CHECKED);
+		theApp.m_TableMapDlg->CollectFonts();
+	}
+	else {
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_COLLECTFONTS, MF_UNCHECKED);
+		MessageBox("Automatic fonts collection stopped.", "Fonts collector");
+	}
 }
 
 void CMainFrame::OnGroupregionsBytype()
