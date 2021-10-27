@@ -30,6 +30,7 @@ class CMainFrame : public CFrameWnd {
 	afx_msg void OnViewPrev();
 	afx_msg void OnViewNext();
 	afx_msg void OnToolsCloneRegions();
+	afx_msg void OnToolsCollectFonts();
 	afx_msg void OnEditUpdatehashes();
 	afx_msg void OnEditDuplicateregion();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -42,12 +43,14 @@ class CMainFrame : public CFrameWnd {
 	void SaveBmpPbits(void);
 	DECLARE_MESSAGE_MAP()
 
-	CStatusBar	m_wndStatusBar;
+	CStatusBar		m_wndStatusBar;
 	CToolBar		m_wndToolBar;
+	CComboBox		m_Transform;
  public:
 	virtual BOOL DestroyWindow();
 	afx_msg void OnViewConnecttowindow();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	int					region_grouping;
 	virtual ~CMainFrame();
  private:
 	bool CreateToolbar();

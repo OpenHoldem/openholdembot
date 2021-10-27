@@ -1,0 +1,207 @@
+##Default_Notes##
+//*****************************************************************************
+//
+// OpenPPL default bot
+//   This bot-logic will be executed on undefined situations
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 12.0.0 or later
+//
+//*****************************************************************************
+
+
+##f$MyEquity##
+(f$nOuts * 4) - (f$nOuts - 8)
+
+##f$PotEquity##
+f$nOuts * (1 - ( 1 / (((PotSize + AmountToCall) / PotSize))))
+
+##DefaultPreflop##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN isomaha Fold FORCE
+WHEN istournament RETURN Termita_SNG_Preflop FORCE
+WHEN isfl RETURN Winngy_FixedLimit_Preflop FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Preflop FORCE
+
+##DefaultFlop##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN isomaha Fold FORCE
+WHEN istournament RETURN Termita_SNG_Flop FORCE
+WHEN isfl RETURN Winngy_FixedLimit_Flop FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Flop FORCE
+
+##DefaultTurn##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN isomaha Fold FORCE
+WHEN istournament RETURN Termita_SNG_Turn FORCE
+WHEN isfl RETURN Winngy_FixedLimit_Turn FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Turn FORCE
+
+##DefaultRiver##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN isomaha Fold FORCE
+WHEN istournament RETURN Termita_SNG_River FORCE
+WHEN isfl RETURN Winngy_FixedLimit_River FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_River FORCE
+
+##f$prefold##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN isomaha RETURN false FORCE
+WHEN isfl RETURN Winngy_FixedLimit_Prefold FORCE
+WHEN istournament RETURN Termita_SNG_Prefold FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Prefold FORCE
+
+##f$prwin_number_of_opponents##
+WHEN isomaha RETURN 0 FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN Winngy_Prwin_number_of_opponents FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$nOuts FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$OutOdds FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$ImpliedOdds FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$PotOdds FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$MyEquity FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$PotEquity FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN f$prwin_mustplay FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN Termita_SNG_Prwin_number_of_opponents FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN  f$nOuts FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN  f$OutOdds FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN  f$ImpliedOdds FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN  f$PotOdds FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN f$MyEquity FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN f$PotEquity FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN f$prwin_mustplay FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$nOuts FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$OutOdds FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$ImpliedOdds FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$PotOdds FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$MyEquity FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$PotEquity FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN f$prwin_mustplay FORCE
+When Others Return (nopponentsplaying+1) Force
+
+//*****************************************************************************
+//
+// Dummy functions
+//
+// These functions will be overwritten by Gecko and Termita.
+// But they exist, so that Gecko / Termita can be safely deleted
+// without causing parse-errors.
+//
+// If only Termita is deleted SNGs will fall back to Gecko.
+// If both are delted SNGs will have no backup-actions at all-.
+//
+//*****************************************************************************
+
+##Winngy_FixedLimit_Preflop##
+##Winngy_FixedLimit_Flop##
+##Winngy_FixedLimit_Turn##
+##Winngy_FixedLimit_River##
+##Winngy_FixedLimit_Prefold##
+##Winngy_Prwin_number_of_opponents##
+
+##Gecko_6Max_FR_NL_BSS_Preflop##
+##Gecko_6Max_FR_NL_BSS_Flop##
+##Gecko_6Max_FR_NL_BSS_Turn##
+##Gecko_6Max_FR_NL_BSS_River##
+##Gecko_6Max_FR_NL_BSS_Prefold##
+##Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents##
+
+##Termita_SNG_Prwin_number_of_opponents##
+WHEN true RETURN f$nOuts FORCE
+WHEN true RETURN f$OutOdds FORCE
+WHEN true RETURN f$ImpliedOdds FORCE
+WHEN true RETURN f$PotOdds FORCE
+WHEN true RETURN f$MyEquity FORCE
+WHEN true RETURN f$PotEquity FORCE
+WHEN true RETURN f$prwin_mustplay FORCE
+
+##Termita_SNG_Preflop##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN FallBackToGeckoIfTermitaSngNotFound RETURN Gecko_6Max_FR_NL_BSS_Preflop FORCE
+
+##Termita_SNG_Flop##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN FallBackToGeckoIfTermitaSngNotFound RETURN Gecko_6Max_FR_NL_BSS_Flop FORCE
+
+##Termita_SNG_Turn##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN FallBackToGeckoIfTermitaSngNotFound RETURN Gecko_6Max_FR_NL_BSS_Turn FORCE
+
+##Termita_SNG_River##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN FallBackToGeckoIfTermitaSngNotFound RETURN Gecko_6Max_FR_NL_BSS_River FORCE
+
+##Termita_SNG_Prefold##
+WHEN ismyturn RETURN f$nOuts FORCE
+WHEN ismyturn RETURN f$OutOdds FORCE
+WHEN ismyturn RETURN f$ImpliedOdds FORCE
+WHEN ismyturn RETURN f$PotOdds FORCE
+WHEN ismyturn RETURN f$MyEquity FORCE
+WHEN ismyturn RETURN f$PotEquity FORCE
+WHEN ismyturn RETURN f$prwin_mustplay FORCE
+WHEN FallBackToGeckoIfTermitaSngNotFound RETURN Gecko_6Max_FR_NL_BSS_Prefold FORCE
+
+##FallBackToGeckoIfTermitaSngNotFound##
+true

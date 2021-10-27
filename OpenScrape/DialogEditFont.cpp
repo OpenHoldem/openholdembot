@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CDlgEditFont, CDialog)
 	ON_EN_KILLFOCUS(IDC_CHARACTER, &CDlgEditFont::OnEnKillfocusCharacter)
 	ON_BN_CLICKED(IDC_DELETE, &CDlgEditFont::OnBnClickedDelete)
 	ON_BN_CLICKED(IDC_SORT, &CDlgEditFont::OnBnClickedSort)
+	ON_EN_CHANGE(IDC_CHARACTER, &CDlgEditFont::OnEnChangeCharacter)
 END_MESSAGE_MAP()
 
 
@@ -76,6 +77,7 @@ BOOL CDlgEditFont::OnInitDialog()
 	lf_fixed.lfQuality = PROOF_QUALITY;
 	lf_fixed.lfPitchAndFamily = 0;
 	strcpy_s(lf_fixed.lfFaceName, 32, "Courier New");
+	separation_font.DeleteObject();
 	separation_font.CreateFontIndirect(&lf_fixed);
 	m_PixelSep.SetFont(&separation_font);
 
@@ -97,7 +99,7 @@ BOOL CDlgEditFont::OnInitDialog()
 
 	for (int i = 0; i < new_t$_recs[group]->GetCount(); i++)
 	{
-		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(i);
+		STablemapFont &fontrec = new_t$_recs[group]->GetAt(i);
 		text.Format("%c", fontrec.ch);
 		m_CharList.AddString(text.GetString());
 	}
@@ -119,7 +121,7 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 
 	if (m_CharList.GetCurSel() != LB_ERR)
 	{
-		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(m_CharList.GetCurSel());
+		STablemapFont &fontrec = new_t$_recs[group]->GetAt(m_CharList.GetCurSel());
 
 		// Get set bits
 		bit = 0;
@@ -193,7 +195,7 @@ void CDlgEditFont::OnEnKillfocusCharacter()
 
 	m_Character.GetWindowText(temp_character);
 
-	STablemapFont &fontrec = new_t$_recs[group]->ElementAt(cur_sel);
+	STablemapFont &fontrec = new_t$_recs[group]->GetAt(cur_sel);
 
 	fontrec.ch = temp_character.GetString()[0];
 
@@ -221,15 +223,15 @@ void CDlgEditFont::OnBnClickedSort()
 {
 	STablemapFont	temp;
 	CString			text;
-	int				size = (int) new_t$_recs[group]->GetSize();
+	int				size = (int) new_t$_recs[group]->GetCount();
 
 	// Bubble sort em
 	for (int i=0; i<size-1; i++)
 	{
 		for (int j=i+1; j<size; j++)
 		{
-			STablemapFont &i_fontrec = new_t$_recs[group]->ElementAt(i);
-			STablemapFont &j_fontrec = new_t$_recs[group]->ElementAt(j);
+			STablemapFont &i_fontrec = new_t$_recs[group]->GetAt(i);
+			STablemapFont &j_fontrec = new_t$_recs[group]->GetAt(j);
 			if (j_fontrec.ch < i_fontrec.ch)
 			{
 				// hold i rec in temp
@@ -260,7 +262,7 @@ void CDlgEditFont::OnBnClickedSort()
 	m_CharList.ResetContent();
 	for (int i=0; i < size; i++)
 	{
-		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(i);
+		STablemapFont &fontrec = new_t$_recs[group]->GetAt(i);
 		text.Format("%c", fontrec.ch);
 		m_CharList.AddString(text.GetString());
 	}
@@ -269,4 +271,15 @@ void CDlgEditFont::OnBnClickedSort()
 	m_CharList.SetCurSel(0);
 	OnLbnSelchangeCharlist();
 	m_CharList.SetFocus();
+}
+
+
+void CDlgEditFont::OnEnChangeCharacter()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }
