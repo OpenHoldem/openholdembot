@@ -27,7 +27,7 @@ class CAutoplayerTrace : public CSpaceOptimizedGlobalObject {
   // Logging function, value currently unknown
   // Returning index (line number in log)
   int  Add(CString symbol); 
-  void BackPatchValueAndLine(int index, double value, int starting_line_of_function, CString path);  
+  void BackPatchValueAndLine(int index, double value, CString function_text, int starting_line_of_function, CString path);
   void Indent(bool more);
   void Print(const char *action_taken, bool full_log_for_primary_formulas);
  public:

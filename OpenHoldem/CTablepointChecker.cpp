@@ -70,16 +70,14 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
       x = tablemap_connection_data[tablemap_index].TablePoint[i].left;
       y = tablemap_connection_data[tablemap_index].TablePoint[i].top;
       int pbits_loc = y*width * 4 + x * 4;
-      //alpha = pBits[pbits_loc + 3];
-      alpha = kAlphaNoTransparency;
+      alpha = pBits[pbits_loc + 3];
       red = pBits[pbits_loc + 2];
       green = pBits[pbits_loc + 1];
       blue = pBits[pbits_loc + 0];
       COLORREF Color = tablemap_connection_data[tablemap_index].TablePoint[i].color;
       // positive radius
       if (tablemap_connection_data[tablemap_index].TablePoint[i].radius >= 0) {
-        //if (!trans.IsInARGBColorCube((Color >> 24) & 0xff, // function GetAValue() does not exist
-        if (!trans.IsInARGBColorCube(kAlphaNoTransparency,
+        if (!trans.IsInARGBColorCube((Color >> 24) & 0xff, // function GetAValue() does not exist
           GetRValue(Color),
           GetGValue(Color),
           GetBValue(Color),
@@ -92,8 +90,7 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
       }
       // negative radius (logical not)
       else {
-        //if (trans.IsInARGBColorCube((Color >> 24) & 0xff, // function GetAValue() does not exist
-        if (trans.IsInARGBColorCube(kAlphaNoTransparency,
+        if (trans.IsInARGBColorCube((Color >> 24) & 0xff, // function GetAValue() does not exist
           GetRValue(Color),
           GetGValue(Color),
           GetBValue(Color),

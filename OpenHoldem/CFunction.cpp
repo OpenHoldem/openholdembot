@@ -121,7 +121,7 @@ double CFunction::Evaluate(bool log /* = false */) {
       _is_result_cached = true;
       if (log) {
         p_autoplayer_trace->BackPatchValueAndLine(
-          log_line, _cached_result, _starting_line_of_function, _file_path);
+          log_line, _cached_result, _function_text, _starting_line_of_function, _file_path);
       }
       p_autoplayer_trace->Indent(false);
     } else {

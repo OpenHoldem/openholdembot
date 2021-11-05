@@ -39,6 +39,7 @@ void CDlgSAPrefs4::DoDataExchange(CDataExchange* pDX)
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SCRAPEDELAY, m_ScrapeDelay);
 	DDX_Control(pDX, IDC_SCRAPEDELAY_SPIN, m_ScrapeDelay_Spin);
+	DDX_Control(pDX, IDC_UNWANTEDSCRAPE, m_UnwantedScrape);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs4, CSAPrefsSubDlg)
@@ -48,15 +49,17 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs4 message handlers
 BOOL CDlgSAPrefs4::OnInitDialog()
 {
-	CString		text = "";
+	CString		delaytext = "";
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	text.Format("%d", Preferences()->scrape_delay());
-	m_ScrapeDelay.SetWindowText(text);
+	delaytext.Format("%d", Preferences()->scrape_delay());
+	m_ScrapeDelay.SetWindowText(delaytext);
 	m_ScrapeDelay_Spin.SetRange(100, 5000);
 	m_ScrapeDelay_Spin.SetPos(Preferences()->scrape_delay());
 	m_ScrapeDelay_Spin.SetBuddy(&m_ScrapeDelay);
+
+	m_UnwantedScrape.SetWindowText(Preferences()->unwanted_scrape());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -64,14 +67,17 @@ BOOL CDlgSAPrefs4::OnInitDialog()
 
 void CDlgSAPrefs4::OnOK()
 {
-	CString			text = "";
+	CString			delaytext = "", unwantedtext = "";
 
-	m_ScrapeDelay.GetWindowText(text);
-	if (strtoul(text.GetString(), 0, 10)<MIN_SCRAPEDELAY || strtoul(text.GetString(), 0, 10)>MAX_SCRAPEDELAY) {
+	m_ScrapeDelay.GetWindowText(delaytext);
+	if (strtoul(delaytext.GetString(), 0, 10)<MIN_SCRAPEDELAY || strtoul(delaytext.GetString(), 0, 10)>MAX_SCRAPEDELAY) {
 		MessageBox_Interactive("Invalid Scrape Delay", "ERROR", MB_OK);
 		return;
 	}
-	Preferences()->SetValue(k_prefs_scrape_delay, strtoul(text.GetString(), 0, 10));
+	Preferences()->SetValue(k_prefs_scrape_delay, strtoul(delaytext.GetString(), 0, 10));
+
+	m_UnwantedScrape.GetWindowText(unwantedtext);
+	Preferences()->SetValue(k_prefs_unwanted_scrape, unwantedtext);
 
 	CSAPrefsSubDlg::OnOK();
 }

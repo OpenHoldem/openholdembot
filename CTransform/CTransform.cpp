@@ -210,8 +210,7 @@ int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text)
 	{
 		for (x = 0; x < width; x++) 
 		{
-			//alpha = pBits[y*width*4 + x*4 + 3];
-            alpha = kAlphaNoTransparency;
+			alpha = pBits[y*width*4 + x*4 + 3];
 			red = pBits[y*width*4 + x*4 + 2];
 			green = pBits[y*width*4 + x*4 + 1];
 			blue = pBits[y*width*4 + x*4 + 0];
@@ -438,15 +437,13 @@ int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text, CStr
 	{
 		for (y = 0; y < height; y++) 
 		{
-			//alpha = pBits[y*width*4 + x*4 + 3];
-            alpha = kAlphaNoTransparency;
+			alpha = pBits[y*width*4 + x*4 + 3];
 			red = pBits[y*width*4 + x*4 + 2];
 			green = pBits[y*width*4 + x*4 + 1];
 			blue = pBits[y*width*4 + x*4 + 0];
 
 			// See if our pixel is in the defined color cube
-			//if (IsInARGBColorCube((region->second.color>>24)&0xff,
-            if (IsInARGBColorCube(kAlphaNoTransparency,
+			if (IsInARGBColorCube((region->second.color>>24)&0xff,
 								 GetRValue(region->second.color), 
 								 GetGValue(region->second.color), 
 								 GetBValue(region->second.color), 

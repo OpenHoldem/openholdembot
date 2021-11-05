@@ -1,5 +1,4 @@
 #pragma once
-
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project

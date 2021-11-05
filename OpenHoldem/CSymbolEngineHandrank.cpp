@@ -17,6 +17,8 @@
 #include <assert.h>
 #include "CEngineContainer.h"
 #include "COpenHoldemStatusbar.h"
+#include "CWhiteInfoBox.h"
+#include "RtaWindow.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePrwin.h"
@@ -100,7 +102,9 @@ void CSymbolEngineHandrank::CalculateHandrank() {
   GetCardstring(cardstr,
     p_table_state->User()->hole_cards(0)->GetValue(),
     p_table_state->User()->hole_cards(1)->GetValue());
-int nopponents = p_engine_container->symbol_engine_prwin()->nopponents_for_prwin();
+  // !!!! looks wrong
+  // !!!! int _nopponents = p_engine_container->symbol_engine_prwin()->nopponents_for_prwin();
+  int nopponents = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt();
   for (int i = 0; i<kNumberOfStartingHands; i++)
   {
     if (strcmp(cardstr, handrank_table_169[nopponents - 1][i]) == 0)
@@ -111,6 +115,8 @@ int nopponents = p_engine_container->symbol_engine_prwin()->nopponents_for_prwin
     }
   }
   p_openholdem_statusbar->SetHandrank(_handrank169);
+  p_white_info_box->SetHandrank(_handrank169);
+  p_rta_window->SetHandrank(_handrank169);
   _handrank1326 = _handrank2652 / 2;
   _handrank1000 = 1000 * _handrank2652 / 2652;
   _handrankp = 2652.0 / (1.0 + (double)nopponents);

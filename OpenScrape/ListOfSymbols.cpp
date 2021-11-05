@@ -110,7 +110,6 @@ CString ListOfRegions() {
   list += RangeOfSymbols("p%ichip00", 0, 9);
   list += RangeOfSymbols("p%ichip01", 0, 9);
   list += RangeOfSymbols("p%ichip10", 0, 9);
-  list += RangeOfSymbols("tablepoint%i", 0, 9);
   list += RangeOfSymbols("u%iactive", 0, 9);
   list += RangeOfSymbols("u%ibalance", 0, 9);
   list += RangeOfSymbols("u%ibet", 0, 9);

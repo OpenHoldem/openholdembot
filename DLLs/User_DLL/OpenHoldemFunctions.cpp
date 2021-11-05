@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -66,81 +64,81 @@ t_WriteLog p_WriteLog = nullptr;
 void ErrorPointerNotInitialized(CString function_name);
 
 double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
-	if (p_GetSymbol == nullptr) {
-		ErrorPointerNotInitialized("GetSymbol");
-		return 0.0;
-	}
-	return p_GetSymbol(name_of_single_symbol__not_expression);
+  if (p_GetSymbol == nullptr) {
+    ErrorPointerNotInitialized("GetSymbol");
+	  return 0.0;
+  }
+  return p_GetSymbol(name_of_single_symbol__not_expression);
 }
 
 void* __stdcall GetPrw1326() {
-	if (p_GetPrw1326 == nullptr) {
-		ErrorPointerNotInitialized("GetPrw1326");
-		return nullptr;
-	}
-	return p_GetPrw1326();
+  if (p_GetPrw1326 == nullptr) {
+    ErrorPointerNotInitialized("GetPrw1326");
+    return nullptr;
+  }
+  return p_GetPrw1326();
 }
 
 char* __stdcall GetHandnumber() {
-	if (p_GetHandnumber == nullptr) {
-		ErrorPointerNotInitialized("GetHandnumber");
-		return (char*)"";
-	}
-	return p_GetHandnumber();
+  if (p_GetHandnumber == nullptr) {
+    ErrorPointerNotInitialized("GetHandnumber");
+    return "";
+  }
+  return p_GetHandnumber();
 }
 
 char* __stdcall GetPlayerName(int chair) {
-	if (p_GetPlayerName == nullptr) {
-		ErrorPointerNotInitialized("GetPlayerName");
-		return (char*)"";
-	}
-	return p_GetPlayerName(chair);
+  if (p_GetPlayerName == nullptr) {
+    ErrorPointerNotInitialized("GetPlayerName");
+    return "";
+  }
+  return p_GetPlayerName(chair);
 }
 
 char* __stdcall GetTableTitle() {
-	if (p_GetTableTitle == nullptr) {
-		ErrorPointerNotInitialized("GetTableTitle");
-		return (char*)"";
-	}
-	return p_GetTableTitle();
+  if (p_GetTableTitle == nullptr) {
+    ErrorPointerNotInitialized("GetTableTitle");
+    return "";
+  }
+  return p_GetTableTitle();
 }
 
 void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {
-	if (p_ParseHandList == nullptr) {
-		ErrorPointerNotInitialized("ParseHandList");
-		return;
-	}
-	p_ParseHandList(name_of_list, list_body);
+  if (p_ParseHandList == nullptr) {
+    ErrorPointerNotInitialized("ParseHandList");
+    return;
+  }
+  p_ParseHandList(name_of_list, list_body);
 }
 
 char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
-	if (p_ScrapeTableMapRegion == nullptr) {
-		ErrorPointerNotInitialized("ScrapeTableMapRegion");
-		return (char*)"";
-	}
-	return p_ScrapeTableMapRegion(p_region, p_returned_lengh);
+  if (p_ScrapeTableMapRegion == nullptr) {
+    ErrorPointerNotInitialized("ScrapeTableMapRegion");
+    return "";
+  }
+  return p_ScrapeTableMapRegion(p_region, p_returned_lengh);
 }
 
 void __stdcall SendChatMessage(char *message) {
-	if (p_SendChatMessage == nullptr) {
-		ErrorPointerNotInitialized("SendChatMessage");
-		return;
-	}
-	p_SendChatMessage(message);
+  if (p_SendChatMessage == nullptr) {
+    ErrorPointerNotInitialized("SendChatMessage");
+    return;
+  }
+  p_SendChatMessage(message);
 }
 
 void WriteLog(char* format, ...) {
-	if (p_WriteLog == nullptr) {
-		ErrorPointerNotInitialized("WriteLog");
-		return;
-	}
-	// Docu about ellipsis and variadic macro:
-	// http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
-	// http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
-	va_list args;
-	va_start(args, format);
-	p_WriteLog(format, args);
-	va_end(args);
+  if (p_WriteLog == nullptr) {
+    ErrorPointerNotInitialized("WriteLog");
+    return;
+  }
+  // Docu about ellipsis and variadic macro:
+  // http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
+  // http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
+  va_list args;
+  va_start(args, format);
+  p_WriteLog(format, args);
+  va_end(args);
 }
 
 //******************************************************************************
@@ -150,44 +148,44 @@ void WriteLog(char* format, ...) {
 //******************************************************************************
 
 FARPROC WINAPI LookupOpenHoldemFunction(char* function_name) {
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
-	HMODULE openholdem_main_module = GetModuleHandle(NULL);
-	if (openholdem_main_module == nullptr) {
-		return nullptr;
-	}
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
-	FARPROC WINAPI function_address = GetProcAddress(openholdem_main_module, function_name);
-	if (function_address == nullptr) {
-		CString error_message;
-		error_message.Format((wchar_t *)"Can not find %s in Openholdem.exe.\n",
-			function_name);
-		MessageBox(0,
-			error_message,
-			L"DLL Error",
-			MB_ICONERROR);
-	}
-	return function_address;
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
+  HMODULE openholdem_main_module = GetModuleHandle(NULL);
+  if (openholdem_main_module == nullptr) {
+    return nullptr;
+  }
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
+  FARPROC WINAPI function_address = GetProcAddress(openholdem_main_module, function_name);
+  if (function_address == nullptr) {
+    CString error_message;
+    error_message.Format("Can not find %s in Openholdem.exe.\n",
+      function_name);
+    MessageBox(0,
+      error_message,
+      "DLL Error",
+      MB_ICONERROR);
+  }
+  return function_address;
 }
 
 void InitializeOpenHoldemFunctionInterface() {
-	p_GetSymbol = (t_GetSymbol)LookupOpenHoldemFunction((char *)"GetSymbol");
-	p_GetPrw1326 = (t_GetPrw1326)LookupOpenHoldemFunction((char *)"GetPrw1326");
-	p_GetHandnumber = (t_GetHandnumber)LookupOpenHoldemFunction((char *)"GetHandnumber");
-	p_GetPlayerName = (t_GetPlayerName)LookupOpenHoldemFunction((char *)"GetPlayerName");
-	p_GetTableTitle = (t_GetTableTitle)LookupOpenHoldemFunction((char *)"GetTableTitle");
-	p_ParseHandList = (t_ParseHandList)LookupOpenHoldemFunction((char *)"ParseHandList");
-	p_ScrapeTableMapRegion = (t_ScrapeTableMapRegion)LookupOpenHoldemFunction((char *)"ScrapeTableMapRegion");
-	p_SendChatMessage = (t_SendChatMessage)LookupOpenHoldemFunction((char *)"SendChatMessage");
-	p_WriteLog = (t_WriteLog)LookupOpenHoldemFunction((char *)"WriteLog");
+  p_GetSymbol = (t_GetSymbol)LookupOpenHoldemFunction("GetSymbol");
+  p_GetPrw1326 = (t_GetPrw1326)LookupOpenHoldemFunction("GetPrw1326");
+  p_GetHandnumber = (t_GetHandnumber)LookupOpenHoldemFunction("GetHandnumber");
+  p_GetPlayerName = (t_GetPlayerName)LookupOpenHoldemFunction("GetPlayerName");
+  p_GetTableTitle = (t_GetTableTitle) LookupOpenHoldemFunction("GetTableTitle");
+  p_ParseHandList = (t_ParseHandList)LookupOpenHoldemFunction("ParseHandList");
+  p_ScrapeTableMapRegion = (t_ScrapeTableMapRegion)LookupOpenHoldemFunction("ScrapeTableMapRegion");
+  p_SendChatMessage = (t_SendChatMessage)LookupOpenHoldemFunction("SendChatMessage");
+  p_WriteLog = (t_WriteLog)LookupOpenHoldemFunction("WriteLog");
 }
 
 void ErrorPointerNotInitialized(CString function_name) {
-	CString error_message;
-	error_message.Format((wchar_t *)"OpenHoldem interface not yet initialized.\n"
-		"Can't use function %s.\n",
-		function_name);
-	MessageBox(0,
-		error_message,
-		L"DLL Error",
-		MB_ICONERROR);
+  CString error_message;
+  error_message.Format("OpenHoldem interface not yet initialized.\n"
+    "Can't use function %s.\n",
+    function_name);
+  MessageBox(0,
+    error_message,
+    "DLL Error",
+    MB_ICONERROR);
 }

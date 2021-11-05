@@ -198,6 +198,13 @@
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
     <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
+    <ClCompile Include="RtaWindow.cpp" />
+    <ClCompile Include="2DBarGraph.cpp" />
+    <ClCompile Include="2DLineGraph.cpp" />
+    <ClCompile Include="2DPieGraph.cpp" />
+    <ClCompile Include="CHyperLink.cpp" />
+    <ClCompile Include="GraphObject.cpp" />
+    <ClCompile Include="DialogSelectActions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
@@ -429,7 +436,13 @@
     <ClInclude Include="COHScriptObject.h" />
     <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
-    <ClInclude Include="AlphaChannel.h" />
+    <ClInclude Include="RtaWindow.h" />
+    <ClInclude Include="2DBarGraph.h" />
+    <ClInclude Include="2DLineGraph.h" />
+    <ClInclude Include="2DPieGraph.h" />
+    <ClInclude Include="CHyperLink.h" />
+    <ClInclude Include="GraphObject.h" />
+    <ClInclude Include="DialogSelectActions.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />

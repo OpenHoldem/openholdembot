@@ -94,6 +94,8 @@
 #define IDC_SCRAPEDELAY_SPIN            1041
 #define IDC_SWAGDELAY1_SPIN             1041
 #define IDC_CLICKDELAY                  1042
+#define IDC_SCRAPEDELAY2                1042
+#define IDC_UNWANTEDSCRAPE              1042
 #define IDC_FRAMEDELAY_SPIN2            1043
 #define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
@@ -144,14 +146,23 @@
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120
 #define IDC_CHECK8                      1121
+#define IDC_ICM_1                       1121
 #define IDC_CHECK9                      1122
+#define IDC_ICM_2                       1122
 #define IDC_CHECK10                     1123
+#define IDC_ICM_3                       1123
 #define IDC_CHECK11                     1124
+#define IDC_ICM_4                       1124
 #define IDC_CHECK12                     1125
+#define IDC_ICM_5                       1125
 #define IDC_CHECK13                     1126
+#define IDC_ICM_6                       1126
 #define IDC_CHECK14                     1127
+#define IDC_ICM_7                       1127
 #define IDC_CHECK15                     1128
+#define IDC_ICM_8                       1128
 #define IDC_CHECK16                     1129
+#define IDC_ICM_9                       1129
 #define IDC_CHECK17                     1130
 #define IDC_CHECK18                     1131
 #define IDC_CHECK19                     1132
@@ -413,14 +424,14 @@
 #define IDC_DEBUG_VERSUS                1396
 #define IDC_DEBUG_AUTO_TRACE            1397
 #define IDC_DEBUG_AST_PRIORITY_ORDERING 1398
-#define IDC_DEBUG_FILENAMES             1399	
+#define IDC_DEBUG_FILENAMES             1399
 #define IDC_DEBUG_BOARD_EXPRESSIONS     1400
 #define IDC_DEBUG_TOKENIZER             1401
 #define IDC_DEBUG_MEMORY_USAGE          1402
 #define IDC_DEBUG_ALLIN_ADJUSTMENT      1403
 #define IDC_ENABLE_DELAY_LOGGiNG        1404
-#define IDC_USE_AUTO_REPLAY				      1405
-#define IDC_RESTORE_POSITION_AND_FOCUS	1406
+#define IDC_USE_AUTO_REPLAY             1405
+#define IDC_RESTORE_POSITION_AND_FOCUS  1406
 #define IDC_LOG_DELAY_FUNCTION          1407
 #define IDC_LOG_HOPPER_FUNCTIONS        1408
 #define IDC_LOG_ICM_FUNCTIONS           1409
@@ -428,9 +439,9 @@
 #define IDC_LOG_PRWIN_FUNCTIONS         1411
 #define IDC_DEBUG_TABLEPOINTS           1412
 #define IDC_DEBUG_SHAREDMEM             1413
-#define IDC_DEBUG_SINGLETONS            1414  
-#define IDC_DEBUG_AUTOSTARTER           1415 
-#define IDC_DEBUG_WATCHDOG              1416 
+#define IDC_DEBUG_SINGLETONS            1414
+#define IDC_DEBUG_AUTOSTARTER           1415
+#define IDC_DEBUG_WATCHDOG              1416
 #define IDC_DEBUG_TIMERS                1417
 #define IDC_USE_AUTO_STARTER            1418
 #define IDC_USE_AUTO_SHUTDOWN           1419
@@ -441,15 +452,6 @@
 #define IDC_RADIO_GUI_FIRST_VISIBLE     1424
 #define IDC_RADIO_GUI_ALL_MINIMIZED     1425
 #define IDC_RADIO_GUI_LESS              1426
-#define IDC_ICM_1                       1121
-#define IDC_ICM_2                       1122
-#define IDC_ICM_3                       1123
-#define IDC_ICM_4                       1124
-#define IDC_ICM_5                       1125
-#define IDC_ICM_6                       1126
-#define IDC_ICM_7                       1127
-#define IDC_ICM_8                       1128
-#define IDC_ICM_9                       1129
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -554,7 +556,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        189
+#define _APS_NEXT_RESOURCE_VALUE        190
 #define _APS_NEXT_COMMAND_VALUE         33000
 #define _APS_NEXT_CONTROL_VALUE         1427
 #define _APS_NEXT_SYMED_VALUE           101

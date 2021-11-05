@@ -724,8 +724,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 					// unreverse bgra to abgr
 					hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);
 					hold_image.pixel[y*hold_image.width + x] = strtoul(hexval, 0, 16);
-					//BYTE alpha = (hold_image.pixel[y*hold_image.width + x] >> 24) &0xff;
-                    BYTE alpha = kAlphaNoTransparency;
+					BYTE alpha = (hold_image.pixel[y*hold_image.width + x] >> 24) &0xff;
 					BYTE blue =  (hold_image.pixel[y*hold_image.width + x] >> 16) &0xff;
 					BYTE green = (hold_image.pixel[y*hold_image.width + x] >>  8) &0xff;
 					BYTE red =   (hold_image.pixel[y*hold_image.width + x] >>  0) &0xff;

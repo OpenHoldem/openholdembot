@@ -308,6 +308,10 @@ void COpenHoldemApp::StoreLastRecentlyUsedFileList() {
 	m_pRecentFileList->WriteList();
 }
 
+CString COpenHoldemApp::GetUsedProfilePath() {
+	return GetProfileString(_afxFileSection, "File1");
+}
+
 void COpenHoldemApp::OpenLastRecentlyUsedFile() {
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
@@ -327,6 +331,9 @@ void COpenHoldemApp::OpenLastRecentlyUsedFile() {
 				cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
 				cmdInfo.m_strFileName = sLastPath;
 				f.Close();
+				// Check if Debug Action Traces Profile is used
+				if (sLastPath.Right(1) == "d")
+					action_trace_profile = TRUE;
 			}
 		}
 	}

@@ -19,7 +19,7 @@
     <ProjectGuid>{24FC33AE-EECA-44F8-924C-D3658612C383}</ProjectGuid>
     <RootNamespace>OpenScrape</RootNamespace>
     <Keyword>MFCProj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -33,10 +33,10 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -151,6 +151,7 @@
     <ClCompile Include="DialogTableMap.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="HScrollListBox.cpp" />
+    <ClCompile Include="Led.cpp" />
     <ClCompile Include="ListOfSymbols.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="..\OpenHoldem\NumericalFunctions.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="..\CTransform\pdiff\RGBAImage.cpp" />
     <ClCompile Include="..\CTablemap\CTablemap.cpp" />
     <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
+    <ClCompile Include="WaitDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\OpenHoldem\CTableTitle.h" />
@@ -190,6 +192,7 @@
     <ClInclude Include="DialogTableMap.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="HScrollListBox.h" />
+    <ClInclude Include="Led.h" />
     <ClInclude Include="ListOfSymbols.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="..\OpenHoldem\NumericalFunctions.h" />
@@ -209,6 +212,8 @@
     <ClInclude Include="..\CTransform\hash\stdint.h" />
     <ClInclude Include="..\CTablemap\CTablemap.h" />
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
+    <ClInclude Include="WaitDialog.h" />
+    <ClInclude Include="WaitRsc.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\OpenHoldem\WebSafeColours.h" />
@@ -226,6 +231,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenScrape.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\leds.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

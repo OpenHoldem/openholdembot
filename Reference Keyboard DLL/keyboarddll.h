@@ -23,8 +23,8 @@
 typedef int (*keyboard_sendstring_t)(const HWND hwnd, const RECT rect, const CString s, const bool use_comma);
 KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma);
 
-typedef int (*keyboard_sendkey_t)(const HWND hwnd, const RECT rect, const char* vkey);
-KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, const char* vkey);
+typedef int (*keyboard_sendkey_t)(const HWND hwnd, const RECT rect, UINT vkey);
+KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey);
 
 typedef void (*keyboard_process_message_t)(const char *message, const void *param);
 KEYBOARDDLL_API void ProcessMessage(const char *message, const void *param);

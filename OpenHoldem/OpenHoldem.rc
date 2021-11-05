@@ -389,7 +389,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "There are currently no DLL options.",IDC_STATIC,12,12,250,8
-    LTEXT           "The user.dll gets loaded automatically on startup.", IDC_STATIC, 12, 24, 250, 8
+    LTEXT           "The user.dll gets loaded automatically on startup.",IDC_STATIC,12,24,250,8
     LTEXT           "A sample DLL can be found at ""trunk/Reference User DLL""",IDC_STATIC,12,36,250,32
 END
 
@@ -400,6 +400,8 @@ BEGIN
     LTEXT           "Scrape delay (100-5000 ms)",IDC_STATIC,4,12,90,8
     EDITTEXT        IDC_SCRAPEDELAY,120,10,69,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SCRAPEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,189,10,11,12
+    LTEXT           "Countermeasure of player names scraping (put unwanted string to scrape like ""Time"" on Ipoker Networks for example)",IDC_STATIC,3,32,102,33
+    EDITTEXT        IDC_UNWANTEDSCRAPE,120,33,80,13,ES_AUTOHSCROLL
 END
 
 IDD_SAPREFS6 DIALOGEX 0, 0, 219, 155
@@ -423,7 +425,7 @@ IDD_SAPREFS7 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "Enter values as actual money prizes or as a % of the prize pool:", IDC_STATIC, 4, 7, 206, 8
+    LTEXT           "Enter values as actual money prizes or as a % of the prize pool:",IDC_STATIC,4,7,206,8
     LTEXT           "1st place:",IDC_STATIC,4,24,32,8
     EDITTEXT        IDC_ICM_1,45,21,97,14,ES_AUTOHSCROLL
     LTEXT           "2nd place:",IDC_STATIC,4,40,34,8
@@ -433,15 +435,15 @@ BEGIN
     LTEXT           "4th place:",IDC_STATIC,4,72,33,8
     EDITTEXT        IDC_ICM_4,45,69,97,14,ES_AUTOHSCROLL
     LTEXT           "5th place:",IDC_STATIC,4,88,33,8
-    EDITTEXT        IDC_ICM_5, 45, 85, 97, 14, ES_AUTOHSCROLL
-    LTEXT           "6th place:", IDC_STATIC, 4, 88, 33, 8
-    EDITTEXT        IDC_ICM_6, 45, 101, 97, 14, ES_AUTOHSCROLL
-    LTEXT           "7th place:", IDC_STATIC, 4, 88, 33, 8
-    EDITTEXT        IDC_ICM_7, 45, 117, 97, 14, ES_AUTOHSCROLL
-    LTEXT           "8th place:", IDC_STATIC, 4, 88, 33, 8
-    EDITTEXT        IDC_ICM_8, 45, 133, 97, 14, ES_AUTOHSCROLL
-    LTEXT           "9th place:", IDC_STATIC, 4, 88, 33, 8
-    EDITTEXT        IDC_ICM_9, 45, 149, 97, 14, ES_AUTOHSCROLL
+    EDITTEXT        IDC_ICM_5,45,85,97,14,ES_AUTOHSCROLL
+    LTEXT           "6th place:",IDC_STATIC,4,88,33,8
+    EDITTEXT        IDC_ICM_6,45,101,97,14,ES_AUTOHSCROLL
+    LTEXT           "7th place:",IDC_STATIC,4,88,33,8
+    EDITTEXT        IDC_ICM_7,45,117,97,14,ES_AUTOHSCROLL
+    LTEXT           "8th place:",IDC_STATIC,4,88,33,8
+    EDITTEXT        IDC_ICM_8,45,133,97,14,ES_AUTOHSCROLL
+    LTEXT           "9th place:",IDC_STATIC,4,88,33,8
+    EDITTEXT        IDC_ICM_9,45,149,97,14,ES_AUTOHSCROLL
 END
 
 IDD_HANDLIST DIALOGEX 0, 0, 251, 226
@@ -662,7 +664,8 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Shoot replay-frames",IDC_STATIC,4,8,175,74
     CONTROL         "Never",IDC_RECORD_NEVER,"Button",BS_AUTORADIOBUTTON,7,20,147,8
-    CONTROL         "On autoplayer action (my turn)",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,7,36,138,10
+    CONTROL         "On autoplayer action (my turn)",IDC_RECORD_MY_TURN,
+                    "Button",BS_AUTORADIOBUTTON,7,36,138,10
     CONTROL         "On change in table state when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
                     "Button",BS_AUTORADIOBUTTON,7,52,147,8
     CONTROL         "On change in table state",IDC_RECORD_EVERY_CHANGE,
@@ -678,8 +681,8 @@ IDD_SAPREFS9 DIALOGEX 0, 0, 222, 238
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-CONTROL         "Use auto-starter", IDC_USE_AUTO_STARTER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 8, 157, 8
-CONTROL         "Use auto-shutdown", IDC_USE_AUTO_SHUTDOWN,"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 20, 157, 8
+    CONTROL         "Use auto-starter",IDC_USE_AUTO_STARTER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,157,8
+    CONTROL         "Use auto-shutdown",IDC_USE_AUTO_SHUTDOWN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,20,157,8
 END
 
 IDD_SAPREFS10 DIALOGEX 0, 0, 219, 155
@@ -757,12 +760,12 @@ IDD_SAPREFS15 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-GROUPBOX        "GUI Visibility", IDC_STATIC, 8, 8, 205, 60
-CONTROL         "First GUI visible ", IDC_RADIO_GUI_FIRST_VISIBLE, "Button", BS_AUTORADIOBUTTON, 12, 20, 177, 9
-CONTROL         "All GUIs minimized", IDC_RADIO_GUI_ALL_MINIMIZED, "Button", BS_AUTORADIOBUTTON, 12, 36, 146, 9
-CONTROL         "No GUI at all", IDC_RADIO_GUI_LESS, "Button", BS_AUTORADIOBUTTON, 12, 52, 146, 9
-CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
-                "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,74,157,8
+    GROUPBOX        "GUI Visibility",IDC_STATIC,8,8,205,60
+    CONTROL         "First GUI visible ",IDC_RADIO_GUI_FIRST_VISIBLE,"Button",BS_AUTORADIOBUTTON,12,20,177,9
+    CONTROL         "All GUIs minimized",IDC_RADIO_GUI_ALL_MINIMIZED,"Button",BS_AUTORADIOBUTTON,12,36,146,9
+    CONTROL         "No GUI at all",IDC_RADIO_GUI_LESS,"Button",BS_AUTORADIOBUTTON,12,52,146,9
+    CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,74,157,8
 END
 
 IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
@@ -774,114 +777,115 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,20,90,8
     CONTROL         "No cards",IDC_REBUY_NO_CARDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,36,45,8
     CONTROL         "Heuristic occlusion-check",IDC_REBUY_HEURISTIC_OCCLUSION_CHECK,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 52, 173, 8
-LTEXT           "Minimum time to next rebuy (sec)", IDC_STATIC_REBUY_MINIMUM_DELAY, 4, 68, 96, 8
-EDITTEXT        IDC_REBUY_EDIT_MINIMUM_DELAY, 160, 64, 29, 12, ES_AUTOHSCROLL
-CONTROL         "", IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN, "msctls_updown32", UDS_SETBUDDYINT | UDS_ARROWKEYS, 189, 62, 11, 14
-LTEXT           "Rebuy-script", IDC_STATIC_REBUY_SCRIPT, 4, 100, 63, 8
-EDITTEXT        IDC_REBUY_EDIT_SCRIPT, 100, 100, 100, 12, ES_AUTOHSCROLL
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,52,173,8
+    LTEXT           "Minimum time to next rebuy (sec)",IDC_STATIC_REBUY_MINIMUM_DELAY,4,68,96,8
+    EDITTEXT        IDC_REBUY_EDIT_MINIMUM_DELAY,160,64,29,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,189,62,11,14
+    LTEXT           "Rebuy-script",IDC_STATIC_REBUY_SCRIPT,4,100,63,8
+    EDITTEXT        IDC_REBUY_EDIT_SCRIPT,100,100,100,12,ES_AUTOHSCROLL
 END
 
 IDD_SAPREFS17 DIALOGEX 0, 0, 204, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-CONTROL         "Check keyboard layout settings (english - UK, US)", IDC_CONFIGURATION_INPUT_SETTINGS,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 8, 176, 8
-CONTROL         "Check Font Smoothing Settings", IDC_CONFIGURATION_FONT_SETTINGS,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 23, 176, 10
-LTEXT           "Correct and working system settings are extremely important", IDC_STATIC, 4, 45, 200, 8
-LTEXT           "  * for the scraper", IDC_STATIC, 4, 57, 96, 8
-LTEXT           "  * for the autoplayer", IDC_STATIC, 4, 67, 96, 8
-LTEXT           "  * if you want to exchange tablemaps with other people", IDC_STATIC, 4, 77, 200, 8
-LTEXT           "Therefore the manual recommends some defaults", IDC_STATIC, 4, 89, 200, 8
-LTEXT           "and we strongly recommend to keep these checks enabled.", IDC_STATIC, 4, 99, 200, 8
+    CONTROL         "Check keyboard layout settings (english - UK, US)",IDC_CONFIGURATION_INPUT_SETTINGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,176,8
+    CONTROL         "Check Font Smoothing Settings",IDC_CONFIGURATION_FONT_SETTINGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
+    LTEXT           "Correct and working system settings are extremely important",IDC_STATIC,4,45,200,8
+    LTEXT           "  * for the scraper",IDC_STATIC,4,57,96,8
+    LTEXT           "  * for the autoplayer",IDC_STATIC,4,67,96,8
+    LTEXT           "  * if you want to exchange tablemaps with other people",IDC_STATIC,4,77,200,8
+    LTEXT           "Therefore the manual recommends some defaults",IDC_STATIC,4,89,200,8
+    LTEXT           "and we strongly recommend to keep these checks enabled.",IDC_STATIC,4,99,200,8
 END
 
 IDD_SAPREFS18 DIALOGEX 0, 0, 219, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-CONTROL         "When I hold cards", IDC_RADIO_SCRAPE_ON_CARDS, "Button", BS_AUTORADIOBUTTON, 8, 36, 76, 8
-CONTROL         "Always", IDC_RADIO_SCRAPE_ALWAYS, "Button", BS_AUTORADIOBUTTON, 8, 20, 67, 8
-CONTROL         "When it is my turn", IDC_RADIO_SCRAPE_ON_MYTURN, "Button", BS_AUTORADIOBUTTON, 8, 52, 85, 8
-GROUPBOX        "Full scrape", IDC_STATIC, 4, 5, 166, 63
+    CONTROL         "When I hold cards",IDC_RADIO_SCRAPE_ON_CARDS,"Button",BS_AUTORADIOBUTTON,8,36,76,8
+    CONTROL         "Always",IDC_RADIO_SCRAPE_ALWAYS,"Button",BS_AUTORADIOBUTTON,8,20,67,8
+    CONTROL         "When it is my turn",IDC_RADIO_SCRAPE_ON_MYTURN,"Button",BS_AUTORADIOBUTTON,8,52,85,8
+    GROUPBOX        "Full scrape",IDC_STATIC,4,5,166,63
 END
 
 IDD_SAPREFS19 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-CONTROL         "Enable handhistory generator", IDC_HANDHISTORY_GENERATOR_ENABLE,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 8, 116, 8
+    CONTROL         "Enable handhistory generator",IDC_HANDHISTORY_GENERATOR_ENABLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,116,8
 END
 
 IDD_SAPREFS20 DIALOGEX 0, 0, 550, 450
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-CONTROL         "Allin adjustment", IDC_DEBUG_ALLIN_ADJUSTMENT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 9, 117, 10
-CONTROL         "AST priority ordering", IDC_DEBUG_AST_PRIORITY_ORDERING,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 23, 117, 10
-CONTROL         "Auto-connector", IDC_DEBUG_AUTOCONNECTOR, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 37, 103, 10
-CONTROL         "Autoplayer", IDC_DEBUG_AUTOPLAYER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 51, 117, 10
-CONTROL         "Autoplayer trace", IDC_DEBUG_AUTO_TRACE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 65, 117, 10
-CONTROL         "Blind locking", IDC_DEBUG_BLINDLOCKING, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 93, 103, 10
-CONTROL         "board$XYZ expressions", IDC_DEBUG_BOARD_EXPRESSIONS,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 107, 117, 10
-CONTROL         "Betsize adjustment", IDC_DEBUG_BETSIZE_ADJUSTMENT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 121, 117, 10
-CONTROL         "DLL extension", IDC_DEBUG_DLL_EXTENSION, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 149, 103, 10
-CONTROL         "Engine container", IDC_DEBUG_ENGINE_CONTAINER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 177, 117, 10
-CONTROL         "Filenames", IDC_DEBUG_FILENAMES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 205, 117, 10
-CONTROL         "Formula", IDC_DEBUG_FORMULA, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 219, 117, 10
-CONTROL         "GUI", IDC_DEBUG_GUI, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 247, 117, 10
-CONTROL         "Handhistory generator", IDC_DEBUG_HANDHISTORY, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 275, 103, 10
-CONTROL         "Handreset-detector", IDC_DEBUG_HANDRESET_DETECTOR, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 289, 117, 10
-CONTROL         "Heartbeat-thread", IDC_DEBUG_HEARTBEAT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 303, 103, 10
-CONTROL         "Hopper-messages", IDC_DEBUG_HOPPER_MESSAGES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 4, 317, 103, 10
-CONTROL         "ICM", IDC_DEBUG_ICM, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 9, 117, 10
-CONTROL         "Istournament", IDC_DEBUG_ISTOURNAMENT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 23, 117, 10
-CONTROL         "Lazy scraper", IDC_DEBUG_LAZY_SCRAPER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 51, 117, 10
-CONTROL         "Memory symbols", IDC_DEBUG_MEMORY_SYMBOLS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 79, 103, 10
-CONTROL         "Memory usage", IDC_DEBUG_MEMORY_USAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 93, 103, 10
-CONTROL         "Occlusion check", IDC_DEBUG_OCCLUSSION, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 121, 103, 10
-CONTROL         "OpenHoldem.cpp", IDC_DEBUG_OPENHOLDEM, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 135, 117, 10
-CONTROL         "Parser", IDC_DEBUG_PARSER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 163, 117, 10
-CONTROL         "PrWin thread", IDC_DEBUG_PRWIN, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 177, 103, 10
-CONTROL         "Poker Tracker thread", IDC_DEBUG_POKERTRACKER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 191, 103, 10
-CONTROL         "Popup blocker", IDC_DEBUG_POPUP_BLOCKER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 205, 103, 10
-CONTROL         "Preferences", IDC_DEBUG_PREFERENCES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 219, 117, 10
-CONTROL         "Rebuy management", IDC_DEBUG_REBUY, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 247, 103, 10
-CONTROL         "Replay frames", IDC_DEBUG_REPLAYFRAMES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 124, 261, 103, 10
-CONTROL         "Scraper", IDC_DEBUG_SCRAPER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 9, 117, 10
-CONTROL         "Scraper directory monitor", IDC_DEBUG_FILESYSTEM_MONITOR,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 23, 117, 10
-CONTROL         "Scraper-preprocessor", IDC_DEBUG_SCRAPER_PREPROCESSOR,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 37, 117, 10
-CONTROL         "Session counter", IDC_DEBUG_SESSIONCOUNTER, "Button", BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP, 244, 51, 103, 10
-CONTROL         "Stable frames counter", IDC_DEBUG_STABLEFRAMESCOUNTER,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 65, 103, 10
-CONTROL         "Symbol engine (OH-script)", IDC_DEBUG_SYMBOLENGINE,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 79, 103, 10
-CONTROL         "Symbol engine (OpenPPL)", IDC_DEBUG_SYMBOLENGINE_OPENPPL,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 93, 103, 10
-CONTROL         "Table-limits (blind values)", IDC_DEBUG_TABLE_LIMITS,
-"Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 121, 117, 10
-CONTROL         "Tablemap loader", IDC_DEBUG_TABLEMAP_LOADER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 135, 114, 10
-CONTROL         "Tablepoints", IDC_DEBUG_TABLEPOINTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 149, 117, 10
-CONTROL         "Table positioner", IDC_DEBUG_TABLE_POSITIONER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 163, 117, 10
-CONTROL         "Tokenizer", IDC_DEBUG_TOKENIZER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 177, 117, 10
-CONTROL         "Versus", IDC_DEBUG_VERSUS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 205, 111, 10
-CONTROL         "Shared memory", IDC_DEBUG_SHAREDMEM, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 219, 111, 10
-CONTROL         "Singletons", IDC_DEBUG_SINGLETONS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 233, 111, 10
-CONTROL         "Auto-starter", IDC_DEBUG_AUTOSTARTER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 247, 111, 10
-CONTROL         "Watchdog", IDC_DEBUG_WATCHDOG, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 261, 111, 10
-CONTROL         "Timers", IDC_DEBUG_TIMERS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 275, 111, 10
-CONTROL         "NutFullhouse", IDC_DEBUG_NUTFULLHOUSE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 289, 111, 10
-CONTROL         "Multiplexer", IDC_DEBUG_MULTIPLEXER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 303, 111, 10
-CONTROL         "Symbol verification", IDC_DEBUG_SYMBOL_VERIFICATION, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 244, 303, 111, 10
-CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,317,117,10
-PUSHBUTTON      "Toggle all", IDC_TOGGLE_ALL_DEBUG, 244, 250, 50, 14
+    CONTROL         "Allin adjustment",IDC_DEBUG_ALLIN_ADJUSTMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,9,117,10
+    CONTROL         "AST priority ordering",IDC_DEBUG_AST_PRIORITY_ORDERING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,117,10
+    CONTROL         "Auto-connector",IDC_DEBUG_AUTOCONNECTOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,37,103,10
+    CONTROL         "Autoplayer",IDC_DEBUG_AUTOPLAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,51,117,10
+    CONTROL         "Autoplayer trace",IDC_DEBUG_AUTO_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,65,117,10
+    CONTROL         "Blind locking",IDC_DEBUG_BLINDLOCKING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,93,103,10
+    CONTROL         "board$XYZ expressions",IDC_DEBUG_BOARD_EXPRESSIONS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,107,117,10
+    CONTROL         "Betsize adjustment",IDC_DEBUG_BETSIZE_ADJUSTMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,121,117,10
+    CONTROL         "DLL extension",IDC_DEBUG_DLL_EXTENSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,149,103,10
+    CONTROL         "Engine container",IDC_DEBUG_ENGINE_CONTAINER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,177,117,10
+    CONTROL         "Filenames",IDC_DEBUG_FILENAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,205,117,10
+    CONTROL         "Formula",IDC_DEBUG_FORMULA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,117,10
+    CONTROL         "GUI",IDC_DEBUG_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,247,117,10
+    CONTROL         "Handhistory generator",IDC_DEBUG_HANDHISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,275,103,10
+    CONTROL         "Handreset-detector",IDC_DEBUG_HANDRESET_DETECTOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,289,117,10
+    CONTROL         "Heartbeat-thread",IDC_DEBUG_HEARTBEAT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,303,103,10
+    CONTROL         "Hopper-messages",IDC_DEBUG_HOPPER_MESSAGES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,317,103,10
+    CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,9,117,10
+    CONTROL         "Istournament",IDC_DEBUG_ISTOURNAMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,23,117,10
+    CONTROL         "Lazy scraper",IDC_DEBUG_LAZY_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,51,117,10
+    CONTROL         "Memory symbols",IDC_DEBUG_MEMORY_SYMBOLS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,79,103,10
+    CONTROL         "Memory usage",IDC_DEBUG_MEMORY_USAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,93,103,10
+    CONTROL         "Occlusion check",IDC_DEBUG_OCCLUSSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,121,103,10
+    CONTROL         "OpenHoldem.cpp",IDC_DEBUG_OPENHOLDEM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,135,117,10
+    CONTROL         "Parser",IDC_DEBUG_PARSER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,163,117,10
+    CONTROL         "PrWin thread",IDC_DEBUG_PRWIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,177,103,10
+    CONTROL         "Poker Tracker thread",IDC_DEBUG_POKERTRACKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,191,103,10
+    CONTROL         "Popup blocker",IDC_DEBUG_POPUP_BLOCKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,205,103,10
+    CONTROL         "Preferences",IDC_DEBUG_PREFERENCES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,219,117,10
+    CONTROL         "Rebuy management",IDC_DEBUG_REBUY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,247,103,10
+    CONTROL         "Replay frames",IDC_DEBUG_REPLAYFRAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,124,261,103,10
+    CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,9,117,10
+    CONTROL         "Scraper directory monitor",IDC_DEBUG_FILESYSTEM_MONITOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,23,117,10
+    CONTROL         "Scraper-preprocessor",IDC_DEBUG_SCRAPER_PREPROCESSOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,37,117,10
+    CONTROL         "Session counter",IDC_DEBUG_SESSIONCOUNTER,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,244,51,103,10
+    CONTROL         "Stable frames counter",IDC_DEBUG_STABLEFRAMESCOUNTER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,65,103,10
+    CONTROL         "Symbol engine (OH-script)",IDC_DEBUG_SYMBOLENGINE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,79,103,10
+    CONTROL         "Symbol engine (OpenPPL)",IDC_DEBUG_SYMBOLENGINE_OPENPPL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,93,103,10
+    CONTROL         "Table-limits (blind values)",IDC_DEBUG_TABLE_LIMITS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,121,117,10
+    CONTROL         "Tablemap loader",IDC_DEBUG_TABLEMAP_LOADER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,135,114,10
+    CONTROL         "Tablepoints",IDC_DEBUG_TABLEPOINTS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,149,117,10
+    CONTROL         "Table positioner",IDC_DEBUG_TABLE_POSITIONER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,163,117,10
+    CONTROL         "Tokenizer",IDC_DEBUG_TOKENIZER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,177,117,10
+    CONTROL         "Versus",IDC_DEBUG_VERSUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,205,111,10
+    CONTROL         "Shared memory",IDC_DEBUG_SHAREDMEM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,219,111,10
+    CONTROL         "Singletons",IDC_DEBUG_SINGLETONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,233,111,10
+    CONTROL         "Auto-starter",IDC_DEBUG_AUTOSTARTER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,247,111,10
+    CONTROL         "Watchdog",IDC_DEBUG_WATCHDOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,261,111,10
+    CONTROL         "Timers",IDC_DEBUG_TIMERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,275,111,10
+    CONTROL         "NutFullhouse",IDC_DEBUG_NUTFULLHOUSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,289,111,10
+    CONTROL         "Multiplexer",IDC_DEBUG_MULTIPLEXER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,303,111,10
+    CONTROL         "Symbol verification",IDC_DEBUG_SYMBOL_VERIFICATION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,303,111,10
+    CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,244,317,117,10
+    PUSHBUTTON      "Toggle all",IDC_TOGGLE_ALL_DEBUG,244,250,50,14
 END
 
 IDD_SAPREFS21 DIALOGEX 0, 0, 219, 154
@@ -916,8 +920,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 14.0.1.0
- PRODUCTVERSION 14.0.1.0
+ FILEVERSION 14,0,0,0
+ PRODUCTVERSION 14,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1224,6 +1228,11 @@ BEGIN
     0
 END
 
+IDD_SAPREFS4 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1233,11 +1242,10 @@ END
 STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
-    ID_INDICATOR_STATUS_ACTION "action"
-    ID_INDICATOR_STATUS_DUMMY ""
-    ID_INDICATOR_FORMULA_CURPOS "current row"
-    ID_INDICATOR_STATUS_HANDRANK "status handrank"
     ID_INDICATOR_STATUS_PRWIN "prwin"
+    ID_INDICATOR_STATUS_ACTION "action"
+    ID_INDICATOR_STATUS_HANDRANK "status handrank"
+    ID_INDICATOR_FORMULA_CURPOS "current row"
 END
 
 STRINGTABLE
@@ -1374,7 +1382,8 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_VALIDATOR "Enable validator\nValidator"
     ID_HELP_PROBLEMSOLVER   "Detects the most common beginner-mistakes. Give it a try ;-)\nProblem solver"
-    ID_MAIN_TOOLBAR_TAGLOGFILE "Leave a stamp in the log-file for more easy review\nTag log file"
+    ID_MAIN_TOOLBAR_TAGLOGFILE 
+                            "Leave a stamp in the log-file for more easy review\nTag log file"
     ID_HELP_HELP            "Starts the help-file\nHelp"
     ID_HELP_OPEN_PPL        "Starts the OpenPPL help-file\nOpenPPL manual"
     ID_HELP_FORUMS          "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/\nOpenHoldem Forum"
@@ -1389,8 +1398,10 @@ END
 STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_MANUALMODE "Start ManualMode\nManualMode"
-    ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot an image of the current table-view for later inspection with OHReplay\nShoot replay frame"
-    ID_VIEW_SHOOTREPLAYFRAME "Shoot an image of the current table-view for later inspection with OHReplay\nShoot replay frame"                            
+    ID_MAIN_TOOLBAR_SHOOTFRAME 
+                            "Shoot an image of the current table-view for later inspection with OHReplay\nShoot replay frame"
+    ID_VIEW_SHOOTREPLAYFRAME 
+                            "Shoot an image of the current table-view for later inspection with OHReplay\nShoot replay frame"
 END
 
 #endif    // English (United States) resources

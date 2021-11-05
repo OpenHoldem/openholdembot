@@ -41,6 +41,8 @@ class COpenHoldemApp : public CWinApp {
 	virtual int ExitInstance();
  public:
 	void StoreLastRecentlyUsedFileList();
+	CString GetUsedProfilePath();
+	BOOL action_trace_profile = FALSE;
  private:
 	void LoadLastRecentlyUsedFileList();
 	void OpenLastRecentlyUsedFile();

@@ -37,6 +37,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_ScrapeDelay;
+	CEdit m_UnwantedScrape;
 	CSpinButtonCtrl m_ScrapeDelay_Spin;
 	virtual BOOL OnInitDialog();
 

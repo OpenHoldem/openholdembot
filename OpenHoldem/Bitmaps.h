@@ -18,7 +18,6 @@
 #ifndef INC_BITMAPS_H
 #define INC_BITMAPS_H
 
-bool BitmapsAreEqual(HBITMAP hBitmapLeft, HBITMAP HBitmapRight);
-void ClearAlphaChannel(HBITMAP hBitmap, bool fast_exit_assuming_all_alphas_equal);
+bool BitmapsAreEqual(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) ;
 
 #endif INC_BITMAPS_H

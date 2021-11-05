@@ -46,7 +46,6 @@ class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   void ClickRect(RECT rect); 
   void DoubleClickRect(RECT rect); 
   void SendKey(const char ascii_key);
-  void SendHotKey(const char * hot_key);
  private:
 	POINT p_null;
  public:

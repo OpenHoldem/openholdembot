@@ -270,27 +270,17 @@ bool CCasinoInterface::AllinOptionAvailable() {
 }
 
 void CCasinoInterface::SendKey(const char ascii_key) {
-	RECT r_null;
-	// !! kUndefined causes SendKey to return early
-	// !! keyboard-DLL is a mess.
-	r_null.bottom = kUndefinedZero;
-	r_null.left = kUndefinedZero;
-	r_null.right = kUndefinedZero;
-	r_null.top = kUndefinedZero;
-	POINT	cur_pos = { 0 };
-	// Using the SendString function to send a single character
-	char input[2];
-	input[0] = ascii_key;
-	input[1] = '\0';
-	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), r_null, input, false);
-}
-
-void CCasinoInterface::SendHotKey(const char* hot_key) {
-	RECT r_null;
-	r_null.bottom = kUndefinedZero;
-	r_null.left = kUndefinedZero;
-	r_null.right = kUndefinedZero;
-	r_null.top = kUndefinedZero;
-	POINT	cur_pos = { 0 };
-	(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, hot_key);
+  RECT r_null;
+  // !! kUndefined causes SendKey to return early
+  // !! keyboard-DLL is a mess.
+  r_null.bottom = kUndefinedZero;
+  r_null.left = kUndefinedZero;
+  r_null.right = kUndefinedZero;
+  r_null.top = kUndefinedZero;
+  POINT	cur_pos = { 0 };
+  // Using the SendString function to send a single character
+  char input[2];
+  input[0] = ascii_key;
+  input[1] = '\0';
+  (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), r_null, input, false);
 }

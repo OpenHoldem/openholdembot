@@ -116,37 +116,3 @@ bool BitmapsAreEqual(HBITMAP HBitmapLeft, HBITMAP HBitmapRight)
 
 	return bSame;
 }
-
-void ClearAlphaChannel(HBITMAP hBitmap, bool fast_exit_assuming_all_alphas_equal) {
-    MessageBox(0, "ClearAlphaChannel 0", "ClearAlphaChannel", 0);
-    if (hBitmap == NULL) {
-        return;
-    }
-    MessageBox(0, "1", "ClearAlphaChannel", 0);
-    BITMAP bitmapInfo;
-    GetObject(hBitmap, sizeof(BITMAP), &bitmapInfo);
-    MessageBox(0, "2", "ClearAlphaChannel", 0);
-    INT32 *pixels = (INT32*)bitmapInfo.bmBits;
-    MessageBox(0, "3", "ClearAlphaChannel", 0);
-    if (pixels == NULL) {
-        MessageBox(0, "3a", "ClearAlphaChannel", 0);
-        return;
-    }
-    INT32 first_pixel = pixels[0];
-    MessageBox(0, "4", "ClearAlphaChannel", 0);
-    INT32 first_alpha = first_pixel & 0x000000FF;
-    MessageBox(0, "5", "ClearAlphaChannel", 0);
-    if (fast_exit_assuming_all_alphas_equal && !first_alpha) {
-        // alpha already is zero
-        return;
-    }
-    MessageBox(0, "6", "ClearAlphaChannel", 0);
-    int n_pixels = bitmapInfo.bmWidth *  bitmapInfo.bmHeight;
-    MessageBox(0, "7", "ClearAlphaChannel", 0);
-    for (int i = 0; i < n_pixels; ++i) {
-        // Clear alpha, keep all the rest, format is RGBA
-        MessageBox(0, "8", "ClearAlphaChannel", 0);
-        pixels[i] &= 0xFFFFFF00;
-        MessageBox(0, "9", "ClearAlphaChannel", 0);
-    }
-}

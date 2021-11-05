@@ -123,6 +123,14 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(ar);
 		SetModifiedFlag(false);
 		p_openholdem_title->UpdateTitle();
+		// Check if Debug Action Trace Profile is used
+		if (!init_load) {
+			if (ar.GetFile()->GetFilePath().Right(1) == "d")
+				theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_CHECKED);
+			else
+				theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_UNCHECKED);
+		}
+		init_load = FALSE;
 	}
 }
 

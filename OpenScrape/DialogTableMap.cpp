@@ -33,6 +33,7 @@
 #include "DialogEditFont.h"
 #include "DialogEditHashPoint.h"
 #include "DialogEditGrHashPoints.h"
+#include "WaitDialog.h"
 
 #include "..\CTablemap\CTablemap.h"
 
@@ -148,6 +149,8 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CREATE_HASH1, m_CreateHash1);
 	DDX_Control(pDX, IDC_CREATE_HASH2, m_CreateHash2);
 	DDX_Control(pDX, IDC_CREATE_HASH3, m_CreateHash3);
+	//  DDX_Control(pDX, IDC_MISSING_FONTS_ALERT, m_MissingFontsAlert);
+	DDX_Control(pDX, IDC_MISSING_FONTS_ALERT, m_MissingFontsAlert);
 }
 
 
@@ -285,6 +288,8 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_RadiusSpin.SetBuddy(&m_Radius);
 
 	m_Result.SetWindowText("");
+
+	m_MissingFontsAlert.SetLed(CLed::LED_COLOR_RED, CLed::LED_OFF, CLed::LED_ROUND);
 
 	m_PixelSeparation.SetFont(&separation_font);
 
@@ -887,6 +892,7 @@ void CDlgTableMap::update_display(void)
 			m_CreateImage.EnableWindow(true);
 			m_CreateFont.EnableWindow(true);
 			m_Result.EnableWindow(true);
+			m_MissingFontsAlert.EnableWindow(true);
 			m_PixelSeparation.EnableWindow(true);
 			m_FontPlus.EnableWindow(true);
 			m_FontMinus.EnableWindow(true);
@@ -1051,6 +1057,9 @@ void CDlgTableMap::disable_and_clear_all(void)
 	m_Result.EnableWindow(false);
 	m_Result.SetWindowText("");
 
+	m_MissingFontsAlert.EnableWindow(false);
+	m_MissingFontsAlert.SetLed(CLed::LED_COLOR_RED, CLed::LED_OFF, CLed::LED_ROUND);
+
 	m_New.EnableWindow(false);
 	m_Delete.EnableWindow(false);
 	m_Edit.EnableWindow(false);
@@ -1085,6 +1094,8 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	bool mf_alert = true;
 
 	// Get iterator for selected region
 	sel_region = p_tablemap->r$()->find(sel_text.GetString());
@@ -1145,6 +1156,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		m_Blue.EnableWindow(false);
 		m_Picker.EnableWindow(false);
 		m_Radius.EnableWindow(false);
+		mf_alert = false;
 	}
 	else
 	{
@@ -1214,8 +1226,10 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 			text.Format("Err: No hash match");
 			break;
 		case ERR_TEXT_SCRAPE_NOMATCH:
-			if (separation.Find("X") == -1)
+			if (separation.Find("X") == -1) {
 				text.Format("Err: No foreground pixels");
+				mf_alert = false;
+			}
 			else
 				text.Format("Err: No text match");
 			break;
@@ -1253,6 +1267,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	else
 	{
 		m_CreateFont.EnableWindow(false);
+		mf_alert = false;
 	}
 
 	// Clean up
@@ -1265,6 +1280,10 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 
 	DeleteDC(hdcScreen);
 	ReleaseDC(pDC);
+
+	// Missing fonts alert
+	if (mf_alert && MissingFontsRoutine())
+		m_MissingFontsAlert.SetLed(CLed::LED_COLOR_RED, CLed::LED_ON, CLed::LED_ROUND);
 }
 
 void CDlgTableMap::update_t$_display(void)
@@ -1290,6 +1309,7 @@ void CDlgTableMap::update_t$_display(void)
 
 	// Exit if we can't find the font record
 	if (sel_font == p_tablemap->t$(font_type)->end())
+		m_MissingFontsAlert.SetLed(CLed::LED_COLOR_RED, CLed::LED_ON, CLed::LED_ROUND);
 		return;
 
 	// Get set bits
@@ -2435,8 +2455,8 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	int					width = 0, height = 0, pos = 0, x_cnt = 0, scan_pos = 0;
 	HDC					hdcScreen = NULL, hdc = NULL, hdc_region = NULL;
 	HBITMAP				old_bitmap = NULL, old_bitmap2 = NULL, bitmap_region = NULL;
-	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};
-	bool				background[MAX_CHAR_WIDTH] = {false};
+	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };
+	bool				background[MAX_CHAR_WIDTH] = { false };
 	CString				hexmash = "";
 	int					char_field_x_begin = 0, char_field_x_end = 0, char_field_y_begin = 0, char_field_y_end = 0;
 	int					i = 0, j = 0, insert_point = 0, new_index = 0;
@@ -2462,7 +2482,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	font_group = atoi(sel_region->second.transform.Right(1));
 
 	// Initialize arrays
-	for (int i=0; i<MAX_CHAR_WIDTH; i++)
+	for (int i = 0; i < MAX_CHAR_WIDTH; i++)
 		background[i] = true;
 
 	// Get bitmap size
@@ -2470,14 +2490,14 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	height = sel_region->second.bottom - sel_region->second.top + 1;
 
 	// Select saved bitmap into memory DC
-	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 	hdc = CreateCompatibleDC(hdcScreen);
-	old_bitmap = (HBITMAP) SelectObject(hdc, pDoc->attached_bitmap);
+	old_bitmap = (HBITMAP)SelectObject(hdc, pDoc->attached_bitmap);
 
 	// Create new memory DC, new bitmap, and copy our region into the new dc/bitmap
 	hdc_region = CreateCompatibleDC(hdcScreen);
 	bitmap_region = CreateCompatibleBitmap(hdcScreen, width, height);
-	old_bitmap2 = (HBITMAP) SelectObject(hdc_region, bitmap_region);
+	old_bitmap2 = (HBITMAP)SelectObject(hdc_region, bitmap_region);
 	BitBlt(hdc_region, 0, 0, width, height, hdc, sel_region->second.left, sel_region->second.top, SRCCOPY);
 
 	// Get the pixels
@@ -2493,7 +2513,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	DeleteDC(hdcScreen);
 
 	// Scan through background, separate characters by looking for background bands
-	for (int i=0; i<=3; i++)
+	for (int i = 0; i <= 3; i++)
 		new_t$_recs[i].RemoveAll();
 
 	int start = 0;
@@ -2512,16 +2532,16 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			scan_pos++;
 
 		// We got a background bar, add element to array
-		trans.GetShiftLeftDownIndexes(start, scan_pos-start, height, background, character, 
-											    &char_field_x_begin, &char_field_x_end, &char_field_y_begin, &char_field_y_end);
+		trans.GetShiftLeftDownIndexes(start, scan_pos - start, height, background, character,
+			&char_field_x_begin, &char_field_x_end, &char_field_y_begin, &char_field_y_end);
 
 		// Get individual hex values
-		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
-								 character, &hexmash, true);
+		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end,
+			character, &hexmash, true);
 
 		pos = x_cnt = 0;
 		num = hexmash.Tokenize(" ", pos);
-		while (pos != -1 && x_cnt<MAX_SINGLE_CHAR_WIDTH)
+		while (pos != -1 && x_cnt < MAX_SINGLE_CHAR_WIDTH)
 		{
 			new_font.x[x_cnt++] = strtoul(num.GetString(), NULL, 16);
 			num = hexmash.Tokenize(" ", pos);
@@ -2529,11 +2549,11 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		new_font.x_count = x_cnt;
 
 		// Get whole hexmash
-		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
-								 character, &new_font.hexmash, false);
+		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end,
+			character, &new_font.hexmash, false);
 
 		// Populate new font record array, if this character does not already exist in this font group
-		if (p_tablemap->t$(font_group)->find(new_font.hexmash) == p_tablemap->t$(font_group)->end()) 
+		if (p_tablemap->t$(font_group)->find(new_font.hexmash) == p_tablemap->t$(font_group)->end())
 		{
 			CString text;
 			m_Transform.GetLBText(m_Transform.GetCurSel(), text);
@@ -2561,25 +2581,25 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		dlg_editfont.delete_sort_enabled = true;
 		dlg_editfont.group = font_group;
 
-		for (int i=0; i<=3; i++)
+		for (int i = 0; i <= 3; i++)
 			dlg_editfont.new_t$_recs[i] = &new_t$_recs[i];
 
-		if (dlg_editfont.DoModal() == IDOK) 
+		if (dlg_editfont.DoModal() == IDOK)
 		{
 			// Find root of the Fonts node
 			font_node = m_TableMapTree.GetChildItem(NULL);
 			node_text = m_TableMapTree.GetItemText(font_node);
-			while (node_text!="Fonts" && font_node!=NULL)
+			while (node_text != "Fonts" && font_node != NULL)
 			{
 				font_node = m_TableMapTree.GetNextItem(font_node, TVGN_NEXT);
 				node_text = m_TableMapTree.GetItemText(font_node);
 			}
 
-			for (int i=0; i<new_t$_recs[font_group].GetCount(); i++)
+			for (int i = 0; i < new_t$_recs[font_group].GetCount(); i++)
 			{
 				// Populate temp structure
 				new_font.x_count = new_t$_recs[font_group].GetAt(i).x_count;
-				for (int j=0; j<new_font.x_count; j++)
+				for (int j = 0; j < new_font.x_count; j++)
 					new_font.x[j] = new_t$_recs[font_group].GetAt(i).x[j];
 				new_font.hexmash = new_t$_recs[font_group].GetAt(i).hexmash;
 				new_font.ch = new_t$_recs[font_group].GetAt(i).ch;
@@ -2588,12 +2608,12 @@ void CDlgTableMap::OnBnClickedCreateFont()
 				p_tablemap->t$_insert(font_group, new_font);
 
 				// Insert the new record into the tree
-				if (font_node!=NULL)
+				if (font_node != NULL)
 				{
 					// Insert the new records into the tree
 					text.Format("%c (%d) [%s]", new_font.ch, font_group, new_font.hexmash);
 					new_hti = m_TableMapTree.InsertItem(text.GetString(), font_node);
-					m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
+					m_TableMapTree.SetItemData(new_hti, (DWORD_PTR)new_index);
 				}
 			}
 
@@ -2603,7 +2623,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			// Re-select previously selected region
 			child_node = m_TableMapTree.GetChildItem(region_node);
 			node_text = m_TableMapTree.GetItemText(child_node);
-			while (node_text!=sel_text && child_node!=NULL)
+			while (node_text != sel_text && child_node != NULL)
 			{
 				child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 				node_text = m_TableMapTree.GetItemText(child_node);
@@ -3808,4 +3828,355 @@ void CDlgTableMap::OnTvnKeydownTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	}
 	*pResult = 0;
+}
+
+bool CDlgTableMap::MissingFontsRoutine()
+{
+
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CDlgEditFont		dlg_editfont;
+	STablemapFont		new_font;
+	CString				text = "", separation = "", num = "";
+	int					width = 0, height = 0, pos = 0, x_cnt = 0, scan_pos = 0;
+	HDC					hdcScreen = NULL, hdc = NULL, hdc_region = NULL;
+	HBITMAP				old_bitmap = NULL, old_bitmap2 = NULL, bitmap_region = NULL;
+	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };
+	bool				background[MAX_CHAR_WIDTH] = { false };
+	CString				hexmash = "";
+	int					char_field_x_begin = 0, char_field_x_end = 0, char_field_y_begin = 0, char_field_y_end = 0;
+	int					i = 0, j = 0, insert_point = 0, new_index = 0;
+	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
+	CString				node_text = "";
+	HTREEITEM			parent = GetRecordTypeNode(m_TableMapTree.GetSelectedItem());
+	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
+	CTransform			trans;
+	RMapCI				sel_region = p_tablemap->r$()->end();
+	int					font_group;
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->r$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
+		return false;
+
+	// Get the text group we are dealing with
+	font_group = atoi(sel_region->second.transform.Right(1));
+
+	// Initialize arrays
+	for (int i = 0; i < MAX_CHAR_WIDTH; i++)
+		background[i] = true;
+
+	// Get bitmap size
+	width = sel_region->second.right - sel_region->second.left + 1;
+	height = sel_region->second.bottom - sel_region->second.top + 1;
+
+	// Select saved bitmap into memory DC
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+	hdc = CreateCompatibleDC(hdcScreen);
+	old_bitmap = (HBITMAP)SelectObject(hdc, pDoc->attached_bitmap);
+
+	// Create new memory DC, new bitmap, and copy our region into the new dc/bitmap
+	hdc_region = CreateCompatibleDC(hdcScreen);
+	bitmap_region = CreateCompatibleBitmap(hdcScreen, width, height);
+	old_bitmap2 = (HBITMAP)SelectObject(hdc_region, bitmap_region);
+	BitBlt(hdc_region, 0, 0, width, height, hdc, sel_region->second.left, sel_region->second.top, SRCCOPY);
+
+	// Get the pixels
+	trans.TTypeTransform(sel_region, hdc_region, &text, &separation, background, character);
+
+	// Clean up
+	SelectObject(hdc_region, old_bitmap2);
+	DeleteObject(bitmap_region);
+	DeleteDC(hdc_region);
+
+	SelectObject(hdc, old_bitmap);
+	DeleteDC(hdc);
+	DeleteDC(hdcScreen);
+
+	// Scan through background, separate characters by looking for background bands
+	for (int i = 0; i <= 3; i++)
+		new_t$_recs[i].RemoveAll();
+
+	int start = 0;
+
+	// skip initial background bands
+	scan_pos = 0;
+	while (background[scan_pos] && scan_pos < width)
+		scan_pos++;
+
+	while (scan_pos < width)
+	{
+		start = scan_pos;
+
+		// scan for next background band
+		while (!background[scan_pos] && scan_pos < width)
+			scan_pos++;
+
+		// We got a background bar, add element to array
+		trans.GetShiftLeftDownIndexes(start, scan_pos - start, height, background, character,
+			&char_field_x_begin, &char_field_x_end, &char_field_y_begin, &char_field_y_end);
+
+		// Get individual hex values
+		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end,
+			character, &hexmash, true);
+
+		pos = x_cnt = 0;
+		num = hexmash.Tokenize(" ", pos);
+		while (pos != -1 && x_cnt < MAX_SINGLE_CHAR_WIDTH)
+		{
+			new_font.x[x_cnt++] = strtoul(num.GetString(), NULL, 16);
+			num = hexmash.Tokenize(" ", pos);
+		}
+		new_font.x_count = x_cnt;
+
+		// Get whole hexmash
+		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end,
+			character, &new_font.hexmash, false);
+
+		// Populate new font record array, if this character does not already exist in this font group
+		if (p_tablemap->t$(font_group)->find(new_font.hexmash) == p_tablemap->t$(font_group)->end())
+		{
+			CString text;
+			m_Transform.GetLBText(m_Transform.GetCurSel(), text);
+			new_font.ch = '?';
+
+			// Insert the new record in the existing array of t$ records
+			new_t$_recs[font_group].Add(new_font);
+		}
+
+		// skip background bands
+		while (background[scan_pos] && scan_pos < width)
+			scan_pos++;
+
+	}
+
+	if (new_t$_recs[font_group].GetCount() == 0)
+		return false;
+	else return true;
+}
+
+void CDlgTableMap::CollectFonts()
+{
+
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CDlgEditFont		dlg_editfont;
+	STablemapFont		new_font;
+	CString				text = "", separation = "", num = "";
+	int					width = 0, height = 0, pos = 0, x_cnt = 0, scan_pos = 0;
+	HDC					hdcScreen = NULL, hdc = NULL, hdc_region = NULL;
+	HBITMAP				old_bitmap = NULL, old_bitmap2 = NULL, bitmap_region = NULL;
+	bool				background[MAX_CHAR_WIDTH] = { false };
+	CString				hexmash = "";
+	int					char_field_x_begin = 0, char_field_x_end = 0, char_field_y_begin = 0, char_field_y_end = 0;
+	int					i = 0, j = 0, insert_point = 0, new_index = 0;
+	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
+	CString				node_text = "";
+	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
+	CTransform			trans;
+	RMapCI				sel_region = p_tablemap->r$()->begin();
+	int					font_group, loop = 0;
+
+	CString				sel_text = "", type_text = "";
+
+	BOOL bContinue = TRUE;
+	CString m_WaitMsg = "Collecting Fonts, Please Wait ...";
+	CWaitDialog m_WaitDlg(&bContinue, NULL, m_WaitMsg);
+
+	while (bContinue && sel_region != p_tablemap->r$()->end())
+	{
+		//m_WaitDlg.SetPercentComplete(doneSoFar * 100 / totalToDo);
+		m_WaitDlg.Pump();
+		if (sel_region->second.transform == "T0" ||
+			sel_region->second.transform == "T1" ||
+			sel_region->second.transform == "T2" ||
+			sel_region->second.transform == "T3")
+		{
+			loop++;
+			bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };
+
+			// Get the text group we are dealing with
+			font_group = atoi(sel_region->second.transform.Right(1));
+
+			// Initialize arrays
+			for (int i = 0; i < MAX_CHAR_WIDTH; i++)
+				background[i] = true;
+
+			// Get bitmap size
+			width = sel_region->second.right - sel_region->second.left + 1;
+			height = sel_region->second.bottom - sel_region->second.top + 1;
+
+
+			if (loop == 1)
+			{
+				// Select saved bitmap into memory DC
+				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+				hdc = CreateCompatibleDC(hdcScreen);
+				old_bitmap = (HBITMAP)SelectObject(hdc, pDoc->attached_bitmap);
+				hdc_region = CreateCompatibleDC(hdcScreen);
+			}
+
+			// Create new memory DC, new bitmap, and copy our region into the new dc/bitmap
+			bitmap_region = CreateCompatibleBitmap(hdcScreen, width, height);
+			old_bitmap2 = (HBITMAP)SelectObject(hdc_region, bitmap_region);
+			BitBlt(hdc_region, 0, 0, width, height, hdc, sel_region->second.left, sel_region->second.top, SRCCOPY);
+
+			// Get the pixels
+			trans.TTypeTransform(sel_region, hdc_region, &text, &separation, background, character);
+
+			// Clean up
+			SelectObject(hdc_region, old_bitmap2);
+			DeleteObject(bitmap_region);
+
+			// Scan through background, separate characters by looking for background bands
+			/*if (loop == 1)
+			{
+				for (int i = 0; i <= 3; i++)
+					new_t$_recs[i].RemoveAll();
+			}*/
+
+			int start = 0;
+
+			// skip initial background bands
+			scan_pos = 0;
+			while (background[scan_pos] && scan_pos < width)
+				scan_pos++;
+
+			while (scan_pos < width)
+			{
+				start = scan_pos;
+
+				// scan for next background band
+				while (!background[scan_pos] && scan_pos < width)
+					scan_pos++;
+
+				// We got a background bar, add element to array
+				trans.GetShiftLeftDownIndexes(start, scan_pos - start, height, background, character,
+					&char_field_x_begin, &char_field_x_end, &char_field_y_begin, &char_field_y_end);
+
+				// Get individual hex values
+				trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end,
+					character, &hexmash, true);
+
+				pos = x_cnt = 0;
+				num = hexmash.Tokenize(" ", pos);
+				while (pos != -1 && x_cnt < MAX_SINGLE_CHAR_WIDTH)
+				{
+					new_font.x[x_cnt++] = strtoul(num.GetString(), NULL, 16);
+					num = hexmash.Tokenize(" ", pos);
+				}
+				new_font.x_count = x_cnt;
+
+				// Get whole hexmash
+				trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end,
+					character, &new_font.hexmash, false);
+
+				// Populate new font record array, if this character does not already exist in this font group
+				if (p_tablemap->t$(font_group)->find(new_font.hexmash) == p_tablemap->t$(font_group)->end())
+				{
+					//CString text;
+					//m_Transform.GetLBText(m_Transform.GetCurSel(), text);
+					new_font.ch = '?';
+
+					// Insert the new record in the existing array of t$ records
+					new_t$_recs[font_group].Add(new_font);
+				}
+
+				// skip background bands
+				while (background[scan_pos] && scan_pos < width)
+					scan_pos++;
+			}
+		}
+		sel_region++;
+	}
+
+	// clean up
+	DeleteDC(hdc_region);
+	SelectObject(hdc, old_bitmap); //to delete
+	DeleteDC(hdc);
+	DeleteDC(hdcScreen);
+
+	m_WaitDlg.Close();
+
+	if (!bContinue)	
+		MessageBox("Fonts collection aborted.", "Fonts collector");	
+
+	else
+	{
+		for (font_group = 0; font_group <= 3; font_group++)
+		{
+			if (new_t$_recs[font_group].GetCount() == 0)
+			{
+				MessageBox("No foreground pixels, or no unknown characters found.", "Font creation error");
+			}
+			else
+			{
+				// Prepare dialog box
+				dlg_editfont.titletext = "Add font characters";
+				dlg_editfont.character = "";
+				dlg_editfont.delete_sort_enabled = true;
+				dlg_editfont.group = font_group;
+
+				for (int i = 0; i <= 3; i++)
+					dlg_editfont.new_t$_recs[i] = &new_t$_recs[i];
+
+				if (dlg_editfont.DoModal() == IDOK)
+				{
+					// Find root of the Fonts node
+					font_node = m_TableMapTree.GetChildItem(NULL);
+					node_text = m_TableMapTree.GetItemText(font_node);
+					while (node_text != "Fonts" && font_node != NULL)
+					{
+						font_node = m_TableMapTree.GetNextItem(font_node, TVGN_NEXT);
+						node_text = m_TableMapTree.GetItemText(font_node);
+					}
+
+					for (int i = 0; i < new_t$_recs[font_group].GetCount(); i++)
+					{
+						// Populate temp structure
+						new_font.x_count = new_t$_recs[font_group].GetAt(i).x_count;
+						for (int j = 0; j < new_font.x_count; j++)
+							new_font.x[j] = new_t$_recs[font_group].GetAt(i).x[j];
+						new_font.hexmash = new_t$_recs[font_group].GetAt(i).hexmash;
+						new_font.ch = new_t$_recs[font_group].GetAt(i).ch;
+
+						// Insert into internal structure
+						p_tablemap->t$_insert(font_group, new_font);
+
+						// Insert the new record into the tree
+						if (font_node != NULL)
+						{
+							// Insert the new records into the tree
+							text.Format("%c (%d) [%s]", new_font.ch, font_group, new_font.hexmash);
+							new_hti = m_TableMapTree.InsertItem(text.GetString(), font_node);
+							m_TableMapTree.SetItemData(new_hti, (DWORD_PTR)new_index);
+						}
+					}
+
+					// Update tree
+					region_node = update_tree("Regions");
+
+					// Re-select previously selected region
+					child_node = m_TableMapTree.GetChildItem(region_node);
+					node_text = m_TableMapTree.GetItemText(child_node);
+					while (node_text != sel_text && child_node != NULL)
+					{
+						child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
+						node_text = m_TableMapTree.GetItemText(child_node);
+					}
+
+					if (child_node)
+						m_TableMapTree.SelectItem(child_node);
+
+					// Update display and set dirty bit 
+					update_display();
+					Invalidate(false);
+					pDoc->SetModifiedFlag(true);
+				}
+			}
+		}
+	}
 }

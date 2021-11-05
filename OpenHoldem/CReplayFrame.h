@@ -27,8 +27,14 @@ class CReplayFrame {
 	// private functions and variables - not available via accessors or mutators
 	void CreateReplayFrame();
 	void CreateReplaySessionDirectoryIfNecessary();
+	CString GetPlayerInfoAsHTML();
+	CString GetButtonStatesAsHTML();
+	CString GetBlindInfoAsHTML();
+	CString GetCommonCardsAsHTML();
+	CString GetPotsAsHTML();
+	CString GetLinksToPrevAndNextFile();
+	CString GeneralInfo();
 	void CreateBitMapFile();
-    void CreateHTMLFile();
  private:
 	static int _next_replay_frame;
 };
