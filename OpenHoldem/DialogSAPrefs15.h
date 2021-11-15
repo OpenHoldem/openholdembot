@@ -33,7 +33,8 @@ class CDlgSAPrefs15 : public CSAPrefsSubDlg {
 	afx_msg void OnBnClickedDisableMsgbox();
  public:
 	CButton		_gui_first_visible;
-  CButton		_gui_all_minimized;
-  CButton		_gui_less;
+	CButton		_gui_all_minimized;
+	CButton		_gui_less;
 	CButton		m_disable_msgbox;
+	CButton		m_amounts_in_bb;
 };

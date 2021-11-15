@@ -31,10 +31,11 @@ CDlgSAPrefs15::~CDlgSAPrefs15() {
 
 void CDlgSAPrefs15::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
-  DDX_Control(pDX, IDC_RADIO_GUI_FIRST_VISIBLE, _gui_first_visible);
-  DDX_Control(pDX, IDC_RADIO_GUI_ALL_MINIMIZED, _gui_all_minimized);
-  DDX_Control(pDX, IDC_RADIO_GUI_LESS, _gui_less);
+	DDX_Control(pDX, IDC_RADIO_GUI_FIRST_VISIBLE, _gui_first_visible);
+	DDX_Control(pDX, IDC_RADIO_GUI_ALL_MINIMIZED, _gui_all_minimized);
+	DDX_Control(pDX, IDC_RADIO_GUI_LESS, _gui_less);
 	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
+	DDX_Control(pDX, IDC_AMOUNTS_IN_BB, m_amounts_in_bb);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs15, CDialog)
@@ -49,6 +50,7 @@ BOOL CDlgSAPrefs15::OnInitDialog() {
   _gui_less.SetCheck(Preferences()->gui_less());
   _gui_less.EnableWindow(false);
 	m_disable_msgbox.SetCheck(Preferences()->disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
+	m_amounts_in_bb.SetCheck(Preferences()->amounts_in_bb() ? BST_CHECKED : BST_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -58,6 +60,7 @@ void CDlgSAPrefs15::OnOK() {
   Preferences()->SetValue(k_prefs_gui_all_minimized, _gui_all_minimized.GetCheck() == BST_CHECKED ? true : false);
   Preferences()->SetValue(k_prefs_gui_less, _gui_less.GetCheck() == BST_CHECKED ? true : false);
   Preferences()->SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_amounts_in_bb, m_amounts_in_bb.GetCheck() == BST_CHECKED ? true : false);
 	CSAPrefsSubDlg::OnOK();
 }
 
