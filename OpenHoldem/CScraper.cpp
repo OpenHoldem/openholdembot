@@ -14,6 +14,9 @@
 //******************************************************************************
 
 #include "StdAfx.h"
+#include <string>
+#include <regex>
+using namespace std;
 #include "CScraper.h"
 
 #include "Bitmaps.h" 
@@ -589,13 +592,34 @@ void CScraper::ScrapeName(int chair) {
 
 	CString				result;
 	CString				s = "";
+	CString Separator = _T("|~|");
+	CString Token, temp;
+	CString bregex = "(^[\"\\(\\)\\[\\]<>{}#*-]*?)";
+	CString eregex = "([c$£€\"\\(\\)\\[\\]<>{}#*-]*?)([0-9.,]*)([c$£€\"\\(\\)\\[\\]<>{}#*-]*?$)";
+	int Position;
 
 	// Player name uXname
 	s.Format("u%dname", chair);
-	EvaluateRegion(s, &result);	
+	EvaluateRegion(s, &result);
 	write_log(Preferences()->debug_scraper(), "[CScraper] u%dname, result %s\n", chair, result.GetString());
-	if (result != "")	{
-    p_table_state->Player(chair)->set_name(result);
+	if (result != "") {
+		Position = 0;
+		Token = "null";
+		temp = result;
+		temp.MakeLower();
+		while (!Token.IsEmpty())
+		{
+			// Get next token.
+			Token = Preferences()->unwanted_scrape().Tokenize(Separator, Position);
+			Token.MakeLower();
+			//
+			// Handle User RegEx and all exact user token matches
+			if (regex_match((string)temp, regex(Token))) { return; }
+			//
+			//Handle all user tokens with bregex and eregex added
+			if (regex_match((string)temp, regex(bregex + Token + eregex))) { return; }			
+		}
+		p_table_state->Player(chair)->set_name(result);
 		return;
 	}
 	// Player name pXname
@@ -603,6 +627,22 @@ void CScraper::ScrapeName(int chair) {
 	EvaluateRegion(s, &result);
 	write_log(Preferences()->debug_scraper(), "[CScraper] p%dname, result %s\n", chair, result.GetString());
 	if (result != "") {
+		Position = 0;
+		Token = "null";
+		temp = result;
+		temp.MakeLower();
+		while (!Token.IsEmpty())
+		{
+			// Get next token.
+			Token = Preferences()->unwanted_scrape().Tokenize(Separator, Position);
+			Token.MakeLower();
+			//
+			// Handle User RegEx and all exact user token matches
+			if (regex_match((string)temp, regex(Token))) { return; }
+			//
+			//Handle all user tokens with bregex and eregex added
+			if (regex_match((string)temp, regex(bregex + Token + eregex))) { return; }
+		}
 		p_table_state->Player(chair)->set_name(result);
     return;
 	}
