@@ -259,6 +259,10 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Transform.AddString("Text1");
 	m_Transform.AddString("Text2");
 	m_Transform.AddString("Text3");
+	m_Transform.AddString("Text4");
+	m_Transform.AddString("Text5");
+	m_Transform.AddString("Text6");
+	m_Transform.AddString("Text7");
 	m_Transform.AddString("Hash0");
 	m_Transform.AddString("Hash1");
 	m_Transform.AddString("Hash2");
@@ -746,7 +750,11 @@ void CDlgTableMap::OnRegionChange()
 		text == "Text0" ? "T0" :
 		text == "Text1" ? "T1" :
 		text == "Text2" ? "T2" :
-		text == "Text3" ? "T3" : 
+		text == "Text3" ? "T3" :
+		text == "Text4" ? "T4" :
+		text == "Text5" ? "T5" :
+		text == "Text6" ? "T6" :
+		text == "Text7" ? "T7" :
 		text == "Hash0" ? "H0" :
 		text == "Hash1" ? "H1" :
 		text == "Hash2" ? "H2" :
@@ -1123,6 +1131,10 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	else if (sel_region->second.transform == "T1")		selected_transform = "Text1";
 	else if (sel_region->second.transform == "T2")		selected_transform = "Text2";
 	else if (sel_region->second.transform == "T3")		selected_transform = "Text3";
+	else if (sel_region->second.transform == "T4")		selected_transform = "Text4";
+	else if (sel_region->second.transform == "T5")		selected_transform = "Text5";
+	else if (sel_region->second.transform == "T6")		selected_transform = "Text6";
+	else if (sel_region->second.transform == "T7")		selected_transform = "Text7";
 	else if (sel_region->second.transform == "H0")		selected_transform = "Hash0";
 	else if (sel_region->second.transform == "H1")		selected_transform = "Hash1";
 	else if (sel_region->second.transform == "H2")		selected_transform = "Hash2";
