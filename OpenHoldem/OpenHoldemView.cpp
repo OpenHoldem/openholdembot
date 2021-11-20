@@ -26,7 +26,7 @@
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CSymbolengineAutoplayer.h"
-#include "CSymbolengineChipAmounts.h"
+#include "CSymbolengineChipamounts.h"
 #include "CSymbolengineColourCodes.h"
 #include "CSymbolengineGameType.h"
 #include "CSymbolEngineIsOmaha.h"
@@ -809,8 +809,14 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 		// Format Text
 		if (p_table_state->Player(chair)->active()) 	{
 			t = Number2CString(p_table_state->Player(chair)->_balance.GetValue());
+			if (Preferences()->amounts_in_bb()) {
+				t = Number2CString(p_table_state->Player(chair)->_balance.GetValue() / _bblind_last) + " BB";
+			}
 		}	else {
 			t.Format("Out (%s)", Number2CString(p_table_state->Player(chair)->_balance.GetValue()));
+			if (Preferences()->amounts_in_bb()) {
+				t.Format("Out (%s)", Number2CString(p_table_state->Player(chair)->_balance.GetValue() / _bblind_last) + " BB");
+			}
 		}
 	}	else {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
@@ -887,6 +893,9 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 	if (p_table_state->Player(chair)->_bet.GetValue() != 0) 
 	{
 		t = Number2CString(p_table_state->Player(chair)->_bet.GetValue());
+		if (Preferences()->amounts_in_bb()) {
+			t = Number2CString(p_table_state->Player(chair)->_bet.GetValue() / _bblind_last) + " BB";
+		}
 	}
 	else 	{
 		t = "";

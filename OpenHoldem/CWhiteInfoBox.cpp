@@ -128,6 +128,9 @@ CString CWhiteInfoBox::InfoText() {
 
 	// Pot
 	s.Format("  Pot: %s\n", Number2CString(sym_pot));
+	if (Preferences()->amounts_in_bb()) {
+		s.Format("  Pot: %s %s\n", Number2CString(sym_pot/sym_bblind), "BB");
+	}
 	result.Append(s);
 
   // logged symbols

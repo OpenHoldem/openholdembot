@@ -106,6 +106,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "gui_first_visible",
   "gui_all_minimized",
   "gui_less",
+  "amounts_in_bb",
   "rebuy_condition_no_cards",
   "rebuy_condition_change_in_handnumber",
   "rebuy_condition_heuristic_check_for_occlusion",
