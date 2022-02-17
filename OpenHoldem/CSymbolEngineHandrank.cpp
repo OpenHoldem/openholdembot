@@ -100,9 +100,7 @@ void CSymbolEngineHandrank::CalculateHandrank() {
   GetCardstring(cardstr,
     p_table_state->User()->hole_cards(0)->GetValue(),
     p_table_state->User()->hole_cards(1)->GetValue());
-  // !!!! looks wrong
-  // !!!! int _nopponents = p_engine_container->symbol_engine_prwin()->nopponents_for_prwin();
-  int nopponents = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt();
+int nopponents = p_engine_container->symbol_engine_prwin()->nopponents_for_prwin();
   for (int i = 0; i<kNumberOfStartingHands; i++)
   {
     if (strcmp(cardstr, handrank_table_169[nopponents - 1][i]) == 0)

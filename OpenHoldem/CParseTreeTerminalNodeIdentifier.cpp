@@ -103,11 +103,11 @@ CString CParseTreeTerminalNodeIdentifier::Serialize() {
 }
 
 bool CParseTreeTerminalNodeIdentifier::IsBinaryIdentifier() {
-  const int kNumberOfElementaryBinaryIdentifiers = 21;
+  const int kNumberOfElementaryBinaryIdentifiers = 23;
   static const char* kElementaryBinaryIdentifiers[kNumberOfElementaryBinaryIdentifiers] = {
-    "pcbits",              "playersactivebits",  "playersdealtbits",
+    "pcbits",              "playersactivebits",  "playersdealtbits", "playersseatedbits",
     "playersplayingbits",  "playersblindbits",   "opponentsseatedbits",
-    "opponentsactivebits", "opponentsdealtbits", "opponentsplayingbits",
+    "opponentsactivebits", "opponentsdealtbits", "opponentsplayingbits", "opponentsseatedbits",
     "opponentsblindbits",  "flabitgs",           "rankbits",
     "rankbitscommon",      "rankbitsplayer",     "rankbitspoker",
     "srankbits",           "srankbitscommon",    "srankbitsplayer",

@@ -83,9 +83,9 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 	return (int) true;
 }
 
-KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey)
+KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, const char* vkey)
 {
-	INPUT			input[4];
+	INPUT			input[6];
 
 	POINT pt = RandomizeClickLocation(rect);
 	double fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -118,16 +118,42 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey)
 	}
 
 	// Add vkey to the input struct
-	ZeroMemory(&input[input_count],sizeof(INPUT));
-	input[input_count].type = INPUT_KEYBOARD;
-	input[input_count].ki.wVk = vkey;
-	input_count++;
+	if (vkey[0] == VK_CONTROL || vkey[0] == VK_SHIFT || vkey[0] == VK_MENU) {
+		ZeroMemory(&input[input_count], sizeof(INPUT));
+		input[input_count].type = INPUT_KEYBOARD;
+		input[input_count].ki.wVk = vkey[0];
+		input_count++;
 
-	ZeroMemory(&input[input_count],sizeof(INPUT));
-	input[input_count].type = INPUT_KEYBOARD;
-	input[input_count].ki.wVk = vkey;
-	input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-	input_count++;
+		ZeroMemory(&input[input_count], sizeof(INPUT));
+		input[input_count].type = INPUT_KEYBOARD;
+		input[input_count].ki.wVk = vkey[1];
+		input_count++;
+
+		ZeroMemory(&input[input_count], sizeof(INPUT));
+		input[input_count].type = INPUT_KEYBOARD;
+		input[input_count].ki.wVk = vkey[1];
+		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
+		input_count++;
+
+		ZeroMemory(&input[input_count], sizeof(INPUT));
+		input[input_count].type = INPUT_KEYBOARD;
+		input[input_count].ki.wVk = vkey[0];
+		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
+		input_count++;
+	}
+	else {
+
+		ZeroMemory(&input[input_count], sizeof(INPUT));
+		input[input_count].type = INPUT_KEYBOARD;
+		input[input_count].ki.wVk = vkey[0];
+		input_count++;
+
+		ZeroMemory(&input[input_count], sizeof(INPUT));
+		input[input_count].type = INPUT_KEYBOARD;
+		input[input_count].ki.wVk = vkey[0];
+		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
+		input_count++;
+	}
 
 	// Set focus to target window
 	SetFocus(hwnd);

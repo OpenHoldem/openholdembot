@@ -23,6 +23,8 @@
   * Simplified f$Raiser_pfr, which uses nowthe multiplexer
   
 ##f$sitin##
+!isfl ? 0 :
+nchairs < 9 ? 0 :
 // SITIN RULE - Based on players 
 1                                   // 0=off 1=on 
 && issittingout                     // sitting out
@@ -31,6 +33,8 @@
 && nopponentsdealt>=5               // 5 or more opponents
 
 ##f$sitout##
+!isfl ? 0 :
+nchairs < 9 ? 0 :
 // SITOUT RULE - Based on players 
 [ 1                                   // 0=off 1=on 
   && issittingin                      // sitting in
@@ -44,6 +48,8 @@
 ]
 
 ##f$leave##
+!isfl ? 0 :
+nchairs < 9 ? 0 :
 // LEAVE RULE - Game broken up 
 [ 1                                   // 0=off 1=on 
   && issittingout                     // sitting out 
@@ -1127,7 +1133,7 @@ betround>flop && (
 || [IsFlop && nsuited==4 && nsuitedcommon==2 && nrankedcommon<3 && nraisbets==1] 
 || [IsFlop && nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nrankedcommon<3 && nraisbets<=2] 
 || [IsFlop && nstraight==4 && nstraightcommon<=2 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon<=2 && nrankedcommon<3 && nraisbets==1] 
-|| [IsFlop && (NOuts/ncardsunknown)>((bet+call)/(pot+f$ImpliedOdds))&& nraisbets==1] 
+|| [IsFlop && (NOuts/ncardsunknown)>((bet+call)/(pot+f$Winngy_ImpliedOdds))&& nraisbets==1] 
 || [IsFlop && (((dealposition==1||dealposition==2) && (f$SAFEBOARD || (nrankedcommon==2 && trank<7))) || (betposition/nplayersplaying>=0.75)) && ncallbets==0 && nplayersround<=4 && randomround<=0.10] 
 
 || [IsTurn && didchec && nplayersround==2 && randomround<=0.10] 
@@ -1135,7 +1141,7 @@ betround>flop && (
 || [IsTurn && nbetsround2==0 && nbetsround3==0 && betposition==nplayersplaying && randomround<=0.90 && nplayersround<=4] 
 || [IsTurn && (betposition/nplayersplaying>=0.75) && nbetsround2<=1 && nraisbets==1 && nplayersround<=4 && randomround<=0.10] 
 || [IsTurn && (NOuts/ncardsunknown)>=(1/nplayersplaying)] 
-|| [IsTurn && (NOuts/ncardsunknown)>((bet+call)/(pot+f$ImpliedOdds)) && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+|| [IsTurn && (NOuts/ncardsunknown)>((bet+call)/(pot+f$Winngy_ImpliedOdds)) && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
 || [IsTurn && (NOuts/ncardsunknown)>=(1/nplayersplaying) && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
 || [IsTurn && nsuited==4 && nsuitedcommon==2 && nraisbets==1 && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
 || [IsTurn && nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nraisbets<=2 && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
@@ -1146,7 +1152,7 @@ betround>flop && (
 || [IsRiver && didraisround3 && !didcallround3 && nopponentsplaying<=2 && nraisbets<=1 && nsuitedcommon==2 && ($$cs0==$$cs1 || $$cs0==$$cs2 || $$cs1==$$cs2)]
 || [IsRiver && didraisround3 && !didcallround3 && nopponentsplaying<=2 && nraisbets<=1 && (f$SAFEBOARD || $Ax || nopponentsplaying==1)]
 
-##f$ImpliedOdds##
+##f$Winngy_ImpliedOdds##
 IsFlop ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 
 IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4) : 0
 
@@ -1155,7 +1161,7 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 //Drawing Hands 
 
 0
-|| [(IsFlop||IsTurn) && (NOuts/ncardsunknown) >= (call/(pot+f$ImpliedOdds)) ]
+|| [(IsFlop||IsTurn) && (NOuts/ncardsunknown) >= (call/(pot+f$Winngy_ImpliedOdds)) ]
 
 
 //Nut Flush Draw
@@ -1316,7 +1322,7 @@ isthreeofakind && ispair
 || [IsPreflop && !didcall && ($AA || $KK) && dealposition==3 && randomround<=0.15]
 
 // Don't re-raise post flop if not one pair or better if implied odds do not have expected value 
-|| [IsPostflop && didrais && (pokerval<onepair && (NOuts/ncardsunknown) < ((call+bet)/(pot+f$ImpliedOdds)))]
+|| [IsPostflop && didrais && (pokerval<onepair && (NOuts/ncardsunknown) < ((call+bet)/(pot+f$Winngy_ImpliedOdds)))]
 
 // Don't re-raise post flop if checkraised this betting round 
 || [IsPostflop && (ncurrentbets>0 && nbetstocall>0 && dealpositionrais<dealposition && ncallbets==2 && prwin<0.85)]

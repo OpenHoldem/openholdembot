@@ -6,6 +6,13 @@ MAINTENANCE:
   and the former value (1600) are too small.
   Thanks to PeterRabbit for reporting.
   [THF]
+ 
+BUG FIXES:
+- Fixed bug with HotKeys.
+  Also improved and added many more keys.
+  Full info here...
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19741&p=159914&hilit=hotkeys#p167879
+  [Trish]
   .
 
 v﻿12.0.3 2017-10-18

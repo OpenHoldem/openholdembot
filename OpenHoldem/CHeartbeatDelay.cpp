@@ -57,6 +57,9 @@ double CHeartbeatDelay::SleepingFactor() {
     // We want fast auto-connects 
     // and the auto-connector is extremely optimized.
     return 1.0;
+  }	else if (p_engine_container->symbol_engine_casino()->ConnectedToOHReplay()) {
+    // Fast simulations single-tabling at OHReplay
+    return 0.5;
   }	else if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
     return SleepingFactorNotSeated();
   } else if (p_table_state->User()->HasKnownCards()) {

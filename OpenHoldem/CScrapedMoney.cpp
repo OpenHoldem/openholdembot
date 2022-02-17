@@ -22,48 +22,62 @@
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CScrapedMoney::CScrapedMoney() {
-  Reset();
+	Reset();
 }
 
 CScrapedMoney::~CScrapedMoney() {
 }
 
 bool CScrapedMoney::SetValue(CString scraped_value) {
-  if (scraped_value == "") {
-    return false;
-  }
-  ReplaceKnownNonASCIICharacters(&scraped_value);
-  WarnAboutNonASCIICharacters(&scraped_value);
-  RemoveLeftWhiteSpace(&scraped_value);
-  RemoveRightWhiteSpace(&scraped_value);
-  RemoveMultipleWhiteSpaces(&scraped_value);
-  RemoveSpacesInsideNumbers(&scraped_value);
-  ReplaceOutlandischCurrencyByDollarsandCents(&scraped_value);
-  RemoveSpacesInFrontOfCentMultipliers(&scraped_value);
-  ReplaceCommasInNumbersByDots(&scraped_value);
-  RemoveExtraDotsInNumbers(&scraped_value);
-  //!!!KeepBalanceNumbersOnly(&scraped_value);
-  if (scraped_value == "") {
-    // Empty data (e.g. in the c0sblind) must not evaluated
-    // otherwise we might overwrite known good data (e.g. from ttlimits)
-    return false;
-  }
-  if (!(scraped_value.Find("0123456789"))) {
-    // Again: evaluate only meaningful input
-    return false;
-  }
-  double result = StringToMoney(scraped_value);
-  if (result >= 0.0) {
-    return SetValue(result);
-  }
-  return false;
+	if (scraped_value == "") {
+		return false;
+	}
+	ReplaceKnownNonASCIICharacters(&scraped_value);
+	WarnAboutNonASCIICharacters(&scraped_value);
+	RemoveLeftWhiteSpace(&scraped_value);
+	RemoveRightWhiteSpace(&scraped_value);
+	RemoveMultipleWhiteSpaces(&scraped_value);
+	RemoveSpacesInsideNumbers(&scraped_value);
+	ReplaceOutlandischCurrencyByDollarsandCents(&scraped_value);
+	RemoveSpacesInFrontOfCentMultipliers(&scraped_value);
+	ReplaceCommasInNumbersByDots(&scraped_value);
+	RemoveExtraDotsInNumbers(&scraped_value);
+	//!!!KeepBalanceNumbersOnly(&scraped_value);
+	if (scraped_value == "") {
+		// Empty data (e.g. in the c0sblind) must not evaluated
+		// otherwise we might overwrite known good data (e.g. from ttlimits)
+		return false;
+	}
+	// Evaluate unauthorized chars: parenthesis and other brackets
+	// Mainly for DDPoker
+	if (scraped_value.Find("(") != -1 && scraped_value.Find(")") != -1) {
+		return false;
+	}
+	if (scraped_value.Find("{") != -1 && scraped_value.Find("}") != -1) {
+		return false;
+	}
+	if (scraped_value.Find("[") != -1 && scraped_value.Find("]") != -1) {
+		return false;
+	}
+	if (scraped_value.Find("<") != -1 && scraped_value.Find(">") != -1) {
+		return false;
+	}
+	if (!(scraped_value.Find("0123456789"))) {
+		// Again: evaluate only meaningful input
+		return false;
+	}
+	double result = StringToMoney(scraped_value);
+	if (result >= 0.0) {
+		return SetValue(result);
+	}
+	return false;
 }
 
 bool CScrapedMoney::SetValue(double new_value) {
-  _value = new_value;
-  return true;
+	_value = new_value;
+	return true;
 }
 
 void CScrapedMoney::Reset() {
-  SetValue(0.0);
+	SetValue(0.0);
 }

@@ -22,6 +22,11 @@
 //*****************************************************************************
 //
 // TECHNICAL CHANGES:
+//	 * Fix for ##f$Initiative_GotRaised##
+//	 * Other Initiative functions like  ##f$Initiative_Hero## etc improved.
+//	 * Fixes for functions ##f$flop_call## - ##f$flop_raise## also other streets.
+//	 * Added ##f$flop_call_wegotraised## function
+//	 * Added ##f$flop_raise_wegotraised## function
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
 //     to make Gecko OpenPPL-compatible
 //   * Renaming f$preflop,... by Gecko_6Max_FR_NL_BSS_Preflop,

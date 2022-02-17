@@ -1084,9 +1084,9 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 
 ##f$nOuts_DrawingSet##
   (IsFlop AND isthreeofakind AND PairOnBoard AND NOT TripsOnBoard      ? 7 : 0)
-+ (IsTurn AND isthreeofakind AND PairOnBoard AND NOT TripsOnBoard      ? 9 : 0)
++ (IsTurn AND isthreeofakind AND PairOnBoard AND NOT TripsOnBoard      ? 10 : 0)
 + (IsFlop AND isthreeofakind AND NOT PairOnBoard                       ? 7 : 0)
-+ (IsTurn AND isthreeofakind AND NOT PairOnBoard                       ? 12: 0)
++ (IsTurn AND isthreeofakind AND NOT PairOnBoard                       ? 10 : 0)
 
 ##f$nOuts_BackdoorDraws##
   (IsFlop AND HaveBackdoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>=king ? 1.5 : 0)
@@ -1096,9 +1096,9 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 [ f$nOuts/46 ]
 
 ##f$PotOdds##
-[call / (EffectivePotSizeInDollars + call + f$ImpliedOdds)]
+[call / (EffectivePotSizeInDollars + call + f$Gecko_ImpliedOdds)]
     
-##f$ImpliedOdds##
+##f$Gecko_ImpliedOdds##
 IsFlop ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 
 IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4) : 0
 

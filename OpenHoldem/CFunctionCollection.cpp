@@ -511,7 +511,7 @@ void CFunctionCollection::Save(CArchive &ar) {
   //   * are essential to control the behaviour 
   //	 of (nearly) every poker bot.
   //   * configure some very important constants.
-  for (int i=k_autoplayer_function_allin; 
+  for (int i=k_autoplayer_function_beep; 
       i<k_number_of_standard_functions; 
       ++i) {
 	  SaveObject(ar, LookUp(k_standard_function_names[i]));

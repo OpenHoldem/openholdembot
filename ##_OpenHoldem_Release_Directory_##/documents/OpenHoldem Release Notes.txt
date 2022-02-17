@@ -1,4 +1,27 @@
-﻿﻿v﻿14.0.1 2021-01-08
+﻿﻿v﻿14.0.2.0 2021-12-24
+====================
+
+BUG FIXES:
+- Fix for OPPL symbols and internal OpenHoldem symbol nplayersround and
+  the OPPL symbols 'Folds, OpponentsOnFlop, OpponentsOnTurn and PlayersAtStartOfThisRound
+  [Trish]
+- Fix for internal OpenHoldem symbols lastraisedX' and 'raisbitsX
+  [Trish]
+- DDPoker Fix for yellow fonts and brackets
+  New table maps included.
+  [Mudrox] [Edd]
+- Fix for firstraiserchair/lastraiserchair
+  [Stars83]
+- HotKeys fixed and improved:
+  http://www.maxinmontreal.com/forums/viewtopic.php?p=168010#p168010
+  [Trish]
+- CSymbolEngineHandrank.cpp reverting to use f$prwin_number_of_oppoents
+  For more flexibility.
+  [Trish]
+- Gecko many changes see Gecko_changlog.
+  [Trish]  
+
+﻿v﻿14.0.1 2021-01-08
 ==================
 MAINTENANCE:
 - Some small improvements for the hopper-communication-module

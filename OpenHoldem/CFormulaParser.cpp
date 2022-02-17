@@ -166,6 +166,10 @@ void CFormulaParser::LoadFunctionLibrary(CString library_path) {
 }
  
 void CFormulaParser::LoadArchive(CArchive& formula_file) {
+  // !!!!!!!! Reset tokenizer in order to create good error-messages
+  // for parse-errors outside of a function
+  CFunction dummy_function = CFunction("none", "", formula_file.GetFile()->GetFilePath(), kUndefinedZero);
+  _tokenizer.SetInputFunction(&dummy_function);
   _formula_file_splitter.SplitFile(formula_file);
 }
 

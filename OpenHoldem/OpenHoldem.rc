@@ -276,7 +276,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
-    LTEXT           "Version 14.0.1",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Version 14.0.2.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "https://github.com/OpenHoldem/openholdembot/",IDC_STATIC,32,66,208,8
@@ -920,8 +920,9 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 14,0,0,0
- PRODUCTVERSION 14,0,0,0
+ FILEVERSION 14.0.2.0
+ PRODUCTVERSION 14.0.2.0
+ 
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -936,9 +937,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "14.0.1.0"
+            VALUE "FileVersion", "14.0.2.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "14.0.1.0"
+            VALUE "ProductVersion", "14.0.2.0"
         END
     END
     BLOCK "VarFileInfo"
