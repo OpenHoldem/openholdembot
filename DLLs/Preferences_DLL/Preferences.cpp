@@ -157,6 +157,7 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
   "rebuy_script",
   "window_class_name",
   "mutex_name",
+  "unwanted_scrape",
   // Finally an empty string
   // This correspondents to k_prefs_last_numerical_value (unused)
   // It will cause an assertion if used
@@ -256,6 +257,8 @@ CString CPreferences::DefaultStringValues(int index) {
     return "OpenHoldem";
   case k_prefs_mutex_name:
     return "OHAntiColl";
+  case k_prefs_unwanted_scrape:
+	  return "fold|~|check|~|call|~|raise|~|raiseto|~|bet|~|all-in|~|allin|~|time:|~|";
   default:
     assert(kThisMustNotHappen);
     return "Error in CPreferences::DefaultStringValues()";
