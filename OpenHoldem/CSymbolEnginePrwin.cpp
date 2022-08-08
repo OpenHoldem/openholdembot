@@ -193,6 +193,12 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const CString name, double *result, bool
       *result = p_iterator_thread->prlos();
     } else if (memcmp(name, "prtie", 5)==0 && strlen(name)==5) {
       *result = p_iterator_thread->prtie();
+	} else if (memcmp(name, "prw1326_useme", 13) == 0 && strlen(name) == 13) {
+		*result = p_iterator_thread->prw1326()->useme;
+	} else if (memcmp(name, "prw1326_preflop", 15) == 0 && strlen(name) == 15) {
+		*result = p_iterator_thread->prw1326()->preflop;
+	} else if (memcmp(name, "prw1326_callback", 16) == 0 && strlen(name) == 16) {
+		*result = p_iterator_thread->prw1326()->prw_callback();
     }	else if (memcmp(name, "prwinnow", 8)==0 && strlen(name)==8) {
 			*result = prwinnow();
 		}	else if (memcmp(name, "prlosnow", 8)==0 && strlen(name)==8)	{
@@ -225,5 +231,6 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const CString name, double *result, bool
 CString CSymbolEnginePrwin::SymbolsProvided() {
   return "prwinnow prlosnow "
     "prwin prlos prtie "
-    "nhands nhandshi nhandslo nhandsti ";
+    "nhands nhandshi nhandslo nhandsti "
+	"prw1326_useme prw1326_preflop prw1326_callback ";
 }
