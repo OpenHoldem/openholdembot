@@ -767,6 +767,13 @@ int CIteratorThread::EnhancedDealingAlgorithm() {
 }
 
 bool CIteratorThread::UseEnhancedPrWin() {
+	int tmp = p_function_collection->Evaluate("IsPrw1326");
+	if (_prw1326.useme != 1326 && p_function_collection->Evaluate("IsPrw1326")) _prw1326.useme = 1326;
+	if (_prw1326.useme == 1326 && !p_function_collection->Evaluate("IsPrw1326")) _prw1326.useme = 0;
+	if (_prw1326.preflop != 1326 && p_function_collection->Evaluate("IsPrw1326Preflop")) _prw1326.preflop = 1326;
+	if (_prw1326.preflop == 1326 && !p_function_collection->Evaluate("IsPrw1326Preflop")) _prw1326.preflop = 0;
+	if (_prw1326.usecallback != 1326 && p_function_collection->Evaluate("IsPrw1326Callback")) _prw1326.usecallback = 1326;
+	if (_prw1326.usecallback == 1326 && !p_function_collection->Evaluate("IsPrw1326Callback")) _prw1326.usecallback = 0;
 	return (_prw1326.useme==1326 
 		&& (p_betround_calculator->betround() >= kBetroundFlop 
 			|| _prw1326.preflop==1326));
