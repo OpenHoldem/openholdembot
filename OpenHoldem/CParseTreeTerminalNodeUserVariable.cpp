@@ -24,8 +24,14 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CIteratorThread.h"
+#include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineRange.h"
+#include "CSymbolengineMultiplexer.h"
 #include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
+#include "CFormulaParser.h"
+#include "CParseErrors.h"
 
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
@@ -35,7 +41,7 @@ CParseTreeTerminalNodeUserVariable::CParseTreeTerminalNodeUserVariable(
   int relative_line_number, CString name) : 
   CParseTreeTerminalNodeIdentifier(relative_line_number, 
     name) {
-  _node_type = kTokenActionUserVariableToBeSet;
+   _node_type = kTokenActionUserVariableToBeSet;
 }
 
 CParseTreeTerminalNodeUserVariable::~CParseTreeTerminalNodeUserVariable() {
@@ -51,15 +57,75 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
     p_engine_container->symbol_engine_openppl_user_variables()->Set(name);
     return true;
   }
+  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
   // Covering both me_st_ and me_inc_ here.
   // me_re_ is a normal identifier, as it
   // doesn't require a continuation at the next condition.
   // Also me_add_ amd me_sub_ since openHoldem 11.1.0.
   if (name.Left(3) == "me_") {
-    double temp_result;
-    p_engine_container->symbol_engine_memory_symbols()->EvaluateSymbol(name,
-      &temp_result, true);
-    return temp_result;
+	  double temp_result;
+	  p_engine_container->symbol_engine_memory_symbols()->EvaluateSymbol(name,
+		  &temp_result, true);
+	  return temp_result;
+  }
+  //Retrieve the set string part for SET action with variable string
+  int position = name.Find('"', 0);
+  CString set_string = "";
+  if (position != -1) {
+	  set_string = name.Mid(position);
+  }
+  set_string.Remove('"');
+  //Retrieve the set symbol part for SET action with variable string
+  position = name.Find(' ', 0);
+  if (position != -1) {
+	  name = name.Left(position);
+  }
+  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
+  if (name.Left(11) == "prw1326_use") {
+  	  if (set_string.MakeLower() != "true" && set_string.MakeLower() != "false") {
+		  CString error_message = "Invalid SET prw1326 use command\n"
+			  "Only \"TRUE\" or \"FALSE\" are allowed.";
+		  CParseErrors::Error(error_message);
+		  return false;
+	  }
+	  p_engine_container->symbol_engine_prwin()->SetPrw1326(name, set_string);
+	  return true;
+  }
+  if (name.Left(11) == "prw1326_cmd") {
+	  if (set_string.MakeLower() != "recalc" && set_string.MakeLower() != "clearall") {
+		  CString error_message = "Invalid SET prw1326 command\n"
+			  "Only \"RECALC\" or \"CLEARALL\" are allowed.";
+		  CParseErrors::Error(error_message);
+		  return false;
+	  }
+	  p_engine_container->symbol_engine_prwin()->SetPrw1326(name, set_string);
+	  if (set_string == "recalc") {
+		  // restart iterator thread
+		  p_iterator_thread->RestartPrWinComputations();
+		  // Recompute versus tables
+		  //p_engine_container->symbol_engine_versus()->GetCounts();
+
+		  // Busy waiting until recalculation got finished.
+		  // Nothing better to do, as we already evaluate bot-logic,
+		  // so we can't continue with another heartbeat or something else.
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19012
+		  while (!p_iterator_thread->IteratorThreadComplete()) {
+			  Sleep(100);
+		  }
+	  }
+	  if (set_string == "clearall") {
+		 p_engine_container->symbol_engine_range()->ClearAll();
+		 p_engine_container->symbol_engine_range()->UnSetLists();
+	  }
+	  return true;
+  }
+  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
+  if (name.Left(5) == "range") {
+	  name = p_engine_container->symbol_engine_multiplexer()->MultiplexedSymbolName(name);
+	  if (!p_engine_container->symbol_engine_multiplexer()->IsValidPostfix())
+		  return false;
+	  p_engine_container->symbol_engine_range()->SetRange(name, set_string);
+	  return true;
   }
   assert(kThisMustNotHappen);
   return false;

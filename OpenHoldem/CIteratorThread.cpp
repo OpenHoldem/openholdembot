@@ -29,6 +29,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineRange.h"
 #include "CTableState.h"
 #include "CValidator.h"
 #include "inlines/eval.h"
@@ -140,7 +141,7 @@ void CIteratorThread::RestartPrWinComputations() {
   assert(IteratorThreadWorking() == false);
   InitIteratorLoop();
   ResetIteratorVars();
-	ResetGlobalVariables();
+	ResetGlobalVariables(); 
 }
 
 void CIteratorThread::AdjustPrwinVariablesIfNecessary() {
@@ -306,6 +307,15 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 
 	  if(UseEnhancedPrWin())
 	  {			
+			if (_prwin < 0 || _prtie < 0 || _prlos < 0) {
+				_prwin = kUndefined;
+				_prtie = kUndefined;
+				_prlos = kUndefined;
+				write_log(k_always_log_errors, "[PrWinThread] ERROR! PrWin could not compute any results because it is either impossible or impractical to complete.\n");
+				write_log(k_always_log_errors, "[PrWinThread] ERROR! PrWin computation failed because of card collision in ranges you set.\n");
+				write_log(k_always_log_errors, "[PrWinThread] Correct your ranges to remove those collisions.\n");
+				write_log(k_always_log_errors, "[PrWinThread] PrWin/Tie/Los have been set to Undefined value (-1).\n");
+			}
 			write_log(Preferences()->debug_prwin(), "EnhancedDealingAlgorithm elapsed time in millisec: %.3f Iterations: %d prwin: %.3f prtie: %.3f prlos: %.3f vanilla.limit: %i \n",
 				elapsedTime,_iterations_calculated, _prwin, _prtie, _prlos, _prw1326.vanilla_chair.limit );
 	  }
@@ -767,13 +777,6 @@ int CIteratorThread::EnhancedDealingAlgorithm() {
 }
 
 bool CIteratorThread::UseEnhancedPrWin() {
-	int tmp = p_function_collection->Evaluate("IsPrw1326");
-	if (_prw1326.useme != 1326 && p_function_collection->Evaluate("IsPrw1326")) _prw1326.useme = 1326;
-	if (_prw1326.useme == 1326 && !p_function_collection->Evaluate("IsPrw1326")) _prw1326.useme = 0;
-	if (_prw1326.preflop != 1326 && p_function_collection->Evaluate("IsPrw1326Preflop")) _prw1326.preflop = 1326;
-	if (_prw1326.preflop == 1326 && !p_function_collection->Evaluate("IsPrw1326Preflop")) _prw1326.preflop = 0;
-	if (_prw1326.usecallback != 1326 && p_function_collection->Evaluate("IsPrw1326Callback")) _prw1326.usecallback = 1326;
-	if (_prw1326.usecallback == 1326 && !p_function_collection->Evaluate("IsPrw1326Callback")) _prw1326.usecallback = 0;
 	return (_prw1326.useme==1326 
 		&& (p_betround_calculator->betround() >= kBetroundFlop 
 			|| _prw1326.preflop==1326));

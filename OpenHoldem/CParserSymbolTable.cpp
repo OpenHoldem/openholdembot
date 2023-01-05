@@ -88,19 +88,42 @@ void CParserSymbolTable::VerifySymbol(CString name) {
     }
   }
   // Then evaluation of currently unknown symbols
+  //Retrieve the set symbol part for SET action with variable string
+  int position = name.Find(' ', 0);
+  if (position != -1) {
+	  name = name.Left(position);
+  }
+  if (p_engine_container->IsStringSymbol(name)) {
+	  CString str_result = "";
+	  if (p_engine_container->EvaluateSymbol(name, &str_result, false)) {//#
+		  // Remember the good symbol for faster access later
+		  // (the engine-containers LookUp() is partially sequential)
+		  write_log(Preferences()->debug_symbol_verification(),
+			  "[CParserSymbolTable] symbol correctly evaluated, adding to known symbols\n");
+		  _known_symbols[name] = true;
+	  }
+	  else {
+		  write_log(Preferences()->debug_symbol_verification(),
+			  "[CParserSymbolTable] ERROR! Unknown symbol %s\n", name);
+		  // EvaluateSymbol() will show a popup on error
+	  }
+  }
+  else {
   // Magic number 0xCDCDCDCD is the same as undefined pointer in VS debug-mode
-  const int kSymbolDoesNotExist = 0xCDCDCDCD;
-  double result = kSymbolDoesNotExist;
-  if (p_engine_container->EvaluateSymbol(name, &result, false)) {//#
-    // Remember the good symbol for faster access later
-    // (the engine-containers LookUp() is partially sequential)
-    write_log(Preferences()->debug_symbol_verification(),
-      "[CParserSymbolTable] symbol cirrectly evaluated, adding to known symbols\n");
-    _known_symbols[name] = true;
-  } else {
-    write_log(Preferences()->debug_symbol_verification(),
-      "[CParserSymbolTable] ERROR! Unknown symbol %s\n", name);
-    // EvaluateSymbol() will show a popup on error
+	  const int kSymbolDoesNotExist = 0xCDCDCDCD;
+	  double result = kSymbolDoesNotExist;
+	  if (p_engine_container->EvaluateSymbol(name, &result, false)) {//#
+		  // Remember the good symbol for faster access later
+		  // (the engine-containers LookUp() is partially sequential)
+		  write_log(Preferences()->debug_symbol_verification(),
+			  "[CParserSymbolTable] symbol correctly evaluated, adding to known symbols\n");
+		  _known_symbols[name] = true;
+	  }
+	  else {
+		  write_log(Preferences()->debug_symbol_verification(),
+			  "[CParserSymbolTable] ERROR! Unknown symbol %s\n", name);
+		  // EvaluateSymbol() will show a popup on error
+	  }
   }
 }
 /*!!!

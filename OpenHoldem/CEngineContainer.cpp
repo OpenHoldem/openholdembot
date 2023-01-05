@@ -73,7 +73,7 @@
 #include "CSymbolEngineUserDLL.h"
 #include "CSymbolEngineVariousDataLookup.h"
 #include "CSymbolEngineVersus.h"
-#include "CSymbolEngineWeightedRange.h"
+#include "CSymbolEngineRange.h"
 #include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
@@ -98,14 +98,14 @@ void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) 
   _symbol_engines.Add(new_symbol_engine);
 }
 
-void CEngineContainer::AddStrVarSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) {
-	_strvar_symbol_engines.Add(new_symbol_engine);
+void CEngineContainer::AddStringSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) {
+	_string_symbol_engines.Add(new_symbol_engine);
 }
 
 void CEngineContainer::CreateSymbolEngines() {
   write_log(Preferences()->debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
   _symbol_engines.RemoveAll();
-  _strvar_symbol_engines.RemoveAll();
+  _string_symbol_engines.RemoveAll();
   CreateSpecialSymbolEngines();
   // Some symbols to be calculated depend on symbols of other engines.
   // The engines inserted first will be called first later.
@@ -114,6 +114,7 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolengineMultiplexer.h
   p_symbol_engine_multiplexer = new CSymbolEngineMultiplexer();
   AddSymbolEngine(p_symbol_engine_multiplexer);
+  AddStringSymbolEngine(p_symbol_engine_multiplexer);  // for new string variable symbols (storing string values)
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);
@@ -150,9 +151,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineVersus
   p_symbol_engine_versus = new CSymbolEngineVersus();
   AddSymbolEngine(p_symbol_engine_versus);
-  // CSymbolEngineWeightedRange
-  p_symbol_engine_weighted_range = new CSymbolEngineWeightedRange();
-  AddStrVarSymbolEngine(p_symbol_engine_weighted_range);  // for new string variable symbols (storing string values)
+  // CSymbolEngineRange
+  p_symbol_engine_range = new CSymbolEngineRange();
+  AddStringSymbolEngine(p_symbol_engine_range);  // for new string variable symbols (storing string values)
   // CSymbolEngineActiveDealtPlaying
   p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
   AddSymbolEngine(p_symbol_engine_active_dealt_playing);
@@ -293,6 +294,7 @@ void CEngineContainer::DestroyAllSymbolEngines() {
   // as these objects get handled by CMemoryPool mow
   DestroyAllSpecialSymbolEngines();
   _symbol_engines.RemoveAll();
+  _string_symbol_engines.RemoveAll();
 	write_log(Preferences()->debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
 }
 
@@ -349,19 +351,28 @@ void CEngineContainer::EvaluateAll() {
   for (int i = 0; i < _symbol_engines.GetCount(); ++i) {
     if (is_handreset) {
       _symbol_engines[i]->UpdateOnHandreset();
-	  _strvar_symbol_engines[i]->UpdateOnHandreset();
     }
     if (is_new_betround) {
       _symbol_engines[i]->UpdateOnNewRound();
-	  _strvar_symbol_engines[i]->UpdateOnNewRound();
     }
     if (is_my_turn) {
       _symbol_engines[i]->UpdateOnMyTurn();
-	  _strvar_symbol_engines[i]->UpdateOnMyTurn();
     }
     // And finally UpdateOnHeartbeat() gets always called.
     _symbol_engines[i]->UpdateOnHeartbeat();
-	_strvar_symbol_engines[i]->UpdateOnHeartbeat();
+  }
+  for (int i = 0; i < _string_symbol_engines.GetCount(); ++i) {
+	  if (is_handreset) {
+		  _string_symbol_engines[i]->UpdateOnHandreset();
+	  }
+	  if (is_new_betround) {
+		  _string_symbol_engines[i]->UpdateOnNewRound();
+	  }
+	  if (is_my_turn) {
+		  _string_symbol_engines[i]->UpdateOnMyTurn();
+	  }
+	  // And finally UpdateOnHeartbeat() gets always called.
+	  _string_symbol_engines[i]->UpdateOnHeartbeat();
   }
 }
 
@@ -369,7 +380,9 @@ void CEngineContainer::InitOnStartup() {
   write_log(Preferences()->debug_engine_container(), "[EngineContainer] Init on startup\n");
   for (int i = 0; i<_symbol_engines.GetCount(); i++) {
     _symbol_engines[i]->InitOnStartup();
-	_strvar_symbol_engines[i]->InitOnStartup();
+  }
+  for (int i = 0; i<_string_symbol_engines.GetCount(); i++) {
+	  _string_symbol_engines[i]->InitOnStartup();
   }
   write_log(Preferences()->debug_engine_container(), "[EngineContainer] Init on startup finished\n");
 }
@@ -378,7 +391,9 @@ void CEngineContainer::UpdateOnConnection() {
 	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on connection\n");
 	for (int i=0; i<_symbol_engines.GetCount(); i++) {
 		_symbol_engines[i]->UpdateOnConnection();
-		_strvar_symbol_engines[i]->UpdateOnConnection();
+	}
+	for (int i = 0; i<_string_symbol_engines.GetCount(); i++) {
+		_string_symbol_engines[i]->UpdateOnConnection();
 	}
 	_reset_on_connection_executed = true;
 	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
@@ -424,7 +439,9 @@ void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
   write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset after autoplayer action\n");
   for (int i = 0; i < _symbol_engines.GetCount(); ++i) {
     _symbol_engines[i]->UpdateAfterAutoplayerAction(autoplayer_action_code);
-	_strvar_symbol_engines[i]->UpdateAfterAutoplayerAction(autoplayer_action_code);
+  }
+  for (int i = 0; i < _string_symbol_engines.GetCount(); ++i) {
+	  _string_symbol_engines[i]->UpdateAfterAutoplayerAction(autoplayer_action_code);
   }
 }
 
@@ -479,9 +496,9 @@ bool CEngineContainer::EvaluateSymbol(const CString name, CString *result, bool 
 		*result = "";
 		return false;
 	}
-	int number_of_engines = _strvar_symbol_engines.GetCount();
+	int number_of_engines = _string_symbol_engines.GetCount();
 	for (int i = 0; i<number_of_engines; ++i) {
-		if (_strvar_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
+		if (_string_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
 			// Symbol successfully evaluated
 			// Result already returned via result-pointer
 			if (COHScriptObject::IsFunction(name)
@@ -519,28 +536,66 @@ bool CEngineContainer::EvaluateSymbol(const CString name, CString *result, bool 
 	}
 }
 
+bool CEngineContainer::IsStringSymbol(CString name) {
+	const int kNumberOfElementaryStringSymbols = 1;
+	static const char* kElementaryStringSymbols[kNumberOfElementaryStringSymbols] = {
+		"" };
+	const int kNumberOfParameterizedStringSymbols = 1;
+	static const char* kParameterizedStringSymbols[kNumberOfParameterizedStringSymbols] = {
+		"range" };
+
+	// Check elementary string symbols first
+	//for (int i = 0; i<kNumberOfElementaryStringSymbols; ++i) {
+	//	if (name == kElementaryStringSymbols[i]) return true;
+	//}
+	// Then check parameterized string symbols
+	for (int i = 0; i<kNumberOfParameterizedStringSymbols; ++i) {
+		if (StringAIsPrefixOfStringB(kParameterizedStringSymbols[i],
+			name)) {
+			return true;
+		}
+	}
+	// Not a string symbol
+	return false;
+}
+
+bool CEngineContainer::IsPrw1326Symbol(CString name) {
+	const int kNumberOfElementaryPrw1326Symbols = 4;
+	static const char* kElementaryPrw1326Symbols[kNumberOfElementaryPrw1326Symbols] = {
+		"prw1326_useme", "prw1326_usepreflop", "prw1326_usecallback", "prw1326_cmd" };
+	const int kNumberOfParameterizedPrw1326Symbols = 1;
+	static const char* kParameterizedPrw1326Symbols[kNumberOfParameterizedPrw1326Symbols] = {
+		"" };
+
+	// Check elementary string symbols first
+	for (int i = 0; i<kNumberOfElementaryPrw1326Symbols; ++i) {
+		if (name == kElementaryPrw1326Symbols[i]) return true;
+	}
+	// Then check parameterized string symbols
+	//for (int i = 0; i<kNumberOfParameterizedPrw1326Symbols; ++i) {
+	//	if (StringAIsPrefixOfStringB(kParameterizedPrw1326Symbols[i],
+	//		name)) {
+	//		return true;
+	//	}
+	//}
+	// Not a string symbol
+	return false;
+}
+
+bool CEngineContainer::IsVariableSymbol(CString name) {
+	if (IsPrw1326Symbol(name))
+		return true;
+	if (IsStringSymbol(name))
+		return true;
+	return false;
+}
+
 void CEngineContainer::BuildListOfSymbolsProvided() {
-  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Building list of symbols\n");
-  _list_of_symbols = "";
-  for (int i=0; i<_symbol_engines.GetCount(); ++i) {
-    write_log(Preferences()->debug_engine_container(), "[EngineContainer] Engine %d\n", i);
-    CString new_symbols = _symbol_engines[i]->SymbolsProvided();
-    _list_of_symbols.Append(new_symbols);
-    const int kPrintfBufferSize = 4096;
-    if (new_symbols.GetLength() < kPrintfBufferSize) {
-      // Logging new symbols per symbol engine
-      // and no longer all at once at the end of this function
-      // as the very long list caused a buffer overflow if enabled.
-      // As it turned out the function-collection alone
-      // still could exceed that limit, so we check the size.
-      write_log(Preferences()->debug_engine_container(), "[EngineContainer] New symbols %s\n", 
-        new_symbols);
-    } else {
-      write_log(Preferences()->debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
-    }
-	for (int i = 0; i<_strvar_symbol_engines.GetCount(); ++i) {
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Building list of symbols\n");
+	_list_of_symbols = "";
+	for (int i = 0; i < _symbol_engines.GetCount(); ++i) {
 		write_log(Preferences()->debug_engine_container(), "[EngineContainer] Engine %d\n", i);
-		CString new_symbols = _strvar_symbol_engines[i]->SymbolsProvided();
+		CString new_symbols = _symbol_engines[i]->SymbolsProvided();
 		_list_of_symbols.Append(new_symbols);
 		const int kPrintfBufferSize = 4096;
 		if (new_symbols.GetLength() < kPrintfBufferSize) {
@@ -555,7 +610,27 @@ void CEngineContainer::BuildListOfSymbolsProvided() {
 		else {
 			write_log(Preferences()->debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
 		}
-    // Extra blank to avoid unexpected concatenation of symbols
-    _list_of_symbols.Append(" ");
-  }
+		// Extra blank to avoid unexpected concatenation of symbols
+		_list_of_symbols.Append(" ");
+	}
+	for (int i = 0; i < _string_symbol_engines.GetCount(); ++i) {
+		write_log(Preferences()->debug_engine_container(), "[EngineContainer] Engine %d\n", i);
+		CString new_symbols = _string_symbol_engines[i]->SymbolsProvided();
+		_list_of_symbols.Append(new_symbols);
+		const int kPrintfBufferSize = 4096;
+		if (new_symbols.GetLength() < kPrintfBufferSize) {
+			// Logging new symbols per symbol engine
+			// and no longer all at once at the end of this function
+			// as the very long list caused a buffer overflow if enabled.
+			// As it turned out the function-collection alone
+			// still could exceed that limit, so we check the size.
+			write_log(Preferences()->debug_engine_container(), "[EngineContainer] New symbols %s\n",
+				new_symbols);
+		}
+		else {
+			write_log(Preferences()->debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
+		}
+		// Extra blank to avoid unexpected concatenation of symbols
+		_list_of_symbols.Append(" ");
+	}
 }

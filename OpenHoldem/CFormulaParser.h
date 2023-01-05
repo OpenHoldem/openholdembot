@@ -46,6 +46,7 @@ class CFormulaParser : public CSpaceOptimizedGlobalObject {
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }
+  bool IsList()							  { return _islist; }
  protected:
   void ParseDebugTab(CString function_text);
  private:
@@ -105,6 +106,7 @@ class CFormulaParser : public CSpaceOptimizedGlobalObject {
   CShankySymbolNameTranslator _shanky_symbol_name_translator;
  private:
   CString _token;
+  bool _islist;
   int _is_parsing_counter;
   bool _is_parsing_read_only_function_library;
   // The operator % can mean both modulo (OH-script) and percentage (OpenPPL).

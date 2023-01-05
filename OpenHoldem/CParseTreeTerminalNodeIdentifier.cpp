@@ -69,6 +69,32 @@ double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
 	return kUndefined;
 }
 
+CString CParseTreeTerminalNodeIdentifier::EvaluateString(bool log /* = false */) {
+	write_log(Preferences()->debug_formula(),
+		"[CParseTreeTerminalNode] Evaluating node type %i %s\n",
+		_node_type, TokenString(_node_type));
+	p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
+	// Most common types first: numbers and identifiers
+	if (_node_type == kTokenIdentifier) {
+		assert(_first_sibbling == NULL);
+		assert(_second_sibbling == NULL);
+		assert(_third_sibbling == NULL);
+		assert(_terminal_name != "");
+		CString value = EvaluateStringIdentifier(_terminal_name, log);
+		write_log(Preferences()->debug_formula(),
+			"[CParseTreeTerminalNode] Identifier %s evaluates to %s\n",
+			_terminal_name, value);
+		// In case of f$-functions the line changed inbetween,
+		// so we have to set it to the current location (again)
+		// for the next log.
+		p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
+		return value;
+	}
+	// This must not happen for a terminal node
+	assert(false);
+	return "";
+}
+
 CString CParseTreeTerminalNodeIdentifier::EvaluateToString(bool log /* = false */) {
   double numerical_result = Evaluate(log);
   CString result;
@@ -87,6 +113,20 @@ double CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(CString name, bool l
 	// EvaluateSymbol cares about ALL symbols, 
 	// including DLL and PokerTracker.
 	double result;
+	CString trname = name.Trim();
+	if (p_engine_container->IsVariableSymbol(trname))
+		name = trname;
+	p_engine_container->EvaluateSymbol(name, &result, log);
+	return result;
+}
+
+CString CParseTreeTerminalNodeIdentifier::EvaluateStringIdentifier(CString name, bool log) {
+	// EvaluateSymbol cares about ALL symbols, 
+	// including DLL and PokerTracker.
+	CString result;
+	CString trname = name.Trim();
+	if (p_engine_container->IsVariableSymbol(trname))
+		name = trname;
 	p_engine_container->EvaluateSymbol(name, &result, log);
 	return result;
 }
