@@ -24,6 +24,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CSymbolEngineVersus.h"
 #include "CIteratorThread.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineRange.h"
@@ -57,7 +58,6 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
     p_engine_container->symbol_engine_openppl_user_variables()->Set(name);
     return true;
   }
-  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
   // Covering both me_st_ and me_inc_ here.
   // me_re_ is a normal identifier, as it
   // doesn't require a continuation at the next condition.
@@ -80,7 +80,6 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
   if (position != -1) {
 	  name = name.Left(position);
   }
-  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
   if (name.Left(11) == "prw1326_use") {
   	  if (set_string.MakeLower() != "true" && set_string.MakeLower() != "false") {
 		  CString error_message = "Invalid SET prw1326 use command\n"
@@ -103,8 +102,7 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
 		  // restart iterator thread
 		  p_iterator_thread->RestartPrWinComputations();
 		  // Recompute versus tables
-		  //p_engine_container->symbol_engine_versus()->GetCounts();
-
+		  p_engine_container->symbol_engine_versus()->GetCounts();
 		  // Busy waiting until recalculation got finished.
 		  // Nothing better to do, as we already evaluate bot-logic,
 		  // so we can't continue with another heartbeat or something else.
@@ -119,7 +117,6 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
 	  }
 	  return true;
   }
-  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
   if (name.Left(5) == "range") {
 	  name = p_engine_container->symbol_engine_multiplexer()->MultiplexedSymbolName(name);
 	  if (!p_engine_container->symbol_engine_multiplexer()->IsValidPostfix())

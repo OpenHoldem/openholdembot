@@ -507,8 +507,6 @@ NegativeNumber:
 
 char* CTokenizer::GetTokenString() {
 	assert(SIZE_OF_TOKEN >= 0);
-	int token_size = SIZE_OF_TOKEN;
-	CString buffer = input_buffer;
 	// >= because we need one additional char for \0.
 	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)	{
 		CParseErrors::Error("Identifier exceeds technical maximum of 256 characters.\n"
@@ -554,8 +552,6 @@ void CTokenizer::SkipToEndOfLine() {
 void CTokenizer::SkipToEndOfMultiLineComment() {
 	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
 		  && (CURRENT_CHARACTER() != '\0'))	{
-		char cur = CURRENT_CHARACTER();
-		char next = NEXT_CHARACTER;
     if (CURRENT_CHARACTER() == '\n') {
       line_relative++;
     }

@@ -51,6 +51,7 @@ typedef int TRangeWeightMatrix[kMaxNumberOfPlayers][k_number_of_ranks_per_deck][
 
 enum Commands {
 	kSetRange,
+	kSetPercentileRange,
 	KRemoveRange,
 	kRemovePocketPair,
 	kRemoveOffsuited,
