@@ -41,6 +41,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_prwin",
   "debug_icm",
   "debug_occlusionchecker",
+  "debug_fpdb",
   "debug_pokertracker",
   "debug_rebuy",
   "debug_replayframes",

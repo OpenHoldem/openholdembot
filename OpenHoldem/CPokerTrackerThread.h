@@ -19,21 +19,21 @@
 #include "CSpaceOptimizedGlobalObject.h"
 
 
-const int k_advanced_stat_update_every    =    5;
-const int k_min_hands_for_slower_updates  = 1000;
-const int k_min_name_length_to_skip_lev_dist  = 10;
+const int k_pt_advanced_stat_update_every    =    5;
+const int k_pt_min_hands_for_slower_updates  = 1000;
+const int k_pt_min_name_length_to_skip_lev_dist  = 10;
 
-struct SPlayerData 
+struct PT_SPlayerData 
 {
 	char			scraped_name[kMaxLengthOfPlayername];
 	char			pt_name[kMaxLengthOfPlayername];
 	bool			found;
 	// Stats are now in the DLL
-	//double			stat[k_max_number_of_supported_pokertracker_stats];
+	//double			stat[k_pt_max_number_of_supported_pokertracker_stats];
 	int				skipped_updates;           
 };
 
-extern SPlayerData _player_data[kMaxNumberOfPlayers];
+extern PT_SPlayerData _pt_player_data[kMaxNumberOfPlayers];
 
 class CPokerTrackerThread : public CSpaceOptimizedGlobalObject
 {
@@ -74,9 +74,9 @@ private:
 	void				RecalcSkippedUpdates(int chr);
 	void				ReportUpdateComplete(int updatedCount, int chair);
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
-	int					GetSkippedUpdates(int chr){return _player_data[chr].skipped_updates;}
+	int					GetSkippedUpdates(int chr){return _pt_player_data[chr].skipped_updates;}
 	bool				IsFound(int chair);
-	const char* GetPlayerScrapedName(int chair){return _player_data[chair].scraped_name;}
+	const char* GetPlayerScrapedName(int chair){return _pt_player_data[chair].scraped_name;}
 
 	CString			_conn_str;
 	bool				_connected;

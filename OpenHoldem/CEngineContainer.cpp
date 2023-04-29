@@ -59,6 +59,7 @@
 #include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CSymbolEngineFpdb.h"
 #include "CSymbolEnginePokerAction.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
@@ -171,7 +172,7 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineChecksBetsFolds
   p_symbol_engine_checks_bets_folds = new CSymbolEngineChecksBetsFolds();
   AddSymbolEngine(p_symbol_engine_checks_bets_folds);
-  // CSymbolEnginePokerActio
+  // CSymbolEnginePokerAction
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);
   // CSymbolEngineChairs
@@ -219,6 +220,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineIsRush
   p_symbol_engine_isrush = new CSymbolEngineIsRush;
   AddSymbolEngine(p_symbol_engine_isrush);
+  // CSymbolEngineFpdb
+  p_symbol_engine_fpdb = new CSymbolEngineFpdb;
+  AddSymbolEngine(p_symbol_engine_fpdb);
   // CSymbolEnginePokerTracker
   p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
   AddSymbolEngine(p_symbol_engine_pokertracker);
