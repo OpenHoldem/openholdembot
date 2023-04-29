@@ -28,8 +28,10 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineIsTournament.h"
+#include "CSymbolengineMTTInfo.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
@@ -65,6 +67,8 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_m_stop_thread = NULL;
 	_m_wait_thread = NULL;
 	_pgconn = NULL; 
+
+	pUpdateStat(UpdateStat);
 }
 
 CPokerTrackerThread::~CPokerTrackerThread()
@@ -86,7 +90,7 @@ void CPokerTrackerThread::StartThread()
 		_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 		_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
 
-		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
+		//_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
 
 		write_log(Preferences()->debug_pokertracker(), "[PokerTracker] Started PokerTracker-thread.\n");
 	}
@@ -380,7 +384,7 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	return result;
 }
 
-double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
+double UpdateStat(int m_chr, int stat)
 {
 	PGresult	*res = NULL;
 	double		result = kUndefined;
@@ -394,7 +398,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	if (siteid == kUndefined)
 		return kUndefined;
 
-	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
+	if (!p_pokertracker_thread->_connected || PQstatus(p_pokertracker_thread->_pgconn) != CONNECTION_OK)
 		return kUndefined;
 
 	assert(m_chr >= kFirstChair);
@@ -402,12 +406,39 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	assert(stat >= 0);
 	assert(stat < PT_DLL_GetNumberOfStats());
 
+	if (p_pokertracker_thread->CheckIfNameExistsInDB(m_chr) == false)
+	{
+		/* Note that checkname fail just when starting, doesn't necessarily mean that there's no user
+		in that chair, but only that the scraper failed to find one. This could be due to lobby window
+		that hides poker window behind it. We make this check once, and if we are good, the update iteration
+		is good to go. if we are not, we assume that this seat is not taken at the moment. */
+		write_log(Preferences()->debug_pokertracker(), "[PokerTracker] UpdateStat for chair[%d] had been skipped. Reason: [CheckName failed]\n", m_chr);
+		return kUndefined;
+	}
+	
 	// get query string for the requested statistic
   CString query = PT_DLL_GetQuery(stat,
     p_engine_container->symbol_engine_isomaha()->isomaha(),
     p_engine_container->symbol_engine_istournament()->istournament(),
-    siteid, _player_data[m_chr].pt_name,
-    p_engine_container->symbol_engine_tablelimits()->bblind());
+	p_engine_container->symbol_engine_istournament()->IsMTT(),
+	p_engine_container->symbol_engine_istournament()->IsSNG(),
+	p_engine_container->symbol_engine_istournament()->IsDON(),
+	p_engine_container->symbol_engine_istournament()->IsTRIPLEUP(),
+	p_engine_container->symbol_engine_istournament()->IsSHOOTOUT(),
+	p_engine_container->symbol_engine_istournament()->IsFREEROLL(),
+	p_engine_container->symbol_engine_istournament()->IsKNOCKOUT(),
+	p_engine_container->symbol_engine_istournament()->IsREBUY(),
+	p_engine_container->symbol_engine_istournament()->IsSATELITTE(),
+	p_engine_container->symbol_engine_istournament()->IsSPIN(),
+	p_engine_container->symbol_engine_istournament()->IsTURBO(),
+	p_engine_container->symbol_engine_istournament()->IsSEMITURBO(),
+	p_engine_container->symbol_engine_istournament()->IsSUPERTURBO(),
+	p_engine_container->symbol_engine_istournament()->IsHYPERTURBO(),
+	p_engine_container->symbol_engine_istournament()->IsULTRATURBO(),
+	siteid, _player_data[m_chr].pt_name, p_tablemap->nchairs(),
+	p_engine_container->symbol_engine_tablelimits()->sblind(),
+    p_engine_container->symbol_engine_tablelimits()->bblind(),
+	p_table_state->_s_limit_info.is_final_table(), nb_hands, time_period);
 
 	// Do the query against the PT database
 	updStart = clock();
@@ -418,7 +449,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 			"[PokerTracker] Querying %s for m_chr %d: %s\n", 
 			PT_DLL_GetBasicSymbolNameWithoutPTPrefix(stat), 
 			m_chr, query);
-		res = PQexec(_pgconn, query);
+		res = PQexec(p_pokertracker_thread->_pgconn, query);
 	}
 	catch (_com_error &e)
 	{
@@ -443,28 +474,28 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		switch (PQresultStatus(res))
 		{
 		case PGRES_COMMAND_OK:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		case PGRES_EMPTY_QUERY:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		case PGRES_BAD_RESPONSE:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		case PGRES_COPY_OUT:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		case PGRES_COPY_IN:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		case PGRES_NONFATAL_ERROR:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		case PGRES_FATAL_ERROR:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		default:
-			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] GENERIC ERROR: %s [%s]\n", PQerrorMessage(p_pokertracker_thread->_pgconn), query);
 			break;
 		}
 	}
@@ -658,7 +689,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		return;
 	}
 
-	if (!pParent->_connected)
+	if (!_connected)
 	{
 		pParent->Connect();
 	}
@@ -682,8 +713,8 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 				if (_player_data[chair].found)
 				{
 					/* Verify therad_stop is false */ 
-					if (LightSleep(0, pParent)) 
-						return; 
+					//if (LightSleep(0, pParent)) 
+					//	return; 
 					/* verify that name did not get changed */
 					if (pParent->CheckIfNameHasChanged(chair))
 					{
@@ -705,7 +736,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					{
 						/* Update... */
 						write_log(Preferences()->debug_pokertracker(), "[PokerTracker] GetStatsForChair updating stats [%d] for chair [%d]...\n", i, chair);
-						pParent->UpdateStat(chair, i);
+						UpdateStat(chair, i);
 						++updatedCount;
 					}
 					/* Sleep between two updates (even if skipped) */
@@ -769,7 +800,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam) {
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)	{
 			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)	{
 				GetStatsForChair(pParam, chair, sleep_time);
-				/* Verify therad_stop is false */ 
+				/* Verify thread_stop is false */ 
         if (LightSleep(0, pParent)) {
           break;
         }
