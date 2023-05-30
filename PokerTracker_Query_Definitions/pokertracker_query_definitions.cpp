@@ -84,7 +84,7 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	bool IsMTT, bool IsSNG, bool IsDON, bool IsTRIPLEUP, bool IsSHOOTOUT,
 	bool IsFREEROLL, bool IsKNOCKOUT, bool IsREBUY, bool IsSATELITTE, bool IsSPIN,
 	bool IsTURBO, bool IsSEMITURBO, bool IsSUPERTURBO, bool IsHYPERTURBO, bool IsULTRATURBO,
-	int site_id, CString player_name, int table_size, double small_blind, double big_blind,
+	int site_id, CString player_name, int table_size, int nplayersseated, double small_blind, double big_blind, double ante,
 	bool isfinaltable, CString nb_hands, CString time_period) {
 
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
@@ -98,11 +98,13 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	CString strPaidPlaces = "";
 	CString strEffStackSize1 = "";
 	CString strEffStackSize2 = "";
+	CString Mfactor;
+	Mfactor.Format("%f", (big_blind / (big_blind + small_blind + (ante*nplayersseated))));		   
 	bool IsSTT = false;
 	double M_zone = GetSymbol("Mzone");
 	double effM_zone = GetSymbol("EffectiveMzone");
 	double TableMzone = GetSymbol("TableMzone");
-	double EffStackSize = GetSymbol("EffectiveStackInBigBlinds");
+	double EffStackSize = GetSymbol("EffectiveActiveStackInBigBlinds");
 	double StartingBigBlindSize = GetSymbol("StartingBigBlindSize");
 	double StartingStackSize = GetSymbol("StartingStackSize");
 	double PaidPlaces = GetSymbol("PaidPlaces");
@@ -116,8 +118,9 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 		strEffStackSize1.Format("%f", EffStackSize - 1);
 		strEffStackSize2.Format("%f", EffStackSize + 1);
 	};
+	strPaidPlaces.Format("%f", PaidPlaces);
 	if (STTGameStage == 5) strPaidPlaces.Format("%f", PaidPlaces + 1);
-	if (STTGameStage == 6) strPaidPlaces.Format("%f", PaidPlaces);
+	//if (STTGameStage == 6) strPaidPlaces.Format("%f", PaidPlaces);
 
 	CString player_position = "";
 	if (player_chair_number == GetSymbol("smallblindchair"))		player_position = "sb";
@@ -186,15 +189,15 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	if (IsMTT && IsSPIN) {
 		if (StartingStackSize == 25) {
 			if (MTTSPinGameStage == 1)		// Early Stage
-				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 17*(2/3) AND");
+				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 17*" + Mfactor + " AND");
 			if (MTTSPinGameStage == 2)		// Middle Stage
-				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% (S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 12*(2/3) AND S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) <= 17*(2/3)) AND");
+				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% (S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 12*" + Mfactor + " AND S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) <= 17*" + Mfactor + ") AND");
 		}
 		if (StartingStackSize == 15) {
 			if (MTTSPinGameStage == 1)		// Early Stage
-				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 10*(2/3) AND");
+				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 10*" + Mfactor + " AND");
 			if (MTTSPinGameStage == 2)		// Middle Stage
-				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% (S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 5*(2/3) AND S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) <= 10*(2/3)) AND");
+				query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% (S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) > 5*" + Mfactor + " AND S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) <= 10*" + Mfactor + ") AND");
 		}
 		if (MTTSPinGameStage == 3)			// Heads-Up Stage
 			query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% S.cnt_players = 2 AND");
@@ -205,11 +208,11 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 
 	///  For STT SNGs   ////////////////////////////////////////
 
-	CString EarlyStageStatement =  "(S.amt_p_effective_stack  / TL.amt_bb) >= 12 AND \
+	CString EarlyStageStatement =  "S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) >= 12*" + Mfactor + " AND \
 									(TL.amt_bb <= 3 * (select distinct first_value(tnb.amt_bb) over (order by thps.date_played) \
 									from tourney_hand_player_statistics as thps, tourney_summary as tns, tourney_blinds as tnb \
 									where thps.flg_hero and thps.id_tourney = tns.id_tourney and thps.id_blinds = tnb.id_blinds))";
-	CString LateStageStatement =   "((S.amt_p_effective_stack  / TL.amt_bb) <= 10 OR (TL.amt_bb >= 100 AND (S.amt_p_effective_stack  / TL.amt_bb) < 12) \
+	CString LateStageStatement =   "(S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) <= 10*" + Mfactor + " OR (TL.amt_bb >= 100 AND S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players)) < 12*" + Mfactor + ") \
 									OR (TL.amt_bb >= 160 AND ((S.amt_before + S.amt_blind + S.amt_ante + S.amt_bet_p) / TL.amt_bb) / S.cnt_players  < 12) \
 									OR (S.amt_before / (TL.amt_sb + TL.amt_bb + (S.amt_ante*S.cnt_players))) < 10)";
 
@@ -217,7 +220,7 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 		if (STTGameStage == 1)		// Early Stage
 			query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% " + EarlyStageStatement + " AND");
 		if (STTGameStage == 2)		// Middle Stage
-			query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% NOT(" + EarlyStageStatement + ") AND NOT(" + LateStageStatement + ") AND S.cnt_players > " + strPaidPlaces + " AND S.cnt_players > 2 AND");
+			query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% NOT(" + EarlyStageStatement + ") AND NOT(" + LateStageStatement + ") AND S.cnt_players > " + strPaidPlaces + " AND S.cnt_players != " + strPaidPlaces + "+1 AND S.cnt_players != 2 AND");
 		if (STTGameStage == 3)		// Late Stage
 			query.Replace("%LIMITSTATEMENT%", "S.id_blinds = TL.id_blinds AND %SHORTSTACKSTATEMENT% " + LateStageStatement + " AND");
 		if (STTGameStage == 4) 		// Bubble Stage

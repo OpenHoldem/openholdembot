@@ -44,7 +44,7 @@ POKERTRACKER_DLL_API	CString PT_DLL_GetQuery(int stats_index,
 												bool isomaha, bool istournament, bool IsMTT, bool IsSNG, bool IsDON, bool IsTRIPLEUP, bool IsSHOOTOUT,
 												bool IsFREEROLL, bool IsKNOCKOUT, bool IsREBUY, bool IsSATELITTE, bool IsSPIN,
 												bool IsTURBO, bool IsSEMITURBO, bool IsSUPERTURBO, bool IsHYPERTURBO, bool IsULTRATURBO,
-												int site_id, CString player_name, int table_size, double small_blind, double big_blind,
+												int site_id, CString player_name, int table_size, int nplayersseated, double small_blind, double big_blind, double ante,
 												bool isfinaltable, CString nb_hands, CString time_period);
 POKERTRACKER_DLL_API CString nb_hands, time_period;
 

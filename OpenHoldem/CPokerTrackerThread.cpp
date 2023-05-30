@@ -436,9 +436,10 @@ double UpdateStat(int m_chr, int stat)
 	p_engine_container->symbol_engine_istournament()->IsHYPERTURBO(),
 	p_engine_container->symbol_engine_istournament()->IsULTRATURBO(),
 	siteid, _player_data[m_chr].pt_name, p_tablemap->nchairs(),
+	  p_engine_container->symbol_engine_active_dealt_playing()->nplayersseated(),  
 	p_engine_container->symbol_engine_tablelimits()->sblind(),
     p_engine_container->symbol_engine_tablelimits()->bblind(),
-	p_table_state->_s_limit_info.is_final_table(), nb_hands, time_period);
+	  p_engine_container->symbol_engine_tablelimits()->ante(),p_table_state->_s_limit_info.is_final_table(), nb_hands, time_period);
 
 	// Do the query against the PT database
 	updStart = clock();
@@ -712,7 +713,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 
 				if (_player_data[chair].found)
 				{
-					/* Verify therad_stop is false */ 
+					/* Verify thread_stop is false */ 
 					//if (LightSleep(0, pParent)) 
 					//	return; 
 					/* verify that name did not get changed */

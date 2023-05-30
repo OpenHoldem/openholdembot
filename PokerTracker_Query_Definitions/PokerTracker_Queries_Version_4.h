@@ -119,6 +119,22 @@
 #define PT4_QUERY_SUPPORT__FOLD_TO_F_FLOAT_BET_IN_3B_POT     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__FOLD_TO_F_FLOAT_BET_IN_3B_PLUS_POT     				(TRUE)	// ""
 
+// Advanced RFI - Positional Pre Flop - 6 MAX AND 9 MAX now supported
+#define PT4_QUERY_SUPPORT__RFI_BTN_6MAX     				(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_CO_6MAX     					(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_MP_6MAX     					(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_EP_6MAX     					(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_SB_6MAX     					(FALSE)	// ""
+
+#define PT4_QUERY_SUPPORT__RFI_BTN_9MAX     				(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_CO_9MAX     					(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_MP_9MAX     					(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_MP1_9MAX     				(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_MP2_9MAX     				(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_EP_9MAX     					(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_EP1_9MAX     				(FALSE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_SB_9MAX     					(FALSE)	// ""
+
 // Advanced OPPORTUNITIES /// 
 #define PT4_QUERY_SUPPORT__CBET_FLOP_OPP_IN_3BET_POT     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__CBET_FLOP_OPP     				(TRUE)	// ""
@@ -212,6 +228,20 @@ const int k_number_of_pokertracker_stats =  //GENERAL STATS
 + (PT4_QUERY_SUPPORT__CALL_F_FLOAT_BET_IN_3B_POT ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FOLD_TO_F_FLOAT_BET_IN_3B_POT ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FOLD_TO_F_FLOAT_BET_IN_3B_PLUS_POT ? 1 : 0)
+//	Positional	
++ (PT4_QUERY_SUPPORT__RFI_BTN_6MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_CO_6MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_MP_6MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_EP_6MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_SB_6MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_BTN_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_CO_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_MP_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_MP1_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_MP2_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_EP_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_EP1_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_SB_9MAX ? 1 : 0)
 // OPP
 + (PT4_QUERY_SUPPORT__CBET_FLOP_OPP_IN_3BET_POT ? 1 : 0)
 + (PT4_QUERY_SUPPORT__CBET_FLOP_OPP ? 1 : 0)
@@ -1788,7 +1818,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			P.id_site = %SITEID% AND \
 			P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+			",
 	// stat_group
 	pt_group_advanced
 	},
@@ -1814,7 +1845,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			P.id_site = %SITEID% AND \
 			P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -1840,7 +1872,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			P.id_site = %SITEID% AND \
 			P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -1866,7 +1899,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			P.id_site = %SITEID% AND \
 			P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2297,7 +2331,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2322,7 +2357,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+			",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2347,7 +2383,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2372,7 +2409,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2397,7 +2435,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+			",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2426,7 +2465,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2451,7 +2491,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+			",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2477,7 +2518,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
@@ -2502,7 +2544,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%' \
 				ORDER BY count(S.date_played) DESC \
-				LIMIT %NBHANDS% ",
+				LIMIT %NBHANDS% \
+				",
 	// stat_group
 	pt_group_advanced
 	},
