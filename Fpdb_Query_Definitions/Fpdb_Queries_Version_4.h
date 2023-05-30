@@ -22,7 +22,7 @@
 // Only added and something renamed
 // A special thank you to the whole community, which made this possible 
 // We are Maxinmontreal 
-// https://ptb4.pokertracker.com/forums/viewtopic.php?f=59&t=49035
+// https://pt4.pokertracker.com/forums/viewtopic.php?f=59&t=49035
 // http://www.maxinmontreal.com/forums/viewforum.php?f=273
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=273&t=20933
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=273&t=21561
@@ -120,20 +120,20 @@
 #define FPDB_QUERY_SUPPORT__FOLD_TO_F_FLOAT_BET_IN_3B_PLUS_POT     				(TRUE)	// ""
 
 // Advanced RFI - Positional Pre Flop - 6 MAX AND 9 MAX now supported
-#define FPDB_QUERY_SUPPORT__RFI_BTN_6MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_CO_6MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_MP_6MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_EP_6MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_SB_6MAX     				(TRUE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_BTN_6MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_CO_6MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_MP_6MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_EP_6MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_SB_6MAX     				(FALSE)	// ""
 
-#define FPDB_QUERY_SUPPORT__RFI_BTN_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_CO_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_MP_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_MP1_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_MP2_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_EP_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_EP1_9MAX     				(TRUE)	// ""
-#define FPDB_QUERY_SUPPORT__RFI_SB_9MAX     				(TRUE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_BTN_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_CO_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_MP_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_MP1_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_MP2_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_EP_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_EP1_9MAX     				(FALSE)	// ""
+#define FPDB_QUERY_SUPPORT__RFI_SB_9MAX     				(FALSE)	// ""
 
 // Advanced OPPORTUNITIES /// 
 #define FPDB_QUERY_SUPPORT__CBET_FLOP_OPP_IN_3BET_POT     				(TRUE)	// ""
@@ -278,8 +278,8 @@ struct t_QueryDefinition {
 	int stat_group;
 };
 
-// Fpdb naming conventions: 
-//   http://www.fpdb.com/guides/FPDB3/tutorials/using-custom-reports-and-statistics#Naming-conventions
+// PokerTracker naming conventions: 
+//   http://www.pokertracker.com/guides/PT3/tutorials/using-custom-reports-and-statistics#Naming-conventions
 t_QueryDefinition query_definitions[k_number_of_fpdb_stats] =
 {
 #if FPDB_QUERY_SUPPORT__ICON
