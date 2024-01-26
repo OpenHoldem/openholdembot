@@ -17,20 +17,28 @@
 #include "afxwin.h"
 #include "resource.h"
 #include "StickyButton.h"
+#include "ScrollHelper.h"
+#include "ColorPickerCB.h"
 
 // Region grouping types
 enum {BY_TYPE = 1, BY_NAME = 2};
+
+class CScrollHelper;    // Forward class declaration.
 
 // CDlgTableMap dialog
 class CDlgTableMap : public CDialog
 {
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
 	afx_msg void OnPaint();
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnRegionChange();
+	afx_msg void OnOcrRegionChange();
 	afx_msg void OnZoomChange();
 	afx_msg void OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult);
@@ -38,6 +46,8 @@ protected:
 	afx_msg void OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposThresholdSpin(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposCropSpin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedNew();
 	afx_msg void OnBnClickedDelete();
 	afx_msg void OnBnClickedEdit();
@@ -70,14 +80,24 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pTTTStruct, LRESULT* pResult);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSizing(UINT nSide, LPRECT lpRect);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnTvnKeydownTablemapTree(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedUseDefault();
+	afx_msg void OnThresholdChange();
+	afx_msg void OnPdiffChange();
+	afx_msg void OnBnClickedUseCrop();
+	afx_msg void OnCropSizeChange();
+	afx_msg void OnBoxColorChange();
 	HTREEITEM GetRecordTypeNode(HTREEITEM item);
 	HTREEITEM GetTextSelItemAndRecordType(CString *sel_text, CString *type_text);
 	void clear_bitmap_control(void);
+	void clear_mat_control(void);
 	void draw_region_bitmap(void);
 	void draw_image_bitmap(void);
-	void disable_and_clear_all(void);
+	void draw_template_bitmap(void);
+	void disable_and_clear_all(void);;
+	void disable_ocr_and_clear_all(void);
+	void update_ocr_r$_display(void);
 	void update_r$_display(bool dont_update_spinners);
 	void update_t$_display();
 	COLORREF get_color_under_mouse(UINT *nFlags, CPoint *point);
@@ -91,16 +111,17 @@ protected:
 	int GetType(CString selected_text);
 	HTREEITEM InsertGroupedRegion(CString itemText);
 
-	CStatic				m_BitmapFrame;
+	CStatic				m_BitmapFrame, m_MatFrame;
 	CStickyButton		m_Picker;
-	CSpinButtonCtrl		m_LeftSpin, m_TopSpin, m_BottomSpin, m_RightSpin, m_RadiusSpin;
+	CSpinButtonCtrl		m_LeftSpin, m_TopSpin, m_BottomSpin, m_RightSpin, m_RadiusSpin, m_ThresholdSpin, m_CropSpin;
 	CComboBox			m_Transform, m_Zoom, m_TrackerFontSet, m_TrackerFontNum, m_TrackerCardNum;
-	CEdit				m_Alpha, m_Red, m_Green, m_Blue, m_RedAvg, m_GreenAvg, m_BlueAvg, m_Radius, m_Result, m_PixelSeparation;
+	CEdit				m_Alpha, m_Red, m_Green, m_Blue, m_RedAvg, m_GreenAvg, m_BlueAvg, m_Radius, m_Result, m_PixelSeparation, m_ImgProc, m_Threshold, m_CropSize;
 	CButton				m_New, m_Delete, m_Edit, m_CreateImage, m_CreateFont, m_FontPlus, m_FontMinus;
 	CButton				m_CreateHash0, m_CreateHash1, m_CreateHash2, m_CreateHash3;
 	CButton				m_NudgeTaller, m_NudgeShorter, m_NudgeWider, m_NudgeNarrower, m_NudgeBigger, m_NudgeSmaller;
 	CButton				m_NudgeUpLeft, m_NudgeUp, m_NudgeUpRight, m_NudgeRight, m_NudgeDownRight, m_NudgeDown;
 	CButton				m_NudgeDownLeft, m_NudgeLeft;
+	CButton				m_UseCrop, m_UseDefault;
 	CPen				black_pen, green_pen, red_pen, blue_pen, white_dot_pen, null_pen;
 	CBrush				white_brush, lt_gray_brush, gray_brush, red_brush, yellow_brush;
 	LOGFONT				lf_fixed;
@@ -112,6 +133,38 @@ protected:
 	HCURSOR				hCurPicker, hCurStandard;
 	bool				ignore_changes;
 	CStatic				m_status_cards, m_status_fonts;
+	COLORREF			m_crColor;
+
+private:
+	void detectMotion(void);
+	void detectBlobs(void);
+	void fourPointsTransform(const Mat& frame, const Point2f vertices[], Mat& result);
+	void textDetectAndRecognize(void);
+	Mat loadTemplate(string name);
+	void deleteTemplate(string name);
+	void createTemplate(Mat input, string name);
+	RECT detectTemplate(Mat area, Mat tpl, int match_mode);
+	void DetectAndShowTemplate(string name);
+	CString GetDetectTemplatesResult(CString area_name);
+	CString get_ocr_result(Mat img_orig, CString transform, bool fast = false);
+	CString process_ocr(Mat img_orig, bool fast = false);
+	Mat prepareImage(Mat img_orig, Mat* img_cropped, bool binarize = true, int threshold = 76);
+	Mat binarize_array_opencv(Mat image, int threshold);
+	void detectText(void);
+	CScrollHelper* m_scrollHelper;
+	int threshold, match_mode, box_color;
+	bool proceed_scroll = true;
+
+	string trim(string str) {
+		return regex_replace(str, regex("\\s"), "");
+	}
+
+	float convertTofloat(const string& str) {
+		float result;
+		istringstream iss(str);
+		iss >> result;
+		return result;
+	}
 
 public:
 	virtual BOOL DestroyWindow();
@@ -119,6 +172,7 @@ public:
 	virtual ~CDlgTableMap();
 	enum { IDD = IDD_TABLEMAP };
 	void create_tree(void);
+	void update_ocr_display(void);
 	void update_display(void);
 	void UpdateStatus(void);
 	HTREEITEM update_tree(CString node_text);
@@ -131,9 +185,11 @@ public:
 	CTreeCtrl			m_TableMapTree;
 	CEdit				m_Left, m_Top, m_Bottom, m_Right, m_xy;
 	CStickyButton		m_DrawRect;
+	CComboBox			m_MatchMode;
+	CColorPickerCB		m_BoxColor;
 	int					region_grouping;
+	int crop_size;
 
 	DECLARE_MESSAGE_MAP()
 };
-
 

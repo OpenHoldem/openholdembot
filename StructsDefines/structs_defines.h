@@ -59,6 +59,8 @@
 // Bitmap display
 #define BITMAP_WIDTH		344
 #define BITMAP_HEIGHT		164
+#define MAT_WIDTH			268
+#define MAT_HEIGHT			115
 
 // For scraper engine
 #define NOTHING_CHANGED		  0
@@ -86,6 +88,10 @@
 #define MAX_IMAGE_HEIGHT	150
 #define MAX_SINGLE_CHAR_WIDTH	31
 #define MAX_SINGLE_CHAR_HEIGHT	32
+
+// OCR
+const int kDefaultInbuiltThreshold = 65;		// Set Inbuilt OCR default Pdiff threshold to 65% of available pixels for image matching
+const int kDefaultAutoOcrThreshold = 125;		// Default threshold for OCV OCR image binarization processing
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

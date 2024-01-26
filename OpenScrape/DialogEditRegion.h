@@ -25,7 +25,7 @@ public:
 	CDlgEditRegion(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgEditRegion();
 
-	CString						titletext;
+	CString						titletext, labeltext;
 	CArray <CString, CString>	strings;
 	
 	CString						name;
@@ -39,6 +39,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CComboBox m_Name;
+	CStatic m_Label;
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 };

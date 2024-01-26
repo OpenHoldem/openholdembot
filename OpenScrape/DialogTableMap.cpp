@@ -1,4 +1,4 @@
-//******************************************************************************
+﻿//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //    Source code:           https://github.com/OpenHoldem/openholdembot/
@@ -43,9 +43,70 @@ const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c
 	"9c", "9s", "9h", "9d",	"Tc", "Ts", "Th", "Td", "Jc", "Js", "Jh", "Jd", "Qc", "Qs", "Qh", "Qd",
 	"Kc", "Ks", "Kh", "Kd", "Ac", "As", "Ah", "Ad" };
 
+// Auto OCR constants
+const int kNumberOfMatchModes = 6;					 // Number of Auto OCR Pdiff template match modes
+const char* tplMatchModes[kNumberOfMatchModes] = {   //  Auto OCR Pdiff template match modes
+	"TM_SQDIFF", /*!< \f[R(x,y)= \sum _{x',y'} (T(x',y')-I(x+x',y+y'))^2\f]
+				 with mask:
+				 \f[R(x,y)= \sum _{x',y'} \left( (T(x',y')-I(x+x',y+y')) \cdot
+				 M(x',y') \right)^2\f] */
+	"TM_SQDIFF_NORMED", /*!< \f[R(x,y)= \frac{\sum_{x',y'} (T(x',y')-I(x+x',y+y'))^2}{\sqrt{\sum_{
+						x',y'}T(x',y')^2 \cdot \sum_{x',y'} I(x+x',y+y')^2}}\f]
+						with mask:
+						\f[R(x,y)= \frac{\sum _{x',y'} \left( (T(x',y')-I(x+x',y+y')) \cdot
+						M(x',y') \right)^2}{\sqrt{\sum_{x',y'} \left( T(x',y') \cdot
+						M(x',y') \right)^2 \cdot \sum_{x',y'} \left( I(x+x',y+y') \cdot
+						M(x',y') \right)^2}}\f] */
+	"TM_CCORR", /*!< \f[R(x,y)= \sum _{x',y'} (T(x',y') \cdot I(x+x',y+y'))\f]
+				with mask:
+				\f[R(x,y)= \sum _{x',y'} (T(x',y') \cdot I(x+x',y+y') \cdot M(x',y')
+				^2)\f] */
+	"TM_CCORR_NORMED", /*!< \f[R(x,y)= \frac{\sum_{x',y'} (T(x',y') \cdot I(x+x',y+y'))}{\sqrt{
+					   \sum_{x',y'}T(x',y')^2 \cdot \sum_{x',y'} I(x+x',y+y')^2}}\f]
+					   with mask:
+					   \f[R(x,y)= \frac{\sum_{x',y'} (T(x',y') \cdot I(x+x',y+y') \cdot
+					   M(x',y')^2)}{\sqrt{\sum_{x',y'} \left( T(x',y') \cdot M(x',y')
+					   \right)^2 \cdot \sum_{x',y'} \left( I(x+x',y+y') \cdot M(x',y')
+					   \right)^2}}\f] */
+	"TM_CCOEFF", /*!< \f[R(x,y)= \sum _{x',y'} (T'(x',y') \cdot I'(x+x',y+y'))\f]
+				 where
+				 \f[\begin{array}{l} T'(x',y')=T(x',y') - 1/(w \cdot h) \cdot \sum _{
+				 x'',y''} T(x'',y'') \\ I'(x+x',y+y')=I(x+x',y+y') - 1/(w \cdot h)
+				 \cdot \sum _{x'',y''} I(x+x'',y+y'') \end{array}\f]
+				 with mask:
+				 \f[\begin{array}{l} T'(x',y')=M(x',y') \cdot \left( T(x',y') -
+				 \frac{1}{\sum _{x'',y''} M(x'',y'')} \cdot \sum _{x'',y''}
+				 (T(x'',y'') \cdot M(x'',y'')) \right) \\ I'(x+x',y+y')=M(x',y')
+				 \cdot \left( I(x+x',y+y') - \frac{1}{\sum _{x'',y''} M(x'',y'')}
+				 \cdot \sum _{x'',y''} (I(x+x'',y+y'') \cdot M(x'',y'')) \right)
+				 \end{array} \f] */
+	"TM_CCOEFF_NORMED"  /*!< \f[R(x,y)= \frac{ \sum_{x',y'} (T'(x',y') \cdot I'(x+x',y+y')) }{
+						\sqrt{\sum_{x',y'}T'(x',y')^2 \cdot \sum_{x',y'} I'(x+x',y+y')^2}
+						}\f] */
+						// Always leave that at the very end
+};
+
+// Declare DNN-Recognizer
+//TextRecognitionModel recognizer;
+TessBaseAPI api;
+
+
 // CDlgTableMap dialog
 CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD, pParent)
 {
+	// Create the scroll helper
+	// and attach it to this dialog.
+	m_scrollHelper = new CScrollHelper;
+	m_scrollHelper->AttachWnd(this);
+
+	// We also set the display size
+	// equal to the dialog size.
+	// This is the size of the dialog
+	// in pixels as laid out
+	// in the resource editor.
+	m_scrollHelper->SetDisplaySize(0, kSizeYForEditor - kYOffsetScroll);
+
+
   BuildVectorsOfScraperSymbols();
 
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
@@ -87,6 +148,10 @@ CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD,
 
 CDlgTableMap::~CDlgTableMap()
 {
+	delete m_scrollHelper;
+
+	// Unload network
+	api.End();
 }
 
 void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
@@ -94,6 +159,7 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TABLEMAP_TREE, m_TableMapTree);
 	DDX_Control(pDX, IDC_CURRENTREGION, m_BitmapFrame);
+	DDX_Control(pDX, IDC_OCR_VIEW, m_MatFrame);
 	DDX_Control(pDX, IDC_LEFT, m_Left);
 	DDX_Control(pDX, IDC_LEFT_SPIN, m_LeftSpin);
 	DDX_Control(pDX, IDC_TOP, m_Top);
@@ -148,6 +214,20 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CREATE_HASH1, m_CreateHash1);
 	DDX_Control(pDX, IDC_CREATE_HASH2, m_CreateHash2);
 	DDX_Control(pDX, IDC_CREATE_HASH3, m_CreateHash3);
+	DDX_Control(pDX, IDC_IMG_PROC, m_ImgProc);
+	DDX_Control(pDX, IDC_USE_DEFAULT, m_UseDefault);
+	DDX_Control(pDX, IDC_THRESHOLD, m_Threshold);
+	DDX_Text(pDX, IDC_THRESHOLD, threshold);
+	DDV_MinMaxInt(pDX, threshold, 0, 300);
+	DDX_Control(pDX, IDC_THRESHOLD_SPIN, m_ThresholdSpin);
+	DDX_Control(pDX, IDC_MATCH_MODE, m_MatchMode);
+	DDX_Control(pDX, IDC_USE_CROP, m_UseCrop);
+	DDX_Control(pDX, IDC_CROP_SIZE, m_CropSize);
+	DDX_Text(pDX, IDC_CROP_SIZE, crop_size);
+	DDV_MinMaxInt(pDX, crop_size, 2, 100);
+	DDX_Control(pDX, IDC_CROP_SPIN, m_CropSpin);
+	DDX_Control(pDX, IDC_BOX_COLOR, m_BoxColor);
+	DDX_ColorPickerCB(pDX, IDC_BOX_COLOR, m_crColor);
 }
 
 
@@ -200,21 +280,58 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_WM_SETCURSOR()
 	ON_WM_LBUTTONDOWN()
 	ON_NOTIFY(UDN_DELTAPOS, IDC_RADIUS_SPIN, &CDlgTableMap::OnDeltaposRadiusSpin)
-	ON_WM_MOUSEMOVE()
 	ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
 	ON_WM_CREATE()
-	ON_WM_SIZING()
+	ON_WM_SIZE()
+	ON_WM_VSCROLL()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEACTIVATE()
 	ON_NOTIFY(TVN_KEYDOWN, IDC_TABLEMAP_TREE, &CDlgTableMap::OnTvnKeydownTablemapTree)
 	ON_BN_CLICKED(IDC_CREATE_HASH0, &CDlgTableMap::OnBnClickedCreateHash0)
 	ON_BN_CLICKED(IDC_CREATE_HASH1, &CDlgTableMap::OnBnClickedCreateHash1)
 	ON_BN_CLICKED(IDC_CREATE_HASH2, &CDlgTableMap::OnBnClickedCreateHash2)
 	ON_BN_CLICKED(IDC_CREATE_HASH3, &CDlgTableMap::OnBnClickedCreateHash3)
+	ON_BN_CLICKED(IDC_USE_DEFAULT, &CDlgTableMap::OnOcrRegionChange)
+	ON_EN_KILLFOCUS(IDC_THRESHOLD, &CDlgTableMap::OnOcrRegionChange)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_THRESHOLD_SPIN, &CDlgTableMap::OnDeltaposThresholdSpin)
+	ON_CBN_SELCHANGE(IDC_MATCH_MODE, &CDlgTableMap::OnOcrRegionChange)
+	ON_BN_CLICKED(IDC_USE_CROP, &CDlgTableMap::OnOcrRegionChange)
+	ON_EN_KILLFOCUS(IDC_CROP_SIZE, &CDlgTableMap::OnOcrRegionChange)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_CROP_SPIN, &CDlgTableMap::OnDeltaposCropSpin)
+	ON_CBN_SELCHANGE(IDC_BOX_COLOR, &CDlgTableMap::OnBoxColorChange)
 END_MESSAGE_MAP()
 
 // Mandatory value for the spin-buttons.
 // Both the default (100) and the former value (1600) are no good.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=338&t=22799
 const int kTablemapMaxCoords = 32000;
+
+BOOL CDlgTableMap::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_MOUSEWHEEL || pMsg->message == WM_SIZE)
+	{
+		if (pMsg->hwnd != this->GetSafeHwnd()) {
+			proceed_scroll = false;
+			return FALSE;
+		}
+	}
+
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		HWND hwndFocus = GetFocus()->GetSafeHwnd();
+		
+		if (hwndFocus == m_Left || hwndFocus == m_Right || hwndFocus == m_Top || hwndFocus == m_Bottom || hwndFocus == m_Radius
+			|| hwndFocus == m_Alpha || hwndFocus == m_Red || hwndFocus == m_Green || hwndFocus == m_Blue)
+			OnRegionChange();
+		
+		else if (hwndFocus == m_Threshold || hwndFocus == m_CropSize)
+			OnOcrRegionChange();
+	}
+
+	proceed_scroll = true;
+	return CDialog::PreTranslateInput(pMsg);
+}
 
 // CDlgTableMap message handlers
 BOOL CDlgTableMap::OnInitDialog()
@@ -255,6 +372,8 @@ BOOL CDlgTableMap::OnInitDialog()
 
 	m_Transform.AddString("Color");
 	m_Transform.AddString("Image");
+	m_Transform.AddString("AutoOcr0");
+	m_Transform.AddString("AutoOcr1");
 	m_Transform.AddString("Text0");
 	m_Transform.AddString("Text1");
 	m_Transform.AddString("Text2");
@@ -287,6 +406,29 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Result.SetWindowText("");
 
 	m_PixelSeparation.SetFont(&separation_font);
+
+
+	//m_ImgProc.SetWindowText("Inbuilt image processing");
+	m_UseDefault.SetCheck(true);
+	threshold = 0;
+	m_Threshold.SetWindowText(to_string(threshold).c_str());
+	m_ThresholdSpin.SetRange(0, 300);
+	m_ThresholdSpin.SetPos(0);
+	m_ThresholdSpin.SetBuddy(&m_Threshold);
+	match_mode = -1;
+	for (int i = 0; i < kNumberOfMatchModes; i++)
+		m_MatchMode.AddString(tplMatchModes[i]);
+	m_MatchMode.SetCurSel(match_mode);
+
+	m_UseCrop.SetCheck(false);
+	crop_size = 0;
+	m_CropSize.SetWindowText(to_string(crop_size).c_str());
+	m_BoxColor.SetWindowPos(NULL, 0, 0, 72, 200, SWP_NOMOVE | SWP_NOZORDER);
+	m_CropSpin.SetRange(2, 100);
+	m_CropSpin.SetPos(0);
+	m_CropSpin.SetBuddy(&m_CropSize);
+	box_color = -1;
+	m_BoxColor.SetCurSel(box_color);
 
 	m_Zoom.AddString("None");
 	m_Zoom.AddString("2x");
@@ -365,6 +507,40 @@ BOOL CDlgTableMap::OnInitDialog()
 	ignore_changes = false;
 
 	EnableToolTips(true);
+
+	// New automatic OCR based on tesseract-ocr
+	// Load Tesseract text recognition network
+	if (api.Init("tessdata", "eng") == -1) {		// OEM_LSTM_ONLY
+		MessageBox("Failed to load tessdata files.\nMake sure tessdata folder is present and/or datas are not corrupted.", "AutoOcr error", MB_OK);
+		return FALSE;
+	}
+	//api.SetPageSegMode(PSM_SINGLE_LINE);
+	//api.SetVariable("user_defined_dpi", "300");
+
+	// OpenCV DNN text recognition
+	/*
+	String recModelPath = "crnn_cs.onnx";
+	CV_Assert(!recModelPath.empty());
+	recognizer = readNet(recModelPath);
+	// Load vocabulary
+	String vocPath = "alphabet_94.txt";
+	CV_Assert(!vocPath.empty());
+	ifstream vocFile;
+	vocFile.open(samples::findFile(vocPath));
+	CV_Assert(vocFile.is_open());
+	String vocLine;
+	vector<String> vocabulary;
+	while (getline(vocFile, vocLine)) {
+	vocabulary.push_back(vocLine);
+	}
+	recognizer.setVocabulary(vocabulary);
+	recognizer.setDecodeType("CTC-greedy");
+	// Parameters for Recognition
+	double recScale = 1.0 / 127.5;
+	Scalar recMean = Scalar(127.5, 127.5, 127.5);
+	Size recInputSize = Size(100, 32);
+	recognizer.setInputParams(recScale, recInputSize, recMean);
+	*/
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -466,7 +642,9 @@ void CDlgTableMap::OnPaint()
 	if (type_node==NULL || m_TableMapTree.GetSelectedItem()==NULL) 
 	{
 		clear_bitmap_control();
+		clear_mat_control();
 		m_BitmapFrame.SetWindowPos(NULL, 0, 0, BITMAP_WIDTH, BITMAP_HEIGHT, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+		m_MatFrame.SetWindowPos(NULL, 0, 0, MAT_WIDTH, MAT_HEIGHT, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 	}
 
 	// A non root item was selected
@@ -479,6 +657,28 @@ void CDlgTableMap::OnPaint()
 			draw_region_bitmap();
 		}
 
+		else if (type_text == "Templates")
+		{
+			TPLMapCI			sel_template = p_tablemap->tpl$()->end();
+			CString				sel = "";
+
+			// Get name of currently selected item
+			if (m_TableMapTree.GetSelectedItem())
+				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+			// Get iterator for selected region
+			sel_template = p_tablemap->tpl$()->find(sel.GetString());
+
+			// Exit if we can't find the region
+			if (sel_template == p_tablemap->tpl$()->end())
+				return;
+
+			if (sel_template->second.created)
+				draw_template_bitmap();
+			else
+				draw_region_bitmap();
+		}
+
 		else if (type_text == "Images")
 		{
 			draw_image_bitmap();
@@ -488,6 +688,8 @@ void CDlgTableMap::OnPaint()
 		{
 			m_BitmapFrame.SetBitmap(NULL);
 			m_BitmapFrame.SetWindowPos(NULL, 0, 0, BITMAP_WIDTH, BITMAP_HEIGHT, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+			m_MatFrame.SetBitmap(NULL);
+			m_MatFrame.SetWindowPos(NULL, 0, 0, MAT_WIDTH, MAT_HEIGHT, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 		}
 	}
 
@@ -514,6 +716,26 @@ void CDlgTableMap::clear_bitmap_control(void)
 	ReleaseDC(pDC);
 }
 
+void CDlgTableMap::clear_mat_control(void)
+{
+	CDC				*pDC = m_MatFrame.GetDC();
+	CPen			*pTempPen, oldpen;
+	CBrush			*pTempBrush, oldbrush;
+	RECT			rect;
+
+	pTempPen = (CPen*)pDC->SelectObject(&null_pen);
+	oldpen.FromHandle((HPEN)pTempPen);
+	pTempBrush = (CBrush*)pDC->SelectObject(&lt_gray_brush);
+	oldbrush.FromHandle((HBRUSH)pTempBrush);
+	m_MatFrame.GetWindowRect(&rect);
+
+	pDC->Rectangle(1, 1, rect.right - rect.left, rect.bottom - rect.top);
+
+	pDC->SelectObject(oldbrush);
+	pDC->SelectObject(oldpen);
+	ReleaseDC(pDC);
+}
+
 void CDlgTableMap::draw_region_bitmap(void)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -525,6 +747,7 @@ void CDlgTableMap::draw_region_bitmap(void)
 	CPen				*pTempPen, oldpen;
 	CBrush				*pTempBrush, oldbrush;
 	RMapCI				sel_region = p_tablemap->r$()->end();
+	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
 	CString				sel = "";
 
 	// Get name of currently selected item
@@ -533,9 +756,10 @@ void CDlgTableMap::draw_region_bitmap(void)
 
 	// Get iterator for selected region
 	sel_region = p_tablemap->r$()->find(sel.GetString());
+	sel_template = p_tablemap->tpl$()->find(sel.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
 	pDC = m_BitmapFrame.GetDC();
@@ -547,10 +771,18 @@ void CDlgTableMap::draw_region_bitmap(void)
 	old_bitmap_orig = (HBITMAP) SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
 
 	// Figure out the size of the subset bitmap
-	left = sel_region->second.left - 5;
-	top = sel_region->second.top - 5;
-	right = sel_region->second.right + 5;
-	bottom = sel_region->second.bottom + 5;
+	if (sel_region != p_tablemap->r$()->end()) {
+		left = sel_region->second.left - 5;
+		top = sel_region->second.top - 5;
+		right = sel_region->second.right + 5;
+		bottom = sel_region->second.bottom + 5;
+	}
+	else {
+		left = sel_template->second.left - 5;
+		top = sel_template->second.top - 5;
+		right = sel_template->second.right + 5;
+		bottom = sel_template->second.bottom + 5;
+	}
 	zoom = m_Zoom.GetCurSel()==0 ? 1 :
 		   m_Zoom.GetCurSel()==1 ? 2 :
 		   m_Zoom.GetCurSel()==2 ? 4 :
@@ -568,9 +800,16 @@ void CDlgTableMap::draw_region_bitmap(void)
 	oldpen.FromHandle((HPEN)pTempPen);
 	pTempBrush = (CBrush*) SelectObject(hdc_bitmap_subset, GetStockObject(NULL_BRUSH));
 	oldbrush.FromHandle((HBRUSH)pTempBrush);
-	Rectangle(hdc_bitmap_subset, 4, 4, 
-			  6 + sel_region->second.right - sel_region->second.left + 1,  
-			  6 + sel_region->second.bottom - sel_region->second.top + 1);
+	if (sel_region != p_tablemap->r$()->end()) {
+		Rectangle(hdc_bitmap_subset, 4, 4,
+			6 + sel_region->second.right - sel_region->second.left + 1,
+			6 + sel_region->second.bottom - sel_region->second.top + 1);
+	}
+	else {
+		Rectangle(hdc_bitmap_subset, 4, 4,
+			6 + sel_template->second.right - sel_template->second.left + 1,
+			6 + sel_template->second.bottom - sel_template->second.top + 1);
+	}
 	SelectObject(hdc_bitmap_subset, oldpen);
 	SelectObject(hdc_bitmap_subset, oldbrush);
 
@@ -580,8 +819,10 @@ void CDlgTableMap::draw_region_bitmap(void)
 	// Copy from bitmap subset to our control and stretch it
 	bitmap_control = CreateCompatibleBitmap(hdcScreen, (right-left+1)*zoom, (bottom-top+1)*zoom);
 	old_bitmap_control = (HBITMAP) SelectObject(hdcControl, bitmap_control);
-	if (sel_region->second.right >= sel_region->second.left && 
-		sel_region->second.bottom >= sel_region->second.top)
+	if (sel_region != p_tablemap->r$()->end() && sel_region->second.right >= sel_region->second.left &&
+		sel_region->second.bottom >= sel_region->second.top ||
+		sel_template != p_tablemap->tpl$()->end() && sel_template->second.right >= sel_template->second.left &&
+		sel_template->second.bottom >= sel_template->second.top)
 	{
 		StretchBlt(hdcControl, 1, 1, (right-left+1)*zoom, (bottom-top+1)*zoom,
 			   hdc_bitmap_subset, 0, 0, right-left+1, bottom-top+1,
@@ -598,6 +839,107 @@ void CDlgTableMap::draw_region_bitmap(void)
 
 	SelectObject(hdc_bitmap_orig, old_bitmap_orig);
 	DeleteDC(hdc_bitmap_orig);
+
+	DeleteDC(hdcScreen);
+	ReleaseDC(pDC);
+}
+
+void CDlgTableMap::draw_template_bitmap(void)
+{
+	int					x, y, width, height, zoom;
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CDC					*pDC;
+	HDC					hdcControl, hdcScreen, hdc_image;
+	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
+	BYTE				*pBits, alpha, red, green, blue;
+	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
+	CString				sel = "";
+
+
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_template = p_tablemap->tpl$()->find(sel.GetString());
+
+	// Exit if we can't find the region
+	if (sel_template == p_tablemap->tpl$()->end())
+		return;
+
+	// Get bitmap size
+	width = sel_template->second.width;
+	height = sel_template->second.height;
+
+	// Copy saved bitmap into a memory dc so we can get the bmi
+	pDC = m_BitmapFrame.GetDC();
+	hdcControl = *pDC;
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+	// Create new memory DC and new bitmap
+	hdc_image = CreateCompatibleDC(hdcScreen);
+	bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
+	old_bitmap_image = (HBITMAP)SelectObject(hdc_image, bitmap_image);
+
+	// Setup BITMAPINFO
+	BITMAPINFO	bmi;
+	ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
+	bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
+	bmi.bmiHeader.biWidth = width;
+	bmi.bmiHeader.biHeight = -height;
+	bmi.bmiHeader.biPlanes = 1;
+	bmi.bmiHeader.biBitCount = 32;
+	bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
+	bmi.bmiHeader.biSizeImage = width * height * 4;
+
+	// Copy saved image info into pBits array
+	pBits = new BYTE[bmi.bmiHeader.biSizeImage];
+	for (y = 0; y < (int)height; y++) {
+		for (x = 0; x < (int)width; x++) {
+			// image record is stored internally in ABGR format
+			alpha = (sel_template->second.pixel[y*width + x] >> 24) & 0xff;
+			red = (sel_template->second.pixel[y*width + x] >> 0) & 0xff;
+			green = (sel_template->second.pixel[y*width + x] >> 8) & 0xff;
+			blue = (sel_template->second.pixel[y*width + x] >> 16) & 0xff;
+
+			// SetDIBits format is BGRA
+			pBits[y*width * 4 + x * 4 + 0] = blue;
+			pBits[y*width * 4 + x * 4 + 1] = green;
+			pBits[y*width * 4 + x * 4 + 2] = red;
+			pBits[y*width * 4 + x * 4 + 3] = alpha;
+		}
+	}
+	::SetDIBits(hdc_image, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
+
+	Mat bmp(height, width, CV_8UC4);
+	bmp.data = pBits;
+	//imshow("Output", bmp);
+
+	// Figure size of stretched bitmap and resize control to fit
+	zoom = m_Zoom.GetCurSel() == 0 ? 1 :
+		m_Zoom.GetCurSel() == 1 ? 2 :
+		m_Zoom.GetCurSel() == 2 ? 4 :
+		m_Zoom.GetCurSel() == 3 ? 8 :
+		m_Zoom.GetCurSel() == 4 ? 16 : 1;
+
+	m_BitmapFrame.SetWindowPos(NULL, 0, 0, width*zoom, height*zoom, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+
+	// Copy from saved bitmap DC copy to our control and stretch it
+	bitmap_control = CreateCompatibleBitmap(hdcScreen, width*zoom, height*zoom);
+	old_bitmap_control = (HBITMAP)SelectObject(hdcControl, bitmap_control);
+	StretchBlt(hdcControl, 0, 0, width*zoom, height*zoom,
+		hdc_image, 0, 0, width, height,
+		SRCCOPY);
+
+	// Clean up
+	delete[]pBits;
+
+	SelectObject(hdcControl, old_bitmap_control);
+	DeleteObject(bitmap_control);
+
+	SelectObject(hdc_image, old_bitmap_image);
+	DeleteObject(bitmap_image);
+	DeleteDC(hdc_image);
 
 	DeleteDC(hdcScreen);
 	ReleaseDC(pDC);
@@ -698,7 +1040,7 @@ void CDlgTableMap::draw_image_bitmap(void)
 	ReleaseDC(pDC);
 }
 
-void CDlgTableMap::OnRegionChange()
+void CDlgTableMap::OnBoxColorChange()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, alpha, red, green, blue;
@@ -707,53 +1049,189 @@ void CDlgTableMap::OnRegionChange()
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// the last item is "Custom...".
+	CString strText;
+	m_BoxColor.GetLBText(m_BoxColor.GetCurSel(), strText);
+
+	if (strText == "Custom...")
+	{
+		CColorDialog dlg;
+
+		if (dlg.DoModal() == IDOK)
+		{
+			m_BoxColor.SetItemData(m_BoxColor.GetCurSel(), dlg.GetColor());
+		}
+	}
+
+	sel_region->second.box_color = m_BoxColor.GetCurSel();
+
+	update_ocr_r$_display();
+	Invalidate(false);
+}
+
+void CDlgTableMap::OnOcrRegionChange()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString				text, alpha, red, green, blue;
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region or template
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
 	if (ignore_changes)  return;
 
-	// left/top/right/bottom
-	m_Left.GetWindowText(text);
-	sel_region->second.left = strtoul(text.GetString(), NULL, 10);
-	m_Top.GetWindowText(text);
-	sel_region->second.top = strtoul(text.GetString(), NULL, 10);
-	m_Right.GetWindowText(text);
-	sel_region->second.right = strtoul(text.GetString(), NULL, 10);
-	m_Bottom.GetWindowText(text);
-	sel_region->second.bottom = strtoul(text.GetString(), NULL, 10);
+	if (sel_template != p_tablemap->tpl$()->end()) {
+		// OCR image detecting settings
+		sel_template->second.use_default = m_UseDefault.GetCheck();
+		sel_template->second.match_mode = m_MatchMode.GetCurSel();
+	}
 
-	// color/radius (color is stored internally and in the .tm file in ABGR (COLORREF) format)
-	m_Alpha.GetWindowText(alpha);
-	m_Red.GetWindowText(red);
-	m_Green.GetWindowText(green);
-	m_Blue.GetWindowText(blue);
-	sel_region->second.color = ((strtoul(alpha.GetString(), NULL, 16))<<24) +  // alpha
-							   ((strtoul(blue.GetString(), NULL, 16))<<16) +   // red
-							   ((strtoul(green.GetString(), NULL, 16))<<8) +   // green
-							   (strtoul(red.GetString(), NULL, 16));          // blue
-	m_Radius.GetWindowText(text);
-	sel_region->second.radius = strtoul(text.GetString(), NULL, 10);
 
-	// transform type
-	m_Transform.GetLBText(m_Transform.GetCurSel(), text);
-	sel_region->second.transform = 
-		text == "Color" ? "C" :
-		text == "Image" ? "I" :
-		text == "Text0" ? "T0" :
-		text == "Text1" ? "T1" :
-		text == "Text2" ? "T2" :
-		text == "Text3" ? "T3" : 
-		text == "Hash0" ? "H0" :
-		text == "Hash1" ? "H1" :
-		text == "Hash2" ? "H2" :
-		text == "Hash3" ? "H3" :
-    text == "WebColour" ? "WC" :
-		text == "None" ? "N" : 
-		"";
+	if (sel_region != p_tablemap->r$()->end()) {
+		// OCR image processing settings
+		if (sel_region->second.transform.Find("A", 0) != -1) {
+			sel_region->second.use_default = m_UseDefault.GetCheck();
+			m_Threshold.GetWindowText(text);
+			sel_region->second.threshold = strtoul(text.GetString(), NULL, 10);
+
+			sel_region->second.use_cropping = m_UseCrop.GetCheck();
+			m_CropSize.GetWindowText(text);
+			sel_region->second.crop_size = strtoul(text.GetString(), NULL, 10);
+			sel_region->second.box_color = m_BoxColor.GetCurSel();
+		}
+		if (sel_region->second.transform == "I") {
+			sel_region->second.use_default = m_UseDefault.GetCheck();
+			m_Threshold.GetWindowText(text);
+			sel_region->second.threshold = strtoul(text.GetString(), NULL, 10);
+		}
+	}
+
+
+	update_ocr_r$_display();
+	theApp.m_pMainWnd->Invalidate(false);
+	Invalidate(false);
+
+	pDoc->SetModifiedFlag(true);
+}
+
+void CDlgTableMap::OnRegionChange()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString				text, alpha, red, green, blue;
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region or template
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
+		return;
+
+	if (ignore_changes)  return;
+
+	if (sel_region != p_tablemap->r$()->end()) {
+		// left/top/right/bottom
+		m_Left.GetWindowText(text);
+		sel_region->second.left = strtoul(text.GetString(), NULL, 10);
+		m_Top.GetWindowText(text);
+		sel_region->second.top = strtoul(text.GetString(), NULL, 10);
+		m_Right.GetWindowText(text);
+		sel_region->second.right = strtoul(text.GetString(), NULL, 10);
+		m_Bottom.GetWindowText(text);
+		sel_region->second.bottom = strtoul(text.GetString(), NULL, 10);
+
+		// color/radius (color is stored internally and in the .tm file in ABGR (COLORREF) format)
+		m_Alpha.GetWindowText(alpha);
+		m_Red.GetWindowText(red);
+		m_Green.GetWindowText(green);
+		m_Blue.GetWindowText(blue);
+		sel_region->second.color = ((strtoul(alpha.GetString(), NULL, 16))<<24) +  // alpha
+								   ((strtoul(blue.GetString(), NULL, 16))<<16) +   // red
+								   ((strtoul(green.GetString(), NULL, 16))<<8) +   // green
+								   (strtoul(red.GetString(), NULL, 16));          // blue
+		m_Radius.GetWindowText(text);
+		sel_region->second.radius = strtoul(text.GetString(), NULL, 10);
+
+		// transform type
+		m_Transform.GetLBText(m_Transform.GetCurSel(), text);
+		sel_region->second.transform = 
+			text == "Color" ? "C" :
+			text == "Image" ? "I" :
+			text == "AutoOcr0" ? "A0" :
+			text == "AutoOcr1" ? "A1" :
+			text == "Text0" ? "T0" :
+			text == "Text1" ? "T1" :
+			text == "Text2" ? "T2" :
+			text == "Text3" ? "T3" : 
+			text == "Hash0" ? "H0" :
+			text == "Hash1" ? "H1" :
+			text == "Hash2" ? "H2" :
+			text == "Hash3" ? "H3" :
+		text == "WebColour" ? "WC" :
+			text == "None" ? "N" : 
+			"";
+
+		// OCR image processing settings
+		if (sel_region->second.transform.Find("A", 0) != -1) {
+			sel_region->second.use_default = m_UseDefault.GetCheck();
+			m_Threshold.GetWindowText(text);
+			sel_region->second.threshold = strtoul(text.GetString(), NULL, 10);
+
+			sel_region->second.use_cropping = m_UseCrop.GetCheck();
+			m_CropSize.GetWindowText(text);
+			sel_region->second.crop_size = strtoul(text.GetString(), NULL, 10);
+			sel_region->second.box_color = m_BoxColor.GetCurSel();
+		}
+		if (sel_region->second.transform == "I") {
+			sel_region->second.use_default = m_UseDefault.GetCheck();
+			m_Threshold.GetWindowText(text);
+			sel_region->second.threshold = strtoul(text.GetString(), NULL, 10);
+		}
+	}
+
+
+	if (sel_template != p_tablemap->tpl$()->end()) {
+		// left/top/right/bottom
+		//sel_template->second.width = sel_template->second.right - sel_template->second.left;
+		//sel_template->second.height = sel_template->second.bottom - sel_template->second.top;
+		if (sel_template->second.created == true) {
+			sel_template->second.left = 0;
+			sel_template->second.top = 0;
+			sel_template->second.right = 0;
+			sel_template->second.bottom = 0;
+		}
+		else {
+			m_Left.GetWindowText(text);
+			sel_template->second.left = strtoul(text.GetString(), NULL, 10);
+			m_Top.GetWindowText(text);
+			sel_template->second.top = strtoul(text.GetString(), NULL, 10);
+			m_Right.GetWindowText(text);
+			sel_template->second.right = strtoul(text.GetString(), NULL, 10);
+			m_Bottom.GetWindowText(text);
+			sel_template->second.bottom = strtoul(text.GetString(), NULL, 10);
+		}
+
+		sel_template->second.use_default = m_UseDefault.GetCheck();
+		sel_template->second.match_mode = m_MatchMode.GetCurSel();
+	}
+
 
 	update_display();
 	theApp.m_pMainWnd->Invalidate(false);
@@ -780,6 +1258,65 @@ void CDlgTableMap::OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
+void CDlgTableMap::update_ocr_display(void)
+{
+	CString				text, hashname, type, charstr, sel_ch, sel_type, sel_temp;
+	CString				num, x, y;
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Don't trigger OnChange messages
+	ignore_changes = true;
+
+	disable_ocr_and_clear_all();
+
+	m_UseDefault.EnableWindow(true);
+
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
+		return;
+
+	if (sel_region != p_tablemap->r$()->end()) {
+		if (sel_region->second.transform.Find("A", 0) != -1)
+			m_UseCrop.EnableWindow(true);
+
+		if (m_UseDefault.GetCheck() == false) {
+			m_Threshold.EnableWindow(true);
+			m_ThresholdSpin.EnableWindow(true);
+		}
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		if (sel_template->second.created)
+			m_Result.SetWindowText("Created");
+		else
+			m_Result.SetWindowText("Not Created");
+
+		if (m_UseDefault.GetCheck() == false)
+			m_MatchMode.EnableWindow(true);
+	}
+
+	if (m_UseCrop.GetCheck() == true) {
+		m_CropSize.EnableWindow(true);
+		m_CropSpin.EnableWindow(true);
+		m_BoxColor.EnableWindow(true);
+	}
+
+	update_ocr_r$_display();
+
+	// Re-enable triggering of OnChange messages
+	ignore_changes = false;
+}
+
 void CDlgTableMap::update_display(void)
 {
 	CString				text, hashname, type, charstr, sel_ch, sel_type, sel_temp;
@@ -792,11 +1329,18 @@ void CDlgTableMap::update_display(void)
 	// Don't trigger OnChange messages
 	ignore_changes = true;
 
+	clear_mat_control();
+	disable_and_clear_all();
+
+	m_UseDefault.SetCheck(true);
+	m_UseCrop.SetCheck(false);
+
+	m_CreateFont.SetWindowText("Create Font");
+	m_CreateImage.SetWindowText("Create Image");
+
 	// A root item was selected
 	if (type_node == NULL || m_TableMapTree.ItemHasChildren(m_TableMapTree.GetSelectedItem())) 
 	{
-		disable_and_clear_all();
-
 		if (type_text == "Sizes")
 		{
 			m_New.EnableWindow(true);
@@ -829,6 +1373,11 @@ void CDlgTableMap::update_display(void)
 		else if (type_text == "Images")
 		{
 		}
+
+		else if (type_text == "Templates")
+		{
+			m_New.EnableWindow(true);
+		}
 	}
 
 	// A leaf item was selected
@@ -836,7 +1385,6 @@ void CDlgTableMap::update_display(void)
 	{
 		if (type_text == "Sizes")
 		{
-			disable_and_clear_all();
 			m_New.EnableWindow(true);
 			m_Delete.EnableWindow(true);
 			m_Edit.EnableWindow(true);
@@ -855,7 +1403,6 @@ void CDlgTableMap::update_display(void)
 
 		else if (type_text == "Symbols")
 		{
-			disable_and_clear_all();
 			m_New.EnableWindow(true);
 			m_Delete.EnableWindow(true);
 			m_Edit.EnableWindow(true);
@@ -871,7 +1418,6 @@ void CDlgTableMap::update_display(void)
 
 		else if (type_text == "Regions")
 		{
-			disable_and_clear_all();
 			m_Left.EnableWindow(true);
 			m_Top.EnableWindow(true);
 			m_Right.EnableWindow(true);
@@ -885,7 +1431,6 @@ void CDlgTableMap::update_display(void)
 			m_Picker.EnableWindow(true);
 			m_Radius.EnableWindow(true);
 			m_CreateImage.EnableWindow(true);
-			m_CreateFont.EnableWindow(true);
 			m_Result.EnableWindow(true);
 			m_PixelSeparation.EnableWindow(true);
 			m_FontPlus.EnableWindow(true);
@@ -909,12 +1454,46 @@ void CDlgTableMap::update_display(void)
 			m_NudgeDownLeft.EnableWindow(true);
 			m_NudgeLeft.EnableWindow(true);
 
+			RMap::const_iterator r_iter = p_tablemap->r$()->find(sel_text.GetString());
+
+			if (r_iter->second.transform == "I") {
+				m_UseDefault.EnableWindow(true);
+			}
+
+			if (r_iter->second.transform.Find("T", 0) != -1) {
+				m_CreateFont.EnableWindow(true);
+			}
+
+			if (r_iter->second.transform.Find("A", 0) != -1) {
+				m_Alpha.EnableWindow(false);
+				m_Red.EnableWindow(false);
+				m_Green.EnableWindow(false);
+				m_Blue.EnableWindow(false);
+				m_Picker.EnableWindow(false);
+				m_Radius.EnableWindow(false);
+
+				m_CreateImage.EnableWindow(false);
+				m_UseDefault.EnableWindow(true);
+				m_UseCrop.EnableWindow(true);
+			}
+
+			if (sel_text.Find("area") != -1) {
+				m_Transform.EnableWindow(false);
+				m_Alpha.EnableWindow(false);
+				m_Red.EnableWindow(false);
+				m_Green.EnableWindow(false);
+				m_Blue.EnableWindow(false);
+				m_Picker.EnableWindow(false);
+				m_Radius.EnableWindow(false);
+
+				m_CreateImage.EnableWindow(false);
+			}
+
 			update_r$_display(false);
 		}
 
 		else if (type_text == "Fonts")
 		{
-			disable_and_clear_all();
 			m_PixelSeparation.EnableWindow(true);
 			m_FontPlus.EnableWindow(true);
 			m_FontMinus.EnableWindow(true);
@@ -925,7 +1504,6 @@ void CDlgTableMap::update_display(void)
 
 		else if (type_text == "Hash Points")
 		{
-			disable_and_clear_all();
 			m_New.EnableWindow(true);
 			m_Delete.EnableWindow(true);
 			m_Edit.EnableWindow(true);
@@ -933,7 +1511,6 @@ void CDlgTableMap::update_display(void)
 
 		else if (type_text == "Hashes")
 		{
-			disable_and_clear_all();
 			m_Delete.EnableWindow(true);
 
 			// Display selected hash value record
@@ -953,7 +1530,6 @@ void CDlgTableMap::update_display(void)
 
 		else if (type_text == "Images")
 		{
-			disable_and_clear_all();
 			m_Delete.EnableWindow(true);
 			m_Zoom.EnableWindow(true);
 			m_CreateHash0.EnableWindow(true);
@@ -993,6 +1569,42 @@ void CDlgTableMap::update_display(void)
 				}
 			}
 
+		}
+
+		else if (type_text == "Templates")
+		{
+			m_New.EnableWindow(true);
+			m_Delete.EnableWindow(true);
+			m_Edit.EnableWindow(false);
+
+			m_Left.EnableWindow(true);
+			m_Top.EnableWindow(true);
+			m_Right.EnableWindow(true);
+			m_Bottom.EnableWindow(true);
+			m_NudgeTaller.EnableWindow(true);
+			m_NudgeShorter.EnableWindow(true);
+			m_NudgeWider.EnableWindow(true);
+			m_NudgeNarrower.EnableWindow(true);
+			m_NudgeBigger.EnableWindow(true);
+			m_NudgeSmaller.EnableWindow(true);
+			m_NudgeUpLeft.EnableWindow(true);
+			m_NudgeUp.EnableWindow(true);
+			m_NudgeUpRight.EnableWindow(true);
+			m_NudgeRight.EnableWindow(true);
+			m_NudgeDownRight.EnableWindow(true);
+			m_NudgeDown.EnableWindow(true);
+			m_NudgeDownLeft.EnableWindow(true);
+			m_NudgeLeft.EnableWindow(true);
+			m_DrawRect.EnableWindow(true);
+
+			m_CreateFont.SetWindowText("Detect Template");
+			m_CreateFont.EnableWindow(true);
+			m_CreateImage.SetWindowText("Create Template");
+			m_CreateImage.EnableWindow(true);
+
+			m_UseDefault.EnableWindow(true);
+
+			update_r$_display(false);
 		}
 	}
 
@@ -1070,31 +1682,1298 @@ void CDlgTableMap::disable_and_clear_all(void)
 	m_NudgeDown.EnableWindow(false);
 	m_NudgeDownLeft.EnableWindow(false);
 	m_NudgeLeft.EnableWindow(false);
+
+	disable_ocr_and_clear_all();
 }
+
+void CDlgTableMap::disable_ocr_and_clear_all(void)
+{
+	//m_ImgProc.SetWindowText("Inbuilt image processing");
+	m_UseDefault.EnableWindow(false);
+	m_Threshold.EnableWindow(false);
+	m_ThresholdSpin.EnableWindow(false);
+	threshold = 0;
+	m_Threshold.SetWindowText(to_string(threshold).c_str());
+	m_MatchMode.EnableWindow(false);
+	match_mode = -1;
+	m_MatchMode.SetCurSel(match_mode);
+
+	m_UseCrop.EnableWindow(false);
+	m_CropSize.EnableWindow(false);
+	m_CropSpin.EnableWindow(false);
+	crop_size = 0;
+	m_CropSize.SetWindowText(to_string(crop_size).c_str());
+	m_BoxColor.EnableWindow(false);
+	box_color = -1;
+	m_BoxColor.SetCurSel(box_color);
+}
+
+
+////  Automatic Text Detection and Recognition functions  ///////////
+
+void CDlgTableMap::detectMotion(void) {
+	/*
+	//Subtract consecutive frames
+	cv::Mat matN = cv::imread("frame1.bmp");
+	cv::Mat matM = cv::imread("frame2.bmp");
+	cv::Mat matDiff2 = abs(matM - matN);
+	Mat matDiff;
+	cvtColor(matDiff2, matDiff, COLOR_BGR2GRAY);
+	//imshow("test", matDiff);
+	//waitKey();
+
+	//Set region of interest (subframe)
+	int x(0), y(0), width(57), height(67);
+	cv::Rect myRegionOfInterest(x, y, width, height);
+
+	//Define motion
+	double Threshold = 0.1;
+	double nze = cv::countNonZero(matDiff(myRegionOfInterest));
+	double motionFactor = nze / (width*height*1); //C=255 for uchar, C=1 for binary, etc.
+	if (motionFactor>Threshold)
+	cout << "Motion detected at specific ROI";
+	*/
+}
+
+void CDlgTableMap::detectBlobs(void) {
+	/*
+	imshow("AutoOcr view", img_resized);
+	imshow("AutoOcr view 2", img_resized2);
+	waitKey();
+
+	// Set up the detector with default parameters.
+	Ptr<SimpleBlobDetector> detector;
+	detector = SimpleBlobDetector::create();
+
+	// Detect blobs.
+	vector<KeyPoint> keypoints;
+	detector->detect(img_resized, keypoints);
+
+	// Draw detected blobs as red circles.
+	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
+	Mat im_with_keypoints, im_with_keypoints2;
+	drawKeypoints(img_resized, keypoints, im_with_keypoints, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+
+	detector->detect(img_resized2, keypoints);
+	drawKeypoints(img_resized2, keypoints, im_with_keypoints2, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+	// Show blobs
+	imshow("AutoOcr view", im_with_keypoints);
+	imshow("AutoOcr view 2", im_with_keypoints2);
+	waitKey();
+	*/
+}
+
+void CDlgTableMap::fourPointsTransform(const Mat& frame, const Point2f vertices[], Mat& result)
+{
+	const Size outputSize = Size(100, 32);
+	Point2f targetVertices[4] = {
+		Point(0, outputSize.height - 1),
+		Point(0, 0), Point(outputSize.width - 1, 0),
+		Point(outputSize.width - 1, outputSize.height - 1)
+	};
+	Mat rotationMatrix = getPerspectiveTransform(vertices, targetVertices);
+	warpPerspective(frame, result, rotationMatrix, outputSize);
+}
+
+void CDlgTableMap::textDetectAndRecognize(void) {
+	float confThreshold = 0.5;
+	float nmsThreshold = 0.4;
+	int width = 320;
+	int height = 320;
+	int imreadRGB = 0;
+	String detModelPath = "frozen_east_text_detection.pb";
+	String recModelPath = "CRNN_VGG_BiLSTM_CTC.onnx";
+	String vocPath = "alphabet_94.txt";
+	// Load networks.
+	CV_Assert(!detModelPath.empty() && !recModelPath.empty());
+	TextDetectionModel_EAST detector(detModelPath);
+	detector.setConfidenceThreshold(confThreshold)
+	.setNMSThreshold(nmsThreshold);
+	TextRecognitionModel recognizer(recModelPath);
+	// Load vocabulary
+	CV_Assert(!vocPath.empty());
+	ifstream vocFile;
+	vocFile.open(samples::findFile(vocPath));
+	CV_Assert(vocFile.is_open());
+	String vocLine;
+	vector<String> vocabulary;
+	while (getline(vocFile, vocLine)) {
+	vocabulary.push_back(vocLine);
+	}
+	recognizer.setVocabulary(vocabulary);
+	recognizer.setDecodeType("CTC-greedy");
+	// Parameters for Recognition
+	double recScale = 1.0 / 127.5;
+	Scalar recMean = Scalar(127.5, 127.5, 127.5);
+	Size recInputSize = Size(100, 32);
+	recognizer.setInputParams(recScale, recInputSize, recMean);
+	// Parameters for Detection
+	double detScale = 1.0;
+	Size detInputSize = Size(width, height);
+	Scalar detMean = Scalar(123.68, 116.78, 103.94);
+	bool swapRB = true;
+	detector.setInputParams(detScale, detInputSize, detMean, swapRB);
+	// Detection
+	//Mat frame = img_resized.clone();
+	Mat frame = imread("frame000001.bmp");
+	vector< vector<Point> > detResults;
+	detector.detect(frame, detResults);
+	Mat frame2 = frame.clone();
+	if (detResults.size() > 0) {
+	// Text Recognition
+	Mat recInput;
+	if (!imreadRGB) {
+	cvtColor(frame, recInput, cv::COLOR_BGR2GRAY);
+	}
+	else {
+	recInput = frame;
+	}
+	vector< vector<Point> > contours;
+	for (uint i = 0; i < detResults.size(); i++)
+	{
+	const auto& quadrangle = detResults[i];
+	CV_CheckEQ(quadrangle.size(), (size_t)4, "");
+	contours.emplace_back(quadrangle);
+	vector<Point2f> quadrangle_2f;
+	for (int j = 0; j < 4; j++)
+	quadrangle_2f.emplace_back(quadrangle[j]);
+	Mat cropped;
+	fourPointsTransform(recInput, &quadrangle_2f[0], cropped);
+	string recognitionResult = recognizer.recognize(cropped);
+	cout << i << ": '" << recognitionResult << "'" << endl;
+	putText(frame2, recognitionResult, quadrangle[3], FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0, 0, 255), 2);
+	}
+	polylines(frame2, contours, true, Scalar(255, 255, 255), 1);
+	}
+	imshow("Output", frame2);
+	waitKey();
+}
+
+Mat CDlgTableMap::binarize_array_opencv(Mat image, int threshold) {
+	// Binarize image from gray channel with 76 as threshold
+	Mat img;
+	cvtColor(image, img, COLOR_BGR2RGB);
+	cvtColor(img, img, COLOR_BGR2GRAY);
+	Mat thresh;
+	cv::threshold(img, thresh, threshold, 255, THRESH_BINARY_INV);
+	return thresh;
+}
+
+void CDlgTableMap::detectText(void) {
+	// Load model weights
+	TextDetectionModel_DB model("DB_TD500_resnet18.onnx");
+	// Post-processing parameters
+	float binThresh = 0.1;
+	float polyThresh = 0.1;
+	uint maxCandidates = 20000;
+	double unclipRatio = 2.5;
+	model.setBinaryThreshold(binThresh)
+		.setPolygonThreshold(polyThresh)
+		.setMaxCandidates(maxCandidates)
+		.setUnclipRatio(unclipRatio)
+		;
+	Mat input = imread("frame000001.bmp");
+	/*
+	cvtColor(input, input, COLOR_BGR2GRAY);
+	input.convertTo(input, -1, 2, 0);	// changing contrast
+	imshow("Contrasted", input);
+	waitKey();
+	*/
+	// Normalization parameters
+	double scale = 1.0 / 255.0;
+	Scalar mean = Scalar(122.67891434, 116.66876762, 104.00698793);
+	// The input shape
+	Size inputSize = Size(1280, 736);
+	model.setInputParams(scale, inputSize, mean);
+	vector<vector<Point>> detResults;
+	vector<RotatedRect> rectDetResults;
+	//model.detect(input, detResults);
+	model.detectTextRectangles(input, rectDetResults);
+	// Visualization
+	//polylines(input, detResults, true, Scalar(255, 255, 255), 1);
+	for (int i = 0; i < rectDetResults.size(); i++)
+		rectangle(input, rectDetResults[i].boundingRect(), Scalar(255, 0, 0), 1);
+	imshow("Text Detection", input);
+	waitKey();
+}
+
+Mat CDlgTableMap::prepareImage(Mat img_orig, Mat* img_cropped, bool binarize, int threshold) {
+	// Prepare image for OCR
+	//  !!  Do not change those settings and values !!   //
+	//  Or display on OCR view control will be distorded //
+	Mat img_resized;
+	int basewidth, hsize;
+	float wpercent;
+	if (img_orig.cols > img_orig.rows * 1.25) {
+		basewidth = MAT_WIDTH;
+		wpercent = (basewidth / static_cast<float>(img_orig.cols));
+		hsize = static_cast<int>(static_cast<float>(img_orig.rows) * wpercent);
+	}
+	else {
+		hsize = MAT_HEIGHT;
+		wpercent = (hsize / static_cast<float>(img_orig.rows));
+		basewidth = static_cast<int>(static_cast<float>(img_orig.cols) * wpercent);
+	}
+	cvtColor(img_orig, img_resized, COLOR_BGR2GRAY);
+	resize(img_resized, img_resized, Size(basewidth, hsize), INTER_LANCZOS4);
+	resize(img_orig, *img_cropped, Size(basewidth, hsize), INTER_LANCZOS4);
+
+	if (binarize) {
+		img_resized = binarize_array_opencv(img_resized, threshold);
+	}
+	Mat img_bounded = img_resized.clone();
+
+	// Cropping management ///////////////////////////
+	if (m_UseCrop.GetCheck() == true) {
+		// downsample and use it for processing
+		//pyrDown(*img_cropped, *img_cropped);
+		CString txt;
+		m_CropSize.GetWindowText(txt);
+		crop_size = atoi(txt);
+		if (crop_size < 2)
+			return *img_cropped;
+		Mat gray;
+		cvtColor(*img_cropped, gray, COLOR_BGR2GRAY);
+		// morphological gradient
+		Mat grad;
+		Mat morphKernel = getStructuringElement(MORPH_ELLIPSE, Size(crop_size, crop_size));
+		morphologyEx(gray, grad, MORPH_GRADIENT, morphKernel);
+		// binarize
+		Mat bw;
+		cv::threshold(grad, bw, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
+		// connect horizontally oriented regions
+		Mat connected;
+		morphKernel = getStructuringElement(MORPH_RECT, Size(1, 1));
+		morphologyEx(bw, connected, MORPH_CLOSE, morphKernel);
+		// find contours
+		Mat mask = Mat::zeros(bw.size(), CV_8UC1);
+		vector<vector<Point>> contours;
+		vector<Vec4i> hierarchy;
+		findContours(connected, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE, Point(0, 0));
+		// filter contours
+		vector<Rect> boundRect, boundRect2;
+		img_bounded.convertTo(img_bounded, CV_8UC3);
+		cvtColor(img_bounded, img_bounded, COLOR_GRAY2BGR);
+		m_crColor = m_BoxColor.GetSelectedColorValue();
+		for (int idx = 0; idx < contours.size(); idx++)
+		{
+			Rect rect = boundingRect(contours[idx]);
+			if (contours[idx].size() > 50) {
+				boundRect.push_back(rect);
+				rectangle(*img_cropped, rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
+				rectangle(img_bounded, rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
+			}
+		}
+
+		vector<double> boxArea, boxDist;
+		double wCenter = img_cropped->cols / 2;
+		double hCenter = img_cropped->rows / 2;
+		Point pCenter(wCenter, wCenter);
+		Rect bestRect;
+		////  Find best box match for recognition
+		// First find biggest box(es)
+		for (int i = 0; i < boundRect.size(); i++) {
+			boxArea.push_back(boundRect[i].width * boundRect[i].height);
+		}
+		// Select the element with the maximum value
+		auto ita = max_element(boxArea.begin(), boxArea.end());
+		int maxArea = *ita;
+		vector<int> maxIndex;
+		for (int i = 0; i < boxArea.size(); i++) {
+			if (boxArea[i]*1.2 > maxArea) {
+				maxIndex.push_back(i);
+			}
+		}
+		for (int i = 0; i < maxIndex.size(); i++) {
+			int j = maxIndex[i];
+			boundRect[j].x = boundRect[j].x + 2;
+			boundRect[j].width = boundRect[j].width - 4;
+			boundRect[j].y = boundRect[j].y + 2;
+			boundRect[j].height = boundRect[j].height - 4;
+			bestRect = boundRect[j];
+			boundRect2.push_back(bestRect);
+		}
+		// Second find nearest big box from region center
+		if (boundRect2.size() > 1) {
+			for (int i = 0; i < boundRect2.size(); i++) {
+				double wcenter = boundRect2[i].x + boundRect2[i].width / 2;
+				double hcenter = boundRect2[i].y + boundRect2[i].height / 2;
+				Point pcenter(wcenter, hcenter);
+				double dist = abs(norm(pCenter - pcenter));
+				boxDist.push_back(dist);
+			}
+			// Select the element with the minimum value
+			auto itd = min_element(boxDist.begin(), boxDist.end());
+			int minDist = *itd;
+			for (int i = 0; i < boxDist.size(); i++) {
+				if (boxDist[i] == minDist) {
+					boundRect2[i].x = boundRect2[i].x + 2;
+					boundRect2[i].width = boundRect2[i].width - 4;
+					boundRect2[i].y = boundRect2[i].y + 2;
+					boundRect2[i].height = boundRect2[i].height - 4;
+					bestRect = boundRect2[i];
+					break;
+				}
+			}
+		}
+		
+		// Draw best box
+		rectangle(img_bounded, bestRect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 2);
+
+		//if (!img_bounded.empty())
+		//	imshow("Output 1", img_bounded);
+		//waitKey();
+
+		*img_cropped = img_resized(bestRect);
+		
+		// Add border to bestRect ROI + resize it to fit 30-33px height for capital letter
+		// for optimal 0% error rate on Tesseract recognition: https://groups.google.com/g/tesseract-ocr/c/Wdh_JJwnw94/m/24JHDYQbBQAJ
+		const int border = 25; // 10
+		//const int borderType = BORDER_CONSTANT | BORDER_ISOLATED;
+		const Scalar value(255, 255, 255);
+		const Mat roi(img_cropped->rows + 2 * border, img_cropped->cols + 2 * border, CV_8UC1, value);
+		img_cropped->copyTo(roi(Rect(border, border, img_cropped->cols, img_cropped->rows)));
+		*img_cropped = roi;		
+		int height = 70; // 29 with 10 border
+		float pct = (height / static_cast<float>(img_cropped->rows));
+		int width = static_cast<int>(static_cast<float>(img_cropped->cols) * pct);
+		resize(*img_cropped, *img_cropped, Size(width, height), INTER_LANCZOS4);
+
+		//if (!img_cropped->empty())
+		//	imshow("Output 2", *img_cropped);
+		//waitKey();
+		return img_bounded;
+	}
+	///////////////////////////////////////////
+
+	if (binarize) {
+		img_resized = binarize_array_opencv(img_resized, threshold);
+	}
+
+	*img_cropped = img_resized;
+	return img_resized;
+}
+
+CString CDlgTableMap::process_ocr(Mat img_orig, bool fast) {
+	if (!m_TableMapTree.GetSelectedItem())
+		return "";
+	/*
+	CString sel_region = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	if (sel_region.Find("handnumber") != -1 || sel_region.Find("limits") != -1 || sel_region.Find("stack") != -1 || sel_region.Find("mtt") != -1 || sel_region.Find("prize") != -1 ||
+		sel_region.Find("pot", 1) != -1 || sel_region.Find("bet", 1) != -1 || sel_region.Find("balance") != -1 || sel_region.Find("chip") != -1 ||
+		sel_region.Find("ante") != -1 || sel_region.Find("smallblind") != -1 || sel_region.Find("bigblind") != -1 || sel_region.Find("bigbet") != -1)
+
+		api.SetVariable("tessedit_char_whitelist", "0123456789.,$¢");
+	*/
+	//else
+	//	api.SetVariable("tessedit_char_blacklist", "®©℗ⓒ™!%&*+/;=?@²^æÆÇçÉéèêëïîíìÄÅàáâäåúùûüôöòñÑÿÖÜ€$¢£¥₧ƒ~ªº¿⌐¬½¼¡«»\"'`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■");
+	
+	/*
+	PIX* pix = pixCreate(img_orig.cols, img_orig.rows, 8);
+	for (int i = 0; i<img_orig.rows; i++)
+		for (int j = 0; j<img_orig.cols; j++)
+			pixSetPixel(pix, j, i, (l_uint32)img_orig.at<uchar>(i, j));
+	api.SetImage(pix);
+	*/
+
+	api.SetImage(img_orig.data, img_orig.cols, img_orig.rows, img_orig.channels(), img_orig.step);
+	//imshow("AutoOcr view", img_orig);
+	//waitKey();
+	//int ret = api.Recognize(0);
+	CString result = trim(api.GetUTF8Text()).c_str();
+
+	const char* blacklist = "®©℗ⓒ™!%&*+;=?@²^æÆÇçÉéèêëïîíìÄÅàáâäåúùûüôöòñÑÿÖÜ€£¥₧ƒ~ªº¿⌐¬½¼¡«»\"`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■";
+	for (int i = 0; i < strlen(blacklist); i++)
+		if (result.Find(blacklist[i]) != -1)
+			result.Replace(blacklist[i], '\0');
+
+	return result;
+}
+
+CString CDlgTableMap::get_ocr_result(Mat img_orig, CString transform, bool fast) {
+	//destroyAllWindows();
+	// Return string value from image. "" when OCR failed
+	Mat img_resized, img_resized2;
+	Mat* img_cropped = new Mat();
+	Mat* img_cropped2 = new Mat();
+	
+	CString txt;
+	m_Threshold.GetWindowText(txt);
+	threshold = atoi(txt);
+	
+	if (transform == "AutoOcr0") {
+		img_resized = prepareImage(img_orig, img_cropped, true);
+		img_resized2 = prepareImage(img_orig, img_cropped2, true, threshold);
+	}
+	if (transform == "AutoOcr1") {
+		img_resized = prepareImage(img_orig, img_cropped, true, threshold);
+		img_resized2 = prepareImage(img_orig, img_cropped2, true);
+	}
+
+	if (m_UseCrop.GetCheck() == false) {
+		img_resized.convertTo(img_resized, CV_8UC3);
+		cvtColor(img_resized, img_resized, COLOR_GRAY2BGR);
+		img_resized2.convertTo(img_resized2, CV_8UC3);
+		cvtColor(img_resized2, img_resized2, COLOR_GRAY2BGR);
+	}
+
+	vector<CString> lst;
+	CString ocr_result = process_ocr(*img_cropped);
+	CString ocr_result2 = process_ocr(*img_cropped2);
+
+	if (ocr_result != "")
+		lst.push_back(ocr_result);
+	if (ocr_result2 != "")
+		lst.push_back(ocr_result2);
+
+
+	// Display OCR image on OCR view
+	CDC					*pDC;
+	HDC					hdcControl;
+
+	pDC = m_MatFrame.GetDC();
+	hdcControl = *pDC;
+	BITMAPINFOHEADER bih = { sizeof(bih), img_resized.cols, -img_resized.rows, 1, 24, BI_RGB };
+	vector<RGBQUAD> pal(256);
+	for (int32_t i(0); i < 256; ++i) {
+		pal[i].rgbRed = pal[i].rgbGreen = pal[i].rgbBlue = i;
+		pal[i].rgbReserved = 0;
+	}
+	BITMAPINFO bi = { bih, pal[1] };
+	if (lst.empty() || lst.back() == ocr_result) {
+		//imshow("AutoOcr view", img_resized);
+		//setWindowProperty("AutoOcr view", WND_PROP_TOPMOST, WINDOW_NORMAL);
+		m_MatFrame.SetWindowPos(NULL, 0, 0, img_resized.cols, img_resized.rows, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+		SetDIBitsToDevice(hdcControl, 0, 0, img_resized.cols, img_resized.rows,
+									0, 0, 0, img_resized.rows, img_resized.data, &bi,
+									DIB_RGB_COLORS);
+	}
+	else {
+		//imshow("AutoOcr view", img_resized2);
+		//setWindowProperty("AutoOcr view", WND_PROP_TOPMOST, WINDOW_NORMAL);
+		m_MatFrame.SetWindowPos(NULL, 0, 0, img_resized2.cols, img_resized2.rows, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+		SetDIBitsToDevice(hdcControl, 0, 0, img_resized2.cols, img_resized2.rows,
+									0, 0, 0, img_resized2.rows, img_resized2.data, &bi,
+									DIB_RGB_COLORS);
+	}
+	// Clean up
+	DeleteDC(hdcControl);
+	ReleaseDC(pDC);
+
+
+	// Display OCR recognition result
+	try {
+		if (!lst.empty()) {
+			return lst.back();
+		}
+		else {
+			return "";
+		}
+	}
+	catch (invalid_argument) {
+		if (fast) {
+			return "";
+		}
+		// , img_min, img_mod, img_med, img_sharp]
+		vector<Mat> images = { img_orig, img_resized };
+		int i = 0;
+		while (i < 2) {
+			int j = 0;
+			while (j < images.size()) {
+				CString ocr_str = process_ocr(images[j]);
+				if (ocr_str != "")
+					lst.push_back(ocr_str);
+				j += 1;
+			}
+			i += 1;
+		}
+	}
+	for (const auto& element : lst) {
+		try {
+			return element;
+		}
+		catch (const invalid_argument& e) {
+			continue;
+			// log.warning(f"Not recognized: {element}")
+		}
+	}
+
+	return "";
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+////  Automatic Template Detection functions  ////////////////////////////
+
+Mat CDlgTableMap::loadTemplate(string name) {
+	// Load template
+	FileStorage fs;
+	Mat mat;
+	try
+	{
+		fs.open("Templates.xml", FileStorage::READ);
+	}
+	catch (cv::Exception& e)
+	{
+		CString err_msg = "Failed to open Template file.\nIt seems that your Templates.xml file is invalid or corrupted.\nOCR engine returned error:\n" + (CString)e.what();
+		MessageBox(err_msg, "AutoOcr error", MB_OK);
+		return mat;
+	}
+	//read(fs, "Input", Matrix);
+	fs[name] >> mat;
+	fs.release();
+
+	//imshow("Template", mat);
+	//waitKey();
+	return mat;
+}
+
+void CDlgTableMap::deleteTemplate(string name) {
+	// Delete template
+	FileStorage fs;
+	fstream tplFile("Templates.xml");
+	string content((istreambuf_iterator<char>(tplFile)),
+		(istreambuf_iterator<char>()));
+	unsigned first, last;
+
+	if (content.find(" <!-- resumed -->\n\n") != -1) {
+		first = content.find(" <!-- resumed -->\n\n");
+		last = first + 19;
+		content.replace(first, last - first, "");
+	}
+	first = content.find("<" + name);
+	last = content.find("</" + name + ">\n") + name.length() + 4;
+	content.replace(first, last - first, "");
+	tplFile.close();
+	tplFile.open("Templates.xml", ios::out | ios::trunc);
+	tplFile << content;
+	tplFile.close();
+	fs.release();
+}
+
+void CDlgTableMap::createTemplate(Mat input, string name) {
+	// Create template
+	FileStorage fs;
+	FileNode node;
+
+	try
+	{
+		fs.open("Templates.xml", FileStorage::READ);
+		node = fs[name]; // Read string sequence - Get node
+	}
+	catch (cv::Exception& e)
+	{
+		CString err_msg = "Failed to open Template file.\nIt seems that your Templates.xml file is invalid or corrupted.\nOCR engine returned error:\n" + (CString)e.what();
+		MessageBox(err_msg, "AutoOcr error", MB_OK);
+		return;
+	}
+
+	if (!node.isNone())
+		deleteTemplate(name);
+	
+	fs.release();
+	fs.open("Templates.xml", FileStorage::APPEND);
+	fs << name << input;
+	fs.release();
+}
+
+void CDlgTableMap::DetectAndShowTemplate(string name) {
+	//  Detect template	
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CDC					*pDC;
+	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform_ocr;
+	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform_ocr;
+	RMapCI				r_iter = p_tablemap->r$()->end();
+	RMapCI				r_iter2 = p_tablemap->r$()->end();
+	Mat area_mat, template_mat;
+
+	// Go calc the result and display it
+	pDC = m_BitmapFrame.GetDC();
+	hdcControl = *pDC;
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+	hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);	
+
+
+	if (name.find("card_common_") != -1) {
+		r_iter = p_tablemap->r$()->find("area_common_cards");
+		if (r_iter == p_tablemap->r$()->end()) {
+			MessageBox("You must first define the corresponding search area!", "Error", MB_OK);
+			return;
+		}
+		r_iter2 = r_iter;
+	}
+	if (name.find("card_player_") != -1) {
+		r_iter2 = p_tablemap->r$()->find("area_player_cards");
+		if (r_iter2 == p_tablemap->r$()->end()) {
+			MessageBox("You must first define the corresponding search area!", "Error", MB_OK);
+			return;
+		}
+		r_iter = r_iter2;
+	}
+
+	if (r_iter != p_tablemap->r$()->end()) {
+		old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
+
+		// Get bitmap size
+		int w = r_iter->second.right - r_iter->second.left + 1;
+		int h = r_iter->second.bottom - r_iter->second.top + 1;
+
+		hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
+		bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
+		old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+
+		BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
+			hdc_bitmap_orig,
+			r_iter->second.left - 1, r_iter->second.top - 1,
+			SRCCOPY);
+
+		area_mat = Mat(h, w, CV_8UC4);
+		BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+		GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+	}
+	else {
+		BITMAP bm;
+		GetObject(pDoc->attached_bitmap, sizeof(BITMAP), &bm);
+		area_mat = Mat(bm.bmHeight, bm.bmWidth, CV_8UC4);
+		BITMAPINFOHEADER bi = { sizeof(bi), bm.bmWidth, -bm.bmHeight, 1, 32, BI_RGB };
+		GetDIBits(hdc_bitmap_orig, pDoc->attached_bitmap, 0, bm.bmHeight, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+		//imshow("Result view", area_mat);
+		//waitKey();
+	}
+
+	int					x, y, width, height, zoom;
+	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
+	BYTE				*pBits, alpha, red, green, blue;
+	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
+
+	// Get selected template record
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		sel_template = p_tablemap->tpl$()->find(name.c_str());
+	}
+	else
+	{
+		return;
+	}
+
+	// Get template size
+	width = sel_template->second.width;
+	height = sel_template->second.height;
+
+	// Copy saved template into a memory dc so we can get the bmi
+	pDC = m_BitmapFrame.GetDC();
+	hdcControl = *pDC;
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+	// Create new memory DC and new bitmap
+	//hdc_image = CreateCompatibleDC(hdcScreen);
+	bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
+	old_bitmap_image = (HBITMAP)SelectObject(hdc_bitmap_orig, bitmap_image);
+
+	// Setup BITMAPINFO
+	BITMAPINFO	bmi;
+	ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
+	bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
+	bmi.bmiHeader.biWidth = width;
+	bmi.bmiHeader.biHeight = -height;
+	bmi.bmiHeader.biPlanes = 1;
+	bmi.bmiHeader.biBitCount = 32;
+	bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
+	bmi.bmiHeader.biSizeImage = width * height * 4;
+
+	// Copy saved image info into pBits array
+	pBits = new BYTE[bmi.bmiHeader.biSizeImage];
+	for (y = 0; y < (int)height; y++) {
+		for (x = 0; x < (int)width; x++) {
+			// image record is stored internally in ABGR format
+			alpha = (sel_template->second.pixel[y*width + x] >> 24) & 0xff;
+			red = (sel_template->second.pixel[y*width + x] >> 0) & 0xff;
+			green = (sel_template->second.pixel[y*width + x] >> 8) & 0xff;
+			blue = (sel_template->second.pixel[y*width + x] >> 16) & 0xff;
+
+			// SetDIBits format is BGRA
+			pBits[y*width * 4 + x * 4 + 0] = blue;
+			pBits[y*width * 4 + x * 4 + 1] = green;
+			pBits[y*width * 4 + x * 4 + 2] = red;
+			pBits[y*width * 4 + x * 4 + 3] = alpha;
+		}
+	}
+	::SetDIBits(hdc_bitmap_orig, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
+
+	template_mat = Mat(height, width, CV_8UC4);
+	template_mat.data = pBits;
+
+	/*
+	Mat input(h, w, CV_8UC4);
+	BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+	GetDIBits(hdc_bitmap_transform, bitmap_transform, 0, h, input.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+	*/
+
+	//Mat input = loadTemplate(name);
+	Mat resultImg;
+	//int match_method = TM_SQDIFF;
+	int match_method = m_MatchMode.GetCurSel();
+	// Do the Matching and Normalize
+	matchTemplate(area_mat, template_mat, resultImg, match_method);
+	//normalize(resultImg, resultImg, 0, 1, NORM_MINMAX, -1, Mat());
+
+	/// Localizing the best match with minMaxLoc
+	double matchVal, minVal, maxVal; 
+	Point minLoc, maxLoc, matchLoc;
+
+	minMaxLoc(resultImg, &minVal, &maxVal, &minLoc, &maxLoc);
+
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+		matchVal = minVal;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+		matchVal = maxVal;
+	}
+
+	// Exact match
+	if (-0.08 <= matchVal && matchVal <= 0.08 || 0.92 <= matchVal && matchVal <= 1.08) {  // 0.08% tolerance
+		// Show me what you got
+		rectangle(area_mat, matchLoc, Point(matchLoc.x + template_mat.cols, matchLoc.y + template_mat.rows), Scalar(0, 255, 0), 2, 8, 0);
+		//rectangle(resultImg, matchLoc, Point(matchLoc.x + template_mat.cols, matchLoc.y + template_mat.rows), Scalar(0, 255, 0), 2, 8, 0);
+
+		imshow("Result view", area_mat);
+		//imshow("Result view", resultImg);
+		//waitKey();
+	}
+	else
+		// No match found
+		MessageBox("No match found.", "Info", MB_OK);
+
+
+	// Clean up
+	SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
+	DeleteObject(bitmap_transform_ocr);
+	DeleteDC(hdc_bitmap_transform_ocr);
+
+	SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+	DeleteDC(hdc_bitmap_orig);
+
+	DeleteDC(hdcScreen);
+}
+
+CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
+	//  Detect template
+	RMapCI				r_iter = p_tablemap->r$()->find(area_name.GetString());
+	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
+
+	// Exit because the area doesn't exist
+	if (r_iter == p_tablemap->r$()->end())
+		return "";
+
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString				text, selected_transform, separation;
+	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform_ocr;
+	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform_ocr;
+	// Go calc the result and display it
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+	hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
+	old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
+
+	// Get bitmap size
+	int w = r_iter->second.right - r_iter->second.left + 1;
+	int h = r_iter->second.bottom - r_iter->second.top + 1;
+
+	if (w <= 1 || h <= 1 || m_DrawRect.m_bState == true) {
+		SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+		DeleteDC(hdc_bitmap_orig);
+
+		DeleteDC(hdcScreen);
+		return "";
+	}
+
+	hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
+	bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
+	old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+
+	BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
+		hdc_bitmap_orig,
+		r_iter->second.left - 1, r_iter->second.top - 1,
+		SRCCOPY);
+
+	Mat area_mat(h, w, CV_8UC4);
+	BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+	GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+
+	//imshow("Area Image", area_mat);
+	//waitKey();
+
+	int					x, y, width, height, match_mode;
+	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
+	BYTE				*pBits, alpha, red, green, blue;
+	RECT roi, zero = RECT{ 0 };
+	vector<pair<int, CString>> listROI;
+
+	// Get search templates in area
+	for (sel_template = p_tablemap->tpl$()->begin(); sel_template != p_tablemap->tpl$()->end(); sel_template++) {
+		if (area_name == "area_common_cards" && sel_template->second.name.Find("card_common_") == -1)
+			continue;
+		if (area_name.Find("area_player_cards") != -1 && sel_template->second.name.Find("card_player_") == -1)
+			continue;
+		// Get template size
+		width = sel_template->second.width;
+		height = sel_template->second.height;
+		match_mode = sel_template->second.match_mode;
+
+		// Copy saved template into a memory dc so we can get the bmi
+		hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+		// Create new memory DC and new bitmap
+		//hdc_image = CreateCompatibleDC(hdcScreen);
+		bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
+		old_bitmap_image = (HBITMAP)SelectObject(hdc_bitmap_orig, bitmap_image);
+
+		// Setup BITMAPINFO
+		BITMAPINFO	bmi;
+		ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
+		bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
+		bmi.bmiHeader.biWidth = width;
+		bmi.bmiHeader.biHeight = -height;
+		bmi.bmiHeader.biPlanes = 1;
+		bmi.bmiHeader.biBitCount = 32;
+		bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
+		bmi.bmiHeader.biSizeImage = width * height * 4;
+
+		// Copy saved image info into pBits array
+		pBits = new BYTE[bmi.bmiHeader.biSizeImage];
+		for (y = 0; y < (int)height; y++) {
+			for (x = 0; x < (int)width; x++) {
+				// image record is stored internally in ABGR format
+				alpha = (sel_template->second.pixel[y*width + x] >> 24) & 0xff;
+				red = (sel_template->second.pixel[y*width + x] >> 0) & 0xff;
+				green = (sel_template->second.pixel[y*width + x] >> 8) & 0xff;
+				blue = (sel_template->second.pixel[y*width + x] >> 16) & 0xff;
+
+				// SetDIBits format is BGRA
+				pBits[y*width * 4 + x * 4 + 0] = blue;
+				pBits[y*width * 4 + x * 4 + 1] = green;
+				pBits[y*width * 4 + x * 4 + 2] = red;
+				pBits[y*width * 4 + x * 4 + 3] = alpha;
+			}
+		}
+		::SetDIBits(hdc_bitmap_orig, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
+
+		Mat template_mat(height, width, CV_8UC4);
+		template_mat.data = pBits;
+		//imshow("Template Image", template_mat);
+		//waitKey();
+
+		roi = detectTemplate(area_mat, template_mat, match_mode);
+		if (!EqualRect(&roi, &zero)) {
+			if (area_name == "area_common_cards") {
+				CString value = sel_template->second.name;
+				value.Replace("card_common_", "");
+				pair<int, CString> matchPair(roi.left, value);
+				listROI.push_back(matchPair);
+			}
+			if (area_name.Find("area_player_cards") != -1) {
+				CString value = sel_template->second.name;
+				value.Replace("card_player_", "");
+				pair<int, CString> matchPair(roi.left, value);
+				listROI.push_back(matchPair);
+			}
+		}
+	}
+
+	// Order ROI array
+	sort(listROI.begin(), listROI.end());
+
+	// Display result
+	CString result;
+	for (auto & element : listROI) {
+		result.Append(element.second + " ");
+	}
+	//m_Result.SetWindowText(result);
+
+
+	// Clean up
+	SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
+	DeleteObject(bitmap_transform_ocr);
+	DeleteDC(hdc_bitmap_transform_ocr);
+
+	SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+	DeleteDC(hdc_bitmap_orig);
+
+	DeleteDC(hdcScreen);
+
+	return result;
+}
+
+RECT CDlgTableMap::detectTemplate(Mat area, Mat tpl, int match_mode) {
+	//  Detect template	
+	RECT result;
+	Mat resultImg;
+	int result_cols = area.cols - area.cols + 1;
+	int result_rows = area.rows - area.rows + 1;
+	resultImg.create(result_rows, result_cols, CV_32FC1);
+	// Do the Matching and Normalize
+	matchTemplate(area, tpl, resultImg, match_mode);
+	//normalize(resultImg, resultImg, 0, 1, NORM_MINMAX, -1, Mat());
+
+	/// Localizing the best match with minMaxLoc
+	double matchVal, minVal, maxVal; 
+	Point minLoc, maxLoc, matchLoc;
+
+	minMaxLoc(resultImg, &minVal, &maxVal, &minLoc, &maxLoc);
+
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_mode == TM_SQDIFF || match_mode == TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+		matchVal = minVal;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+		matchVal = maxVal;
+	}
+
+	// Exact match found
+	if (-0.08 <= matchVal && matchVal <= 0.08 || 0.92 <= matchVal && matchVal <= 1.08) {  // 0.08% tolerance
+		result = RECT{ matchLoc.x, matchLoc.y , matchLoc.x + tpl.cols, matchLoc.y + tpl.rows };
+
+		// Show me what you got
+		//rectangle(area, matchLoc, Point(matchLoc.x + tpl.cols, matchLoc.y + tpl.rows), Scalar(0, 255, 0), 2, 8, 0);
+		//rectangle(resultImg, matchLoc, Point(matchLoc.x + tpl.cols, matchLoc.y + tpl.rows), Scalar(0, 255, 0), 2, 8, 0);
+
+		//imshow("Result view", area);
+		//imshow("Result transform view", resultImg);
+		//waitKey();
+	}
+	else
+		// No match found
+		result = RECT{ 0 };
+
+	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+void CDlgTableMap::update_ocr_r$_display(void) {
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString				text, selected_transform, separation;
+	CDC					*pDC;
+	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform_ocr;
+	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform_ocr;
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region or template
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
+		return;
+	
+	if (sel_region != p_tablemap->r$()->end()) {
+		// Transform
+		if (sel_region->second.transform == "I")		selected_transform = "Image";
+		else if (sel_region->second.transform == "A0")		selected_transform = "AutoOcr0";
+		else if (sel_region->second.transform == "A1")		selected_transform = "AutoOcr1";
+	}
+		
+	// Auto-Ocr processing
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		m_UseDefault.SetCheck(sel_template->second.use_default);
+		if (m_UseDefault.GetCheck()) {
+			m_MatchMode.SetCurSel(kDefaultMatchMode);
+		}
+		else {
+			m_MatchMode.SetCurSel(sel_template->second.match_mode);
+		}
+		if (sel_template->second.created) {
+			m_Result.SetWindowText("Created");
+			m_CreateFont.EnableWindow(true);
+		}
+		else {
+			m_Result.SetWindowText("Not Created");
+			m_CreateFont.EnableWindow(false);
+		}
+	}
+
+	if (selected_transform == "Image") {
+		m_UseDefault.SetCheck(sel_region->second.use_default);
+		if (m_UseDefault.GetCheck()) {
+			text.Format("%d", kDefaultInbuiltThreshold);
+			m_Threshold.SetWindowText(text);
+		}
+		else {
+			text.Format("%d", sel_region->second.threshold);
+			m_Threshold.SetWindowText(text);
+		}
+	}
+
+	if (selected_transform.Find("AutoOcr") != -1) {
+		m_UseDefault.SetCheck(sel_region->second.use_default);
+		m_UseCrop.SetCheck(sel_region->second.use_cropping);
+		if (m_UseDefault.GetCheck()) {
+			text.Format("%d", kDefaultAutoOcrThreshold);
+			m_Threshold.SetWindowText(text);
+		}
+		else {
+			text.Format("%d", sel_region->second.threshold);
+			m_Threshold.SetWindowText(text);
+		}
+
+		if (!m_UseCrop.GetCheck()) {
+			text.Format("%d", kDefaultCropSize);
+			m_CropSize.SetWindowText(text);
+			m_BoxColor.SetCurSel(kDefaultBoxColor);
+		}
+		else {
+			text.Format("%d", sel_region->second.crop_size);
+			m_CropSize.SetWindowText(text);
+			m_BoxColor.SetCurSel(sel_region->second.box_color);
+		}
+	}
+
+	if (m_UseCrop.GetCheck()) {
+		m_CropSize.EnableWindow(true);
+		m_CropSpin.EnableWindow(true);
+		m_BoxColor.EnableWindow(true);
+	}
+	else {
+		m_CropSize.EnableWindow(false);
+		m_CropSpin.EnableWindow(false);
+		m_BoxColor.EnableWindow(false);
+	}
+
+	if (!m_UseDefault.GetCheck()) {
+		if (type_text == "Templates") {
+			m_MatchMode.EnableWindow(true);
+		}
+		if (selected_transform == "Image" ||
+			selected_transform.Find("AutoOcr") != -1) {
+			m_Threshold.EnableWindow(true);
+			m_ThresholdSpin.EnableWindow(true);
+		}
+	}
+	else {
+		m_Threshold.EnableWindow(false);
+		m_ThresholdSpin.EnableWindow(false);
+		m_MatchMode.EnableWindow(false);
+	}
+
+
+	if (sel_region != p_tablemap->r$()->end()) {
+		// Go calc the result and display it
+		pDC = m_BitmapFrame.GetDC();
+		hdcControl = *pDC;
+		hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+		hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
+		old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
+
+		int w = sel_region->second.right - sel_region->second.left + 3;
+		int h = sel_region->second.bottom - sel_region->second.top + 3;
+
+		hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
+		bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
+		old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+
+		BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
+			hdc_bitmap_orig,
+			sel_region->second.left - 1, sel_region->second.top - 1,
+			SRCCOPY);
+
+		// result field
+		if (selected_transform.Find("AutoOcr") != -1) {
+			if (w > 0 && h > 0) {
+				Mat input(h, w, CV_8UC4);
+				BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+				GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, input.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+				text = get_ocr_result(input, selected_transform);
+			}
+			else {
+				text = "";
+			}
+		}
+
+		m_Result.SetWindowText(text);
+
+		// Clean up
+		SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
+		DeleteObject(bitmap_transform_ocr);
+		DeleteDC(hdc_bitmap_transform_ocr);
+
+		SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+		DeleteDC(hdc_bitmap_orig);
+
+		DeleteDC(hdcScreen);
+		ReleaseDC(pDC);
+	}
+}
+
 
 void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, selected_transform, separation;
 	CDC					*pDC;
-	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform;
-	HBITMAP				old_bitmap_orig, bitmap_transform, old_bitmap_transform;
+	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform, hdc_bitmap_transform_ocr;
+	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform, bitmap_transform_ocr;
 	COLORREF			cr_avg;
 	CTransform			trans;
-	RMapCI				sel_region = p_tablemap->r$()->end();
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
-	sel_region = p_tablemap->r$()->find(sel_text.GetString());
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
+	// Transform
+	if (sel_region != p_tablemap->r$()->end()) {
+		if (sel_region->second.transform == "C")			selected_transform = "Color";
+		else if (sel_region->second.transform == "I")		selected_transform = "Image";
+		else if (sel_region->second.transform == "A0")		selected_transform = "AutoOcr0";
+		else if (sel_region->second.transform == "A1")		selected_transform = "AutoOcr1";
+		else if (sel_region->second.transform == "T0")		selected_transform = "Text0";
+		else if (sel_region->second.transform == "T1")		selected_transform = "Text1";
+		else if (sel_region->second.transform == "T2")		selected_transform = "Text2";
+		else if (sel_region->second.transform == "T3")		selected_transform = "Text3";
+		else if (sel_region->second.transform == "H0")		selected_transform = "Hash0";
+		else if (sel_region->second.transform == "H1")		selected_transform = "Hash1";
+		else if (sel_region->second.transform == "H2")		selected_transform = "Hash2";
+		else if (sel_region->second.transform == "H3")		selected_transform = "Hash3";
+		else if (sel_region->second.transform == "WC")    selected_transform = "WebColour";
+		else if (sel_region->second.transform == "N")		  selected_transform = "None";
+		m_Transform.SelectString(-1, selected_transform);
+	}
+
 	// Left/top/right/bottom edits/spinners
-	if (!dont_update_spinners)
+	if (!dont_update_spinners && sel_template != p_tablemap->tpl$()->end())
+	{
+		text.Format("%d", sel_template->second.left);
+		m_Left.SetWindowText(text);
+		m_LeftSpin.SetPos(sel_template->second.left);
+
+		text.Format("%d", sel_template->second.top);
+		m_Top.SetWindowText(text);
+		m_TopSpin.SetPos(sel_template->second.top);
+
+		text.Format("%d", sel_template->second.right);
+		m_Right.SetWindowText(text);
+		m_RightSpin.SetPos(sel_template->second.right);
+
+		text.Format("%d", sel_template->second.bottom);
+		m_Bottom.SetWindowText(text);
+		m_BottomSpin.SetPos(sel_template->second.bottom);
+	}
+
+	// Auto-Ocr processing
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		m_UseDefault.SetCheck(sel_template->second.use_default);
+		if (m_UseDefault.GetCheck()) {
+			m_MatchMode.SetCurSel(kDefaultMatchMode);
+		}
+		else {
+			m_MatchMode.SetCurSel(sel_template->second.match_mode);
+		}
+		if (sel_template->second.created) {
+			m_Result.SetWindowText("Created");
+			m_CreateFont.EnableWindow(true);
+		}
+		else {
+			m_Result.SetWindowText("Not Created");
+			m_CreateFont.EnableWindow(false);
+		}
+	}
+
+	if (selected_transform == "Image") {
+		m_UseDefault.SetCheck(sel_region->second.use_default);
+		if (m_UseDefault.GetCheck()) {
+			text.Format("%d", kDefaultInbuiltThreshold);
+			m_Threshold.SetWindowText(text);
+		}
+		else {
+			text.Format("%d", sel_region->second.threshold);
+			m_Threshold.SetWindowText(text);
+		}
+	}
+
+	if (selected_transform.Find("AutoOcr") != -1) {
+		m_UseDefault.SetCheck(sel_region->second.use_default);
+		m_UseCrop.SetCheck(sel_region->second.use_cropping);
+		if (m_UseDefault.GetCheck()) {
+			text.Format("%d", kDefaultAutoOcrThreshold);
+			m_Threshold.SetWindowText(text);
+		}
+		else {
+			text.Format("%d", sel_region->second.threshold);
+			m_Threshold.SetWindowText(text);
+		}
+
+		if (!m_UseCrop.GetCheck()) {
+			text.Format("%d", kDefaultCropSize);
+			m_CropSize.SetWindowText(text);
+			m_BoxColor.SetCurSel(kDefaultBoxColor);
+		}
+		else {
+			text.Format("%d", sel_region->second.crop_size);
+			m_CropSize.SetWindowText(text);
+			m_BoxColor.SetCurSel(sel_region->second.box_color);
+		}
+	}
+
+	if (m_UseCrop.GetCheck()) {
+		m_CropSize.EnableWindow(true);
+		m_CropSpin.EnableWindow(true);
+		m_BoxColor.EnableWindow(true);
+	}
+	else {
+		m_CropSize.EnableWindow(false);
+		m_CropSpin.EnableWindow(false);
+		m_BoxColor.EnableWindow(false);
+	}
+
+	if (!m_UseDefault.GetCheck()) {
+		if (type_text == "Templates") {
+			m_MatchMode.EnableWindow(true);
+		}
+		if (selected_transform == "Image" ||
+			selected_transform.Find("AutoOcr") != -1) {
+			m_Threshold.EnableWindow(true);
+			m_ThresholdSpin.EnableWindow(true);
+		}
+	}
+	else {
+		m_Threshold.EnableWindow(false);
+		m_ThresholdSpin.EnableWindow(false);
+		m_MatchMode.EnableWindow(false);
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end()) return;
+
+
+	if (!dont_update_spinners && sel_region != p_tablemap->r$()->end())
 	{
 		text.Format("%d", sel_region->second.left);
 		m_Left.SetWindowText(text);
@@ -1111,28 +2990,14 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		text.Format("%d", sel_region->second.bottom);
 		m_Bottom.SetWindowText(text);
 		m_BottomSpin.SetPos(sel_region->second.bottom);
-
 	}
+
 	text.Format("%d x %d", sel_region->second.right-sel_region->second.left+1, sel_region->second.bottom-sel_region->second.top+1);
 	m_xy.SetWindowText(text);
 
-	// Transform
-	if (sel_region->second.transform == "C")			selected_transform = "Color";
-	else if (sel_region->second.transform == "I")		selected_transform = "Image";
-	else if (sel_region->second.transform == "T0")		selected_transform = "Text0";
-	else if (sel_region->second.transform == "T1")		selected_transform = "Text1";
-	else if (sel_region->second.transform == "T2")		selected_transform = "Text2";
-	else if (sel_region->second.transform == "T3")		selected_transform = "Text3";
-	else if (sel_region->second.transform == "H0")		selected_transform = "Hash0";
-	else if (sel_region->second.transform == "H1")		selected_transform = "Hash1";
-	else if (sel_region->second.transform == "H2")		selected_transform = "Hash2";
-	else if (sel_region->second.transform == "H3")		selected_transform = "Hash3";
-  else if (sel_region->second.transform == "WC")    selected_transform = "WebColour";
-	else if (sel_region->second.transform == "N")		  selected_transform = "None";
-	m_Transform.SelectString(-1, selected_transform);
-
 	// Color/radius  (color is stored internally and in the .tm file in ABGR (COLORREF) format)
-	if (selected_transform == "Hash0" 
+	if (selected_transform.Find("AutoOcr") != -1
+		|| selected_transform == "Hash0"
 		  || selected_transform == "Hash1" 
 		  || selected_transform == "Hash2" 
 		  || selected_transform == "Hash3" 
@@ -1167,72 +3032,6 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	text.Format("%d", sel_region->second.radius);
 	m_Radius.SetWindowText(text);
 
-	if (selected_transform != "Color")
-	{
-		m_RedAvg.EnableWindow(false);
-		m_GreenAvg.EnableWindow(false);
-		m_BlueAvg.EnableWindow(false);
-	}
-	else
-	{
-		m_RedAvg.EnableWindow(true);
-		m_GreenAvg.EnableWindow(true);
-		m_BlueAvg.EnableWindow(true);
-	}
-
-	// Go calc the result and display it
-	pDC = m_BitmapFrame.GetDC();
-	hdcControl = *pDC;
-	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
-
-	hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
-	old_bitmap_orig = (HBITMAP) SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
-
-	hdc_bitmap_transform = CreateCompatibleDC(hdcScreen);
-	bitmap_transform = CreateCompatibleBitmap(hdcScreen, 
-								   sel_region->second.right - sel_region->second.left + 1, 
-								   sel_region->second.bottom  - sel_region->second.top + 1);
-	old_bitmap_transform = (HBITMAP) SelectObject(hdc_bitmap_transform, bitmap_transform);
-
-	BitBlt(hdc_bitmap_transform, 0, 0, 
-		   sel_region->second.right - sel_region->second.left + 1, 
-		   sel_region->second.bottom - sel_region->second.top + 1,
-		   hdc_bitmap_orig, 
-		   sel_region->second.left, sel_region->second.top, 
-		   SRCCOPY);
-
-	// result field
-	int ret = trans.DoTransform(sel_region, hdc_bitmap_transform, &text, &separation, &cr_avg);
-	if (ret != ERR_GOOD_SCRAPE_GENERAL)
-	{
-		switch (ret)
-		{
-		case ERR_FIELD_TOO_LARGE:
-			text.Format("Err: Field too large");
-			break;
-		case ERR_NO_HASH_MATCH:
-			text.Format("Err: No hash match");
-			break;
-		case ERR_TEXT_SCRAPE_NOMATCH:
-			if (separation.Find("X") == -1)
-				text.Format("Err: No foreground pixels");
-			else
-				text.Format("Err: No text match");
-			break;
-		case ERR_NO_IMAGE_MATCH:
-			text.Format("Err: No image match");
-			break;
-		default:
-			text.Format("Err: %d", ret);
-			break;
-		}
-	}
-	m_Result.SetWindowText(text);
-
-	// pixel separation field
-	if (selected_transform.Find("Text") == -1)  separation = "";
-	m_PixelSeparation.SetWindowText(separation);
-
 	// avg color fields
 	if (selected_transform == "Color")
 	{
@@ -1243,28 +3042,118 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		text.Format("%02x", GetBValue(cr_avg));
 		m_BlueAvg.SetWindowText(text);
 		text.Format("%d", sel_region->second.radius);
-	}
 
-	// Create font button
-	if (selected_transform.Find("Text") != -1)
-	{
-		m_CreateFont.EnableWindow(true);
+		m_RedAvg.EnableWindow(false);
+		m_GreenAvg.EnableWindow(false);
+		m_BlueAvg.EnableWindow(false);
 	}
 	else
 	{
-		m_CreateFont.EnableWindow(false);
+		m_RedAvg.EnableWindow(true);
+		m_GreenAvg.EnableWindow(true);
+		m_BlueAvg.EnableWindow(true);
+	}
+	
+
+	// Go calc the result and display it
+	if (sel_text.Find("area") != -1) {
+		// Templates detection in target area (ROI)
+		text = GetDetectTemplatesResult(sel_region->second.name);
+	}
+	else {
+		pDC = m_BitmapFrame.GetDC();
+		hdcControl = *pDC;
+		hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+
+		hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
+		old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
+
+		int w = sel_region->second.right - sel_region->second.left + 1;
+		int h = sel_region->second.bottom - sel_region->second.top + 1;
+
+		hdc_bitmap_transform = CreateCompatibleDC(hdcScreen);
+		bitmap_transform = CreateCompatibleBitmap(hdcScreen, w, h);
+		old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform, bitmap_transform);
+
+		BitBlt(hdc_bitmap_transform, 0, 0, w, h,
+			hdc_bitmap_orig,
+			sel_region->second.left, sel_region->second.top,
+			SRCCOPY);
+
+		w = w + 6;
+		h = h + 6;
+
+		hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
+		bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
+		old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+
+		BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
+			hdc_bitmap_orig,
+			sel_region->second.left - 3, sel_region->second.top - 3,
+			SRCCOPY);
+
+		// result field
+		if (selected_transform.Find("AutoOcr") != -1) {
+			if (w > 0 && h > 0) {
+				Mat input(h, w, CV_8UC4);
+				BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+				GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, input.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+				text = get_ocr_result(input, selected_transform);
+			}
+			else {
+				text = "";
+			}
+		}
+		else {
+			int ret = trans.DoTransform(sel_region, hdc_bitmap_transform, &text, &separation, &cr_avg);
+			if (ret != ERR_GOOD_SCRAPE_GENERAL)
+			{
+				switch (ret)
+				{
+				case ERR_FIELD_TOO_LARGE:
+					text.Format("Err: Field too large");
+					break;
+				case ERR_NO_HASH_MATCH:
+					text.Format("Err: No hash match");
+					break;
+				case ERR_TEXT_SCRAPE_NOMATCH:
+					if (separation.Find("X") == -1)
+						text.Format("Err: No foreground pixels");
+					else
+						text.Format("Err: No text match");
+					break;
+				case ERR_NO_IMAGE_MATCH:
+					text.Format("Err: No image match");
+					break;
+				default:
+					text.Format("Err: %d", ret);
+					break;
+				}
+			}
+		}
+
+		// Clean up
+		SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
+		DeleteObject(bitmap_transform_ocr);
+		DeleteDC(hdc_bitmap_transform_ocr);
+
+		SelectObject(hdc_bitmap_transform, old_bitmap_transform);
+		DeleteObject(bitmap_transform);
+		DeleteDC(hdc_bitmap_transform);
+
+		SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+		DeleteDC(hdc_bitmap_orig);
+
+		DeleteDC(hdcScreen);
+		ReleaseDC(pDC);
 	}
 
-	// Clean up
-	SelectObject(hdc_bitmap_transform, old_bitmap_transform);
-	DeleteObject(bitmap_transform);
-	DeleteDC(hdc_bitmap_transform);
+	// Display result
+	m_Result.SetWindowText(text);
 
-	SelectObject(hdc_bitmap_orig, old_bitmap_orig);
-	DeleteDC(hdc_bitmap_orig);
-
-	DeleteDC(hdcScreen);
-	ReleaseDC(pDC);
+	// pixel separation field
+	if (selected_transform.Find("Text") == -1)  separation = "";
+	m_PixelSeparation.SetWindowText(separation);
 }
 
 void CDlgTableMap::update_t$_display(void)
@@ -1335,20 +3224,25 @@ void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 	
 	if (ignore_changes)  return;
 
-	sel_region->second.left = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_region != p_tablemap->r$()->end())
+		sel_region->second.left = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_template != p_tablemap->tpl$()->end())
+		sel_template->second.left = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1364,20 +3258,25 @@ void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
 	if (ignore_changes)  return;
 
-	sel_region->second.top = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_region != p_tablemap->r$()->end())
+		sel_region->second.top = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_template != p_tablemap->tpl$()->end())
+		sel_template->second.top = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1393,20 +3292,25 @@ void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
 	if (ignore_changes)  return;
 
-	sel_region->second.bottom = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_region != p_tablemap->r$()->end())
+		sel_region->second.bottom = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_template != p_tablemap->tpl$()->end())
+		sel_template->second.bottom = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1422,20 +3326,25 @@ void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
 	if (ignore_changes)  return;
 
-	sel_region->second.right = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_region != p_tablemap->r$()->end())
+		sel_region->second.right = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (sel_template != p_tablemap->tpl$()->end())
+		sel_template->second.right = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1467,6 +3376,66 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	sel_region->second.radius = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
+	Invalidate(false);
+	theApp.m_pMainWnd->Invalidate(false);
+
+	pDoc->SetModifiedFlag(true);
+
+	*pResult = 0;
+}
+
+void CDlgTableMap::OnDeltaposThresholdSpin(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
+		return;
+
+	if (ignore_changes)  return;
+
+	sel_region->second.threshold = pNMUpDown->iPos + pNMUpDown->iDelta;
+
+	//update_ocr_display();
+	update_ocr_r$_display();
+	Invalidate(false);
+	theApp.m_pMainWnd->Invalidate(false);
+
+	pDoc->SetModifiedFlag(true);
+
+	*pResult = 0;
+}
+
+void CDlgTableMap::OnDeltaposCropSpin(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+
+	// Get iterator for selected region and template
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
+		return;
+
+	if (ignore_changes)  return;
+
+	sel_region->second.crop_size = pNMUpDown->iPos + pNMUpDown->iDelta;
+
+	//update_ocr_display();
+	update_ocr_r$_display();
 	Invalidate(false);
 	theApp.m_pMainWnd->Invalidate(false);
 
@@ -1583,6 +3552,7 @@ void CDlgTableMap::OnBnClickedNew() {
 		// Prep dialog
 		CDlgEditRegion dlgregions;
 		dlgregions.titletext = "New Region record";
+		dlgregions.labeltext = "Record name:";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
     assert(list_of_regions[list_of_regions.size() - 1] != "");
@@ -1627,6 +3597,11 @@ void CDlgTableMap::OnBnClickedNew() {
 				new_region.color = 0;
 				new_region.radius = 0;
 				new_region.transform = "N";
+				new_region.use_default = true;
+				new_region.threshold = -1;
+				new_region.use_cropping = false;
+				new_region.crop_size = -1;
+				new_region.box_color = -1;
 
 				// Insert the new record in the existing array of z$ records
 				if (!p_tablemap->r$_insert(new_region))
@@ -1699,6 +3674,76 @@ void CDlgTableMap::OnBnClickedNew() {
 	{
 		// Not valid - add image using "Create Image" button
 	}
+
+	else if (type_text == "Templates")
+	{
+		// Prep dialog
+		CDlgEditRegion dlgtemplates;
+		dlgtemplates.titletext = "New Template record";
+		dlgtemplates.labeltext = "Template name:";
+		dlgtemplates.name = "";
+		//dlgtemplates.value = "";
+		char title[200];
+		::GetWindowText(pDoc->attached_hwnd, title, 200);
+		//dlgtemplates.titlebartext = title;
+		dlgtemplates.strings.RemoveAll();
+
+		TPLMap::const_iterator tpl_iter;
+		for (int i = 0; i<list_of_templates.size(); i++) {
+			bool used_string = false;
+			for (tpl_iter = p_tablemap->tpl$()->begin(); tpl_iter != p_tablemap->tpl$()->end(); tpl_iter++) {
+				if (list_of_templates[i] == "" || tpl_iter->second.name == list_of_templates[i]) {
+					used_string = true;
+				}
+			}
+			if (!used_string) {
+				dlgtemplates.strings.Add(list_of_templates[i]);
+			}
+		}
+		// Show dialog if there are any strings left to add
+		if (dlgtemplates.strings.GetSize() == 0)
+		{
+			MessageBox("All Template records are already present.");
+		}
+		else
+		{
+			if (dlgtemplates.DoModal() == IDOK && dlgtemplates.name != "")
+			{
+				if (dlgtemplates.name.Find("card_", 0) == -1) {
+					MessageBox("Template name is invalid.\nPlease choose one of the list.");
+					return;
+				}
+				// Add new record to internal structure
+				STablemapTemplate new_template;
+				new_template.name = dlgtemplates.name;
+				new_template.left = 0;
+				new_template.top = 0;
+				new_template.right = 0;
+				new_template.bottom = 0;
+				new_template.width = 0;
+				new_template.height = 0;
+				new_template.use_default = true;
+				new_template.match_mode = -1;
+				new_template.created = false;
+
+				// Insert the new record in the existing array of z$ records
+				if (!p_tablemap->tpl$_insert(new_template))
+				{
+					MessageBox("Failed to create template record.", "Template creation error", MB_OK);
+				}
+				else
+				{
+					// Add new record to tree
+					HTREEITEM new_hti = m_TableMapTree.InsertItem(new_template.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SelectItem(new_hti);
+
+					pDoc->SetModifiedFlag(true);
+					Invalidate(false);
+				}
+			}
+		}
+	}
 }
 
 int CDlgTableMap::GetType(CString selected_text)
@@ -1732,7 +3777,7 @@ void CDlgTableMap::OnBnClickedDelete()
 		return;
 
 	// If this is not a valid record type (like a region group), then return
-	CString		valid_types("Sizes|Symbols|Regions|Fonts|Hash Points|Hashes|Images");
+	CString		valid_types("Sizes|Symbols|Regions|Fonts|Hash Points|Hashes|Images|Templates");
 	if (valid_types.Find(type_text.GetString()) == -1)
 		return;
 
@@ -1809,6 +3854,14 @@ void CDlgTableMap::OnBnClickedDelete()
 			item_deleted = true;
 	}
 
+	else if (type_text == "Templates")
+	{
+		if (p_tablemap->tpl$_erase(sel_text))
+			item_deleted = true;
+		//deleteTemplate(sel_text.GetString());
+		//pDoc->DoFileSave();
+	}
+
 	if (!item_deleted)
 	{
 		CString text;
@@ -1829,8 +3882,9 @@ void CDlgTableMap::OnBnClickedDelete()
 				prev_prev = m_TableMapTree.GetParentItem(prev);
 		}
 
-		m_TableMapTree.DeleteItem(m_TableMapTree.GetSelectedItem());
+		HTREEITEM item = m_TableMapTree.GetSelectedItem();
 		m_TableMapTree.SelectItem(prev);
+		m_TableMapTree.DeleteItem(item);
 
 		if (prev_prev != NULL && !m_TableMapTree.ItemHasChildren(prev))
 		{
@@ -2043,6 +4097,7 @@ void CDlgTableMap::OnBnClickedEdit()
 		// Prep dialog
 		CDlgEditRegion dlgregion;
 		dlgregion.titletext = "Edit Region record";
+		dlgregion.labeltext = "Record name:";
 		dlgregion.name = r_iter->second.name;
 		
 		dlgregion.strings.RemoveAll();
@@ -2080,6 +4135,11 @@ void CDlgTableMap::OnBnClickedEdit()
 		new_region.transform = r_iter->second.transform;
 		new_region.cur_bmp = r_iter->second.cur_bmp;
 		new_region.last_bmp = r_iter->second.last_bmp;
+		new_region.use_default = r_iter->second.use_default;
+		new_region.threshold = r_iter->second.threshold;
+		new_region.use_cropping = r_iter->second.use_cropping;
+		new_region.crop_size = r_iter->second.crop_size;
+		new_region.box_color = r_iter->second.box_color;
 
 		if (!p_tablemap->r$_insert(new_region))
 		{
@@ -2295,6 +4355,11 @@ void CDlgTableMap::OnBnClickedEdit()
 	{
 		// Not valid - should delete and add a new one using "Create Image" button
 	}
+
+	else if (type_text == "Templates")
+	{
+		// Not valid - should delete and add a new one using "Create Template" button
+	}
 }
 
 void CDlgTableMap::OnBnClickedCreateImage()
@@ -2308,17 +4373,89 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	CString				text, node_text, sel_region_name;
 	HTREEITEM			image_node, region_node, child_node;
 	RMapCI				sel_region = p_tablemap->r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region or template
 	sel_region = p_tablemap->r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
 
+	// Case of create card template instead of create image
+	if (type_text == "Templates") {
+		// Make sure that we are attached to a window before we do this
+		if (!pDoc->attached_hwnd)
+		{
+			MessageBox("To create a template, you must first capture\na window, using the 'Green Circle' toolbar button.",
+				"No window captured", MB_OK);
+			return;
+		}
+
+		// Get bitmap size
+		width = pDoc->attached_rect.right - pDoc->attached_rect.left;
+		height = pDoc->attached_rect.bottom - pDoc->attached_rect.top;
+
+		// Populate new image record			
+		//sel_template->second.name = edit.m_result;
+		if (sel_template->second.right < sel_template->second.left)
+		{
+			MessageBox("Template has negative width!", "ERROR", 0);
+			return;
+		}
+		else
+		{
+			sel_template->second.width = sel_template->second.right - sel_template->second.left + 1;
+		}
+		if (sel_template->second.bottom < sel_template->second.top)
+		{
+			MessageBox("Template has negative height!", "ERROR", 0);
+			return;
+		}
+		else
+		{
+			sel_template->second.height = sel_template->second.bottom - sel_template->second.top + 1;
+		}
+
+		// Allocate space for "RGBAImage"
+		text = sel_template->second.name + ".ppm";
+		sel_template->second.image = new RGBAImage(sel_template->second.width, sel_template->second.height, text.GetString());
+
+		// Populate pixel elements of struct
+		pix_cnt = 0;
+		for (y = (int)sel_template->second.top; y <= (int)sel_template->second.bottom; y++)
+		{
+			for (x = (int)sel_template->second.left; x <= (int)sel_template->second.right; x++)
+			{
+				alpha = pDoc->attached_pBits[y*width * 4 + x * 4 + 3];
+				red = pDoc->attached_pBits[y*width * 4 + x * 4 + 2];
+				green = pDoc->attached_pBits[y*width * 4 + x * 4 + 1];
+				blue = pDoc->attached_pBits[y*width * 4 + x * 4 + 0];
+
+				// image record is stored internally in ABGR format
+				sel_template->second.pixel[pix_cnt] = (alpha << 24) + (blue << 16) + (green << 8) + red;
+				sel_template->second.image->Set(red, green, blue, alpha, pix_cnt);
+
+				pix_cnt++;
+			}
+		}		
+
+		sel_template->second.created = true;
+		MessageBox("Card template created", "Info");
+
+		//Invalidate(false);
+		//pDoc->DoFileSave();
+		//update_r$_display(true);
+		//Invalidate(false);
+		//theApp.m_pMainWnd->Invalidate(false);
+		OnRegionChange();
+		pDoc->SetModifiedFlag(true);
+		return;
+	}
 
 	// Make sure that we are attached to a window before we do this
 	if (!pDoc->attached_hwnd)
@@ -2446,6 +4583,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
+	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
 	int					font_group;
 
 	CString				sel_text = "", type_text = "";
@@ -2453,10 +4591,17 @@ void CDlgTableMap::OnBnClickedCreateFont()
 
 	// Get iterator for selected region
 	sel_region = p_tablemap->r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->tpl$()->find(sel_text.GetString());
 
-	// Exit if we can't find the region record
-	if (sel_region == p_tablemap->r$()->end())
+	// Exit if we can't find the region or template record
+	if (sel_region == p_tablemap->r$()->end() && sel_template == p_tablemap->tpl$()->end())
 		return;
+
+	// Case of detect card template instead of create font
+	if (type_text == "Templates") {
+		DetectAndShowTemplate(sel_text.GetString());
+		return;
+	}
 
 	// Get the text group we are dealing with
 	font_group = atoi(sel_region->second.transform.Right(1));
@@ -2648,7 +4793,7 @@ BOOL CDlgTableMap::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 	m_BitmapFrame.GetClientRect(&bmp_rect);
 	GetCursorPos(&point);
-	m_BitmapFrame.ScreenToClient(&point);
+	m_BitmapFrame.ScreenToClient(&point);									  
 
 	if (picker_cursor &&
 		point.x >= bmp_rect.left && point.x <= bmp_rect.right &&
@@ -2919,6 +5064,15 @@ void CDlgTableMap::create_tree(void)
 
 	m_TableMapTree.SortChildren(parent);
 
+	// tpl$ records
+	parent = m_TableMapTree.InsertItem("Templates");
+	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+
+	for (TPLMapCI tpl_iter = p_tablemap->tpl$()->begin(); tpl_iter != p_tablemap->tpl$()->end(); tpl_iter++)
+		m_TableMapTree.InsertItem(tpl_iter->second.name, parent);
+
+	m_TableMapTree.SortChildren(parent);
+
 	UpdateStatus();
 }
 
@@ -2927,17 +5081,27 @@ void CDlgTableMap::OnBnClickedNudgeTaller()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.top = sel_region->second.top-1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.top = sel_template->second.top - 1;
+		sel_template->second.bottom = sel_template->second.bottom + 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -2948,17 +5112,27 @@ void CDlgTableMap::OnBnClickedNudgeShorter()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.top = sel_region->second.top+1;
 		sel_region->second.bottom = sel_region->second.bottom-1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.top = sel_template->second.top + 1;
+		sel_template->second.bottom = sel_template->second.bottom - 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -2969,17 +5143,27 @@ void CDlgTableMap::OnBnClickedNudgeWider()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.left = sel_region->second.left-1;
 		sel_region->second.right = sel_region->second.right+1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left - 1;
+		sel_template->second.right = sel_template->second.right + 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -2990,17 +5174,27 @@ void CDlgTableMap::OnBnClickedNudgeNarrower()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.left = sel_region->second.left+1;
 		sel_region->second.right = sel_region->second.right-1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left + 1;
+		sel_template->second.right = sel_template->second.right - 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -3011,12 +5205,14 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3027,6 +5223,16 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 
 		UpdateDisplayOfAllRegions();
 	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left-1;
+		sel_template->second.top = sel_template->second.top-1;
+		sel_template->second.right = sel_template->second.right+1;
+		sel_template->second.bottom = sel_template->second.bottom+1;
+
+		UpdateDisplayOfAllRegions();
+	}
 }
 
 void CDlgTableMap::OnBnClickedNudgeSmaller()
@@ -3034,12 +5240,14 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3057,6 +5265,23 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 
 		UpdateDisplayOfAllRegions();
 	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		if (sel_template->second.left + 1 <= sel_template->second.right)
+			sel_template->second.left = sel_template->second.left + 1;
+
+		if (sel_template->second.top + 1 <= sel_template->second.bottom)
+			sel_template->second.top = sel_template->second.top + 1;
+
+		if (sel_template->second.right - 1 >= sel_template->second.left)
+			sel_template->second.right = sel_template->second.right - 1;
+
+		if (sel_template->second.bottom - 1 >= sel_template->second.top)
+			sel_template->second.bottom = sel_template->second.bottom - 1;
+
+		UpdateDisplayOfAllRegions();
+	}
 }
 
 void CDlgTableMap::OnBnClickedNudgeUpleft()
@@ -3064,19 +5289,31 @@ void CDlgTableMap::OnBnClickedNudgeUpleft()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
-		sel_region->second.left = sel_region->second.left-1;
-		sel_region->second.top = sel_region->second.top-1;
-		sel_region->second.right = sel_region->second.right-1;
-		sel_region->second.bottom = sel_region->second.bottom-1;
+		sel_region->second.left = sel_region->second.left - 1;
+		sel_region->second.top = sel_region->second.top - 1;
+		sel_region->second.right = sel_region->second.right - 1;
+		sel_region->second.bottom = sel_region->second.bottom - 1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left-1;
+		sel_template->second.top = sel_template->second.top-1;
+		sel_template->second.right = sel_template->second.right-1;
+		sel_template->second.bottom = sel_template->second.bottom-1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -3089,17 +5326,27 @@ void CDlgTableMap::OnBnClickedNudgeUp()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
-		sel_region->second.top = sel_region->second.top-1;
-		sel_region->second.bottom = sel_region->second.bottom-1;
+		sel_region->second.top = sel_region->second.top - 1;
+		sel_region->second.bottom = sel_region->second.bottom - 1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.top = sel_template->second.top-1;
+		sel_template->second.bottom = sel_template->second.bottom-1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -3110,12 +5357,14 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3126,6 +5375,16 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 
 		UpdateDisplayOfAllRegions();
 	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left + 1;
+		sel_template->second.top = sel_template->second.top - 1;
+		sel_template->second.right = sel_template->second.right + 1;
+		sel_template->second.bottom = sel_template->second.bottom - 1;
+
+		UpdateDisplayOfAllRegions();
+	}
 }
 
 void CDlgTableMap::OnBnClickedNudgeRight()
@@ -3133,17 +5392,27 @@ void CDlgTableMap::OnBnClickedNudgeRight()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.left = sel_region->second.left+1;
 		sel_region->second.right = sel_region->second.right+1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left + 1;
+		sel_template->second.right = sel_template->second.right + 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -3154,12 +5423,14 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3170,6 +5441,16 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 
 		UpdateDisplayOfAllRegions();
 	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left + 1;
+		sel_template->second.top = sel_template->second.top + 1;
+		sel_template->second.right = sel_template->second.right + 1;
+		sel_template->second.bottom = sel_template->second.bottom + 1;
+
+		UpdateDisplayOfAllRegions();
+	}
 }
 
 void CDlgTableMap::OnBnClickedNudgeDown()
@@ -3177,17 +5458,27 @@ void CDlgTableMap::OnBnClickedNudgeDown()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.top = sel_region->second.top+1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.top = sel_template->second.top + 1;
+		sel_template->second.bottom = sel_template->second.bottom + 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -3198,12 +5489,14 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3214,6 +5507,16 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 
 		UpdateDisplayOfAllRegions();
 	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left - 1;
+		sel_template->second.top = sel_template->second.top + 1;
+		sel_template->second.right = sel_template->second.right - 1;
+		sel_template->second.bottom = sel_template->second.bottom + 1;
+
+		UpdateDisplayOfAllRegions();
+	}
 }
 
 void CDlgTableMap::OnBnClickedNudgeLeft()
@@ -3221,17 +5524,27 @@ void CDlgTableMap::OnBnClickedNudgeLeft()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get iterator for selected region
+	// Get iterator for selected region and template
 	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
 		sel_region->second.left = sel_region->second.left-1;
 		sel_region->second.right = sel_region->second.right-1;
+
+		UpdateDisplayOfAllRegions();
+	}
+
+	if (sel_template != p_tablemap->tpl$()->end())
+	{
+		sel_template->second.left = sel_template->second.left - 1;
+		sel_template->second.right = sel_template->second.right - 1;
 
 		UpdateDisplayOfAllRegions();
 	}
@@ -3264,11 +5577,31 @@ BOOL CDlgTableMap::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 	return true;    // message was handled
 }
 
-void CDlgTableMap::OnSizing(UINT nSide, LPRECT lpRect)
+void CDlgTableMap::OnSize(UINT nType, int cx, int cy)
 {
-	CDialog::OnSizing(nSide, lpRect);
-	const int parts = 2;
-	CRect rect;
+	CDialog::OnSize(nType, cx, cy);
+
+	if (proceed_scroll == true)
+		m_scrollHelper->OnSize(nType, cx, cy);
+}
+
+
+void CDlgTableMap::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if (pScrollBar == NULL)
+		m_scrollHelper->OnVScroll(nSBCode,
+			nPos, pScrollBar);
+}
+
+BOOL CDlgTableMap::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	BOOL wasScrolled;
+	if (proceed_scroll == true)
+		wasScrolled = m_scrollHelper->OnMouseWheel(nFlags,
+			zDelta, pt);
+	else
+		wasScrolled = FALSE;
+	return wasScrolled;
 }
 
 int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -3711,6 +6044,46 @@ HTREEITEM CDlgTableMap::FindItem(CString s, HTREEITEM start)
 	}
 
 	return NULL;
+}
+
+void CDlgTableMap::OnBnClickedUseDefault()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString	sel_text, type_text;
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
+
+	// Get iterator for selected template
+	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
+
+	if (sel_template != p_tablemap->tpl$()->end()) {
+		sel_template->second.match_mode = kDefaultMatchMode;
+	}
+
+	update_ocr_display();
+
+	theApp.m_pMainWnd->Invalidate(false);
+	Invalidate(false);
+
+	pDoc->SetModifiedFlag(true);
+}
+
+void CDlgTableMap::OnBnClickedUseCrop()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString	sel_text, type_text;
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
+	RMap::iterator r_iter = p_tablemap->set_r$()->find(sel_text.GetString());
+	
+	r_iter->second.crop_size = kDefaultCropSize;
+	r_iter->second.box_color = kDefaultBoxColor;
+
+	update_ocr_display();
+
+	theApp.m_pMainWnd->Invalidate(false);
+	Invalidate(false);
+
+	pDoc->SetModifiedFlag(true);
 }
 
 void CDlgTableMap::OnBnClickedCreateHash0()

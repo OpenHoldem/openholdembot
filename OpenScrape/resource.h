@@ -19,6 +19,9 @@
 #define IDC_DRAWRECTCURSOR              143
 #define IDD_EDIT_GR_HASHPOINTS          145
 #define IDD_COPY_REGION                 146
+#define IDD_TEXTDETECT_SETTINGS         149
+#define IDB_BITMAP1                     152
+#define IDB_NUDGEWIDERBITMAP            152
 #define IDC_TABLEMAP_TREE               1000
 #define IDC_LEFT                        1001
 #define IDC_CURRENTREGION               1002
@@ -37,6 +40,7 @@
 #define IDC_DELETE                      1015
 #define IDC_EDIT                        1016
 #define IDC_SORT                        1017
+#define IDC_OCR_VIEW                    1017
 #define IDC_CREATE_HASH                 1018
 #define IDC_CREATE_IMAGE                1019
 #define IDC_LIST_SELECT_TABLE           1020
@@ -53,7 +57,9 @@
 #define IDC_NAME                        1028
 #define IDC_CREATE_HASH3                1028
 #define IDC_WIDTH                       1029
+#define IDC_CROP_SPIN                   1029
 #define IDC_TYPE                        1030
+#define IDC_THRESHOLD_SPIN              1030
 #define IDC_VALUE                       1031
 #define IDC_CHARACTER                   1032
 #define IDC_X                           1033
@@ -105,6 +111,24 @@
 #define IDC_COMBO1                      1092
 #define IDC_EDIT1                       1093
 #define IDC_EDITXY                      1093
+#define IDC_OCRCHECK_DEFAULT            1094
+#define IDC_USE_DEFAULT                 1094
+#define IDC_OCRLIST_PDIFF               1095
+#define IDC_OCREDIT_RECOTRESHOLD        1096
+#define IDC_THRESHOLD                   1096
+#define IDC_OCRCHECK_DEFAULT2           1097
+#define IDC_OCRLIST_MODEL               1098
+#define IDC_OCREDIT_BINTRESHOLD         1099
+#define IDC_OCREDIT_POLYTRESHOLD        1100
+#define IDC_OCREDIT_UNCLIPRATIO         1101
+#define IDC_RADIO_INBUILT               1102
+#define IDC_TEST_DETECTION              1105
+#define IDC_OCRLIST_BOXCOLOR            1106
+#define IDC_USE_CROP                    1106
+#define IDC_BOX_COLOR                   1107
+#define IDC_MATCH_MODE                  1109
+#define IDC_CROP_SIZE                   1110
+#define IDC_IMG_PROC                    1111
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772
 #define ID_VIEW_SHOWREGIONBOXES         32774
@@ -122,14 +146,18 @@
 #define ID_VIEW_PREV                    32787
 #define ID_VIEW_NEXT                    32788
 #define ID_TOOLS_CLONEREGIONS           32789
+#define ID_EDIT_ENABLETEXTDETECTION     32790
+#define ID_EDIT_TEXTDETECTIONSETTINGS   32791
+#define ID_EDIT_                        32792
+#define IDC_LABEL                       65535
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        147
-#define _APS_NEXT_COMMAND_VALUE         32790
-#define _APS_NEXT_CONTROL_VALUE         1093
+#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_COMMAND_VALUE         32793
+#define _APS_NEXT_CONTROL_VALUE         1115
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

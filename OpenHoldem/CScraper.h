@@ -20,6 +20,18 @@
 #include "../CTablemap/CTablemap.h"
 #include "CSpaceOptimizedGlobalObject.h"
 
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <regex>
+
+using namespace cv;
+using namespace cv::dnn;
+using namespace tesseract;
 
 
 class CScraper : public CSpaceOptimizedGlobalObject {
@@ -36,6 +48,7 @@ class CScraper : public CSpaceOptimizedGlobalObject {
   // For scraping custom regions at the DLL-level
   bool EvaluateRegion(CString name, CString *result);
   void EvaluateTrueFalseRegion(bool *result, const CString name);
+  CString CheckEnteredBetsize();
  public:
   bool IsCommonAnimation();
  protected:
@@ -58,6 +71,7 @@ class CScraper : public CSpaceOptimizedGlobalObject {
 	void ScrapeAllPlayerCards();
   void ScrapeColourCodes();
   void ScrapeMTTRegions();
+  vector<CString> GetDetectTemplatesResult(CString area_name);
  private:
 	void ScrapeSeated(int chair);
 	void ScrapeActive(int chair);
@@ -80,8 +94,36 @@ class CScraper : public CSpaceOptimizedGlobalObject {
  private:
 	bool ProcessRegion(RMapCI r_iter);
 	bool IsExtendedNumberic(CString text);
- private:
+	BOOL SaveHBITMAPToFile(HBITMAP hBitmap, LPCTSTR lpszFileName);
+
   void ResetLimitInfo();
+
+  void detectMotion(void);
+  void detectBlobs(void);
+  void fourPointsTransform(const Mat& frame, const Point2f vertices[], Mat& result);
+  void textDetectAndRecognize(void);
+  CString RecognizeText(Mat input);
+  Mat loadTemplate(string name);
+  void deleteTemplate(string name);
+  void createTemplate(Mat input, string name);
+  RECT detectTemplate(Mat area, Mat tpl, int match_mode);
+  CString get_ocr_result(Mat img_orig, RMapCI region, bool fast = false);
+  CString process_ocr(Mat img_orig, RMapCI region, bool fast = false);
+  Mat prepareImage(Mat img_orig, Mat* img_cropped, RMapCI region, bool binarize = true, int threshold = 76);
+  Mat binarize_array_opencv(Mat image, int threshold);
+  void detectText(void);
+
+  string trim(string str) {
+	  return regex_replace(str, regex("\\s"), "");
+  }
+
+  float convertTofloat(const string& str) {
+	  float result;
+	  istringstream iss(str);
+	  iss >> result;
+	  return result;
+  }
+	
  private:
 #define ENT CSLock lock(m_critsec);
   void delete_entire_window_cur() { ENT DeleteObject(_entire_window_cur);}
@@ -97,7 +139,8 @@ class CScraper : public CSpaceOptimizedGlobalObject {
   int identical_region_counter;
  private:
 	HBITMAP			_entire_window_last;
-  HBITMAP			_entire_window_cur;
+	HBITMAP			_entire_window_cur;
+	bool	force_auto_ocr;
 };
 
 extern CScraper *p_scraper;

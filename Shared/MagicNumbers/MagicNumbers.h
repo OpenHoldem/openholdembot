@@ -581,6 +581,12 @@ const int  kMaxLogSymbolsForWhiteBox = 1;
 // For string handling
 const int kOneCharacterExtraForTerminatingNull = 1;
 
+// OCR constant
+const int kDefaultMatchMode = 0;  // TM_SQDIFF
+const int kDefaultBoxColor = 3;
+const int kYOffsetScroll = 40;
+const int kDefaultCropSize = 9;
+
 // Function to access the name of the action constants.
 // As fold is negative we can no longer use the constants 
 // as indices for an array.
