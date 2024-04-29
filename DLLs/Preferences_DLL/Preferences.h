@@ -165,6 +165,7 @@ enum {
   k_prefs_rebuy_script,
   k_prefs_window_class_name,
   k_prefs_mutex_name,
+  k_prefs_unwanted_scrape,
   // leave this always at the last position
   k_prefs_last_CString_value,
 };
@@ -195,6 +196,7 @@ public:
   const bool use_auto_replay() { return prefs_numerical_values[k_prefs_use_auto_replay]; }
   // Scraper
   const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
+  CString unwanted_scrape() { return NonEmptyStringValueElseDefault(k_prefs_unwanted_scrape); }
   // Replay Frames
   const int replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
   const int replay_max_frames() { return prefs_numerical_values[k_prefs_replay_max_frames]; }
