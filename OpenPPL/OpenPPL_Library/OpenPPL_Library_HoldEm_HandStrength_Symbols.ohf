@@ -459,7 +459,8 @@ NumberOfInsideStraightDraws >= 2
 + HaveGutshotTo5432AStraight
 
 ##HaveGutshotToAKQJTStraight##
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 10) & 0b11111) = 4 RETURN false FORCE
 WHEN BitCount((rankbits >> 10) & 0b11111) != 4 RETURN false FORCE
 WHEN Others RETURN true FORCE
 
@@ -467,10 +468,11 @@ WHEN Others RETURN true FORCE
 //Preventing the continuation of previous gutshots,
 //e.g. when we are holding Qx on a board AKT9.
 WHEN HaveGutshotToAKQJTStraight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 9) & 0b11111) = 4 RETURN false FORCE
 WHEN BitCount((rankbits >> 9) & 0b11111) != 4 RETURN false FORCE
 //This prevents holding K9, Q9, J9, T9 and the hi-card already paired,
-//or any gutshot-draw where we only contribute with one card and it's a 9, 
+//or any gutshot-draw where we only contribute with one card and it's a 9,
 //e.g. when we are holding J9 on a board KQJ, or 9x on KJT.
 WHEN BitCount((rankbitscommon >> 9) & 0b11110) <= 2 RETURN true FORCE
 
@@ -478,88 +480,136 @@ WHEN BitCount((rankbitscommon >> 9) & 0b11110) <= 2 RETURN true FORCE
 //Preventing the continuation of previous gutshot,
 //e.g. when we are holding Jx on a board KQ98.
 WHEN HaveGutshotToKQJT9Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 8) & 0b11111) = 4 RETURN false FORCE
 WHEN BitCount((rankbits >> 8) & 0b11111) != 4 RETURN false FORCE
-//This prevents holding Q8, J8, T8, 98 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 8, 
-//e.g. when we are holding T8 on a board QJT, or 8x in QT9.
-WHEN BitCount((rankbitscommon >> 8) & 0b11110) <= 2 RETURN true FORCE 
+// Preventing idiot-end gutshots
+// e.g. when we are holding 98 on a board AQJ or AQT
+WHEN BitCount((rankbitscommon >> 10) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 8) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 9x on a board KQJ, KQT or KJT
+WHEN BitCount((rankbitscommon >> 9) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding Q8, J8, T8, 98 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 8,
+// e.g. when we are holding T8 on a board QJT, or 8x in QT9.
+WHEN BitCount((rankbitscommon >> 8) & 0b11110) <= 2 RETURN true FORCE
 
 ##HaveGutshotToJT987Straight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding Tx on a board QJ87.
 WHEN HaveGutshotToQJT98Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 7) & 0b11111) = 4 RETURN false FORCE
 WHEN BitCount((rankbits >> 7) & 0b11111)!= 4 RETURN false FORCE
-//This prevents holding J7, T7, 97, 87 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 7, 
-//e.g. when we are holding 97 on a board JT9, or 7x in J98.
+// Preventing idiot-end gutshots
+// e.g. when we are holding 87 on a board KJT or KJ9
+WHEN BitCount((rankbitscommon >> 9) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 7) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 8x on a board QJT, QJ9 or QT9
+WHEN BitCount((rankbitscommon >> 8) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding J7, T7, 97, 87 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 7,
+// e.g. when we are holding 97 on a board JT9, or 7x in J98.
 WHEN BitCount((rankbitscommon >> 7) & 0b11110) <= 2 RETURN true FORCE
 
 ##HaveGutshotToT9876Straight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding 9x on a board JT76.
 WHEN HaveGutshotToJT987Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
-WHEN BitCount((rankbits >> 6) & 0b11111) != 4 RETURN false FORCE 
-//This prevents holding T6, 96, 86, 76 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 6, 
-//e.g. when we are holding 86 on a board T98, or 6x in T87.
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 6) & 0b11111) = 4 RETURN false FORCE
+WHEN BitCount((rankbits >> 6) & 0b11111) != 4 RETURN false FORCE
+// Preventing idiot-end gutshots
+// e.g. when we are holding 76 on a board QT9 or QT8
+WHEN BitCount((rankbitscommon >> 8) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 6) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 7x on a board JT9, JT8 or J98
+WHEN BitCount((rankbitscommon >> 7) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding T6, 96, 86, 76 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 6,
+// e.g. when we are holding 86 on a board T98, or 6x in T87.
 WHEN BitCount((rankbitscommon >> 6) & 0b11110) <= 2 RETURN true FORCE
 
 ##HaveGutshotTo98765Straight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding 8x on a board T965.
 WHEN HaveGutshotToT9876Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
-WHEN BitCount((rankbits >> 5) & 0b11111) != 4 RETURN false FORCE 
-//This prevents holding 95, 85, 75, 65 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 5, 
-//e.g. when we are holding 75 on a board 987, or 5x in 976.
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 5) & 0b11111) = 4 RETURN false FORCE
+WHEN BitCount((rankbits >> 5) & 0b11111) != 4 RETURN false FORCE
+// Preventing idiot-end gutshots
+// e.g. when we are holding 65 on a board J98 or J97
+WHEN BitCount((rankbitscommon >> 7) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 5) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 6x on a board T98, T97 or T87
+WHEN BitCount((rankbitscommon >> 6) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding 95, 85, 75, 65 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 5,
+// e.g. when we are holding 75 on a board 987, or 5x in 976.
 WHEN (BitCount((rankbitscommon >> 5) & 0b11110) <= 2) RETURN true FORCE
 
 ##HaveGutshotTo87654Straight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding 7x on a board 9854.
 WHEN HaveGutshotTo98765Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
-WHEN BitCount((rankbits >> 4) & 0b11111) != 4 RETURN false FORCE 
-//This prevents holding 84, 74, 64, 54 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 4, 
-//e.g. when we are holding 64 on a board 876, or 4x in 865.
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 4) & 0b11111) = 4 RETURN false FORCE
+WHEN BitCount((rankbits >> 4) & 0b11111) != 4 RETURN false FORCE
+// Preventing idiot-end gutshots
+// e.g. when we are holding 54 on a board T87 or T86
+WHEN BitCount((rankbitscommon >> 6) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 4) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 5x on a board 987, 986 or 976
+WHEN BitCount((rankbitscommon >> 5) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding 84, 74, 64, 54 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 4,
+// e.g. when we are holding 64 on a board 876, or 4x in 865.
 WHEN (BitCount((rankbitscommon >> 4) & 0b11110) <= 2) RETURN true FORCE
 
 ##HaveGutshotTo76543Straight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding 6x on a board 8743.
 WHEN HaveGutshotTo87654Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
-WHEN BitCount((rankbits >> 3) & 0b11111) != 4 RETURN false FORCE 
-//This prevents holding 73, 63, 53, 43 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 3, 
-//e.g. when we are holding 53 on a board 765, or 3x in 754.
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 3) & 0b11111) = 4 RETURN false FORCE
+WHEN BitCount((rankbits >> 3) & 0b11111) != 4 RETURN false FORCE
+// Preventing idiot-end gutshots
+// e.g. when we are holding 43 on a board 976 or 975
+WHEN BitCount((rankbitscommon >> 5) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 3) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 4x on a board 876, 875 or 865
+WHEN BitCount((rankbitscommon >> 4) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding 73, 63, 53, 43 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 3,
+// e.g. when we are holding 53 on a board 765, or 3x in 754.
 WHEN BitCount((rankbitscommon >> 3) & 0b11110) <= 2 RETURN true FORCE
 
 ##HaveGutshotTo65432Straight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding 5x on a board 7632.
 WHEN HaveGutshotTo76543Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
-WHEN BitCount((rankbits >> 2) & 0b11111) != 4 RETURN false FORCE 
-//This prevents holding 62, 52, 42, 32 and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a 2,
-//e.g. when we are holding 42 on a board 654, or 2x in 643.
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 2) & 0b11111) = 4 RETURN false FORCE
+WHEN BitCount((rankbits >> 2) & 0b11111) != 4 RETURN false FORCE
+// Preventing idiot-end gutshots
+// e.g. when we are holding 32 on a board 865 or 864
+WHEN BitCount((rankbitscommon >> 4) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 2) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 3x on a board 765, 764 or 754
+WHEN BitCount((rankbitscommon >> 3) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding 62, 52, 42, 32 and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a 2,
+// e.g. when we are holding 42 on a board 654, or 2x in 643.
 WHEN BitCount((rankbitscommon >> 2) & 0b11110) <= 2 RETURN true FORCE
 
 ##HaveGutshotTo5432AStraight##
 //Preventing the continuation of previous gutshot.
 //e.g. when we are holding 4x on a board 652A.
 WHEN HaveGutshotTo65432Straight RETURN false FORCE
-WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
-WHEN BitCount((rankbits >> 1) & 0b11111) != 4 RETURN false FORCE 
-//This prevents holding 5A, 4A, 3A, 2A and the hi-card already paired, 
-//or any gutshot-draw where we only contribute with one card and it's a A, 
-//e.g. when we are holding 3A on a board 543, or Ax in 532.
+WHEN HaveOpenEndedStraightDraw RETURN false FORCE
+WHEN BitCount((rankbitscommon >> 1) & 0b11111) = 4 RETURN false FORCE
+WHEN BitCount((rankbits >> 1) & 0b11111) != 4 RETURN false FORCE
+// Preventing idiot-end gutshots
+// e.g. when we are holding A2 on a board 754, 753 or 743
+WHEN BitCount((rankbitscommon >> 3) & 0b10111) == 3 AND BitCount((rankbitsplayer >> 1) & 0b10) = 1 RETURN false FORCE
+// e.g. when we are holding 2x on a board 654, 653 or 643
+WHEN BitCount((rankbitscommon >> 2) & 0b11110) == 3 RETURN false FORCE
+// This prevents holding 5A, 4A, 3A, 2A and the hi-card already paired,
+// or any gutshot-draw where we only contribute with one card and it's a A,
+// e.g. when we are holding 3A on a board 543, or Ax in 532.
 WHEN BitCount((rankbitscommon >> 1) & 0b11110) <= 2 RETURN true FORCE
 
 ##HoldEm_HaveFlush##

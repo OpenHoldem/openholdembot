@@ -127,7 +127,7 @@ When EarlyStage 	Return 1 Force
 
 ##f$Stack_12P##
 // WHEN EffectiveActiveStackInBigBlinds >= 12 Return true FORCE
-EffectiveMzone >= 12*f$Mfactor
+WHEN EffectiveMzone >= 12*f$Mfactor
 
 
 ##Mzone##

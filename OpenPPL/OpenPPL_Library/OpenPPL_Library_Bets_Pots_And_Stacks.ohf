@@ -84,8 +84,15 @@ WHEN (bblind <= 0) RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_Tabl
 WHEN (stack0 == balance) RETURN (stack1 / bblind) FORCE 
 WHEN Others RETURN (stack0 / bblind) FORCE 
 
-##EffectiveMaxStacksizeOfActiveOpponents##
-(StackSize <= MaxStacksizeOfActiveOpponents) ? StackSize : MaxStacksizeOfActiveOpponents
+##TheBiggestActiveOpponentsChips##
+balance_bigstackchair + currentbet_bigstackchair
+
+##TheBiggestActiveOpponentsStack##
+f$TheBiggestActiveOpponentsChips / bblind
+
+##EffectiveMaxStacksizeOfActiveOpponents## 
+balance + currentbet < f$TheBiggestActiveOpponentsChips ? (balance + currentbet) / bblind :
+f$TheBiggestActiveOpponentsStack
 
 ##MaxStillToActStackSize##
 // Per definition for first orbit preflop only
