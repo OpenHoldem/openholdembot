@@ -117,6 +117,36 @@ void CAutoplayerTrace::Add(CString symbol, double value, bool undefined /* = fal
   _number_of_log_lines++;
 }
 
+void CAutoplayerTrace::Add(CString symbol, CString value, bool undefined /* = false */) {
+	ENT
+		write_log(Preferences()->debug_auto_trace(),
+			"[CAutoplayerTrace] Add (%s, %s)\n",
+			symbol, value);
+	if (!SymbolNeedsToBeLogged(symbol)) return;
+	CString new_message;
+	if (undefined) {
+		// For empty functions with NULL parse-tree
+		assert(value == "");
+		new_message.Format("%s%s = %s   [undefined]",
+			Indentation(), symbol, value);
+	}
+	else if (COHScriptObject::IsFunction(symbol)
+		|| COHScriptObject::IsOpenPPLSymbol(symbol)) {
+		// Function with known value a priori
+		new_message.Format("%s%s = %s   [cached]",
+			Indentation(), symbol, value);
+	}
+	else {
+		// "Normal" symbol
+		new_message.Format("%s%s = %s",
+			Indentation(), symbol, value);
+	}
+	_symboltrace_collection.Add(new_message);
+	_already_logged_symbols[symbol] = true;
+	_number_of_log_lines++;
+}
+
+
 void CAutoplayerTrace::BackPatchValueAndLine(
     int index, double value, int starting_line_of_function, CString path) {
   assert(index >= 0);

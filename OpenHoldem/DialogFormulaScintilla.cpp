@@ -2094,6 +2094,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "prtie", "the probability of pushing this hand (0.000 - 1.000)");
 	AddSymbol(parent, "prwinnow", "probability that all opponents have a lower hand right now");
 	AddSymbol(parent, "prlosnow", "probability that any opponents have a higher hand right now");
+	AddSymbol(parent, "prw1326_useme", "check value of prw1326->useme (if it is 1326 then prw1326 is enabled)");
+	AddSymbol(parent, "prw1326_usepreflop", "check value of prw1326->preflop (if it is 1326 then prw1326 is enabled for preflop)");
+	AddSymbol(parent, "prw1326_usecallback", "check value of prw1326->usecallback (if it is 1326 then prw1326 callback is invoked)");
 	AddSymbol(parent, "random", "random number between (0.000-1.000) - gets evaluated once per heartbeat.");
 	AddSymbol(parent, "randomhand", "random number between (0.000-1.000) for the hand");
 	AddSymbol(parent, "randomround", "random number between (0.000-1.000) for the current round");

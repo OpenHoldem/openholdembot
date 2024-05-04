@@ -116,6 +116,11 @@ double CParseTreeNode::Evaluate(bool log /* = false */) {
 }
 
 // virtual 
+CString CParseTreeNode::EvaluateString(bool log /* = false */) {
+	return "";
+}
+
+// virtual 
 CString CParseTreeNode::EvaluateToString(bool /* log = false */) {
   return "";
 }

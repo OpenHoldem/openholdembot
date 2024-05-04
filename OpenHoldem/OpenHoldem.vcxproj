@@ -266,6 +266,7 @@
     <ClCompile Include="CSymbolengineUserDLL.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
+    <ClCompile Include="CSymbolEngineRange.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CTableTitle.cpp" />
     <ClCompile Include="CTitleEvaluator.cpp" />
@@ -552,6 +553,7 @@
     <ClInclude Include="CSymbolengineUserDLL.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
+    <ClInclude Include="CSymbolEngineRange.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CTableTitle.h" />
     <ClInclude Include="CTitleEvaluator.h" />

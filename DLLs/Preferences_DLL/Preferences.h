@@ -77,6 +77,7 @@ enum {
   k_prefs_debug_allin_adjustment,
   k_prefs_debug_handreset_detector,
   k_prefs_debug_engine_container,
+  k_prefs_debug_enhanced_prwin,
   k_prefs_debug_dll_extension,
   k_prefs_debug_scraper_preprocessor,
   k_prefs_debug_openholdem,
@@ -253,6 +254,7 @@ public:
   const bool  debug_allin_adjustment() { return prefs_numerical_values[k_prefs_debug_allin_adjustment]; }
   const bool  debug_handreset_detector() { return prefs_numerical_values[k_prefs_debug_handreset_detector]; }
   const bool  debug_engine_container() { return prefs_numerical_values[k_prefs_debug_engine_container]; }
+  const bool  debug_enhanced_prwin() { return prefs_numerical_values[k_prefs_debug_enhanced_prwin]; }
   const bool  debug_preferences() { return prefs_numerical_values[k_prefs_debug_preferences]; }
   const bool  debug_dll_extension() { return prefs_numerical_values[k_prefs_debug_dll_extension]; }
   const bool  debug_openholdem() { return prefs_numerical_values[k_prefs_debug_openholdem]; }

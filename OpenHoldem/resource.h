@@ -145,14 +145,23 @@
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120
 #define IDC_CHECK8                      1121
+#define IDC_ICM_1                       1121
 #define IDC_CHECK9                      1122
+#define IDC_ICM_2                       1122
 #define IDC_CHECK10                     1123
+#define IDC_ICM_3                       1123
 #define IDC_CHECK11                     1124
+#define IDC_ICM_4                       1124
 #define IDC_CHECK12                     1125
+#define IDC_ICM_5                       1125
 #define IDC_CHECK13                     1126
+#define IDC_ICM_6                       1126
 #define IDC_CHECK14                     1127
+#define IDC_ICM_7                       1127
 #define IDC_CHECK15                     1128
+#define IDC_ICM_8                       1128
 #define IDC_CHECK16                     1129
+#define IDC_ICM_9                       1129
 #define IDC_CHECK17                     1130
 #define IDC_CHECK18                     1131
 #define IDC_CHECK19                     1132
@@ -404,6 +413,8 @@
 #define IDC_DEBUG_SCRAPER_PREPROCESSOR  1386
 #define IDC_DEBUG_HOPPER_MESSAGES       1387
 #define IDC_ALWAYS_KEEP_POSITION        1388
+#define IDC_DEBUG_ENGINE_CONTAINER2     1388
+#define IDC_DEBUG_ENHANCED_PRWIN        1388
 #define IDC_RADIO_POPUP_DISABLED        1389
 #define IDC_RADIO_POPUP_MINIMIZE        1390
 #define IDC_RADIO_POPUP_KILL            1391
@@ -442,15 +453,6 @@
 #define IDC_RADIO_GUI_FIRST_VISIBLE     1424
 #define IDC_RADIO_GUI_ALL_MINIMIZED     1425
 #define IDC_RADIO_GUI_LESS              1426
-#define IDC_ICM_1                       1121
-#define IDC_ICM_2                       1122
-#define IDC_ICM_3                       1123
-#define IDC_ICM_4                       1124
-#define IDC_ICM_5                       1125
-#define IDC_ICM_6                       1126
-#define IDC_ICM_7                       1127
-#define IDC_ICM_8                       1128
-#define IDC_ICM_9                       1129
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -555,7 +557,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        189
+#define _APS_NEXT_RESOURCE_VALUE        190
 #define _APS_NEXT_COMMAND_VALUE         33000
 #define _APS_NEXT_CONTROL_VALUE         1427
 #define _APS_NEXT_SYMED_VALUE           101

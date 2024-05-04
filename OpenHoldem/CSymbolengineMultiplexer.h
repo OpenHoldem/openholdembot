@@ -35,15 +35,21 @@ class CSymbolEngineMultiplexer: public CVirtualSymbolEngine {
  public:
 	// Public accessors
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, CString *result, bool log = false);
 	CString SymbolsProvided();
+	bool IsValidPostfix() {
+		return (_no_postfix || _valid_postfix);
+	}
+	// Not inline, because it is recursive
+	CString MultiplexedSymbolName(CString name);
  private:
   // These functions get called only once
   // and at least FastExitOnLastCharacter(( gets called very often
   // so we make them inline.
   inline bool FastExitOnLastCharacter(int last_character_of_symbol);
- private:
-  // Not inline, because it is recursive
-  CString MultiplexedSymbolName(CString name);
+private:
+	bool _no_postfix;
+	bool _valid_postfix;
 };
 
 #endif INC_CSYMBOLENGINEMULTIPLEXER_H

@@ -24,6 +24,7 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
   virtual ~CParseTreeTerminalNodeIdentifier();
  public:
   virtual double Evaluate(bool log = false);
+  virtual CString EvaluateString(bool log = false);
   virtual CString EvaluateToString(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
  public:
@@ -33,6 +34,7 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
   // Might be called by CSymbolEngineMemorySymbols
   // to evaluate right-hand-side expressions
   static double EvaluateIdentifier(CString name, bool log);
+  static CString EvaluateStringIdentifier(CString name, bool log);
  private:
   bool IsBinaryIdentifier();
  protected:
