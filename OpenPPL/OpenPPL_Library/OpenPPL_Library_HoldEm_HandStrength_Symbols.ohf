@@ -661,19 +661,42 @@ OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
 [ishistraight OR HaveNutStraightFlush]
 
 ##HoldEm_MyKicker##
-WHEN isfourofakind  RETURN MadeHandFifthCardRank  FORCE
-WHEN istwopair      RETURN MadeHandFifthCardRank  FORCE
-WHEN isthreeofakind RETURN MadeHandFourthCardRank FORCE
-WHEN isonepair      RETURN MadeHandThirdCardRank  FORCE
-WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
+HoldEm_NumberOfBetterKickers = 0 ? 14 :
+HoldEm_MyKicker_Calc
 
 ##HoldEm_NumberOfBetterKickers##
 // Cards better than my kicker...
-[(ace - MyKicker)
 // ...minus the cards in my 5-card-hand which are better than my kicker
 // (We have to shift the kicker out of rankbitspoker, therefore +1)
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
-- (BitCount(rankbitspoker >> (MyKicker + 1)))]
+//
+(ace - HoldEm_MyKicker_Calc) - (BitCount(rankbitspoker >> (HoldEm_MyKicker_Calc + 1)))
+
+##HoldEm_MyKicker_Calc##
+WHEN (isfourofakind OR istwopair OR isthreeofakind OR isonepair)
+   WHEN BestNonPairedHoleCardRank >= MadeHandFifthCardRank RETURN BestNonPairedHoleCardRank FORCE
+   WHEN Others RETURN MadeHandFifthCardRank FORCE
+WHEN Others
+   WHEN Others RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
+   
+##PairRank##
+WHEN HavePair
+	WHEN HaveTopPair RETURN TopPairRank FORCE
+	WHEN HaveSecondTopPair RETURN SecondTopPairRank FORCE
+	WHEN HaveThirdTopPair RETURN ThirdTopPairRank FORCE
+	WHEN HaveFourthTopPair RETURN FourthTopPairRank FORCE
+	WHEN HaveFifthTopPair RETURN FifthTopPairRank FORCE
+
+##BestHoleCardRank##
+RankOfFirstHoleCard > RankOfSecondHoleCard ? RankOfFirstHoleCard : RankOfSecondHoleCard
+
+##SecondBestHoleCardRank##
+RankOfFirstHoleCard < RankOfSecondHoleCard ? RankOfFirstHoleCard : RankOfSecondHoleCard
+
+##BestNonPairedHoleCardRank##
+WHEN BestHoleCardRank = PairRank RETURN SecondBestHoleCardRank FORCE
+WHEN Others RETURN BestHoleCardRank FORCE
+
 
 ##RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010

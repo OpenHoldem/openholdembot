@@ -294,7 +294,7 @@ OR (f$wheeldraw AND NOT PairOnBoard)) ? 1 : 0
 
 ##f$wheeldraw##
 // !!! Does not consider all wheels
-(rankbits>>9==0b111100)                                 // AKQJ
+(rankbits>>10==0b11110)                                 // AKQJ
 OR (rankbits & 0b0000000000011110)==0b0000000000011110  // 432A
 
 ##f$safeboard##
