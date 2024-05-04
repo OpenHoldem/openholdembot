@@ -1229,16 +1229,10 @@ BEGIN
     0
 END
 
-<<<<<<< HEAD
-IDD_SAPREFS4 AFX_DIALOG_LAYOUT
-=======
 IDD_SAPREFS20 AFX_DIALOG_LAYOUT
->>>>>>> origin/oh_prw1326_on_script_level
 BEGIN
     0
 END
-
-<<<<<<< HEAD
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1266,9 +1260,6 @@ BEGIN
 0x7542, 0x7474, 0x6e6f, "\076" 
     0
 END
-
-=======
->>>>>>> origin/oh_prw1326_on_script_level
 
 /////////////////////////////////////////////////////////////////////////////
 //
