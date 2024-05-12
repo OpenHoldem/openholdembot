@@ -610,7 +610,7 @@ void CScraper::ScrapeName(int chair) {
 		while (!Token.IsEmpty())
 		{
 			// Get next token.
-			Token = Preferences()->unwanted_scrape().Tokenize(Separator, Position);
+			Token = CString(Preferences()->unwanted_scrape()).Tokenize(Separator, Position);
 			Token.MakeLower();
 			//
 			// Handle User RegEx and all exact user token matches
@@ -634,7 +634,7 @@ void CScraper::ScrapeName(int chair) {
 		while (!Token.IsEmpty())
 		{
 			// Get next token.
-			Token = Preferences()->unwanted_scrape().Tokenize(Separator, Position);
+			Token = CString(Preferences()->unwanted_scrape()).Tokenize(Separator, Position);
 			Token.MakeLower();
 			//
 			// Handle User RegEx and all exact user token matches

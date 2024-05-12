@@ -22,6 +22,8 @@ using namespace std;
 #include "DialogSAPrefs4.h"
 
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "..\DLLs\Globals_DLL\globals.h"
+#include "..\DLLs\Preferences_DLL\Preferences.h"
 
 // CDlgSAPrefs4 dialog
 
@@ -67,7 +69,7 @@ BOOL CDlgSAPrefs4::OnInitDialog()
 	while (!Token.IsEmpty())
 	{
 		// Get next token.
-		Token = Preferences()->unwanted_scrape().Tokenize(Separator, Position);
+		Token = CString(Preferences()->unwanted_scrape()).Tokenize(Separator, Position);
 		if (!Token.IsEmpty()) {
 			m_UnwantedScrape.AddItem(Token);
 		}

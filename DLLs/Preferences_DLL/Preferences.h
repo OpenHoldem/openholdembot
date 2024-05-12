@@ -197,7 +197,7 @@ public:
   const bool use_auto_replay() { return prefs_numerical_values[k_prefs_use_auto_replay]; }
   // Scraper
   const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
-  CString unwanted_scrape() { return NonEmptyStringValueElseDefault(k_prefs_unwanted_scrape); }
+  LPCSTR unwanted_scrape() { return NonEmptyStringValueElseDefault(k_prefs_unwanted_scrape); }
   // Replay Frames
   const int replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
   const int replay_max_frames() { return prefs_numerical_values[k_prefs_replay_max_frames]; }
