@@ -2455,7 +2455,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
 	CString				node_text = "";
 	HTREEITEM			parent = GetRecordTypeNode(m_TableMapTree.GetSelectedItem());
-	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
+	CArray <STablemapFont, STablemapFont>		new_t$_recs[8];
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
 	int					font_group;
@@ -2573,7 +2573,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		dlg_editfont.delete_sort_enabled = true;
 		dlg_editfont.group = font_group;
 
-		for (int i=0; i<=3; i++)
+		for (int i=0; i<8; i++)
 			dlg_editfont.new_t$_recs[i] = &new_t$_recs[i];
 
 		if (dlg_editfont.DoModal() == IDOK) 
