@@ -6,6 +6,13 @@ https://github.com/OpenHoldem/openholdembot/releases/download/OpenHoldem_14_0_2_
 
 </p>
 
+<h2>Talk to us :) </h2>
+<p>
+Join our discussions here:
+
+https://github.com/OpenHoldem/openholdembot/discussions
+</p>
+
 <h2>Stay Safe Folks:</h2>
 <p>
 Unfortunately there are scams and rogue or unofficial versions of OpenHoldem available, these are unsafe and cause you stealth vulnerabilities.
