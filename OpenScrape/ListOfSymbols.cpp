@@ -33,7 +33,7 @@ CString ListOfSymbols() {
   list += RangeOfSymbols("i%ibuttonhotkey", 0, 9);
   list += RangeOfSymbols("i%ibuttondefaultlabel", 0, 9);
   list += RangeOfSymbols("i86%ibuttonclickmethod", 0, 9);
-  list += RangeOfSymbols("t%itype", 0, 3);
+  list += RangeOfSymbols("t%itype", 0, 9);
   list += "allinconfirmationmethod ";
   list += "betpotmethod ";
   list += "betpot_2_1buttonhotkey ";

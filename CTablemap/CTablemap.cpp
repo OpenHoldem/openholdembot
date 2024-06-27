@@ -268,10 +268,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 	write_log(Preferences()->debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
 #endif
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
-	CString		MaxFontGroup = "", MaxHashGroup = "";
 	int			  pos = 0, x = 0, y = 0;
-	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
-	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
 	// temp
 	STablemapSize      hold_size;
 	STablemapSymbol    hold_symbol;
@@ -533,7 +530,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		else if (strLineType.Left(2) == "t$" ||
 				 (strLineType.Left(1) == 't' &&
 				  strLineType[1] >= '0' &&
-				  CString(strLineType[1]) < MaxFontGroup &&
+				  atoi(strLineType.Mid(1, 1)) < k_max_number_of_font_groups_in_tablemap &&
 				  strLineType[2] == '$')) 
 		{
 
@@ -578,7 +575,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		// Handle p$ lines (hash points)
 		else if (strLineType.Left(1) == 'p' &&
 				 strLineType[1] >= '0' &&
-				 CString(strLineType[1]) < MaxHashGroup &&
+				 atoi(strLineType.Mid(1, 1)) < k_max_number_of_hash_groups_in_tablemap &&
 				 strLineType[2] == '$') 
 		{
 			// number
@@ -630,7 +627,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		// Handle h$ lines (hash values)
 		else if (strLineType.Left(1) == 'h' &&
 				 strLineType[1] >= '0' &&
-				 CString(strLineType[1]) < MaxHashGroup &&
+				 atoi(strLineType.Mid(1, 1)) < k_max_number_of_hash_groups_in_tablemap &&
 				 strLineType[2] == '$') 
 		{
 			// number

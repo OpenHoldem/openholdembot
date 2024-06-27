@@ -259,6 +259,12 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Transform.AddString("Text1");
 	m_Transform.AddString("Text2");
 	m_Transform.AddString("Text3");
+	m_Transform.AddString("Text4");
+	m_Transform.AddString("Text5");
+	m_Transform.AddString("Text6");
+	m_Transform.AddString("Text7");
+	m_Transform.AddString("Text8");
+	m_Transform.AddString("Text9");
 	m_Transform.AddString("Hash0");
 	m_Transform.AddString("Hash1");
 	m_Transform.AddString("Hash2");
@@ -746,7 +752,13 @@ void CDlgTableMap::OnRegionChange()
 		text == "Text0" ? "T0" :
 		text == "Text1" ? "T1" :
 		text == "Text2" ? "T2" :
-		text == "Text3" ? "T3" : 
+		text == "Text3" ? "T3" :
+		text == "Text4" ? "T4" :
+		text == "Text5" ? "T5" :
+		text == "Text6" ? "T6" :
+		text == "Text7" ? "T7" :
+		text == "Text8" ? "T8" :
+		text == "Text9" ? "T9" :
 		text == "Hash0" ? "H0" :
 		text == "Hash1" ? "H1" :
 		text == "Hash2" ? "H2" :
@@ -1123,6 +1135,12 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	else if (sel_region->second.transform == "T1")		selected_transform = "Text1";
 	else if (sel_region->second.transform == "T2")		selected_transform = "Text2";
 	else if (sel_region->second.transform == "T3")		selected_transform = "Text3";
+	else if (sel_region->second.transform == "T4")		selected_transform = "Text4";
+	else if (sel_region->second.transform == "T5")		selected_transform = "Text5";
+	else if (sel_region->second.transform == "T6")		selected_transform = "Text6";
+	else if (sel_region->second.transform == "T7")		selected_transform = "Text7";
+	else if (sel_region->second.transform == "T8")		selected_transform = "Text8";
+	else if (sel_region->second.transform == "T9")		selected_transform = "Text9";
 	else if (sel_region->second.transform == "H0")		selected_transform = "Hash0";
 	else if (sel_region->second.transform == "H1")		selected_transform = "Hash1";
 	else if (sel_region->second.transform == "H2")		selected_transform = "Hash2";
@@ -1280,7 +1298,7 @@ void CDlgTableMap::update_t$_display(void)
 
 	// Get record lookup info from name
 	int font_type = GetType(sel_text);
-	if (font_type<0 || font_type>3)
+	if (font_type<0 || font_type>k_max_number_of_font_groups_in_tablemap-1)
 		return;
 
 	CString hexmash = sel_text.Mid(sel_text.Find("[")+1, sel_text.Find("]") - sel_text.Find("[") - 1);
@@ -1765,7 +1783,7 @@ void CDlgTableMap::OnBnClickedDelete()
 	else if (type_text == "Fonts")
 	{
 		int font_type = GetType(sel_text);
-		if (font_type<0 || font_type>3)
+		if (font_type<0 || font_type>k_max_number_of_font_groups_in_tablemap-1)
 			return;
 
 		CString hexmash = sel_text.Mid(sel_text.Find("[")+1, sel_text.Find("]") - sel_text.Find("[") - 1);
@@ -2102,7 +2120,7 @@ void CDlgTableMap::OnBnClickedEdit()
 	{
 		// Get selected font record
 		int font_group = GetType(sel_text);
-		if (font_group<0 || font_group>3)
+		if (font_group<0 || font_group>k_max_number_of_font_groups_in_tablemap-1)
 			return;
 
 		CString hexmash = sel_text.Mid(sel_text.Find("[")+1, sel_text.Find("]") - sel_text.Find("[") - 1);
@@ -2443,7 +2461,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
 	CString				node_text = "";
 	HTREEITEM			parent = GetRecordTypeNode(m_TableMapTree.GetSelectedItem());
-	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
+	CArray <STablemapFont, STablemapFont>		new_t$_recs[k_max_number_of_font_groups_in_tablemap];
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
 	int					font_group;
@@ -2493,7 +2511,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	DeleteDC(hdcScreen);
 
 	// Scan through background, separate characters by looking for background bands
-	for (int i=0; i<=3; i++)
+	for (int i=0; i<k_max_number_of_font_groups_in_tablemap; i++)
 		new_t$_recs[i].RemoveAll();
 
 	int start = 0;
@@ -2561,7 +2579,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		dlg_editfont.delete_sort_enabled = true;
 		dlg_editfont.group = font_group;
 
-		for (int i=0; i<=3; i++)
+		for (int i=0; i<k_max_number_of_font_groups_in_tablemap; i++)
 			dlg_editfont.new_t$_recs[i] = &new_t$_recs[i];
 
 		if (dlg_editfont.DoModal() == IDOK) 
@@ -2865,7 +2883,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Fonts");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 	
-	for (int i=0; i<=3; i++)
+	for (int i=0; i<k_max_number_of_font_groups_in_tablemap; i++)
 	{
 		for (TMapCI t_iter=p_tablemap->t$(i)->begin(); t_iter!=p_tablemap->t$(i)->end(); t_iter++)
 		{

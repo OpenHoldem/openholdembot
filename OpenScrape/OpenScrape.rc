@@ -64,14 +64,18 @@ END
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "res\\OpenScrape.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 IDB_PICKERBITMAP        BITMAP                  "res\\picker.bmp"
+
 IDB_DRAWRECTBITMAP      BITMAP                  "res\\drawrect.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -183,16 +187,16 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About this program"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    ICON            IDR_MAINFRAME, IDC_STATIC, 11, 17, 21, 20
-    LTEXT           "OpenScrape", IDC_STATIC, 32, 10, 208, 8, SS_NOPREFIX
-    LTEXT           "Version 13.1.3", IDC_STATIC, 32, 22, 208, 8, SS_NOPREFIX
-    LTEXT           "Licensed under GPLv3", IDC_STATIC, 32, 34, 208, 8
-    LTEXT           "http://www.maxinmontreal.com/forums/index.php", IDC_STATIC, 32, 54, 208, 8
-    LTEXT           "https://github.com/OpenHoldem/openholdembot/", IDC_STATIC, 32, 66, 208, 8
-    LTEXT           "http://www.gnu.org/licenses/gpl.html", IDC_STATIC, 32, 78, 208, 8
-    LTEXT           "Disclaimer: this is an open-source project.", IDC_STATIC, 32, 98, 208, 8, SS_NOPREFIX
-    LTEXT           "We are not related to any shops, stores and/or scam-artists.", IDC_STATIC, 32, 110, 208, 8, SS_NOPREFIX
-    DEFPUSHBUTTON   "OK", IDOK, 108, 134, 50, 16, WS_GROUP
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "OpenScrape",IDC_STATIC,32,10,208,8,SS_NOPREFIX
+    LTEXT           "Version 13.1.3",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
+    LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
+    LTEXT           "https://github.com/OpenHoldem/openholdembot/",IDC_STATIC,32,66,208,8
+    LTEXT           "http://www.gnu.org/licenses/gpl.html",IDC_STATIC,32,78,208,8
+    LTEXT           "Disclaimer: this is an open-source project.",IDC_STATIC,32,98,208,8,SS_NOPREFIX
+    LTEXT           "We are not related to any shops, stores and/or scam-artists.",IDC_STATIC,32,110,208,8,SS_NOPREFIX
+    DEFPUSHBUTTON   "OK",IDOK,108,134,50,16,WS_GROUP
 END
 
 IDD_SELECTTABLE DIALOGEX 0, 0, 289, 127
@@ -319,18 +323,18 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "Record name:", IDC_STATIC, 5, 5, 46, 8
+    LTEXT           "Record name:",IDC_STATIC,5,5,46,8
     COMBOBOX        IDC_NAME,3,17,96,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "String:",IDC_STATIC,105,5,22,8
-    COMBOBOX        IDC_VALUE, 103, 17, 213, 113, CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_VALUE,103,17,213,113,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Titlebar text:",IDC_STATIC,4,40,45,8
     EDITTEXT        IDC_TITLETEXT,55,37,261,14,ES_AUTOHSCROLL
-    LTEXT           "Preprocessed:", IDC_STATIC, 4, 60, 45, 8
-    EDITTEXT        IDC_TITLETEXT_PREPROCESSED, 55, 57, 261, 14, ES_AUTOHSCROLL
+    LTEXT           "Preprocessed:",IDC_STATIC,4,60,45,8
+    EDITTEXT        IDC_TITLETEXT_PREPROCESSED,55,57,261,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_PARSERESULTS,4,95,313,107,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL | WS_HSCROLL
     PUSHBUTTON      "Parse preprocessed titlebar text with 'string'",IDC_PARSEBUTTON,5,78,154,14
-    DEFPUSHBUTTON   "OK", IDOK, 213, 211, 50, 14
-    PUSHBUTTON      "Cancel", IDCANCEL, 267, 211, 50, 14
+    DEFPUSHBUTTON   "OK",IDOK,213,211,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,267,211,50,14
 END
 
 IDD_EDIT_REGION DIALOGEX 0, 0, 130, 63
@@ -415,8 +419,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 14.1.0,0
- PRODUCTVERSION 14.1.0,0
+ FILEVERSION 14,0,0,0
+ PRODUCTVERSION 14,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -512,7 +516,9 @@ END
 //
 
 IDC_PICKERCURSOR        CURSOR                  "res\\picker.cur"
+
 IDC_DRAWRECTCURSOR      CURSOR                  "res\\drawrect.cur"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -529,6 +535,18 @@ BEGIN
 0x0032, 
     IDC_TRACKER_FONT_SET, 0x403, 2, 0
 0x0033, 
+    IDC_TRACKER_FONT_SET, 0x403, 2, 0
+0x0034, 
+    IDC_TRACKER_FONT_SET, 0x403, 2, 0
+0x0035, 
+    IDC_TRACKER_FONT_SET, 0x403, 2, 0
+0x0036, 
+    IDC_TRACKER_FONT_SET, 0x403, 2, 0
+0x0037, 
+    IDC_TRACKER_FONT_SET, 0x403, 2, 0
+0x0038, 
+    IDC_TRACKER_FONT_SET, 0x403, 2, 0
+0x0039, 
     IDC_TRACKER_FONT_NUM, 0x403, 2, 0
 0x0031, 
     IDC_TRACKER_FONT_NUM, 0x403, 2, 0
@@ -545,6 +563,17 @@ BEGIN
 0x0033, 
     IDC_TRACKER_CARD_NUM, 0x403, 2, 0
 0x0034, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_TABLEMAP AFX_DIALOG_LAYOUT
+BEGIN
     0
 END
 
