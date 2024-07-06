@@ -1,0 +1,365 @@
+##2009-11-25 20:47:29##
+
+##notes##
+
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+1.000000
+
+##rake##
+0.000000
+
+##nit##
+10000
+
+##f$alli##
+   0                                     // default is do not alli 
+   || [ prwin >= 1.00 ]                  // dead nuts 
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+0                                     // default is do not rais 
+
+   || [ prwin >= 1.00 ]                  // dead nuts 
+
+   || [ prlos <= 0.00 ]                  // can't lose 
+
+   || [prwin + prtie >=0.700] 
+
+   || [br==1 && ($AA||$KK||$QQ||$AK)] //Raise and reraise anyposition 
+
+   || [br==1 && dealposition/(nplayersdealt/3)>= 0.9 && dealposition/(nplayersdealt/3)<1.8  //Early unraised pot 
+   && ($AQ||$AJs && nbetstocall<=1 && ncallbets<=2)]  
+
+   || [br==1 && dealposition/(nplayersdealt/3)>= 1.8 && dealposition/(nplayersdealt/3)<2.625 //middle position 
+   && (($AJ||$AT||$Axs||$A9||$KQ||$KJ||$KTs||$QJ||$QTs||$JTs||$JJ||$TT||$99||$88||$77 && nbetstocall<=1 && ncallbets<=2 && ncurrentbets<1) //unraised pot and raise first in 
+   ||($JJ|$TT||$AJ||$ATs||$KQs && ncallbets>=2 && ncurrentbets<=1) //raised pot with one caller or first in 
+   || ($AQ||$AJ && nbetstocall<=1 && ncallbets<=2))] //raise unraised pot 
+
+   || [br==1 && dealposition/(nplayersdealt/3)>= 2.625     //Late position 
+   && (($AJ||$AT||$Axs||$KQ||$KJ||$KTs||$QJ||$JJ||$JTs||$TT && nbetstocall<=1 && ncallbets<=2 && ncurrentbets<1) //unraised pot and raise first in 
+   || ($AQ||$AJ && nbetstocall<=1 && ncallbets<=2))] //raise unraised pot 
+  
+   || [ br==2                            // betting round two 
+        && ncallbets<=1                  // pot has not been raised 
+        && (prwin*pot)>=nplayersplaying] // equal share 
+
+   || [ br==2 && didraisround1           // raised round one raise again round two 
+        && ncallbets<=1 ]                // if pot has not been raised 
+
+
+   || [ br==1 && nopponentsdealt>=2 && ((nopponentsplaying==2 && betposition==dealposition)||(nopponentsplaying==1 && dealposition==1)) && (pot==(sblind+bblind)) && (random<prwin * 1.50)] 
+   || [ br==1 && handrank2652 <= 2652 * dealposition / nplayersdealt**2 && ((ispair||$A)||nraisbets<=2)] 
+   || [ br==2 && isstraight && nsuited>=4 ] // flopped straight with a flush draw. 
+   || [ br>=2 && nrankedcommon==1 && nsuitedcommon==1 && nstraightcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] //Board has No Pair, no flush, no straight and you have Top pair Ace w/ good kicker (K-T)  
+   || [ br>=2 && nrankedcommon==1 && nsuitedcommon==1 && nstraightcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] //Board has No Pair, no flush, no straight and you have Top pair King w/ good kicker (A-T) 
+   || [ br>=2 && nrankedcommon==1 && nsuitedcommon==1 && nstraightcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] //Board has No Pair, no flush, no straight and you have Top pair Queen or lower w/ good kicker (A-T) 
+   || [ br>=2 && nrankedcommon==1 && ishiflush ] //On the Flop Board has No Pair and you have Nut flush    
+   || [ br>=2 && nrankedcommon==1 && isflush ] //On the Flop Board has No Pair and you have Non-nut flush    
+   || [ br>=2 && nrankedcommon==1 && ishistraight ] //On the Flop Board has No Pair and you have Nut straight    
+   || [ br>=2 && nrankedcommon==1 && isstraight ] //On the Flop Board has No Pair and you have Non-nut straight  
+   || [ br>=2 && nrankedcommon==1 && isstraight && nsuitedcommon==3 ] //On the Flop Board has No Pair and you have Straight (3 flushes on board)    
+   || [ br>=2 && nrankedcommon==1 && isthreeofakind ] //On the Flop Board has No Pair and you have Set  
+   || [ br>=2 && nrankedcommon==1 && isthreeofakind && {nstraightcommon==3||nsuitedcommon==3} ] //On the Flop Board has No Pair and you have Set(3-card straight or 3 flushes on board)  
+   || [ br>=2 && nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>4)&15) ] //On the Flop Board has No Pair and you have Top two pairs 
+
+##f$call##
+   0                                     // default is do not call 
+ // ***Pre Flop*** Set Max Defense 
+//Call 
+|| [ call <= 0 ] // free to check 
+|| [ prtie >= 1.000 ] // split pot 
+|| [ prlos <= 0.399 ] // lose 
+|| [ prwin + prtie >= 0.600 ] // 60% or better 
+
+// Early unraised pot 
+|| [br==1 && dealposition/(nplayersdealt/3)>= 0.9 && dealposition/(nplayersdealt/3)<1.8 
+&& (($JJ||$TT||$99||$AJ||$ATs||$A9s||$KQs && nbetstocall<=1 && ncallbets<=2)||($88||$77||$A8s||$A7s||$KJs||$QJs && ncurrentbets==1) 
+//Early raised pot 
+|| ($JJ||$AQ||$AJs && ncallbets>=2))] 
+//Else it folds since condition is not true 
+
+// Middle position unraised pot 
+|| [br==1 && dealposition/(nplayersdealt/3)>= 1.8 && dealposition/(nplayersdealt/3)<2.625 //middle position 
+&& (($99||$A9s||$A8s||$A7s||$KQ||$KJs && nbetstocall<=1 && ncallbets<=2) //no raises 
+||($88||$77||$Axs||$KTs||$QJs||$QTs||$AJ||$AT && ncurrentbets>=1) //one or more caller else fold first in 
+||($66||$55||$JTs && ncurrentbets>=2) //two or more callers else fold first in 
+||($44||$33||$22||$J9s||$T9s||$98s && ncurrentbets>=3)  //three or more callers else fold first in 
+||($JJ||$AQ||$AJs && ncallbets>=2))] //call raised pot 
+
+//Late position unraised pot 
+|| [br==1 && dealposition/(nplayersdealt/3)>= 2.625 && 
+(($99||$88||$77||$AT||$Axs||$KQ||$KJ||$KTs||$QJ||$QTs||$JTs && ncurrentbets>=1) //one caller else fold first in 
+||($JJ||$TT||$AJ||$ATs||$KQs||$66||$55||$KT||$K9s||$QT||$Q9s||$J9s||$T9s && ncurrentbets>=2) //two or more callers else fold first in 
+||($44||$33||$22||$K8s||$K7s||$JT||$T8s||$98s && ncurrentbets>=3)  //three or more callers else fold first in 
+||($Kxs||$Q8s||$J8s||$87s||$76s && ncurrentbets>=4)  //four or more callers else fold first in 
+//Late and raised pot 
+||($JJ||$TT && ncallbets>=2) //call raised pot 
+||($88||$77 && ncallbets>=2 && ncurrentbets>=3) //call raised pot with three or more callers 
+||($66||$55||$44||$33||$22||$QJs||$JTs && ncallbets>=2 && ncurrentbets>=4) //call raised pot with four or more callers 
+||($T9s||$98s && ncallbets>=2 && ncurrentbets>=5))] //call raised pot with five or more callers 
+
+// Small Blind 
+|| [br==1 && dealposition==1 && (nbetstocall<=1 && prwin>={((1/nplayersdealt)*(1+nopponentsdealt/10))-.085}) 
+|| (nbetstocall<=2 && prwin>={((1/nplayersdealt)*(1+nopponentsdealt/10))-.060}) 
+|| (prwin>= {((1/nplayersdealt)*(1+nopponentsdealt/10))-.040})]//Small Blind calls 
+
+// Big Blind 
+|| [br==1 && dealposition==2 && (nbetstocall<=0) 
+|| (nbetstocall<=1 && ncallbets<=2 && prwin>={((1/nplayersdealt)*(1+nopponentsdealt/10))-.085}) 
+||(nbetstocall<=2 && ncallbets<=3 && prwin>={((1/nplayersdealt)*(1+nopponentsdealt/10))-.060}) 
+|| (prwin>={((1/nplayersdealt)*(1+nopponentsdealt/10))-.040})]//Big Blind calls 
+
+|| [ br==1 && dealposition == 1 && ncallbets <= 1 ]  // limp if nobody raised  
+|| [ br==2 && nsuitedcommon==1 && nstraightcommon==1 && nrankedcommon==1 && (isonepair||istwopair) ] //Rainbow flop you have pair or two pair 
+
+//Drawing Hands 
+|| [ (br<=3 && nrankedcommon==1) 
+&& ((nstraightflush==4 && !(srankbits&16386 && srankbits&8196) && isonepair)  // Board has No Pair and you have Open-ended straight flush draw w/ a pair 
+|| (nstraightflush==4 && !(srankbits&16386 && srankbits&8196) && rankloplayer>rankhicommon) //Board has No Pair and you have Open-ended straight flush draw w/ 2 overcards 
+|| (nstraightflush==4 && !(srankbits&16386 && srankbits&8196)) //Board has No Pair and you have Open-ended straight flush draw 
+|| (nstraightflush<=3 && nstraightflushfill==1 && isonepair) //Board has No Pair and you have Inside straight flush draw w/ a pair 
+|| (nstraightflush<=3 && nstraightflushfill==1 && rankloplayer>rankhicommon) //Board has No Pair and you have Inside straight flush draw w/ 2 overcards 
+|| (nstraightflush<=3 && nstraightflushfill==1) //Board has No Pair and you have Inside straight flush draw 
+|| (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)==0) //Board has No Pair and you have Nut flush draw w/ 2 cards 
+|| (nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==0) //Board has No Pair and you have Nut flush draw w/ 1 card 
+|| (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)==1) //Board has No Pair and you have 2nd nut flush draw w/ 2 card 
+|| (nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==1) //Board has No Pair and you have 2nd nut flush draw w/ 1 card 
+|| (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0 && isonepair) // Board has No Pair and you have Non-nut flush draw w/ a pair 
+|| (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0 && rankloplayer>rankhicommon) // Board has No Pair and you have Non-nut flush draw w/ 2 overcards 
+|| (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0) //Board has No Pair and you have Non-nut flush draw  
+|| (nstraight==4 && !(rankbits&16386 && rankbits&8196) && isonepair) //Board has No Pair and you have Open-ended straight draw w/ a pair    
+|| (nstraight==4 && !(rankbits&16386 && rankbits&8196) && rankloplayer>rankhicommon && nsuitedcommon==1) // Board has No Pair and you have Open-ended straight draw w/ 2 overcards (rainbow)  
+|| (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==1) //Board has No Pair and you have Open-ended straight draw (rainbow)    
+|| (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==2) //Board has No Pair and you have Open-ended straight draw (2 flushes on board) 
+|| (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==3) // Board has No Pair and you have Open-ended straight draw (3 flushes on board)  
+|| (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && isonepair) //Board has No Pair and you have Inside straight draw w/ a pair    
+|| (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && rankloplayer>rankhicommon && nsuitedcommon==1) //Board has No Pair and you have Inside straight draw w/ 2 overcards    
+|| (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==1) //Board has No Pair and you have Inside straight draw (rainbow)  
+|| (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==2) //Board has No Pair and you have Inside straight draw (2 flushes on board)    
+|| (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==3) //Board has No Pair and you have Inside straight draw (3 flushes on board)  
+|| (rankloplayer>rankhicommon && rankhiplayer==14 && rankloplayer>=10 && !ispair && nsuitedcommon==1 && nstraightcommon==1) //Board has No Pair and you have "Two overcards w/Ace (AK-AT rainbow)"    
+|| (rankloplayer>rankhicommon && rankhiplayer==13 && rankloplayer>=10 && !ispair && nsuitedcommon==1 && nstraightcommon==1) //Board has No Pair and you have "Two overcards w/ King (KQ-KT rainbow)"    
+|| (rankloplayer>rankhicommon && nsuitedcommon==2) //Board has No Pair and you have Two overcards (2 flushes on board)  
+|| (rankloplayer>rankhicommon && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Two overcards (3-card straight or 3 flushes on board  
+|| (rankhiplayer==14 && pokerval<onepair && rankloplayer<=9 && rankloplayer<rankhicommon && nsuitedcommon==1 && nstraightcommon==1) //Board has No Pair and you have "One overcard w/Ace (A9-A2 rainbow)"  
+|| (rankhiplayer==13 && pokerval<onepair && rankloplayer<=9 && rankloplayer<rankhicommon && nsuitedcommon==1 && nstraightcommon==1 )//Board has No Pair and you have "One overcard w/ King (K9-K2 rainbow)"  
+&& (evcall>0)) 
+] 
+
+//Made Hands 
+|| [ (br<=3 && nrankedcommon==1) 
+&& ((ishiflush)  // Board has No Pair and you have Nut flush    
+|| (isflush) // Board has No Pair and you have Non-nut flush    
+|| (ishistraight) // Board has No Pair and you have Nut straight    
+|| (isstraight) // Board has No Pair and you have Non-nut straight  
+|| (isstraight && nsuitedcommon==3) // Board has No Pair and you have Straight (3 flushes on board)    
+|| (isthreeofakind) // Board has No Pair and you have Set  
+|| (isthreeofakind && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Set(3-card straight or 3 flushes on board)  
+|| (istwopair && (pokerval&15)<((pokerval>>4)&15)) // Board has No Pair and you have Top two pairs 
+|| (istwopair && (pokerval&15)>((pokerval>>16)&15))  // Board has No Pair and you have Bottom two pairs 
+|| (istwopair && (pokerval&15)<((pokerval>>16)&15) && (pokerval&15)>((pokerval>>4)&15)) // Board has No Pair and you have Top and bottom pair 
+|| (istwopair && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Two pairs (3-card straight or 3 flushes on board) 
+//|| (ispair && pokerval<twopair && trank>trankcommon) // Board has No Pair and you have Overpair 
+//|| (ispair && pokerval<twopair && trank>trankcommon && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Overpair (3-card straight or 3 flushes on board) 
+//|| (ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)<trank)  // Board has No Pair and you have Midpair 1 overcard 
+//|| (ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)<trank && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Midpair 1 overcard (3-card straight or 3 flushes on board)  
+//|| (ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)>trank) // Board has No Pair and you have Midpair 2 overcard 
+//|| (ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)>trank && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Midpair 2 overcard (3-card straight or 3 flushes on board) 
+//|| (ispair && pokerval<twopair && trank<(pokerval&15)) // Board has No Pair and you have Underpair 
+//|| (ispair && pokerval<twopair && trank<(pokerval&15) && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Underpair (3-card straight or 3 flushes on board) 
+|| (ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)}) // Board has No Pair and you have Top pair Ace w/ good kicker (K-T)  
+|| (ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)}) // Board has No Pair and you have Top pair Ace w/ poor kicker (9-2) 
+|| (ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)}) // Board has No Pair and you have Top pair King w/ good kicker (A-T) 
+|| (ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)}) // Board has No Pair and you have Top pair King w/ poor kicker (9-2) 
+|| (ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)}) // Board has No Pair and you have Top pair Queen or lower w/ good kicker (A-T) 
+|| (ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)})  // Board has No Pair and you have Top pair Queen or lower w/ poor kicker (9-2) 
+|| (ishipair && pokerval<twopair && {nstraightcommon==3||nsuitedcommon==3}) // Board has No Pair and you have Top pair (3-card straight or 3 flushes on board)  
+|| (ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)}) // Board has No Pair and you have Middle pair w/ overcard kicker  
+|| (ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)}) // Board has No Pair and you have Middle pair w/ poor kicker 
+|| (islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)}) // Board has No Pair and you have Bottom pair w/ overcard kicker  
+|| (islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)}) // Board has No Pair and you have Bottom pair w/ poor kicker  
+|| (isonepair && pokerval<twopair && !ishipair && !ispair && {nstraightcommon==3||nsuitedcommon==3})) // Board has No Pair and you have Middle or bottom pair (3-card straight or 3 flushes on board)  
+] 
+|| [ br<=3 && nsuited==4 && ($Axs || $Kxs || $Qxs) ] //flop flush draw queen or better 
+//4 to a flush on flop, play only with the suited card 8 or better with proper pot odds. 
+|| [ br==2 && {nsuited==4 && ((($$pr0 > 8) && $$ps0==tsuitcommon) || (($$pr1 > 8) && $$ps1==tsuitcommon))} && {(pot + (callshort/3)) / call >= 2.86} ] 
+//4 to a flush on turn, play only with the suited card 8 or better with proper pot odds. 
+|| [ br==3 && {nsuited==4 && ((($$pr0 > 8) && $$ps0==tsuitcommon) || (($$pr1 > 8) && $$ps1==tsuitcommon))} && {(pot + (callshort/3)) / call >= 5.11} ] 
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+
+(nopponentsplaying==0) ? 0 : 
+
+nopponentsplaying + defcon*nopponentsfolded 
+
+##f$play##
+//------------------------------------------------------------------------ 
+//    DISABLED RULE(S) 
+!0                       ? -1 :  // 0=disabled 1=enabled 
+!f9                      ? -1 :  // enabled when f9 is pressed 
+(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds 
+
+
+//------------------------------------------------------------------------ 
+//    LEAVE RULE 
+0                                // 0=off 1=on 
+&& issittingout                  // i am sitting out 
+&& elapsedhand >= 600            // 10 minutes since end of last hand 
+&& elapsedauto >= 600            // 10 minutes since autoplayer has acted 
+
+                         ? -2 :  // leave the table 
+
+//------------------------------------------------------------------------ 
+//    SITIN RULE 
+0                                // 0=off 1=on 
+&& issittingout                  // i am sitting out 
+&& (br==2 || br==3)              // it is the flop or turn 
+&& nopponentsdealt>=6            // 6 or more opponents 
+&& nchairsdealtright==2          // i am about to be big blind 
+
+                         ?  1 :  // sitin 
+
+//------------------------------------------------------------------------ 
+//    SITOUT RULE 
+0                                // 0=off 1=on 
+&& issittingin                   // i am sitting in 
+&& (br==2 || br==3)              // it is the flop or turn 
+&& nopponentsdealt<=5            // 5 or less opponents 
+
+                         ?  0 :  // sitout 
+
+//------------------------------------------------------------------------ 
+-1 // disabled 
+//Play 
+
+##f$test##
+
+
+##f$debug##
+
+                 = elapsed 
+
+                 = sblind 
+                 = bblind 
+                 = bet 
+
+                 = call 
+                 = currentbet 
+                 = balance 
+
+                 = evcall 
+                 = evrais 
+
+                 = potplayer 
+                 = potcommon 
+                 = pot 
+                 = rake 
+
+                 = chair 
+                 = handrank2652 
+                 = pokerval 
+                 = prwin 
+                 = prlos 
+                 = prtie 
+                 = nopponents 
+
+##list0##
+
+
+##list1##
+
+
+##list2##
+  
+
+##list3##
+  
+
+##list4##
+
+
+##list5##
+
+
+##list6##
+
+
+##list7##
+
+
+##f$evrais##
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+- bet                                    // raising cost 
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   + (call+bet*2)                        // my call my bet and a call (minimum) 
+
+   + (raisshort-call-bet*2)              // additional callers 
+      * 0.00                             //   0% (tight) 
+//    * 0.50                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+
+##f$evcall##
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   +  call                               // my call (minimum) 
+
+   + (callshort-call)                    // additional callers 
+      * 0.00                             //   0% (tight) 
+//    * 0.50                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+

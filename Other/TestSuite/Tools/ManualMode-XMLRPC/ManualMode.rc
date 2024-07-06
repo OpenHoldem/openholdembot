@@ -1,0 +1,493 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\ManualMode.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ManualMode.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 266, 157
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About this program"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME, IDC_STATIC, 11, 17, 21, 20
+    LTEXT           "ManualMode-XMLRPC", IDC_STATIC, 32, 10, 208, 8, SS_NOPREFIX
+    LTEXT           "Version 13.0.1", IDC_STATIC, 32, 22, 208, 8, SS_NOPREFIX
+    LTEXT           "Licensed under GPLv3", IDC_STATIC, 32, 34, 208, 8
+    LTEXT           "http://www.maxinmontreal.com/forums/index.php", IDC_STATIC, 32, 54, 208, 8
+    LTEXT           "https://github.com/OpenHoldem/openholdembot/", IDC_STATIC, 32, 66, 208, 8
+    LTEXT           "http://www.gnu.org/licenses/gpl.html", IDC_STATIC, 32, 78, 208, 8
+    LTEXT           "Disclaimer: this is an open-source project.", IDC_STATIC, 32, 98, 208, 8, SS_NOPREFIX
+    LTEXT           "We are not related to any shops, stores and/or scam-artists.", IDC_STATIC, 32, 110, 208, 8, SS_NOPREFIX
+    DEFPUSHBUTTON   "OK", IDOK, 108, 134, 50, 16, WS_GROUP
+END
+
+IDD_MANUALMODE_DIALOG DIALOGEX 0, 0, 393, 236
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "OpenHoldem Poker"
+CLASS "OpenHoldemManualMode"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "&Reset",IDC_RESET,155,171,34,14
+    PUSHBUTTON      "P-",IDC_PMINUS,193,171,15,14
+    PUSHBUTTON      "P+",IDC_PPLUS,212,171,15,14
+    PUSHBUTTON      "&Macro",IDC_MACRO,155,189,34,14
+    PUSHBUTTON      "D-",IDC_DMINUS,193,189,15,14
+    PUSHBUTTON      "D+",IDC_DPLUS,212,189,15,14
+    EDITTEXT        IDC_SWAG,339,178,39,12,ES_MULTILINE | ES_AUTOHSCROLL,WS_EX_RIGHT
+END
+
+IDD_EDITDLG DIALOGEX 0, 0, 118, 50
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,30,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,61,30,50,14
+    EDITTEXT        IDC_EDITENTRY,7,7,104,15,ES_AUTOHSCROLL
+END
+
+IDD_GAMEINFO DIALOGEX 0, 0, 152, 146
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Game Info"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_SMALL_BLIND,54,7,91,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BIG_BLIND,54,24,91,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BIG_BET,54,41,91,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANTE,54,58,91,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_GAME_TYPE,54,75,91,30,CBS_DROPDOWN | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Tournament",IDC_TOURNAMENT,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,6,108,55,10
+    DEFPUSHBUTTON   "OK",IDOK,23,125,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,78,125,50,14
+    LTEXT           "Small Blind",IDC_STATIC,6,9,34,8
+    LTEXT           "Big Blind",IDC_STATIC,6,26,27,8
+    LTEXT           "Big Bet",IDC_STATIC,6,43,23,8
+    LTEXT           "Ante",IDC_STATIC,6,60,16,8
+    LTEXT           "Game Type",IDC_STATIC,6,76,37,8
+    LTEXT           "Network",IDC_STATIC,6,93,28,8
+    COMBOBOX        IDC_NETWORK,54,91,91,56,CBS_DROPDOWN | CBS_SORT | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OPTIONSDLG DIALOGEX 0, 0, 186, 57
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,33,34,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,106,34,50,16
+    CONTROL         "Unobstructive Popup Menu",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,15,107,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,1,9,2
+ PRODUCTVERSION 2,1,9,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "FileVersion", "2.1.9.2"
+            VALUE "LegalCopyright", "Licensed under GPLv3"
+            VALUE "ProductVersion", "2.1.9.2"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_MANUALMODE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 386
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 229
+    END
+
+    IDD_EDITDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 111
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 43
+    END
+
+    IDD_GAMEINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 145
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+
+    IDD_OPTIONSDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 50
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_CARD_SELECTION MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        POPUP "&2"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_2_CLUBS
+            MENUITEM "&Diamonds",                   ID_2_DIAMONDS
+            MENUITEM "&Hearts",                     ID_2_HEARTS
+            MENUITEM "&Spades",                     ID_2_SPADES
+        END
+        POPUP "&3"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_3_CLUBS
+            MENUITEM "&Diamonds",                   ID_3_DIAMONDS
+            MENUITEM "&Hearts",                     ID_3_HEARTS
+            MENUITEM "&Spades",                     ID_3_SPADES
+        END
+        POPUP "&4"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_4_CLUBS
+            MENUITEM "&Diamonds",                   ID_4_DIAMONDS
+            MENUITEM "&Hearts",                     ID_4_HEARTS
+            MENUITEM "&Spades",                     ID_4_SPADES
+        END
+        POPUP "&5"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_5_CLUBS
+            MENUITEM "&Diamonds",                   ID_5_DIAMONDS
+            MENUITEM "&Hearts",                     ID_5_HEARTS
+            MENUITEM "&Spades",                     ID_5_SPADES
+        END
+        POPUP "&6"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_6_CLUBS
+            MENUITEM "&Diamonds",                   ID_6_DIAMONDS
+            MENUITEM "&Hearts",                     ID_6_HEARTS
+            MENUITEM "&Spades",                     ID_6_SPADES
+        END
+        POPUP "&7"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_7_CLUBS
+            MENUITEM "&Diamonds",                   ID_7_DIAMONDS
+            MENUITEM "&Hearts",                     ID_7_HEARTS
+            MENUITEM "&Spades",                     ID_7_SPADES
+        END
+        POPUP "&8"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_8_CLUBS
+            MENUITEM "&Diamonds",                   ID_8_DIAMONDS
+            MENUITEM "&Hearts",                     ID_8_HEARTS
+            MENUITEM "&Spades",                     ID_8_SPADES
+        END
+        POPUP "&9"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_9_CLUBS
+            MENUITEM "&Diamonds",                   ID_9_DIAMONDS
+            MENUITEM "&Hearts",                     ID_9_HEARTS
+            MENUITEM "&Spades",                     ID_9_SPADES
+        END
+        POPUP "&T"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_T_CLUBS
+            MENUITEM "&Diamonds",                   ID_T_DIAMONDS
+            MENUITEM "&Hearts",                     ID_T_HEARTS
+            MENUITEM "&Spades",                     ID_T_SPADES
+        END
+        POPUP "&J"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_J_CLUBS
+            MENUITEM "&Diamonds",                   ID_J_DIAMONDS
+            MENUITEM "&Hearts",                     ID_J_HEARTS
+            MENUITEM "&Spades",                     ID_J_SPADES
+        END
+        POPUP "&Q"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_Q_CLUBS
+            MENUITEM "&Diamonds",                   ID_Q_DIAMONDS
+            MENUITEM "&Hearts",                     ID_Q_HEARTS
+            MENUITEM "&Spades",                     ID_Q_SPADES
+        END
+        POPUP "&K"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_K_CLUBS
+            MENUITEM "&Diamonds",                   ID_K_DIAMONDS
+            MENUITEM "&Hearts",                     ID_K_HEARTS
+            MENUITEM "&Spades",                     ID_K_SPADES
+        END
+        POPUP "&A"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_A_CLUBS
+            MENUITEM "&Diamonds",                   ID_A_DIAMONDS
+            MENUITEM "&Hearts",                     ID_A_HEARTS
+            MENUITEM "&Spades",                     ID_A_SPADES
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&No Card",                    ID_NOCARD
+    END
+END
+
+IDR_MENU_CARD_AND_SEAT_SELECTION MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&Sit down",                   ID_SEATPLAYER
+        MENUITEM "Sit &In",                     ID_SITIN
+        MENUITEM "&Dealer here",                ID_DEALERHERE
+        MENUITEM SEPARATOR
+        POPUP "&2"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_2_CLUBS
+            MENUITEM "&Diamonds",                   ID_2_DIAMONDS
+            MENUITEM "&Hearts",                     ID_2_HEARTS
+            MENUITEM "&Spades",                     ID_2_SPADES
+        END
+        POPUP "&3"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_3_CLUBS
+            MENUITEM "&Diamonds",                   ID_3_DIAMONDS
+            MENUITEM "&Hearts",                     ID_3_HEARTS
+            MENUITEM "&Spades",                     ID_3_SPADES
+        END
+        POPUP "&4"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_4_CLUBS
+            MENUITEM "&Diamonds",                   ID_4_DIAMONDS
+            MENUITEM "&Hearts",                     ID_4_HEARTS
+            MENUITEM "&Spades",                     ID_4_SPADES
+        END
+        POPUP "&5"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_5_CLUBS
+            MENUITEM "&Diamonds",                   ID_5_DIAMONDS
+            MENUITEM "&Hearts",                     ID_5_HEARTS
+            MENUITEM "&Spades",                     ID_5_SPADES
+        END
+        POPUP "&6"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_6_CLUBS
+            MENUITEM "&Diamonds",                   ID_6_DIAMONDS
+            MENUITEM "&Hearts",                     ID_6_HEARTS
+            MENUITEM "&Spades",                     ID_6_SPADES
+        END
+        POPUP "&7"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_7_CLUBS
+            MENUITEM "&Diamonds",                   ID_7_DIAMONDS
+            MENUITEM "&Hearts",                     ID_7_HEARTS
+            MENUITEM "&Spades",                     ID_7_SPADES
+        END
+        POPUP "&8"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_8_CLUBS
+            MENUITEM "&Diamonds",                   ID_8_DIAMONDS
+            MENUITEM "&Hearts",                     ID_8_HEARTS
+            MENUITEM "&Spades",                     ID_8_SPADES
+        END
+        POPUP "&9"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_9_CLUBS
+            MENUITEM "&Diamonds",                   ID_9_DIAMONDS
+            MENUITEM "&Hearts",                     ID_9_HEARTS
+            MENUITEM "&Spades",                     ID_9_SPADES
+        END
+        POPUP "&T"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_T_CLUBS
+            MENUITEM "&Diamonds",                   ID_T_DIAMONDS
+            MENUITEM "&Hearts",                     ID_T_HEARTS
+            MENUITEM "&Spades",                     ID_T_SPADES
+        END
+        POPUP "&J"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_J_CLUBS
+            MENUITEM "&Diamonds",                   ID_J_DIAMONDS
+            MENUITEM "&Hearts",                     ID_J_HEARTS
+            MENUITEM "&Spades",                     ID_J_SPADES
+        END
+        POPUP "&Q"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_Q_CLUBS
+            MENUITEM "&Diamonds",                   ID_Q_DIAMONDS
+            MENUITEM "&Hearts",                     ID_Q_HEARTS
+            MENUITEM "&Spades",                     ID_Q_SPADES
+        END
+        POPUP "&K"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_K_CLUBS
+            MENUITEM "&Diamonds",                   ID_K_DIAMONDS
+            MENUITEM "&Hearts",                     ID_K_HEARTS
+            MENUITEM "&Spades",                     ID_K_SPADES
+        END
+        POPUP "&A"
+        BEGIN
+            MENUITEM "&Clubs",                      ID_A_CLUBS
+            MENUITEM "&Diamonds",                   ID_A_DIAMONDS
+            MENUITEM "&Hearts",                     ID_A_HEARTS
+            MENUITEM "&Spades",                     ID_A_SPADES
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Card&backs",                  ID_CARDBACKS
+        MENUITEM "&No cards",                   ID_NOCARDS
+        MENUITEM SEPARATOR
+        MENUITEM "&Fold",                       ID_FOLD
+        MENUITEM "&Call",                       ID_CALL
+        MENUITEM "&Raise",                      ID_RAISE
+        MENUITEM "A&llin",                      ID_ALLIN
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CARDS               BITMAP                  "res\\bmp2h5.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ManualMode..."
+    IDS_OPTIONS             "&Options..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\ManualMode.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

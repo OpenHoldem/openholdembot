@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include "CSessionCounter.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 // Global instantiation of CSessionCounter class
 CSessionCounter *p_sessioncounter = NULL;

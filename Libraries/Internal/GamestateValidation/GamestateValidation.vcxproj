@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GamestateValidation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GamestateValidation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_bets_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_buttons_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_cards_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_chip_amounts_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_general_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_handreset_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_history_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_limits_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_memory_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_number_of_bets_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_players_friends_opponents_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_table_stats_inline.cpp_" />
+    <None Include="Validator_Rules\consistency_checks_time_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_action_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_autoplayer_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_card_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_chairs_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_chip_amounts_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_common_cards_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_flags_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_flushes_straights_sets_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_formula_file_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_general_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_handrank_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_icm_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_known_cards_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_limits_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_list_tests_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_nhands_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_NOT_TO_DO_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_number_of_bets_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_players_friends_opponents_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_poker_values_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_probabilities_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_rank_bits_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_rank_hi_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_rank_lo_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_rounds_positions_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_run_ron_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_tablemap_symbols_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_table_stats_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_time_inline.cpp_" />
+    <None Include="Validator_Rules\range_checks_versus_inline.cpp_" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F7FC9500-4048-4E34-AD58-5DC7EB072198}</ProjectGuid>
+    <RootNamespace>GamestateValidation</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)_out\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)_out\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Common;$(SolutionDir)Libraries\Internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>psapi.lib;$(OutDir)window_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Common;$(SolutionDir)Libraries\Internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalDependencies>psapi.lib;$(OutDir)window_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

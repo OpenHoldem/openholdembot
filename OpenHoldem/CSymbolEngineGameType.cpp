@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineGameType.h"
 
-#include <assert.h>
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 

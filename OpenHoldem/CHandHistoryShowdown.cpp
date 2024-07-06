@@ -20,7 +20,7 @@
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
 CHandHistoryShowdown *p_handhistory_showdown = NULL;

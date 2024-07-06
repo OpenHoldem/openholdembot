@@ -15,7 +15,6 @@
 #define INC_CSYMBOLENGINEPRWIN_H
 
 #include "CVirtualSymbolEngine.h"
-#include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
 

@@ -16,8 +16,8 @@
 
 #include "CFormulaParser.h"
 #include "CTokenizer.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "WindowFunctions/window_functions.h"
+#include "StringFunctions/string_functions.h"
 #include "TokenizerConstants.h"
 
 bool CParseErrors::_is_error = false;

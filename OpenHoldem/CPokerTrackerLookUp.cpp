@@ -2,7 +2,7 @@
 #include "CPokerTrackerLookup.h"
 
 
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 
 CPokerTrackerLookup pt_lookup;
 

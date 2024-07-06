@@ -15,8 +15,8 @@
 #include "CCasinoInterface.h"
 
 #include "CEngineContainer.h"
-#include "..\CTablemap\CTablemap.h"
-#include "..\CTableMap\CTableMapAccess.h"
+#include "CTablemap/CTablemap.h"
+#include "CTableMap/CTableMapAccess.h"
 #include "CAutoConnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CAutoplayerTrace.h"
@@ -38,7 +38,7 @@
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
 #include "SwagAdjustment.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CCasinoInterface *p_casino_interface = NULL;
 

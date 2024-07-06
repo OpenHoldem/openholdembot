@@ -18,7 +18,7 @@
 #include "CCasinoInterface.h"
 
 #include "CStringMatch.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 
 
 CAutoplayerButton::CAutoplayerButton() {

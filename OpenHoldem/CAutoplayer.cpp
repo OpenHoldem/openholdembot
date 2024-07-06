@@ -14,7 +14,6 @@
 #include "StdAfx.h"
 #include "CAutoplayer.h"
 
-#include <complex>
 #include "AllinAdjustment.h"
 #include "BetpotCalculations.h"
 #include "BringKeyboard.h"
@@ -29,20 +28,16 @@
 #include "CIteratorThread.h"
 
 #include "CRebuyManagement.h"
-#include "CReplayFrame.h"
-#include "CScraper.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChipAmounts.h"
-#include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "MainFrm.h"
-#include "OpenHoldem.h"
 #include "PokerChat.hpp"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 #include "CMyMutex.h"
+#include "resource.h"
 
 CAutoplayer	*p_autoplayer = NULL;
 
@@ -190,7 +185,7 @@ bool CAutoplayer::AnyPrimaryFormulaTrue() {
 		else
 		{
 			write_log(Preferences()->debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
-				k_standard_function_names[i], Bool2CString(function_result));
+				k_standard_function_names[i], Bool2CString(function_result != 0.0));
 		}
 		if (function_result)
 		{
@@ -206,7 +201,7 @@ bool CAutoplayer::AnySecondaryFormulaTrue() {
   // Considering all hopper functions
   // and the functions f$prefold and f$chat.
 	for (int i=k_hopper_function_sitin; i<=k_standard_function_chat; ++i)	{
-		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
+		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i) != 0;
 		write_log(Preferences()->debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
 			k_standard_function_names[i], Bool2CString(function_result));
 		if (function_result) {

@@ -24,7 +24,7 @@
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEngineVariousDataLookup.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 const char* kOpenPPLUpdateOnHandReset =
   "UpdateMemorySymbolsOnHandReset";

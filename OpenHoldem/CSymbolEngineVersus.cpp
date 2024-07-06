@@ -20,14 +20,14 @@
 #include "CardFunctions.h"
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
-#include "inlines/eval.h"
+#include "PokerEval/include/inlines/eval.h"
 #include "CFunctionCollection.h"
 #include "CParseErrors.h"
 
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 #include "COHScriptList.h"
 
 const int kNTotal = 1712304;

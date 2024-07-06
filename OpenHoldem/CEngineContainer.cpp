@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CEngineContainer.h"
 
-#include <assert.h>
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CCasinoInterface.h"

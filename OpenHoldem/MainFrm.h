@@ -1,8 +1,8 @@
 #ifndef INC_MAINFRM_H
 #define INC_MAINFRM_H
 
-#include "..\CTablemap\CTablemap.h"
-#include "..\Shared\CCritSec\CCritSec.h"
+#include "CTablemap\CTablemap.h"
+#include "CCritSec\CCritSec.h"
 
 #define HWND_CHECK_TIMER				1
 #define ENABLE_BUTTONS_TIMER    2
@@ -27,7 +27,7 @@ protected: // create from serialization only
   afx_msg void OnManualMode();
 	afx_msg void OnEditPreferences();
 	afx_msg void OnFileLoadTableMap();
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
 	afx_msg void OnValidator();

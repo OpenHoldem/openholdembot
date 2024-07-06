@@ -54,7 +54,7 @@ class COHScriptObject: public CSpaceOptimizedFormulaObject {
  public:
   bool IsList()                  { return _name.Left(4) == "list"; }
   bool IsFunction()              { return _name.Left(2) ==  "f$"; }
-  bool IsOpenPPLSymbol()         { return isupper(_name[0]); }
+  bool IsOpenPPLSymbol()         { return isupper(_name[0]) != 0; }
   bool IsReadOnlyLibrarySymbol() { return _is_read_only; }
   // f$preflop, f$flop, f$turn, f$river
   bool IsMainOpenPPLFunction();

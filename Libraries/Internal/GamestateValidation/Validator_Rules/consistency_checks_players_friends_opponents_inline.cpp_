@@ -1,0 +1,70 @@
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1401")
+    HEURISTIC_RULE (false)
+    REASONING ("In cash-games all players dealt must be active")
+    PRECONDITION (!gws("istournament"))
+    POSTCONDITION ((int(gws("playersdealtbits")) & int(gws("playersactivebits"))) == int(gws("playersdealtbits")))
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, playersdealtbits, playersactivebits")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1402")
+    HEURISTIC_RULE (false)
+    REASONING ("In cash-games all players playing must be seated and dealt and active.")
+    PRECONDITION (!gws("istournament"))
+    POSTCONDITION ((int(gws("playersplayingbits")) & int(gws("playersseatedbits")) & int(gws("playersdealtbits")) & int(gws("playersactivebits"))) == int(gws("playersplayingbits")))
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, playersplayingbits, playersseatedbits, playersdealtbits, playersactivebits")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1403")
+    HEURISTIC_RULE (false)
+    REASONING ("If buttons are visible (it's my turn), there must be at least 1 opponent playing.")
+    PRECONDITION (gws("ismyturn") != 0)
+    POSTCONDITION ((int(gws("opponentsplayingbits")) != 0) && (int(gws("nopponentsplaying") > 0)) && (int(gws("nopponentsdealt") > 0)))
+    SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, opponentsplayingbits, nopponentsplaying nopponentsdealt")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1404")
+    HEURISTIC_RULE (false)
+    REASONING ("If there's a game going on (check for common cards, if I'm not at the table), then there must be at least 2 players playing.")
+    PRECONDITION ((gws("$$cc0") != CARD_UNDEFINED) && (gws("$$cc0") != CARD_BACK))
+    POSTCONDITION (gws("nplayersplaying") >= 2)
+    SYMBOLS_POSSIBLY_AFFECTED ("$$cc0, nplayersplaying")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1405")
+    HEURISTIC_RULE (false)
+    REASONING ("If I hold cards, there must be at least 1 opponent playing.")
+    PRECONDITION ((gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_BACK) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_BACK))
+    POSTCONDITION (gws("nopponentsplaying") >= 1)
+    SYMBOLS_POSSIBLY_AFFECTED ("$$pc0, $$pc1, nopponentsplaying")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1406")
+    HEURISTIC_RULE (false)
+    REASONING ("The number of opponents who are playing plus the ones who have folded must equal the number of opponents who got dealt cards. ")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nopponentsfolded") + gws("nopponentsplaying")) == gws("nopponentsdealt"))
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsfolded, nopponentsplaying, nopponentsdealt")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1407")
+    HEURISTIC_RULE (false)
+    REASONING ("In cash-games the sets of players playing, folded and sitting out are disjoint.")
+    PRECONDITION (!gws("istournament"))
+    POSTCONDITION ((int(gws("playersplayingbits")) & ~int(gws("playersactivebits"))) == 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament playersplayingbits, playersactivebits")
+END_TESTCASE

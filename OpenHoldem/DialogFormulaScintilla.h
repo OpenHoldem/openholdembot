@@ -16,8 +16,8 @@
 
 #include "resource.h"
 #include "ScintillaWnd.h"
-#include "WinMgr.h"
-#include "SizerBar.h"
+#include "CWinMgr/WinMgr.h"
+#include "CWinMgr/SizerBar.h"
 
 // CDlgFormulaScintilla dialog
 #define	MENU_UPDATE_TIMER		1
@@ -140,7 +140,7 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg void OnEditSelectAll();
   void SortUdfTree();
   afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-  void OnTimer(UINT nIDEvent);
+  void OnTimer(UINT_PTR nIDEvent);
   void SaveSettingsToRegistry();
   void SetEquiDistantFont(CScintillaWnd *pWnd);
   void SetStyleColors(CScintillaWnd *pWnd);
@@ -187,7 +187,7 @@ class CDlgFormulaScintilla : public CDialog {
 
   // Find/Replace Support Functions and Variables
   afx_msg void OnFindReplaceDlg();
-  afx_msg LONG OnFindReplace(WPARAM wParam, LPARAM lParam);
+  afx_msg LRESULT OnFindReplace(WPARAM wParam, LPARAM lParam);
   afx_msg void OnFindNext();
   afx_msg void OnFindPrev();
 	void CloseFindReplaceDialog();

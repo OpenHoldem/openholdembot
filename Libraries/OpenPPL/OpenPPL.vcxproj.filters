@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="OpenPPL_Library_Ante_Others_IsFinalTable.ohf" />
+    <None Include="OpenPPL_Library_Bets_Pots_And_Stacks.ohf" />
+    <None Include="OpenPPL_Library_Betting_Action_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Board_Symbols.ohf" />
+    <None Include="OpenPPL_Library_ChipAmounts.ohf" />
+    <None Include="OpenPPL_Library_Constants.ohf" />
+    <None Include="OpenPPL_Library_Deprecated.ohf" />
+    <None Include="OpenPPL_Library_HandStrength_Symbols.ohf" />
+    <None Include="OpenPPL_Library_History_Symbols.ohf" />
+    <None Include="OpenPPL_Library_HoldEm_HandStrength_Symbols.ohf" />
+    <None Include="OpenPPL_Library_HoldEm_NutFullHouseOrFourOfAKind.ohf" />
+    <None Include="OpenPPL_Library_Omaha_Board_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Omaha_HandStrength_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Omaha_NutFullHouseOrFourOfAKind.ohf" />
+    <None Include="OpenPPL_Library_OutsCounter.ohf" />
+    <None Include="OpenPPL_Library_Players_and_Opponents.ohf" />
+    <None Include="OpenPPL_Library_Position_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Technical_Betting_Action_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Technical_Card_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Technical_HandStrength_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Technical_Position_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Technical_Stacksizes.ohf" />
+    <None Include="OpenPPL_Library_Tournament_Symbols.ohf" />
+    <None Include="OpenPPL_Library_Update_History.ohf" />
+    <None Include="OpenPPL_Library_Verbosity.ohf" />
+  </ItemGroup>
+</Project>

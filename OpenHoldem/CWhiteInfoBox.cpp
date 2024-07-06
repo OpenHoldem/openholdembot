@@ -21,7 +21,7 @@
 #include "CSymbolengineTableLimits.h"
 #include "CSymbolengineUserchair.h"
 #include "CTableState.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 CWhiteInfoBox *p_white_info_box = NULL;
 

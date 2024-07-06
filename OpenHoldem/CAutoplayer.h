@@ -16,8 +16,8 @@
 
 
 #include "MainFrm.h"
-#include "../CTablemap/CTablemap.h"
-#include "../CTablemap/CTableMapAccess.h"
+#include "CTablemap/CTablemap.h"
+#include "CTablemap/CTableMapAccess.h"
 #include "OpenHoldem.h"
 
 class CAutoplayer 

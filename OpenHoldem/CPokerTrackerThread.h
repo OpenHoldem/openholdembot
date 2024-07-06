@@ -14,10 +14,9 @@
 #ifndef INC_CPOKERTRACKERTHREAD_H
 #define INC_CPOKERTRACKERTHREAD_H
 
-#include "libpq-fe.h"
+#include "Postgresql/postgresql-8.2-0-windows-x86/libpq-fe.h"
 #include <map>
 #include "CSpaceOptimizedGlobalObject.h"
-
 
 const int k_advanced_stat_update_every    =    5;
 const int k_min_hands_for_slower_updates  = 1000;

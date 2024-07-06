@@ -23,7 +23,7 @@
 #ifdef OPENHOLDEM_PROGRAM
 #include "CAutoconnector.h"
 #endif
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 CTableTitle *p_table_title = NULL;
 int CTableTitle::_ohreplay_framenumber;

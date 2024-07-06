@@ -14,8 +14,6 @@
 #include "stdafx.h"
 #include "TokenizerConstants.h"
 
-#include <assert.h>
-
 const bool kTokenIsUnary[kNumberOfTokens] = {
   // kTokenEndOfFile = 0,
   false,

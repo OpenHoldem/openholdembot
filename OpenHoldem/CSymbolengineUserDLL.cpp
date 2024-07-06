@@ -19,12 +19,10 @@
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
-#include "COcclusionCheck.h"
-#include "COpenHoldemTitle.h"
 #include "CScraper.h"
 #include "CSymbolengineVersus.h"
 #include "CTableState.h"
-#include "..\DLLs\User_DLL\user.h"
+#include "User/user.h"
 
 CSymbolEngineUserDLL *p_symbol_engine_formula_loading = NULL;
 
@@ -136,16 +134,16 @@ EXE_IMPLEMENTS void ParseHandList(const char* name_of_list, const char* list_bod
   p_function_collection->Add(p_new_list);
 }
 
-EXE_IMPLEMENTS char* ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
+EXE_IMPLEMENTS char* ScrapeTableMapRegion(char* p_region, int& p_returned_length) {
   CString result;
   bool success = p_scraper->EvaluateRegion(p_region, &result);
   if (success) {
-    p_returned_lengh = result.GetLength() + 1;
-    char* returnStr = static_cast<char*>(LocalAlloc(LPTR, p_returned_lengh));
-    strcat(returnStr, result);
-    return returnStr;
+	  p_returned_length = result.GetLength() + 1;
+	  char* returnStr = static_cast<char*>(LocalAlloc(LPTR, p_returned_length));
+	  strcat_s(returnStr, p_returned_length, result);
+	  return returnStr;
   }
-  p_returned_lengh = kUndefined;
+  p_returned_length = kUndefined;
   return nullptr;
 }
 

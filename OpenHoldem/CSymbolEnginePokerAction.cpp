@@ -22,7 +22,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineRaisers.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 CSymbolEnginePokerAction::CSymbolEnginePokerAction() {
   // The values of some symbol-engines depend on other engines.

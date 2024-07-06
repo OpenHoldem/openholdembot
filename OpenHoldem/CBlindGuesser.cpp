@@ -23,7 +23,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHistory.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
 CBlindGuesser::CBlindGuesser() {

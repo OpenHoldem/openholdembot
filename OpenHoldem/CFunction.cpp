@@ -21,7 +21,7 @@
 #include "COHScriptObject.h"
 #include "CParseTreeNode.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 // Global counter to detect potentially endless recursion_depth
 int recursion_depth = 0;

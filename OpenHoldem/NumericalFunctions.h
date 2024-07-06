@@ -14,8 +14,6 @@
 #ifndef INC_NUMERICALFUNCTIONS_H
 #define INC_NUMERICALFUNCTIONS_H
 
-#include <assert.h>
-
 // Deals with floating points, ints, hex and binary
 double StringToNumber(CString number);
 

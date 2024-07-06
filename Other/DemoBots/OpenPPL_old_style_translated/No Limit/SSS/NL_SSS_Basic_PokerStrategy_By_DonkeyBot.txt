@@ -1,0 +1,181 @@
+// Contributed by DonkeyBot Sun Feb 26, 2012
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=260&t=14731
+
+CUSTOM
+
+LISTS
+
+// The Starting Hands Chart
+
+NEW LIST 010 
+	AA KK
+END LIST
+
+NEW LIST 011 
+	AA KK QQ JJ AK
+END LIST
+
+NEW LIST 012 
+	AA KK QQ JJ TT AK
+END LIST
+
+NEW LIST 013
+	AA KK QQ JJ TT 99 88 AK
+END LIST
+
+NEW LIST 014 
+	AA KK QQ JJ TT 99 AK AQ
+END LIST
+
+NEW LIST 015 
+	AA KK QQ JJ TT 99 AK AQ AJ
+END LIST
+
+NEW LIST 016
+	AA KK QQ JJ TT 99 88 77 AK AQ AJ AT KQ
+END LIST
+
+SYMBOLS
+
+NEW SYMBOL OpponentIsRaising
+	// PREFLOP
+	WHEN ((betround = 1) AND (ac_pf_bets > 2)) RETURN 1 FORCE
+	// POSTFLOP
+	WHEN ((betround > 1) AND ((nopponentsraising > 0) OR (call > 0) OR (RaisesSinceLastPlay > 0))) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL OneOpponentIsRaising
+	// PREFLOP
+	WHEN ((betround = 1) AND (ac_pf_bets > 2) AND ((nopponentsraising = 1) OR (RaisesSinceLastPlay = 1))) RETURN 1 FORCE
+	// POSTFLOP
+	WHEN ((betround > 1) AND ((nopponentsraising = 1) OR (RaisesSinceLastPlay = 1))) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL HaveHand
+	WHEN (Have2ndOverPair OR Have2ndTopPair OR HaveTopPair OR HaveOverPair OR HaveOpenEndedStraightDraw OR HaveFlushDraw OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL HaveBetterHand
+	// ???
+	WHEN ((HaveTopPair AND Have2ndBestKickerOrBetter) OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+PREFLOP
+// if the number of players falls below 7, or there are over 2 short-stacks present, go find a different table
+// WHEN ((OpponentsAtTable < 7) OR (OpponentsWithLowerStack > 2)) SITOUT FORCE
+// Leave the table when you have more than 125%
+// WHEN (StackSize > 25) SITOUT FORCE
+// Buy more chips when you have less than 75%
+// ??? WHEN (StackSize < 15) REBUY FORCE
+
+// How much should you raise?
+// If no one has raised before you		4 Big Blinds + 1 Big Blind for every player who has already entered the hand
+// If someone raised before/after you	Go all-In
+// When you or an opponent re-steals	Go all-In
+
+// If no one has raised before you, you raise when ...
+	WHEN (NOT OpponentIsRaising AND islist011) RAISE 100% FORCE
+	WHEN (NOT OpponentIsRaising AND NOT (InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3) AND islist014) RAISE 100% FORCE
+	WHEN (NOT OpponentIsRaising AND (InCutOff OR InButton OR InTheBlinds) AND islist016) RAISE 100% FORCE
+
+// If an opponent starts action, you go all-in ...
+	WHEN (OneOpponentIsRaising AND islist011) RAISEMAX FORCE
+	WHEN (OpponentIsRaising AND (NOT OneOpponentIsRaising) AND islist010) RAISEMAX FORCE
+	WHEN ((RaisesSinceLastPlay = 1) AND islist012) RAISEMAX FORCE
+
+// Re-steals
+	WHEN (InBigBlind AND OneOpponentIsRaising AND islist013) RAISEMAX FORCE
+	WHEN (BigBlindRaising AND (RaisesSinceLastPlay = 1) AND islist015) RAISEMAX FORCE
+
+WHEN Others FOLD FORCE	
+
+FLOP
+// The kinds of hands can you have?
+// middle pair, top pair, overpair, oesd, flush draw
+
+// How to play after the flop?
+// If you raised before the flop
+	// You play: Middle pairs, top pairs, overpairs, OESDs, flush draws and every better hand
+
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND OpponentIsRaising) RAISEMAX FORCE
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND (RaisesSinceLastPlay > 0)) RAISEMAX FORCE
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND (call > (balance / 2))) RAISEMAX FORCE
+
+	// What if you didn't hit?
+		// If the pot is twice as large as your stack at the start of a betting round, go all-in.
+		WHEN (BotRaisedBeforeFlop AND NOT HaveHand AND (pot > (balance * 2))) RAISEMAX FORCE
+
+		// If you raised before the flop and are only facing one opponent, always bet approx. 2/3 of the pot on the flop. This is a bluff. You will have to give up this bluff if your opponent does not fold.
+		WHEN (BotRaisedBeforeFlop AND (OpponentsLeft = 1) AND NOT HaveHand AND (RaisesSinceLastPlay < 1)) RAISE 70% FORCE
+
+// If you didn't raise before the flop
+// You play:
+// Top pairs (with a jack or better kicker card), overpairs and every better hand.
+
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND OpponentIsRaising) RAISEMAX FORCE
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND (RaisesSinceLastPlay > 0)) RAISEMAX FORCE
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND ((pot * 0.7) > (balance * 2))) RAISEMAX FORCE
+
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND NOT OpponentIsRaising) RAISE 70% FORCE
+		
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND NOT OpponentIsRaising) RAISE 70% FORCE
+
+WHEN (NOT OpponentIsRaising) CALL FORCE
+WHEN Others FOLD FORCE
+
+TURN
+// The kinds of hands can you have?
+// middle pair, top pair, overpair, oesd, flush draw
+
+// How to play after the flop?
+// If you raised before the flop
+	// You play: Middle pairs, top pairs, overpairs, OESDs, flush draws and every better hand
+
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND OpponentIsRaising) RAISEMAX FORCE
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND (RaisesSinceLastPlay > 0)) RAISEMAX FORCE
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND (call > (balance / 2))) RAISEMAX FORCE
+		WHEN (BotRaisedBeforeFlop AND OpponentCalledOnFlop) RAISEMAX FORCE
+
+	// What if you didn't hit?
+		// If the pot is twice as large as your stack at the start of a betting round, go all-in.
+		WHEN (BotRaisedBeforeFlop AND NOT HaveHand AND (pot > (balance * 2))) RAISEMAX FORCE
+
+		// If you raised before the flop and are only facing one opponent, always bet approx. 2/3 of the pot on the flop. This is a bluff. You will have to give up this bluff if your opponent does not fold.
+		WHEN (BotRaisedBeforeFlop AND (OpponentsLeft = 1) AND NOT HaveHand AND (RaisesSinceLastPlay < 1)) RAISE 70% FORCE
+		
+		WHEN (BotRaisedBeforeFlop AND HaveHand AND NOT OpponentIsRaising) RAISE 70% FORCE
+
+// If you didn't raise before the flop
+// You play:
+// Top pairs (with a jack or better kicker card), overpairs and every better hand.
+
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND OpponentIsRaising) RAISEMAX FORCE
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND (RaisesSinceLastPlay > 0)) RAISEMAX FORCE
+
+		// If a bet or raise would cost you more than half your stack, go all-in.
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND ((pot * 0.7) > (balance * 2))) RAISEMAX FORCE
+
+		// If one or more opponents just call your bet, go directly all-in on the turn.
+		WHEN (NOT BotRaisedBeforeFlop AND OpponentCalledOnFlop) RAISEMAX FORCE
+		
+		WHEN (NOT BotRaisedBeforeFlop AND HaveBetterHand AND NOT OpponentIsRaising) RAISE 70% FORCE
+
+WHEN (NOT OpponentIsRaising) CALL FORCE
+WHEN Others FOLD FORCE
+
+RIVER
+	// You play: top pairs, overpairs and every better hand
+		WHEN (HaveBetterHand AND NOT OpponentIsRaising) RAISE 70% FORCE
+
+		// If someone has bet or raised before you, you go all-in.
+		WHEN (HaveBetterHand AND OpponentIsRaising) RAISEMAX FORCE
+
+		// If you bet, and someone raises after you, you go all-in.
+		WHEN (HaveBetterHand AND (RaisesSinceLastPlay > 0)) RAISEMAX FORCE
+
+WHEN (NOT OpponentIsRaising) CALL FORCE
+WHEN Others FOLD FORCE

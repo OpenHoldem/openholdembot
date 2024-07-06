@@ -20,11 +20,11 @@
  */
 #include "stdafx.h"
 #include "ScintillaWnd.h"
-#include "..\scintilla\include\scintilla.h"
-#include "..\scintilla\include\SciLexer.h"
-#include "..\scintilla\include\Accessor.h"
-#include "..\scintilla\include\Propset.h"
-#include "..\scintilla\include\keywords.h"
+#include "Scintilla/include/scintilla.h"
+#include "Scintilla/include/SciLexer.h"
+#include "Scintilla/include/Accessor.h"
+#include "Scintilla/include/Propset.h"
+#include "Scintilla/include/keywords.h"
 
 
 /////////////////////////////////////
@@ -356,7 +356,7 @@ void CScintillaWnd::SetUnderline(int nStyle, bool bUnderline) {
 // @rvalue bool | true if we are in overstrike mode - else false
 //
 bool CScintillaWnd::GetOverstrike() {
-    return SendMessage(SCI_GETOVERTYPE , 0, 0);
+    return SendMessage(SCI_GETOVERTYPE , 0, 0) != 0;
 }
 
 /////////////////////////////////////

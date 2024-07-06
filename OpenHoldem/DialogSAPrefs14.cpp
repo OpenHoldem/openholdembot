@@ -69,7 +69,7 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 
 void CDlgSAPrefs14::OnOK() {
-	if (bool(_autoconnector_connect_never.GetCheck()) == true) {
+	if (_autoconnector_connect_never.GetCheck() != 0) {
 		Preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
 	}	else { // _autoconnector_connect_permanent.GetCheck() == BST_CHECKED 
 		Preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);

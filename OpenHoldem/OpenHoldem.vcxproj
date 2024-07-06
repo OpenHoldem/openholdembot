@@ -5,55 +5,33 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release - Optimized|Win32">
-      <Configuration>Release - Optimized</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>OpenHoldem</ProjectName>
     <ProjectGuid>{4B4F8898-50C6-4F07-8771-B140482DBA69}</ProjectGuid>
-    <RootNamespace>pokbot</RootNamespace>
+    <RootNamespace>OpenHoldem</RootNamespace>
     <Keyword>MFCProj</Keyword>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <PlatformToolset>v140_xp</PlatformToolset>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -63,48 +41,37 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">false</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">false</GenerateManifest>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">
-    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <OutDir>$(SolutionDir)_out\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)_out\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
-      <ValidateAllParameters>false</ValidateAllParameters>
-    </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Program Files\Visual Leak Detector\include;..\pokereval\include;..\pokereval\include\inlines;..\postgres;..\winmgr;..\hscroll-list-box;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Common;$(SolutionDir)Libraries\External;$(SolutionDir)Libraries\Internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;OEMRESOURCE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
       <EnablePREfast>false</EnablePREfast>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -112,36 +79,31 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;$(OutDir)libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libc.lib;libcmtd.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <StackReserveSize>8388608</StackReserveSize>
-      <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>C:\Program Files\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
-      <ValidateAllParameters>false</ValidateAllParameters>
-    </Midl>
     <ClCompile>
-      <Optimization>Full</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Common;$(SolutionDir)Libraries\External;$(SolutionDir)Libraries\Internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;OEMRESOURCE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -156,52 +118,15 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;$(OutDir)libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <StackReserveSize>8388608</StackReserveSize>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-    <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
-      <ValidateAllParameters>false</ValidateAllParameters>
-    </Midl>
-    <ClCompile>
-      <Optimization>Full</Optimization>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\Release\Preferences.lib;..\Release\globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;..\Release\string_functions.lib;..\Release\debug.lib;..\Release\GameStateValidation.lib;..\Release\files.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <StackReserveSize>8388608</StackReserveSize>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <TargetMachine>MachineX86</TargetMachine>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
@@ -284,18 +209,17 @@
     <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\winmgr\SizerBar.cpp" />
-    <ClCompile Include="..\winmgr\WinMgr.cpp" />
-    <ClCompile Include="..\winmgr\WinRect.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\CompareArgs.cpp" />
-    <ClCompile Include="..\CTransform\CTransform.cpp" />
-    <ClCompile Include="..\CTransform\hash\lookup3.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\LPyramid.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\Metric.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\RGBAImage.cpp" />
+    <ClCompile Include="..\Common\CWinMgr\SizerBar.cpp" />
+    <ClCompile Include="..\Common\CWinMgr\WinMgr.cpp" />
+    <ClCompile Include="..\Common\CWinMgr\WinRect.cpp" />
+    <ClCompile Include="..\Common\CTransform\pdiff\CompareArgs.cpp" />
+    <ClCompile Include="..\Common\CTransform\CTransform.cpp" />
+    <ClCompile Include="..\Common\CTransform\hash\lookup3.cpp" />
+    <ClCompile Include="..\Common\CTransform\pdiff\LPyramid.cpp" />
+    <ClCompile Include="..\Common\CTransform\pdiff\Metric.cpp" />
+    <ClCompile Include="..\Common\CTransform\pdiff\RGBAImage.cpp" />
     <ClCompile Include="COpenHoldemTitle.cpp" />
     <ClCompile Include="DialogSAPrefs10.cpp" />
     <ClCompile Include="DialogSAPrefs11.cpp" />
@@ -305,8 +229,7 @@
     <ClCompile Include="DialogSAPrefs15.cpp" />
     <ClCompile Include="DialogSAPrefs16.cpp" />
     <ClCompile Include="DialogSAPrefs17.cpp" />
-    <ClCompile Include="DialogSAPrefs18.cpp">
-    </ClCompile>
+    <ClCompile Include="DialogSAPrefs18.cpp" />
     <ClCompile Include="DialogSAPrefs19.cpp" />
     <ClCompile Include="DialogSAPrefs2.cpp" />
     <ClCompile Include="DialogSAPrefs20.cpp" />
@@ -401,15 +324,8 @@
     <ClCompile Include="CParseTreeRotator.cpp" />
     <ClCompile Include="CTokenizer.cpp" />
     <ClCompile Include="TokenizerConstants.cpp" />
-    <ClCompile Include="..\CTablemap\CTablemap.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-    </ClCompile>
-    <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
+    <ClCompile Include="..\Common\CTablemap\CTablemap.cpp" />
+    <ClCompile Include="..\Common\CTablemap\CTablemapAccess.cpp" />
     <ClCompile Include="CTablemapCompletenessChecker.cpp" />
     <ClCompile Include="CAutoplayerTrace.cpp" />
     <ClCompile Include="CDebugTab.cpp" />
@@ -419,55 +335,7 @@
     <ClCompile Include="COHScriptObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\StringFunctionsDLL\string_functions.cpp" />
     <None Include="OpenHoldem.def" />
-    <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_bets_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_buttons_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_cards_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_chip_amounts_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_general_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_handreset_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_history_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_limits_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_memory_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_number_of_bets_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_players_friends_opponents_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_table_stats_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_time_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_action_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_autoplayer_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_card_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_chairs_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_chip_amounts_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_common_cards_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_flags_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_flushes_straights_sets_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_formula_file_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_general_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_handrank_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_icm_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_known_cards_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_limits_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_list_tests_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_nhands_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_NOT_TO_DO_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_number_of_bets_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_players_friends_opponents_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_poker_values_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_probabilities_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rank_bits_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rank_hi_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rank_lo_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rounds_positions_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_table_stats_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_tablemap_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_time_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_versus_inline.cpp_" />
-    <None Include="Validator_Rules\rule_template.txt" />
-    <None Include="Validator_Rules\Tools\rules2cpp.pl" />
-    <None Include="Validator_Rules\Tools\verify_symbolnames.pl" />
     <None Include="res\bitmap1.bmp" />
     <None Include="res\bitmap_flags.bmp" />
     <None Include="res\idc_marg.ico" />
@@ -476,21 +344,9 @@
     <None Include="res\Toolbar.bmp" />
     <None Include="res\toolbar_formula_list.bmp" />
     <None Include="HeaderCopyrightDocumentation.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\sources of code.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt" />
-    <None Include="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt" />
-    <None Include="..\Checklist_Release.txt" />
-    <None Include="..\Checklist_Release_OpenPPL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
+    <ClInclude Include="..\Common\MagicNumbers\MagicNumbers.h" />
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
     <ClInclude Include="CAllinSlider.h" />
@@ -502,7 +358,6 @@
     <ClInclude Include="CCasinoHotkey.h" />
     <ClInclude Include="CFileSystemMonitor.h" />
     <ClInclude Include="CFlagsToolbar.h" />
-    <ClInclude Include="CGrammar.h" />
     <ClInclude Include="CHandHistoryAction.h" />
     <ClInclude Include="CHandHistoryDealPhase.h" />
     <ClInclude Include="CHandHistoryShowdown.h" />
@@ -531,7 +386,7 @@
     <ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CShankySymbolNameTranslator.h" />
-    <ClInclude Include="CSpaceOptimizedFormulalObject.h" />
+    <ClInclude Include="CSpaceOptimizedFormulaObject.h" />
     <ClInclude Include="CSpaceOptimizedGlobalObject.h" />
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
@@ -570,42 +425,15 @@
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\winmgr\SizerBar.h" />
-    <ClInclude Include="..\winmgr\WinMgr.h" />
-    <ClInclude Include="..\pokereval\include\combinations.h" />
-    <ClInclude Include="..\pokereval\include\deck.h" />
-    <ClInclude Include="..\pokereval\include\deck_std.h" />
-    <ClInclude Include="..\pokereval\include\deck_undef.h" />
-    <ClInclude Include="..\pokereval\include\enumdefs.h" />
-    <ClInclude Include="..\pokereval\include\enumerate.h" />
-    <ClInclude Include="..\pokereval\include\enumord.h" />
-    <ClInclude Include="..\pokereval\include\inlines\eval.h" />
-    <ClInclude Include="..\pokereval\include\inlines\eval_low.h" />
-    <ClInclude Include="..\pokereval\include\inlines\eval_type.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx5.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx7.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx_action.h" />
-    <ClInclude Include="..\pokereval\include\evx_defs.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx_inlines.h" />
-    <ClInclude Include="..\pokereval\include\game_std.h" />
-    <ClInclude Include="..\pokereval\include\handval.h" />
-    <ClInclude Include="..\pokereval\include\handval_low.h" />
-    <ClInclude Include="..\pokereval\include\poker_config.h" />
-    <ClInclude Include="..\pokereval\include\poker_defs.h" />
-    <ClInclude Include="..\pokereval\include\poker_wrapper.h" />
-    <ClInclude Include="..\pokereval\include\pokereval_export.h" />
-    <ClInclude Include="..\pokereval\include\rules_std.h" />
-    <ClInclude Include="..\pokereval\include\rules_undef.h" />
-    <ClInclude Include="..\postgres\libpq-fe.h" />
-    <ClInclude Include="..\postgres\postgres_ext.h" />
-    <ClInclude Include="..\CTransform\pdiff\CompareArgs.h" />
-    <ClInclude Include="..\CTransform\CTransform.h" />
-    <ClInclude Include="..\CTransform\hash\lookup3.h" />
-    <ClInclude Include="..\CTransform\pdiff\LPyramid.h" />
-    <ClInclude Include="..\CTransform\pdiff\Metric.h" />
-    <ClInclude Include="..\CTransform\pdiff\RGBAImage.h" />
-    <ClInclude Include="..\CTransform\hash\stdint.h" />
-    <ClInclude Include="..\StructsDefines\structs_defines.h" />
+    <ClInclude Include="..\Common\CWinMgr\SizerBar.h" />
+    <ClInclude Include="..\Common\CWinMgr\WinMgr.h" />
+    <ClInclude Include="..\Common\CTransform\pdiff\CompareArgs.h" />
+    <ClInclude Include="..\Common\CTransform\CTransform.h" />
+    <ClInclude Include="..\Common\CTransform\hash\lookup3.h" />
+    <ClInclude Include="..\Common\CTransform\pdiff\LPyramid.h" />
+    <ClInclude Include="..\Common\CTransform\pdiff\Metric.h" />
+    <ClInclude Include="..\Common\CTransform\pdiff\RGBAImage.h" />
+    <ClInclude Include="..\Common\StructsDefines\structs_defines.h" />
     <ClInclude Include="CBetroundCalculator.h" />
     <ClInclude Include="CEngineContainer.h" />
     <ClInclude Include="Chair$Symbols.h" />
@@ -677,7 +505,7 @@
     <ClInclude Include="COpenHoldemHopperCommunication.h" />
     <ClInclude Include="CSessionCounter.h" />
     <ClInclude Include="CSharedMem.h" />
-    <ClInclude Include="..\CCritSec\CCritSec.h" />
+    <ClInclude Include="..\Common\CCritSec\CCritSec.h" />
     <ClInclude Include="CPokerTrackerLookUp.h" />
     <ClInclude Include="CPokerTrackerThread.h" />
     <ClInclude Include="BringKeyboard.h" />
@@ -700,13 +528,12 @@
     <ClInclude Include="CReplayFrame.h" />
     <ClInclude Include="Bitmaps.h" />
     <ClInclude Include="CScraper.h" />
-    <ClInclude Include="..\CTablemap\CTablemap.h" />
-    <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
+    <ClInclude Include="..\Common\CTablemap\CTablemap.h" />
+    <ClInclude Include="..\Common\CTablemap\CTableMapAccess.h" />
     <ClInclude Include="CTablemapCompletenessChecker.h" />
     <ClInclude Include="CardFunctions.h" />
     <ClInclude Include="CStringHashtableTemplate.h" />
     <ClInclude Include="CStringMatch.h" />
-    <ClInclude Include="FloatingPoint_Comparisions.h" />
     <ClInclude Include="NumericalFunctions.h" />
     <ClInclude Include="WebSafeColours.h" />
     <ClInclude Include="CFormulaFileSplitter.h" />
@@ -728,25 +555,41 @@
     <ResourceCompile Include="OpenHoldem.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\pokereval\poker-eval.vcxproj">
-      <Project>{a4def05e-e072-493e-b282-84731d60bcf0}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    <ProjectReference Include="..\Libraries\External\Postgresql\Postgresql.vcxproj">
+      <Project>{6e43192c-0944-475a-91b1-bed09d9423e3}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\PokerTracker_Query_Definitions\pokertracker_query_definitions.vcxproj">
-      <Project>{dae7979b-3014-4b86-8efd-fa155a58fe78}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\Reference Keyboard DLL\Reference Keyboard DLL.vcxproj">
-      <Project>{d71ccb48-1c2c-409e-9801-5ab37714ed68}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\Reference Mouse DLL\Reference Mouse DLL.vcxproj">
-      <Project>{03de5c1c-773f-47cf-ad7c-470f68c6400e}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\scintilla\vcbuild\SciLexer.vcxproj">
+    <ProjectReference Include="..\Libraries\External\Scintilla\vcbuild\SciLexer.vcxproj">
       <Project>{e757a486-9770-4db4-8299-00e22986e604}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\Debugger\Debugger.vcxproj">
+      <Project>{67108ce5-cee0-4f22-8772-01bae26a0335}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\Files\Files.vcxproj">
+      <Project>{6d9f9d81-4d08-4c57-a773-4b041360d150}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\GamestateValidation\GamestateValidation.vcxproj">
+      <Project>{f7fc9500-4048-4e34-ad58-5dc7eb072198}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\Globals\globals.vcxproj">
+      <Project>{49099a5e-fd74-48d8-bf74-cf0483863343}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\External\PokerEval\PokerEval.vcxproj">
+      <Project>{a4def05e-e072-493e-b282-84731d60bcf0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\PokerTracker\PokerTracker.vcxproj">
+      <Project>{dae7979b-3014-4b86-8efd-fa155a58fe78}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\Preferences\Preferences.vcxproj">
+      <Project>{11e82a06-6deb-49ea-a176-a7f9c1164f11}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\StringFunctions\StringFunctions.vcxproj">
+      <Project>{9a3a25e1-3045-4ec3-be51-5bd55f1f94b9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\User\User.vcxproj">
+      <Project>{ac9135d2-9c77-41e4-bb36-81600d7f0812}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Internal\WindowFunctions\WindowFunctions.vcxproj">
+      <Project>{e87d7887-adde-41db-aa09-3ddab950faa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

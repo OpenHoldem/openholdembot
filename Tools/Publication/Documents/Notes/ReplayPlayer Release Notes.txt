@@ -1,0 +1,56 @@
+﻿v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
+v11.0.1. 2017-01-14
+===================
+NEW STUFF:
+- Supporting pure bitmaps now because too much beginners don't send complete frames.
+  This way we can use at least the image info, but not the table-title in the HTML
+  [THF]
+  
+  
+v2.1.9.1 2011-06-08
+===================
+BUG FIXES: 
+- OHR crashed if used with renamed replay-frames, 
+  as it assumes a filename of the format "frame012345.htm".
+  A runtime-check has been added to avoid the crash.
+  Thanks to Buchas for reporting.
+  [THF]
+
+  
+V2.0.4 2009-xx-yy
+=================
+BUG FIXES:
+- OHReplay used a buffer of 3 bytes when creating filenames with 6-digit number.
+  Thanks to Pokerage and BillW for reporting and to Poker_Dog for providing the fix. [THF]
+
+  
+v2.0.3 2009-10-23
+=================
+BUG FIXES:
+- OpenHoldem and OHReplay use now 6-digit-numbers for replayframes. [THF]
+
+
+v2.0.0 2009-05-22
+=================
+MAINTENANCE:
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
+
+
+v1.0.1 2008-10-21
+=================
+MAINTENANCE - All level 3 compiler warnings have been addressed.
+
+
+v1.0.0 2008-03-15
+=================
+- Initial public release.

@@ -17,7 +17,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs15.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 // CDlgSAPrefs15 dialog
 IMPLEMENT_DYNAMIC(CDlgSAPrefs15, CDialog)

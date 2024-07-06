@@ -1,5 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A166-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-83EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B2A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Dialog">
+      <UniqueIdentifier>{ad67df3d-9bd9-4214-8477-2f791a0bc061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog">
+      <UniqueIdentifier>{56d97508-2d74-40b9-b516-874a9a875289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{83f6f664-8201-4433-983e-f5930c3800fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{2dab9dea-669e-4b40-9b33-c4fd738962db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\CWinMgr">
+      <UniqueIdentifier>{582c9b67-3fec-45aa-bdf6-bd5e65aa354c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\CTablemap">
+      <UniqueIdentifier>{4fc0bd69-78d4-4c13-ba3fd-d49331e03d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\CTransform">
+      <UniqueIdentifier>{3cd79c2e-e8a3-4e50-9a94-0c9245d53383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\CTransform\pdiff">
+      <UniqueIdentifier>{1e7a148d-817d-44b6-8903-da532e67ea4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\CTransform\hash">
+      <UniqueIdentifier>{f84e2549-5f7f-43cf-8462-9460f15273a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\CWinMgr">
+      <UniqueIdentifier>{d71f656f-c6a0-44f0-bf8f-185ee86c4994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\CTablemap">
+      <UniqueIdentifier>{a7e54463-0548-4749-b32f-12471a2e1755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\CTransform">
+      <UniqueIdentifier>{0e5fccf9-ef39-4c1d-996e-5f60c06b0809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\CTransform\hash">
+      <UniqueIdentifier>{a87cf9dc-f123-423d-83b2-ea4941456a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\CTransform\pdiff">
+      <UniqueIdentifier>{97476cca-992c-4a2d-9a55-fbea3020ff51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{bbc490f2-226f-4a92-baef-5d4df862234e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{1fa5ffc8-fe72-4097-be37-3effcfd13d7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes">
+      <UniqueIdentifier>{9533bc6b-bf03-44cd-bde6-4bc43dc36738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes">
+      <UniqueIdentifier>{b8cdf1d4-3ba5-4679-8044-9b4d39476b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\CHandHistory">
+      <UniqueIdentifier>{a3a6aae2-3db9-4d24-bddb-e0667d2bba51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\CParseTree">
+      <UniqueIdentifier>{e3df1dc6-9944-4cd5-9c1c-8c78be21f481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\CSymbolEngine">
+      <UniqueIdentifier>{6d3a7954-7587-4b62-9fe0-e41157db9e1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\CScraper">
+      <UniqueIdentifier>{f402058a-9d6b-464d-9cac-f7fe1f77d474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\CScraper">
+      <UniqueIdentifier>{37c713cc-876d-4fbe-9391-b3ddefa16aea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\CSymbolEngine">
+      <UniqueIdentifier>{f84836c5-25da-413b-8516-c94427291a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\CParseTree">
+      <UniqueIdentifier>{3cde912f-e3eb-4b50-9efc-5c462af0cb81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\CHandHistory">
+      <UniqueIdentifier>{466a2810-e2b1-4c89-a399-2e165e47244f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exports">
+      <UniqueIdentifier>{464392db-150e-487f-8ba1-308c13c213f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
@@ -12,11 +107,6 @@
     <ClCompile Include="CCasinoHotkey.cpp" />
     <ClCompile Include="CFileSystemMonitor.cpp" />
     <ClCompile Include="CFlagsToolbar.cpp" />
-    <ClCompile Include="CHandHistoryAction.cpp" />
-    <ClCompile Include="CHandHistoryDealPhase.cpp" />
-    <ClCompile Include="CHandHistoryShowdown.cpp" />
-    <ClCompile Include="CHandHistoryUncontested.cpp" />
-    <ClCompile Include="CHandHistoryWriter.cpp" />
     <ClCompile Include="CHandresetDetector.cpp" />
     <ClCompile Include="CHeartbeatDelay.cpp" />
     <ClCompile Include="CHeartbeatThread.cpp" />
@@ -25,95 +115,29 @@
     <ClCompile Include="CMemoryPool.cpp" />
     <ClCompile Include="CMyMutex.cpp" />
     <ClCompile Include="COcclusionCheck.cpp" />
-    <ClCompile Include="CParseTreeOperatorNode.cpp" />
-    <ClCompile Include="CParseTreeTerminalNode.cpp" />
-    <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp" />
-    <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
-    <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
-    <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
-    <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
-    <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPopupHandler.cpp" />
-    <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CScrapedMoney.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
     <ClCompile Include="CShankySymbolNameTranslator.cpp" />
     <ClCompile Include="CSpaceOptimizedFormulaObject.cpp" />
-    <ClCompile Include="CSymbolEngineCallers.cpp" />
-    <ClCompile Include="CSymbolEngineCasino.cpp" />
-    <ClCompile Include="CSymbolEngineChairs.cpp" />
-    <ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
-    <ClCompile Include="CSymbolEngineColourCodes.cpp" />
-    <ClCompile Include="CSymbolengineConstants.cpp" />
-    <ClCompile Include="CSymbolEngineGameType.cpp" />
-    <ClCompile Include="CSymbolEngineICM.cpp" />
-    <ClCompile Include="CSymbolengineIsRush.cpp" />
-    <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
-    <ClCompile Include="CSymbolEngineMultiplexer.cpp" />
-    <ClCompile Include="CSymbolengineNutFullHouseOrFourOfAKind.cpp" />
-    <ClCompile Include="CSymbolengineOpenPPL.cpp" />
-    <ClCompile Include="CSymbolEnginePokerAction.cpp" />
-    <ClCompile Include="CSymbolEngineRaisers.cpp" />
-    <ClCompile Include="CSymbolengineTableStats.cpp" />
-    <ClCompile Include="CSymbolengineUserDLL.cpp" />
-    <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CTableTitle.cpp" />
     <ClCompile Include="CTitleEvaluator.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="CWhiteInfoBox.cpp" />
     <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="MD5_Checksum.cpp" />
-    <ClCompile Include="Median.cpp" />
     <ClCompile Include="MemoryLogging.cpp" />
-    <ClCompile Include="mtrand.cpp" />
-    <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
     <ClCompile Include="COpenHoldemStarter.cpp" />
     <ClCompile Include="CWatchdog.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="..\winmgr\SizerBar.cpp" />
-    <ClCompile Include="..\winmgr\WinMgr.cpp" />
-    <ClCompile Include="..\winmgr\WinRect.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\CompareArgs.cpp" />
-    <ClCompile Include="..\CTransform\CTransform.cpp" />
-    <ClCompile Include="..\CTransform\hash\lookup3.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\LPyramid.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\Metric.cpp" />
-    <ClCompile Include="..\CTransform\pdiff\RGBAImage.cpp" />
     <ClCompile Include="COpenHoldemTitle.cpp" />
-    <ClCompile Include="DialogSAPrefs10.cpp" />
-    <ClCompile Include="DialogSAPrefs11.cpp" />
-    <ClCompile Include="DialogSAPrefs12.cpp" />
-    <ClCompile Include="DialogSAPrefs13.cpp" />
-    <ClCompile Include="DialogSAPrefs14.cpp" />
-    <ClCompile Include="DialogSAPrefs15.cpp" />
-    <ClCompile Include="DialogSAPrefs16.cpp" />
-    <ClCompile Include="DialogSAPrefs17.cpp" />
-    <ClCompile Include="DialogSAPrefs18.cpp" />
-    <ClCompile Include="DialogSAPrefs19.cpp" />
-    <ClCompile Include="DialogSAPrefs2.cpp" />
-    <ClCompile Include="DialogSAPrefs20.cpp" />
-    <ClCompile Include="DialogSAPrefs21.cpp" />
-    <ClCompile Include="DialogSAPrefs22.cpp" />
-    <ClCompile Include="DialogSAPrefs3.cpp" />
-    <ClCompile Include="DialogSAPrefs4.cpp" />
-    <ClCompile Include="DialogSAPrefs6.cpp" />
-    <ClCompile Include="DialogSAPrefs7.cpp" />
-    <ClCompile Include="DialogSAPrefs8.cpp" />
-    <ClCompile Include="DialogSAPrefs9.cpp" />
     <ClCompile Include="SAPrefsDialog.cpp" />
     <ClCompile Include="SAPrefsStatic.cpp" />
     <ClCompile Include="SAPrefsSubDlg.cpp" />
     <ClCompile Include="COpenHoldemStatusbar.cpp" />
-    <ClCompile Include="DialogFormulaScintilla.cpp" />
-    <ClCompile Include="DialogHandList.cpp" />
-    <ClCompile Include="DialogNew.cpp" />
-    <ClCompile Include="DialogRename.cpp" />
-    <ClCompile Include="DialogScraperOutput.cpp" />
     <ClCompile Include="MyCToolBar.cpp" />
     <ClCompile Include="OpenHoldemView.cpp" />
     <ClCompile Include="ScintillaWnd.cpp" />
@@ -125,32 +149,6 @@
     <ClCompile Include="CEngineContainer.cpp" />
     <ClCompile Include="Chair$Symbols.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
-    <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp" />
-    <ClCompile Include="CSymbolEngineAutoplayer.cpp" />
-    <ClCompile Include="CSymbolEngineBlinds.cpp" />
-    <ClCompile Include="CSymbolEngineCards.cpp" />
-    <ClCompile Include="CSymbolEngineChipAmounts.cpp" />
-    <ClCompile Include="CSymbolengineDealerchair.cpp" />
-    <ClCompile Include="CSymbolengineDebug.cpp" />
-    <ClCompile Include="CSymbolEngineEventLogging.cpp" />
-    <ClCompile Include="CSymbolEngineHandrank.cpp" />
-    <ClCompile Include="CSymbolEngineHistory.cpp" />
-    <ClCompile Include="CSymbolEngineIniFunctions.cpp" />
-    <ClCompile Include="CSymbolEngineIsOmaha.cpp" />
-    <ClCompile Include="CSymbolEngineIsTournament.cpp" />
-    <ClCompile Include="CSymbolEngineMemorySymbols.cpp" />
-    <ClCompile Include="CSymbolEngineOpenPPLHandAndBoardExpression.cpp" />
-    <ClCompile Include="CSymbolEngineOpenPPLUserVariables.cpp" />
-    <ClCompile Include="CSymbolEnginePokerTracker.cpp" />
-    <ClCompile Include="CSymbolEnginePokerval.cpp" />
-    <ClCompile Include="CSymbolEnginePositions.cpp" />
-    <ClCompile Include="CSymbolEnginePrwin.cpp" />
-    <ClCompile Include="CSymbolEngineRandom.cpp" />
-    <ClCompile Include="CSymbolEngineReplayFrameController.cpp" />
-    <ClCompile Include="CSymbolEngineTableLimits.cpp" />
-    <ClCompile Include="CSymbolEngineTime.cpp" />
-    <ClCompile Include="CSymbolEngineUserchair.cpp" />
-    <ClCompile Include="CSymbolEngineVariousDataLookup.cpp" />
     <ClCompile Include="CVirtualSymbolEngine.cpp" />
     <ClCompile Include="CConfigurationCheck.cpp" />
     <ClCompile Include="CProblemSolver.cpp" />
@@ -164,7 +162,6 @@
     <ClCompile Include="PokerChat.cpp" />
     <ClCompile Include="SwagAdjustment.cpp" />
     <ClCompile Include="CAutoConnector.cpp" />
-    <ClCompile Include="CTableMapLoader.cpp" />
     <ClCompile Include="CTablePositioner.cpp" />
     <ClCompile Include="CTablepointChecker.cpp" />
     <ClCompile Include="CPokerTrackerLookUp.cpp" />
@@ -173,8 +170,6 @@
     <ClCompile Include="PrWinHandranges.cpp" />
     <ClCompile Include="CReplayFrame.cpp" />
     <ClCompile Include="Bitmaps.cpp" />
-    <ClCompile Include="CLazyScraper.cpp" />
-    <ClCompile Include="CScraper.cpp" />
     <ClCompile Include="CardFunctions.cpp" />
     <ClCompile Include="CStringHashtableTemplate.cpp" />
     <ClCompile Include="CStringMatch.cpp" />
@@ -182,22 +177,334 @@
     <ClCompile Include="WebSafeColours.cpp" />
     <ClCompile Include="CFormulaFileSplitter.cpp" />
     <ClCompile Include="CFormulaParser.cpp" />
-    <ClCompile Include="CParseErrors.cpp" />
-    <ClCompile Include="CParserSymbolTable.cpp" />
-    <ClCompile Include="CParseTreeNode.cpp" />
-    <ClCompile Include="CParseTreeRotator.cpp" />
     <ClCompile Include="CTokenizer.cpp" />
     <ClCompile Include="TokenizerConstants.cpp" />
-    <ClCompile Include="..\CTablemap\CTablemap.cpp" />
-    <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
-    <ClCompile Include="CTablemapCompletenessChecker.cpp" />
     <ClCompile Include="CAutoplayerTrace.cpp" />
     <ClCompile Include="CDebugTab.cpp" />
     <ClCompile Include="CFunction.cpp" />
     <ClCompile Include="CFunctionCollection.cpp" />
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
-    <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
+    <ClCompile Include="..\Common\CTransform\hash\lookup3.cpp">
+      <Filter>Source Files\Common\CTransform\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryAction.cpp">
+      <Filter>Source Files\Classes\CHandHistory</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryDealPhase.cpp">
+      <Filter>Source Files\Classes\CHandHistory</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryShowdown.cpp">
+      <Filter>Source Files\Classes\CHandHistory</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryUncontested.cpp">
+      <Filter>Source Files\Classes\CHandHistory</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryWriter.cpp">
+      <Filter>Source Files\Classes\CHandHistory</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeNode.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeOperatorNode.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeRotator.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNode.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeNumber.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp">
+      <Filter>Source Files\Classes\CParseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CParserSymbolTable.cpp" />
+    <ClCompile Include="CParseErrors.cpp" />
+    <ClCompile Include="..\Common\CTablemap\CTablemap.cpp">
+      <Filter>Source Files\Common\CTablemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CTablemap\CTablemapAccess.cpp">
+      <Filter>Source Files\Common\CTablemap</Filter>
+    </ClCompile>
+    <ClCompile Include="CTablemapCompletenessChecker.cpp">
+      <Filter>Source Files\Common\CTablemap</Filter>
+    </ClCompile>
+    <ClCompile Include="CTableMapLoader.cpp">
+      <Filter>Source Files\Common\CTablemap</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineAutoplayer.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineBlinds.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineCallers.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineCards.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineCasino.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineChairs.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineChecksBetsFolds.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineChipAmounts.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineColourCodes.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineConstants.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineDealerchair.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineVersus.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineVariousDataLookup.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineUserDLL.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineUserchair.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineTime.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineTableStats.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineTableLimits.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineReplayFrameController.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineRandom.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineRaisers.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEnginePrwin.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEnginePositions.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEnginePokerval.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEnginePokerTracker.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEnginePokerAction.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineOpenPPLUserVariables.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineOpenPPLHandAndBoardExpression.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineOpenPPL.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineNutFullHouseOrFourOfAKind.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineMultiplexer.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineMTTInfo.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineMemorySymbols.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineIsTournament.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineIsRush.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineIsOmaha.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineIniFunctions.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineICM.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineHistory.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineHandrank.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineGameType.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineFormulaSwitching.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineEventLogging.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolengineDebug.cpp">
+      <Filter>Source Files\Classes\CSymbolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogFormulaScintilla.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogHandList.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogNew.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogRename.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs2.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs3.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs4.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs6.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs7.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs8.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs9.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs10.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs11.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs12.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogScraperOutput.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs22.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs21.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs20.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs19.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs18.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs17.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs16.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs15.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs14.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs13.cpp">
+      <Filter>Source Files\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CWinMgr\WinMgr.cpp">
+      <Filter>Source Files\Common\CWinMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CWinMgr\WinRect.cpp">
+      <Filter>Source Files\Common\CWinMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CWinMgr\SizerBar.cpp">
+      <Filter>Source Files\Common\CWinMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CTransform\CTransform.cpp">
+      <Filter>Source Files\Common\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CTransform\pdiff\CompareArgs.cpp">
+      <Filter>Source Files\Common\CTransform\pdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CTransform\pdiff\LPyramid.cpp">
+      <Filter>Source Files\Common\CTransform\pdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CTransform\pdiff\Metric.cpp">
+      <Filter>Source Files\Common\CTransform\pdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\CTransform\pdiff\RGBAImage.cpp">
+      <Filter>Source Files\Common\CTransform\pdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5_Checksum.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="crc32hash.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Median.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenHoldem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CLazyScraper.cpp">
+      <Filter>Source Files\Classes\CScraper</Filter>
+    </ClCompile>
+    <ClCompile Include="CScraper.cpp">
+      <Filter>Source Files\Classes\CScraper</Filter>
+    </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
@@ -211,177 +518,49 @@
     <ClInclude Include="CCasinoHotkey.h" />
     <ClInclude Include="CFileSystemMonitor.h" />
     <ClInclude Include="CFlagsToolbar.h" />
-    <ClInclude Include="CGrammar.h" />
-    <ClInclude Include="CHandHistoryAction.h" />
-    <ClInclude Include="CHandHistoryDealPhase.h" />
-    <ClInclude Include="CHandHistoryShowdown.h" />
-    <ClInclude Include="CHandHistoryUncontested.h" />
-    <ClInclude Include="CHandHistoryWriter.h" />
     <ClInclude Include="CHandresetDetector.h" />
     <ClInclude Include="CHeartbeatDelay.h" />
     <ClInclude Include="CHeartbeatThread.h" />
-    <ClInclude Include="CLazyScraper.h" />
     <ClInclude Include="CLevDistance.h" />
     <ClInclude Include="CLimitScraper.h" />
     <ClInclude Include="CMemoryPool.h" />
     <ClInclude Include="CMyMutex.h" />
     <ClInclude Include="COcclusionCheck.h" />
-    <ClInclude Include="CParseTreeOperatorNode.h" />
-    <ClInclude Include="CParseTreeTerminalNode.h" />
-    <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h" />
-    <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
-    <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
-    <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
-    <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
-    <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPopupHandler.h" />
-    <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CShankySymbolNameTranslator.h" />
-    <ClInclude Include="CSpaceOptimizedFormulalObject.h" />
+    <ClInclude Include="CSpaceOptimizedFormulaObject.h" />
     <ClInclude Include="CSpaceOptimizedGlobalObject.h" />
-    <ClInclude Include="CSymbolEngineCallers.h" />
-    <ClInclude Include="CSymbolEngineCasino.h" />
-    <ClInclude Include="CSymbolengineChairs.h" />
-    <ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
-    <ClInclude Include="CSymbolengineColourCodes.h" />
-    <ClInclude Include="CSymbolengineConstants.h" />
-    <ClInclude Include="CSymbolEngineGameType.h" />
-    <ClInclude Include="CSymbolEngineICM.h" />
-    <ClInclude Include="CSymbolEngineIsRush.h" />
-    <ClInclude Include="CSymbolengineMTTInfo.h" />
-    <ClInclude Include="CSymbolengineMultiplexer.h" />
-    <ClInclude Include="CSymbolengineNutFullhouseOrFourOfAKind.h" />
-    <ClInclude Include="CSymbolEngineOpenPPL.h" />
-    <ClInclude Include="CSymbolEnginePokerAction.h" />
-    <ClInclude Include="CSymbolEngineRaisers.h" />
-    <ClInclude Include="CSymbolengineTableStats.h" />
-    <ClInclude Include="CSymbolengineUserDLL.h" />
-    <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CTableTitle.h" />
     <ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
-    <ClInclude Include="MD5_Checksum.h" />
-    <ClInclude Include="Median.h" />
     <ClInclude Include="MemoryLogging.h" />
-    <ClInclude Include="mtrand.h" />
     <ClInclude Include="MyCToolBar.h" />
-    <ClInclude Include="OpenHoldem.h" />
     <ClInclude Include="OpenHoldemDoc.h" />
     <ClInclude Include="COpenHoldemStarter.h" />
     <ClInclude Include="CWatchdog.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\winmgr\SizerBar.h" />
-    <ClInclude Include="..\winmgr\WinMgr.h" />
-    <ClInclude Include="..\pokereval\include\combinations.h" />
-    <ClInclude Include="..\pokereval\include\deck.h" />
-    <ClInclude Include="..\pokereval\include\deck_std.h" />
-    <ClInclude Include="..\pokereval\include\deck_undef.h" />
-    <ClInclude Include="..\pokereval\include\enumdefs.h" />
-    <ClInclude Include="..\pokereval\include\enumerate.h" />
-    <ClInclude Include="..\pokereval\include\enumord.h" />
-    <ClInclude Include="..\pokereval\include\inlines\eval.h" />
-    <ClInclude Include="..\pokereval\include\inlines\eval_low.h" />
-    <ClInclude Include="..\pokereval\include\inlines\eval_type.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx5.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx7.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx_action.h" />
-    <ClInclude Include="..\pokereval\include\evx_defs.h" />
-    <ClInclude Include="..\pokereval\include\inlines\evx_inlines.h" />
-    <ClInclude Include="..\pokereval\include\game_std.h" />
-    <ClInclude Include="..\pokereval\include\handval.h" />
-    <ClInclude Include="..\pokereval\include\handval_low.h" />
-    <ClInclude Include="..\pokereval\include\poker_config.h" />
-    <ClInclude Include="..\pokereval\include\poker_defs.h" />
-    <ClInclude Include="..\pokereval\include\poker_wrapper.h" />
-    <ClInclude Include="..\pokereval\include\pokereval_export.h" />
-    <ClInclude Include="..\pokereval\include\rules_std.h" />
-    <ClInclude Include="..\pokereval\include\rules_undef.h" />
-    <ClInclude Include="..\postgres\libpq-fe.h" />
-    <ClInclude Include="..\postgres\postgres_ext.h" />
-    <ClInclude Include="..\CTransform\pdiff\CompareArgs.h" />
-    <ClInclude Include="..\CTransform\CTransform.h" />
-    <ClInclude Include="..\CTransform\hash\lookup3.h" />
-    <ClInclude Include="..\CTransform\pdiff\LPyramid.h" />
-    <ClInclude Include="..\CTransform\pdiff\Metric.h" />
-    <ClInclude Include="..\CTransform\pdiff\RGBAImage.h" />
-    <ClInclude Include="..\CTransform\hash\stdint.h" />
-    <ClInclude Include="..\StructsDefines\structs_defines.h" />
     <ClInclude Include="CBetroundCalculator.h" />
     <ClInclude Include="CEngineContainer.h" />
     <ClInclude Include="Chair$Symbols.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
     <ClInclude Include="UnknownSymbols.h" />
-    <ClInclude Include="CSymbolEngineActiveDealtPlaying.h" />
-    <ClInclude Include="CSymbolEngineAutoplayer.h" />
-    <ClInclude Include="CSymbolEngineBlinds.h" />
-    <ClInclude Include="CSymbolEngineCards.h" />
-    <ClInclude Include="CSymbolEngineChipAmounts.h" />
-    <ClInclude Include="CSymbolEngineDealerchair.h" />
-    <ClInclude Include="CSymbolEngineDebug.h" />
-    <ClInclude Include="CSymbolEngineEventLogging.h" />
-    <ClInclude Include="CSymbolEngineHandrank.h" />
-    <ClInclude Include="CSymbolEngineHistory.h" />
-    <ClInclude Include="CSymbolEngineIniFunctions.h" />
-    <ClInclude Include="CSymbolEngineIsOmaha.h" />
-    <ClInclude Include="CSymbolEngineIsTournament.h" />
-    <ClInclude Include="CSymbolEngineMemorySymbols.h" />
-    <ClInclude Include="CSymbolEngineOpenPPLHandAndBoardExpression.h" />
-    <ClInclude Include="CSymbolEngineOpenPPLUserVariables.h" />
-    <ClInclude Include="CSymbolEnginePokerTracker.h" />
-    <ClInclude Include="CSymbolEnginePokerval.h" />
-    <ClInclude Include="CSymbolEnginePositions.h" />
-    <ClInclude Include="CSymbolEnginePrwin.h" />
-    <ClInclude Include="CSymbolEngineRandom.h" />
-    <ClInclude Include="CSymbolEngineReplayFrameController.h" />
-    <ClInclude Include="CSymbolEngineTableLimits.h" />
-    <ClInclude Include="CSymbolEngineTime.h" />
-    <ClInclude Include="CSymbolengineUserchair.h" />
-    <ClInclude Include="CSymbolEngineVariousDataLookup.h" />
     <ClInclude Include="COpenHoldemStatusbar.h" />
     <ClInclude Include="COpenHoldemTitle.h" />
-    <ClInclude Include="DialogFormulaScintilla.h" />
-    <ClInclude Include="DialogHandList.h" />
-    <ClInclude Include="DialogNew.h" />
-    <ClInclude Include="DialogRename.h" />
-    <ClInclude Include="DialogScraperOutput.h" />
     <ClInclude Include="OpenHoldemView.h" />
     <ClInclude Include="ScintillaWnd.h" />
     <ClInclude Include="VerifyFunctionAndListNames.h" />
-    <ClInclude Include="DialogSAPrefs10.h" />
-    <ClInclude Include="DialogSAPrefs11.h" />
-    <ClInclude Include="DialogSAPrefs12.h" />
-    <ClInclude Include="DialogSAPrefs13.h" />
-    <ClInclude Include="DialogSAPrefs14.h" />
-    <ClInclude Include="DialogSAPrefs15.h" />
-    <ClInclude Include="DialogSAPrefs16.h" />
-    <ClInclude Include="DialogSAPrefs17.h" />
-    <ClInclude Include="DialogSAPrefs18.h" />
-    <ClInclude Include="DialogSAPrefs19.h" />
-    <ClInclude Include="DialogSAPrefs2.h" />
-    <ClInclude Include="DialogSAPrefs20.h" />
-    <ClInclude Include="DialogSAPrefs21.h" />
-    <ClInclude Include="DialogSAPrefs22.h" />
-    <ClInclude Include="DialogSAPrefs3.h" />
-    <ClInclude Include="DialogSAPrefs4.h" />
-    <ClInclude Include="DialogSAPrefs6.h" />
-    <ClInclude Include="DialogSAPrefs7.h" />
-    <ClInclude Include="DialogSAPrefs8.h" />
-    <ClInclude Include="DialogSAPrefs9.h" />
     <ClInclude Include="SAPrefsDialog.h" />
     <ClInclude Include="SAPrefsStatic.h" />
     <ClInclude Include="SAPrefsSubDlg.h" />
     <ClInclude Include="COpenHoldemHopperCommunication.h" />
     <ClInclude Include="CSessionCounter.h" />
     <ClInclude Include="CSharedMem.h" />
-    <ClInclude Include="..\CCritSec\CCritSec.h" />
     <ClInclude Include="CPokerTrackerLookUp.h" />
     <ClInclude Include="CPokerTrackerThread.h" />
     <ClInclude Include="BringKeyboard.h" />
@@ -393,7 +572,6 @@
     <ClInclude Include="PokerChat.hpp" />
     <ClInclude Include="SwagAdjustment.h" />
     <ClInclude Include="CAutoConnector.h" />
-    <ClInclude Include="CTableMapLoader.h" />
     <ClInclude Include="CTablePositioner.h" />
     <ClInclude Include="CTablepointChecker.h" />
     <ClInclude Include="CConfigurationCheck.h" />
@@ -403,22 +581,13 @@
     <ClInclude Include="PrWinHandranges.h" />
     <ClInclude Include="CReplayFrame.h" />
     <ClInclude Include="Bitmaps.h" />
-    <ClInclude Include="CScraper.h" />
-    <ClInclude Include="..\CTablemap\CTablemap.h" />
-    <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
-    <ClInclude Include="CTablemapCompletenessChecker.h" />
     <ClInclude Include="CardFunctions.h" />
     <ClInclude Include="CStringHashtableTemplate.h" />
     <ClInclude Include="CStringMatch.h" />
-    <ClInclude Include="FloatingPoint_Comparisions.h" />
     <ClInclude Include="NumericalFunctions.h" />
     <ClInclude Include="WebSafeColours.h" />
     <ClInclude Include="CFormulaFileSplitter.h" />
     <ClInclude Include="CFormulaParser.h" />
-    <ClInclude Include="CParseErrors.h" />
-    <ClInclude Include="CParserSymbolTable.h" />
-    <ClInclude Include="CParseTreeNode.h" />
-    <ClInclude Include="CParseTreeRotator.h" />
     <ClInclude Include="CTokenizer.h" />
     <ClInclude Include="TokenizerConstants.h" />
     <ClInclude Include="CAutoplayerTrace.h" />
@@ -427,79 +596,373 @@
     <ClInclude Include="CFunctionCollection.h" />
     <ClInclude Include="COHScriptList.h" />
     <ClInclude Include="COHScriptObject.h" />
-    <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
-    <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
+    <ClInclude Include="Resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTransform\hash\lookup3.h">
+      <Filter>Header Files\Common\CTransform\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryAction.h">
+      <Filter>Header Files\Classes\CHandHistory</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryDealPhase.h">
+      <Filter>Header Files\Classes\CHandHistory</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryShowdown.h">
+      <Filter>Header Files\Classes\CHandHistory</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryUncontested.h">
+      <Filter>Header Files\Classes\CHandHistory</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryWriter.h">
+      <Filter>Header Files\Classes\CHandHistory</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeNode.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeOperatorNode.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeRotator.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNode.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeFixedAction.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeIdentifier.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeNumber.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeuserVariable.h">
+      <Filter>Header Files\Classes\CParseTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseErrors.h" />
+    <ClInclude Include="CParserSymbolTable.h" />
+    <ClInclude Include="..\Common\CTablemap\CTablemap.h">
+      <Filter>Header Files\Common\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTablemap\CTableMapAccess.h">
+      <Filter>Header Files\Common\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="CTablemapCompletenessChecker.h">
+      <Filter>Header Files\Common\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="CTableMapLoader.h">
+      <Filter>Header Files\Common\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineActiveDealtPlaying.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineAutoplayer.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineBlinds.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineCallers.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineCards.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineCasino.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineChairs.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineChecksBetsFolds.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineChipAmounts.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineColourCodes.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineConstants.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineDealerchair.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineDebug.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineEventLogging.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineFormulaSwitching.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineGameType.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineHandrank.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineHistory.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineICM.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineIniFunctions.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineIsOmaha.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineIsRush.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineIsTournament.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineMemorySymbols.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineMTTInfo.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineMultiplexer.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineNutFullhouseOrFourOfAKind.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineOpenPPL.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineOpenPPLHandAndBoardExpression.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineOpenPPLUserVariables.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEnginePokerAction.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEnginePokerTracker.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEnginePokerval.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEnginePositions.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEnginePrwin.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineRaisers.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineRandom.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineReplayFrameController.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineTableLimits.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineTableStats.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineTime.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineUserchair.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineUserDLL.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineVariousDataLookup.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineVersus.h">
+      <Filter>Header Files\Classes\CSymbolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogFormulaScintilla.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogHandList.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogNew.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogRename.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs2.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs3.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs4.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs6.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs7.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs8.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs9.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs10.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs11.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs12.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs13.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs14.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs15.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs16.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs17.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs18.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs19.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs20.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs21.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs22.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogScraperOutput.h">
+      <Filter>Header Files\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CCritSec\CCritSec.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\MagicNumbers\MagicNumbers.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CWinMgr\WinMgr.h">
+      <Filter>Header Files\Common\CWinMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CWinMgr\SizerBar.h">
+      <Filter>Header Files\Common\CWinMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTransform\CTransform.h">
+      <Filter>Header Files\Common\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTransform\pdiff\RGBAImage.h">
+      <Filter>Header Files\Common\CTransform\pdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTransform\pdiff\LPyramid.h">
+      <Filter>Header Files\Common\CTransform\pdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTransform\pdiff\CompareArgs.h">
+      <Filter>Header Files\Common\CTransform\pdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\CTransform\pdiff\Metric.h">
+      <Filter>Header Files\Common\CTransform\pdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\StructsDefines\structs_defines.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crc32hash.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5_Checksum.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Median.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenHoldem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CLazyScraper.h">
+      <Filter>Header Files\Classes\CScraper</Filter>
+    </ClInclude>
+    <ClInclude Include="CScraper.h">
+      <Filter>Header Files\Classes\CScraper</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="OpenHoldem.rc" />
+    <None Include="res\bitmap_flags.bmp">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="res\bitmap1.bmp">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="res\toolbar_formula_list.bmp">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="res\idc_marg.ico">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="HeaderCopyrightDocumentation.txt">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="res\OpenHoldem.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\OpenHoldem.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="OpenHoldem.def">
+      <Filter>Exports</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\StringFunctionsDLL\string_functions.cpp" />
-    <None Include="OpenHoldem.def" />
-    <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_bets_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_buttons_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_cards_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_chip_amounts_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_general_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_handreset_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_history_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_limits_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_memory_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_number_of_bets_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_players_friends_opponents_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_table_stats_inline.cpp_" />
-    <None Include="Validator_Rules\consistency_checks_time_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_action_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_autoplayer_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_card_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_chairs_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_chip_amounts_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_common_cards_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_flags_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_flushes_straights_sets_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_formula_file_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_general_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_handrank_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_icm_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_known_cards_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_limits_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_list_tests_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_nhands_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_NOT_TO_DO_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_number_of_bets_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_players_friends_opponents_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_poker_values_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_probabilities_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rank_bits_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rank_hi_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rank_lo_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_rounds_positions_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_table_stats_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_tablemap_symbols_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_time_inline.cpp_" />
-    <None Include="Validator_Rules\range_checks_versus_inline.cpp_" />
-    <None Include="Validator_Rules\rule_template.txt" />
-    <None Include="Validator_Rules\Tools\rules2cpp.pl" />
-    <None Include="Validator_Rules\Tools\verify_symbolnames.pl" />
-    <None Include="res\bitmap1.bmp" />
-    <None Include="res\bitmap_flags.bmp" />
-    <None Include="res\idc_marg.ico" />
-    <None Include="res\OpenHoldem.ico" />
-    <None Include="res\OpenHoldem.rc2" />
-    <None Include="res\Toolbar.bmp" />
-    <None Include="res\toolbar_formula_list.bmp" />
-    <None Include="HeaderCopyrightDocumentation.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\sources of code.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt" />
-    <None Include="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt" />
-    <None Include="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt" />
-    <None Include="..\Checklist_Release.txt" />
-    <None Include="..\Checklist_Release_OpenPPL.txt" />
+    <Filter Include="Assets">
+      <UniqueIdentifier>{a1d66039-7880-4f92-a826-7e160c1fe0ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OpenHoldem.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

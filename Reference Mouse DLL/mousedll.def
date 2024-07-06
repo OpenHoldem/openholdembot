@@ -1,5 +1,0 @@
-LIBRARY	mouse
-EXPORTS
-   ProcessMessage    @1
-   MouseClick        @2
-   MouseClickDrag    @3 

@@ -18,6 +18,7 @@
 #include "CAutoplayer.h"
 #include "CEngineContainer.h"
 #include "MyCtoolbar.h"
+#include "resource.h"
 
 
 CFlagsToolbar *p_flags_toolbar = NULL;
@@ -114,7 +115,7 @@ long int CFlagsToolbar::GetFlagBits()
 }
 
 
-void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
+void CFlagsToolbar::SetFlag(int flag_number, BOOL new_value)
 {
 	ENT
 
@@ -124,7 +125,7 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 	// via window-messages.
 	if (flag_number>=0 && flag_number<kNumberOfFlags) 
 	{
-		_flags[flag_number] = new_value; 
+		_flags[flag_number] = !!new_value; 
 		switch (flag_number)
 		{
 			case 0: _tool_bar.GetToolBarCtrl().CheckButton(ID_NUMBER0, new_value); break;
@@ -290,10 +291,10 @@ void CFlagsToolbar::CheckButton(int button_ID, bool new_status)
 
 bool CFlagsToolbar::IsButtonChecked(int button_ID)
 {
-	return m_MainToolBar.GetToolBarCtrl().IsButtonChecked(button_ID);
+	return !!m_MainToolBar.GetToolBarCtrl().IsButtonChecked(button_ID);
 }
 
 bool CFlagsToolbar::IsButtonEnabled(int button_ID)
 {
-	return m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(button_ID);
+	return !!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(button_ID);
 }

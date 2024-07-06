@@ -22,9 +22,9 @@
 
 #include "SwagAdjustment.h"
 #include "CSymbolEngineHistory.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "OpenHoldem.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CBetsizeInputBox::CBetsizeInputBox() {
   // dummy point for mouse and keyboard DLL

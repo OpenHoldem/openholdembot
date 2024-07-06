@@ -31,7 +31,7 @@
 #include "CSymbolEnginePrwin.h"
 #include "CTableState.h"
 #include "CValidator.h"
-#include "inlines/eval.h"
+#include "PokerEval/include/inlines/eval.h"
 
 
 #include "PrWinHandranges.h"

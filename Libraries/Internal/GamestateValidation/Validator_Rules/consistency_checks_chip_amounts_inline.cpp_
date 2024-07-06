@@ -1,0 +1,238 @@
+BEGIN_TESTCASE
+    TESTCASE_ID ("1500")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 0.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance01") > 12))
+    POSTCONDITION (gws("balance0") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance01, balance0")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1501")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 1.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance11") > 12))
+    POSTCONDITION (gws("balance1") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance11, balance1")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1502")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 2.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance21") > 12))
+    POSTCONDITION (gws("balance2") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance21, balance2")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1503")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 3.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance31") > 12))
+    POSTCONDITION (gws("balance3") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance31, balance3")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1504")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 4.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance41") > 12))
+    POSTCONDITION (gws("balance4") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance41, balance4")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1505")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 5.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance51") > 12))
+    POSTCONDITION (gws("balance5") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance51, balance5")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1506")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 6.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance61") > 12))
+    POSTCONDITION (gws("balance6") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance61, balance6")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1507")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 7.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance71") > 12))
+    POSTCONDITION (gws("balance7") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance71, balance7")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1508")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 8.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance81") > 12))
+    POSTCONDITION (gws("balance8") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance81, balance8")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1509")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's a FL game and a player had more than 12 BB preflop, then he can never be allin during that hand. Partial rule for player 9.")
+    PRECONDITION (gws("isfl") && (gws("hi_balance91") > 12))
+    POSTCONDITION (gws("balance9") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("isfl, hi_balance91, balance9")
+END_TESTCASE
+
+ 
+BEGIN_TESTCASE
+    TESTCASE_ID ("1510")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 0.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0001) == 0x0001))
+    POSTCONDITION (gws("hi_balance01") >= gws("balance0"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance01, balance0")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1511")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 1.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0002) == 0x0002))
+    POSTCONDITION (gws("hi_balance11") >= gws("balance1"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance11, balance1")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1512")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 2.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0004) == 0x0004))
+    POSTCONDITION (gws("hi_balance21") >= gws("balance2"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance21, balance2")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1513")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 3.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0008) == 0x0008))
+    POSTCONDITION (gws("hi_balance31") >= gws("balance3"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance31, balance3")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1514")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 4.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0010) == 0x0010))
+    POSTCONDITION (gws("hi_balance41") >= gws("balance4"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance41, balance4")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1515")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 5.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0020) == 0x0020))
+    POSTCONDITION (gws("hi_balance51") >= gws("balance5"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance51, balance5")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1516")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 6.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0040) == 0x0040))
+    POSTCONDITION (gws("hi_balance61") >= gws("balance6"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance61, balance6")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1517")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 7.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0080) == 0x0080))
+    POSTCONDITION (gws("hi_balance71") >= gws("balance7"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance71, balance7")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1518")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 8.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0100) == 0x0100))
+    POSTCONDITION (gws("hi_balance81") >= gws("balance8"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance81, balance8")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1519")
+    HEURISTIC_RULE (false)
+    REASONING ("A players balance can't increase during a game. Partial rule for player 9.")
+    PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0200) == 0x0200))
+    POSTCONDITION (gws("hi_balance91") >= gws("balance9"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance91, balance9")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1520")
+    HEURISTIC_RULE (true)
+    REASONING ("If it's a tournament (SNG only, no MTT), then the sum of all chips has to be a multiple of the number of players at the table, as all players got the same amount of chips and there's no rake.")  
+    PRECONDITION (gws("istournament") != 0)
+    POSTCONDITION (IsEqual(int(gws("potcommon") + gws("potplayer") + gws("balance0") + gws("balance1") + gws("balance2") + gws("balance3") + gws("balance4") + gws("balance5") + gws("balance6") + gws("balance7") + gws("balance8") + gws("balance9")) % int(gws("nchairs")), 0))
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, potcommon, potplayer, balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9, nchairs")
+END_TESTCASE
+ 
+ 
+BEGIN_TESTCASE
+    TESTCASE_ID ("1521")
+    HEURISTIC_RULE (true)
+    REASONING ("If it's a tournament (SNG only, no MTT), then the sum of all chips has to be a multiple of 100, as all players got the same amount of chips and there's no rake.")
+    PRECONDITION (gws("istournament") != 0)
+	POSTCONDITION (IsEqual((int(gws("potcommon") + gws("potplayer") + gws("balance0") + gws("balance1") + gws("balance2") + gws("balance3") + gws("balance4") + gws("balance5") + gws("balance6") + gws("balance7") + gws("balance8") + gws("balance9")) %100), 0))
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, potcommon, potplayer, balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1522")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's postflop, there has to be a non-zero common pot.")
+    PRECONDITION (gws("betround") > 1)
+    POSTCONDITION (gws("pot") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, pot")
+END_TESTCASE
+ 
+ 
+BEGIN_TESTCASE
+    TESTCASE_ID ("1523")
+    HEURISTIC_RULE (false)
+    REASONING ("The common pot must be at least as large as the bets in front of all players.")
+    PRECONDITION (true)
+    POSTCONDITION (IsGreaterOrEqual(gws("pot"), (gws("currentbet0") + gws("currentbet1") + gws("currentbet2") + gws("currentbet3") + gws("currentbet4") + gws("currentbet5") + gws("currentbet6") + gws("currentbet7") + gws("currentbet8") + gws("currentbet9"))))
+    SYMBOLS_POSSIBLY_AFFECTED ("pot,  currentbet0,  currentbet1,  currentbet2,  currentbet3,  currentbet4,  currentbet5,  currentbet6,  currentbet7,  currentbet8,  currentbet9")
+END_TESTCASE

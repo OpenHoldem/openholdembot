@@ -1,0 +1,1920 @@
+CUSTOM
+Lists
+
+New List 001
+//UTG Open 
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs KQs
+KA  QA  JA  
+End List
+
+New List 002
+//UTG+1 
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44 
+AKs AQs AJs ATs KQs KJs 
+KA  QA  QK  JA  TA  
+
+End List
+
+New List 005
+//UTG+1 Raise Limpers
+AA  KK  QQ  JJ  TT  
+AKs AQs AJs 
+KA  QA  JA  
+End List
+
+New List 060
+//CO Open 25.79%
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s QJs QTs Q9s Q8s JTs T9s 98s 87s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  8A  7A  6A  5A  4A
+End List
+
+New List 061
+//CO Raise on Limper/s
+AA  KK  QQ  JJ  TT  99  88  
+AKs AQs AJs KQs 
+KA  QA  QK  JA   
+End List
+
+New List 063
+//CO Limp on Limper   
+77 66 55 44 33 22
+End List
+
+New List 070
+//BUTTON Open 36.05%
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s QJs QTs Q9s Q8s JTs J9s J8s T9s T8s 98s 87s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  89  7A  6A  5A  4A  3A  2A  
+End List
+
+New List 071
+//BUTTON Raise 1 Limper 
+AA  KK  QQ  JJ  TT  99  88  77  
+AKs AQs AJs ATs A9s A8s KQs KJs KTs QJs QTs JTs 
+KA  QA  QK  JA  JK  JQ  
+End List
+
+New List 072
+//BUTTON Raise 2 Limper
+AA  KK  QQ  JJ  TT  99  88  
+AKs AQs AJs ATs KQs KJs KTs QJs 
+KA  QA  QK  JA  
+End List
+
+New List 073
+//BUTTON Raise 3 Limper
+AA  KK  QQ  JJ  TT  99  88  77  
+AKs AQs AJs ATs KQs QJs 
+KA  QA  QK  JA  
+End List
+
+New List 074
+//BUTTON Raise 4+ Limper
+AA  KK  QQ  JJ  TT  99  
+AKs AQs AJs 
+KA  QA  
+End List
+
+New List 075
+//BTN Limp on Limper   
+99 88 77 66 55 44 33 22
+End List
+
+//BTN Raise Vs Early LOOSE Limper
+New List 600
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKs AQs AJs ATs KQs KJs KTs QJs QTs JTs T9s 
+KA  QA  QK  JA  JK  JQ  
+End List
+
+//BTN Raise Vs Middle LOOSE Limper
+New List 610
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKs AQs AJs ATs KQs KJs KTs QJs QTs JTs T9s 
+KA  QA  QK  JA  JK  JQ  TK  
+End List
+
+//BTN Raise Vs CO LOOSE Limper
+New List 620
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  
+End List
+
+//BTN Raise Vs Early LOOSE Limper
+New List 630
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKs AQs AJs ATs KQs KJs KTs QJs QTs JTs T9s 
+KA  QA  QK  JA  JK  JQ  
+End List
+
+New List 080
+//SB Open 34.84%
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s KQs KJs KTs K9s K8s K7s QJs QTs Q9s JTs 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K 8A   
+End List
+
+New List 091
+//SB: Reraise BTN Limper 
+AA  KK  QQ  JJ  TT  99  88
+AKs AQs AJs KQs
+KA  QA JA 
+End List
+
+New List 090
+//BB: Reraise 1 CO/BTN/SB limper from Button OR SmallBlind
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs KQs KJs QJs 
+KA  QA  QK  JA  JK  JQ  TA 
+End List
+
+
+New List 100
+// SB/BB: Reraise 1 Limper (CO/Btn)
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs KQs KJs 
+KA  QA  QK  JA  TA  
+End List
+
+New List 200
+//SB Complete with callers
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s JTs J9s J8s J7s T9s 98s  
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  8A  8K  8Q  8J  7A 
+End List
+
+New List 270
+//SB BB: Reraise To Steal to ^3bb raise
+AA  KK  QQ  JJ  TT  99  88  77 66 55 
+AKs AQs AJs ATs A9s KQs KJs KTs QJs JTs
+KA  QA  JA TA 
+End List
+
+New List 275
+//SB BB: Reraise To Steal ^4bb raise
+AA  KK  QQ  JJ  TT  99  88  77  
+AKs AQs AJs ATs KQs KJs KTs QJs 
+KA  QA  JA  
+End List
+
+New List 294
+//SB BB: Call Steal <20% OR OPPO UNKNOWN
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s KQs KJs QJs 
+KA  QA  QK  JA  JK  JQ  TA  
+End List
+
+New List 295
+//SB BB: Call Steal vs 25%
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s  A7s A6s A5s KQs KJs KTs K9s QJs QTs Q9s JTs
+KA  QA  JA  TA  QK  JK  TK  JQ  TQ
+End List
+
+//SB BB: Call Steal vs 30%
+New List 296
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22   
+AKs AQs AJs ATs A9s A8s A7s A6s A5s KQs KJs KTs K9s K8s QJs QTs Q9s Q8s JTs J9s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  
+End List
+
+//SB BB: Call Steal vs 45%
+New List 297
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22   
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s QJs QTs Q9s Q8s Q7s JTs J9s T9s 98s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9T  8A  7A  6A  5A  4A  
+End List
+
+New List 400
+// CALL Opponents AllIn when Only 1 Opponents Left and AMT <4
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s QJs QTs Q9s JTs J9s J8s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  8A  8K  8Q  8J  7A  7K  7Q  7J  6A  6K  5A  4A  3A  2A  
+End List
+
+New List 500
+// PREFLOLD
+J5s J4s J3s J2s T5s T4s T3s T2s 95s 94s 93s 92s 85s 84s 83s 82s 74s 73s 72s 63s 62s 52s 42s 32s 
+6Q  6J  6T  69  5Q  5J  5T  59  58  4K  4Q  4J  4T  49  48  47  3K  3Q  3J  3T  39  38  37  36  35  2K  2Q  2J  2T  29  28  27  26  25  24  
+End List
+
+
+Symbols
+
+New Symbol StandardRaise
+WHEN Raises<=0 AND UTG AND Calls=0 RETURN 2+Calls FORCE
+WHEN Raises<=0 AND StillToAct=4 AND Calls=0 RETURN 2.5 FORCE
+WHEN Raises<=0 AND In SmallBlind AND Calls=0 RETURN 2.0 FORCE
+WHEN Raises<=0 AND In SmallBlind AND Calls>0 RETURN 2+Calls FORCE
+WHEN Raises<=0 AND In BigBlind   AND Calls>0 RETURN 3+Calls FORCE
+WHEN Raises<=0 AND In Button AND Calls=0 RETURN 1.5 FORCE
+WHEN Raises<=0 AND In Button AND Calls>0 RETURN 2+Calls FORCE
+WHEN Raises<=0 AND Calls=0 RETURN 2 FORCE
+WHEN Raises<=0 AND AmountToCall<=1 RETURN (2+Calls) FORCE
+WHEN Raises<=0 AND AmountToCall<=2 RETURN (AmountToCall*2+Calls) FORCE
+WHEN Raises<=0 AND AmountToCall<=7 RETURN (AmountToCall*2+Calls) FORCE
+WHEN Raises=1 AND NOT (In BigBlind) AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=0 RETURN (AmountToCall*2) FORCE
+WHEN Raises=1 AND NOT (In BigBlind) AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=1 RETURN (AmountToCall*2) FORCE
+WHEN Raises=1 AND NOT (In BigBlind) AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=2 RETURN (AmountToCall*2+1) FORCE
+WHEN Raises=1 AND NOT (In BigBlind) AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=3 RETURN (AmountToCall*2+2) FORCE
+WHEN Raises=1 AND NOT (In BigBlind) AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=0 RETURN (AmountToCall*2) FORCE
+WHEN Raises=1 AND NOT (In BigBlind) AND BotsActionsOnThisRoundIncludingChecks>=1 AND BotsLastAction=Raise RETURN (AmountToCall*2.5) FORCE
+WHEN Raises=1 AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=0 RETURN (AmountToCall*3) FORCE
+WHEN Raises=1 AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=1 RETURN (AmountToCall*3) FORCE
+WHEN Raises=1 AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=2 RETURN (AmountToCall*3+1) FORCE
+WHEN Raises=1 AND BotsActionsOnThisRoundIncludingChecks=0 AND Calls<=3 RETURN (AmountToCall*3+2) FORCE
+WHEN Raises=1 AND BotsActionsOnThisRoundIncludingChecks>=1 AND BotsLastAction=Raise RETURN (AmountToCall*2.5) FORCE
+WHEN Raises=2 AND CallsSinceLastRaise=0 RETURN (AmountToCall*2.5) FORCE
+WHEN Raises=2 AND CallsSinceLastRaise=1 RETURN (AmountToCall*2)+(AmountToCall*0.7) FORCE
+WHEN Raises=2 AND CallsSinceLastRaise=2 RETURN (AmountToCall*2)+(AmountToCall*1) FORCE
+WHEN Raises=2 AND CallsSinceLastRaise=3 RETURN (AmountToCall*2)+(AmountToCall*1.5) FORCE
+WHEN Raises=2 AND CallsSinceLastRaise=4 RETURN (AmountToCall*2)+(AmountToCall*2) FORCE
+WHEN Raises>2 RETURN PotSize FORCE
+End Symbol
+
+
+New Symbol LastRaiserStackSize
+WHEN ac_aggressor = 0 RETURN (balance0/bblind) FORCE
+WHEN ac_aggressor = 1 RETURN (balance1/bblind) FORCE
+WHEN ac_aggressor = 2 RETURN (balance2/bblind) FORCE
+WHEN ac_aggressor = 3 RETURN (balance3/bblind) FORCE
+WHEN ac_aggressor = 4 RETURN (balance4/bblind) FORCE
+WHEN ac_aggressor = 5 RETURN (balance5/bblind) FORCE
+WHEN ac_aggressor = 6 RETURN (balance6/bblind) FORCE
+WHEN ac_aggressor = 7 RETURN (balance7/bblind) FORCE
+WHEN ac_aggressor = 8 RETURN (balance8/bblind) FORCE
+WHEN ac_aggressor = 9 RETURN (balance9/bblind) FORCE
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+New Symbol FlopCbet
+WHEN betround=2 AND opponents<=2 AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 AND bets=0 AND Raises<=0 AND BotsLastAction=Raise RETURN 1 FORCE
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+New Symbol TurnCbet
+WHEN betround=3 AND bets<=0 AND Raises<=0 AND BotsLastPreflopAction=Raise AND opponents<=2 AND (numberOfRaisesOnFlop=0 OR NoBettingOnflop) RETURN 1 FORCE
+WHEN betround=3 AND bets<=0 AND Raises<=0 AND BotsLastPreflopAction=Raise AND opponents<=2 AND (numberOfRaisesOnFlop=0 OR NoBettingOnflop) AND (HaveSet OR HaveTrips OR HaveTwoPair) RETURN 1 FORCE
+WHEN betround=3 AND bets<=0 AND Raises<=0 AND BotsLastPreflopAction=Raise AND opponents<=2 AND (numberOfRaisesOnFlop=0 OR NoBettingOnflop) AND (HaveOverPair OR haveTopPair) AND NOT (StraightPossible OR FlushPossible) RETURN 1 FORCE
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+New Symbol HadTopPairOnFlopNoPairOnBoard
+WHEN betround=2 AND HaveTwoPair RETURN 1 FORCE
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+
+New Symbol FHandStrenght
+///////////      0         ////////////
+WHEN betround=2 AND HaveQuads RETURN 0 FORCE
+WHEN betround=2 AND HaveStraightFlush AND (NOT StraightFlushOnBoard) RETURN 0 FORCE
+WHEN betround=2 AND (HaveBestFullHouse OR HaveNutFullHouse) RETURN 0 FORCE
+WHEN betround=2 AND HaveNutFlush AND NumberOfRaisesBeforeFlop>0 AND NOT Position=Last RETURN 0 FORCE
+
+/////////////      1         //////////// BET RERAISE CALL RERAISE EX VADO ROTTO!
+WHEN betround=2 AND HaveFullHouse AND PairOnBoard AND NOT TripsOnBoard RETURN 1 FORCE
+WHEN betround=2 AND HaveFullHouse AND TripsOnBoard AND (Hand=AA OR Hand=KK OR Hand=QQ) RETURN 1 FORCE
+WHEN betround=2 AND HaveFullHouse AND TripsOnBoard AND HaveOverPair AND (Hand=JJ OR Hand=TT) AND NumberOfRaisesBeforeFlop=0 AND StackSize<75 AND Opponents<3 RETURN 1 FORCE
+WHEN betround=2 AND HaveFullHouse AND TripsOnBoard AND HaveOverPair AND (Hand=99 OR Hand=88) AND NumberOfRaisesBeforeFlop=0 AND StackSize<75 AND Opponents<2 RETURN 1 FORCE
+WHEN betround=2 AND HaveNutFlush AND NOT PairOnBoard RETURN 1 FORCE
+WHEN betround=2 AND (Have2ndNutFlush OR (Have3rdNutFlush AND Opponents=1) OR (Have4thNutFlush AND Opponents=1)) RETURN 1 FORCE
+WHEN betround=2 AND Have2ndNutFlush AND Opponents<=2 RETURN 1 FORCE
+WHEN betround=2 AND HaveNutStraight AND SuitsOnBoard>=2 RETURN 1 FORCE
+WHEN betround=2 AND Have2ndNutStraight AND SuitsOnBoard>=2 RETURN 1 FORCE
+WHEN betround=2 AND HaveStraight AND SuitsOnBoard=1 AND Opponents=1 AND StackSize<100 RETURN 1 FORCE 
+WHEN betround=2 AND HaveStraight AND SuitsOnBoard>1 RETURN 1 FORCE
+WHEN betround=2 AND HaveSet RETURN 1 FORCE
+WHEN betround=2 AND StackSize<70 AND (HaveTopTwoPair OR HaveTwoPair) AND NOT (FlushPossible OR PairOnBoard) AND NOT (Board=AKQ OR Board=AKJ OR Board=AKT OR Board=AQJ OR Board=AQT OR Board=AJT OR Board=KQJ OR Board=KJT OR Board=QJT OR Board=JT9) RETURN 1 FORCE
+
+// WHEN betround=2 AND StackSize<20 AND (HaveFullHouse OR HaveStraight OR HaveSet OR HaveTrips OR HaveTwoPair OR HaveOverPair OR HaveTopPair OR HaveStraightDraw OR HaveFlushDraw) RETURN 1 FORCE
+// WHEN betround=2 AND StackSize<20 AND ( (HavePair AND HaveFlushDraw) OR (HavePair AND HaveStraightDraw) OR (HavePair AND NOT (PairInHand) AND HaveInsideStraightDraw AND NOT (SuitsOnBoard=1 AND Opponents>2))) RETURN 1 FORCE
+
+/////////////      5         //////////// BET RARAISE ALL IN 
+WHEN betround=2 AND ((Have2ndNutFlush OR Have2ndNutFlush) OR (HaveFlush AND Opponents<=2)) RETURN 5 FORCE
+WHEN betround=2 AND HaveStraight AND NOT (FlushPossible AND StackSize>100) RETURN 5 FORCE 
+WHEN betround=2 AND HaveTopTwoPair AND NOT (FlushPossible OR PairOnBoard) AND NOT (Board=AKQ OR Board=AKJ OR Board=AKT OR Board=AQJ OR Board=AQT OR Board=AJT OR Board=KQJ OR Board=KJT OR Board=QJT OR Board=JT9) RETURN 20 FORCE
+WHEN betround=2 AND HaveOverPair AND NOT StraightPossibleOnFlop AND NOT (FlushPossible OR PairOnBoard) AND CallsSinceLastRaise=0 AND StackSize<100 RETURN 5 FORCE
+WHEN betround=2 AND HaveOverPair AND StackSize<30 RETURN 5 FORCE
+
+/////////////      20         //////////// BET RAISE CALL (^Pot|65) (Call Reraise ^Pot) late Bet Raise Mini
+
+WHEN betround=2 AND HaveTwoPair AND NOT (FlushPossible OR PairOnBoard) AND NOT (Board=AKQ OR Board=AKJ OR Board=AKT OR Board=AQJ OR Board=AQT OR Board=AJT OR Board=KQJ OR Board=KJT OR Board=QJT OR Board=JT9) RETURN 20 FORCE
+WHEN betround=2 AND HaveTwoPair AND NOT StraightPossible AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) RETURN 20 FORCE
+WHEN betround=2 AND (HaveOverPair OR HaveTopPair) AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) RETURN 20 FORCE
+WHEN betround=2 AND HaveOverPair AND ((HaveStraightDraw) OR (HaveFlushDraw AND NOT FlushPossible)) RETURN 20 FORCE
+//before were 1 VADO ROTTO
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ) AND NOT (Board=KQ OR Board=KJ OR Board=KT OR Board=QJ OR Board=QT OR Board=JT OR Board=T9) AND NOT (StraightPossible OR FlushPossible) RETURN 20 FORCE
+WHEN betround=2 AND HaveOverPair AND StackSize<45 AND NOT (FlushPossible OR StraightPossible) RETURN 20 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ) AND HaveStraightDraw AND NOT (FlushPossible OR StraightPossible) RETURN 20 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=JJ OR Hand=TT) AND NOT FlushPossible AND NOT (StraightPossible AND Opponents>1) AND NumberOfRaisesBeforeFlop=0 RETURN 20 FORCE  
+WHEN betround=2 AND HaveOverPair AND SuitsOnBoard>1 AND StackSize<=50 AND NOT StraightPossible RETURN 20 FORCE
+WHEN betround=2 AND HaveTopPair AND (HaveStraightDraw OR HaveNutFlushDraw OR (Have2ndNutFlushDraw AND Opponents<=2) OR (HaveFlushDraw AND Opponents=1) )  RETURN 20 FORCE
+WHEN betround=2 AND (HaveTopPair AND HaveStraightDraw) AND NOT FlushPossible RETURN 20 FORCE 
+WHEN betround=2 AND HaveTopPair AND HaveNutFlushDraw AND (HaveStraightDraw OR HaveInsideStraightDraw) AND (NumberOfRaisesBeforeFlop=0) RETURN 20 FORCE
+WHEN betround=2 AND HaveTopPair AND TopPairKickerIsOvercard AND NOT (StraightPossible OR FlushPossible) RETURN 20 FORCE
+
+/////////////      22         //////////// BET CALL (^Pot|40) (Call Reraise ^Pot) late Bet Raise Mini
+WHEN betround=2 AND HaveFlushDraw AND HaveStraightDraw AND NOT (FlushPossible OR StraightPossible) AND NumberOfRaisesBeforeFlop=0 AND BotRaisedBeforeFlop RETURN 22 FORCE 
+WHEN betround=2 AND HaveTrips AND NOT (StraightPossible OR FlushPossible) RETURN 22 FORCE
+WHEN betround=2 AND HaveTwoPair AND NOT (StraightPossible OR FlushPossible) RETURN 22 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ) AND NOT (FlushPossible OR StraightPossible) RETURN 22 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND (Board=22 OR Board=33 OR Board=44 OR Board=55 OR Board=66 OR Board=77) RETURN 22 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND HaveInsideStraightDraw RETURN 22 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND HaveInsideStraightDraw RETURN 22 FORCE
+WHEN betround=2 AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK OR Hand=AQ OR Hand=AJ) AND (HaveTopPair OR HaveOverPair) AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) RETURN 22 FORCE
+WHEN betround=2 AND HaveTopPair AND TopPairKickerIsOvercard AND NOT (FlushPossible AND StraightPossible) RETURN 20 FORCE
+WHEN betround=2 AND Have2ndOverPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NOT (FlushPossible AND StraightPossible)  RETURN 22 FORCE
+WHEN betround=2 AND Have2ndTopPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) AND (NOT RaisesBeforeFlop OR BotsLastPreflopAction=Raise) RETURN 22 FORCE
+
+/////////////      23         //////////// BET CALL (^Pot|15) (Fold Reraise) late Bet Raise Mini
+WHEN betround=2 AND HaveTopPair AND (HaveBestKicker OR Have2ndBestKicker  OR Have3rdBestKicker) AND NOT (FlushPossible OR StraightPossible) AND Opponents<3 AND NOT (NumberOfRaisesBeforeFlop>0 AND BotsLastPreflopAction=Call) RETURN 23 FORCE
+WHEN betround=2 AND HaveTopPair AND (HaveBestKicker) AND NOT (FlushPossible AND Opponents<3) AND StackSize<30 RETURN 23 FORCE
+WHEN betround=2 AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) AND HaveInsideStraightDraw AND NOT (Position=First AND Opponents>2) AND NOT RaisesBeforeFlop RETURN 23 FORCE
+WHEN betround=2 AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) AND Position=Last AND (NOT RaisesBeforeFlop OR BotsLastPreflopAction=Raise) RETURN 23 FORCE
+WHEN betround=2 AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) AND NOT FlushPossible AND Overcards=2 AND (HaveStraightDraw OR HaveInsideStraightDraw) RETURN 23 FORCE 
+WHEN betround=2 AND HaveTopPair AND StackSize<15 AND (HaveBestKicker) AND NOT (FlushPossible AND Opponents>2) AND NOT (NumberOfRaisesBeforeFlop>0) RETURN 23 FORCE
+WHEN betround=2 AND HaveTopPair AND StackSize<=35 AND (HaveBestKicker OR Have2ndBestKicker OR (Have3rdBestKicker AND NumberOfRaisesBeforeFlop=0)) AND NOT (NumberOfRaisesBeforeFlop>0) AND NOT (FlushPossible OR StraightPossible) RETURN 23 FORCE
+WHEN betround=2 AND HaveTopPair AND (HaveBestKicker OR Have2ndBestKicker OR Have3rdBestKicker) AND NOT (NumberOfRaisesBeforeFlop>0) AND NOT (FlushPossible OR StraightPossible) RETURN 23 FORCE
+WHEN betround=2 AND HaveTopPair AND (TopPairRank>8 OR (Overcards=1 OR (TopPairRank>5 AND PotSize<12))) AND (Opponents<=2 OR (Position=Last AND Opponents<=3)) AND NOT (FlushPossible) AND NOT (NumberOfRaisesBeforeFlop>0 OR f1) RETURN 23 FORCE
+WHEN betround=2 AND HaveTopPair AND TopPairRank>11 AND TopPairKickerRank>10 AND Opponents<=2 AND NOT (FlushPossible) AND NOT (NumberOfRaisesBeforeFlop=1) RETURN 23 FORCE
+
+/////////////      25         //////////// BET CALL (^Pot) (Fold Reraise) Late Bet Raise Mini
+WHEN betround=2 AND HaveFlush RETURN 25 FORCE
+WHEN betround=2 AND HaveTrips RETURN 25 FORCE
+WHEN betround=2 AND HaveTwoPair AND Opponents=1 AND BotRaisedBeforeFlop AND SuitsOnBoard=3 AND NOT StraightPossible RETURN 25 FORCE
+WHEN betround=2 AND (HaveTopTwoPair OR HaveTwoPair) AND NOT (FlushPossible OR PairOnBoard) RETURN 25 FORCE
+WHEN betround=2 AND HaveOverPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND (BotsLastPreflopAction=Raises OR NumberOfRaisesBeforeFlop=0)  RETURN 25 FORCE
+WHEN betround=2 AND HaveOverPair AND (HaveNutStraightDraw OR HaveStraightDraw) AND (BotsLastPreflopAction=Raises OR NumberOfRaisesBeforeFlop=0) RETURN 25 FORCE
+WHEN betround=2 AND HaveTopPair  AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND (BotsLastPreflopAction=Raises OR NumberOfRaisesBeforeFlop=0) RETURN 25 FORCE
+WHEN betround=2 AND HaveTopPair  AND (HaveNutStraightDraw OR HaveStraightDraw) AND (BotsLastPreflopAction=Raises OR NumberOfRaisesBeforeFlop=0) RETURN 25 FORCE
+WHEN betround=2 AND (HaveOverPair OR HaveTopPair) AND ((HaveStraightDraw AND NOT FlushPossible) OR (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw)) AND NumberOfRaisesBeforeFlop=0 RETURN 25 FORCE
+WHEN betround=2 AND Have2ndTopPair  AND HaveStraightDraw AND NOT (StraightPossible OR FlushPossible) AND (NumberOfRaisesOnFlop=0) RETURN 25 FORCE
+WHEN betround=2 AND Have2ndOverPair AND HaveStraightDraw AND NOT (StraightPossible OR FlushPossible) AND (NumberOfRaisesOnFlop=0) RETURN 25 FORCE
+WHEN betround=2 AND Have2ndOverPair AND (RaisesBeforeFlop=0 OR (AmountToCall=0 AND Position=Last AND opponents=1)) AND NOT (FlushPossible OR TripsOnBoard OR Board=AKQ OR Board=KQJ OR Board=QJT) AND NOT (User_Opponents3Betted AND BotsLastPreflopAction=Call) AND OpponentsOnFlop=1 RETURN 25  FORCE
+
+/////////////      27         //////////// BET CALL (^1/2 Pot) (Fold Reraise) Late Bet Raise Mini
+WHEN betround=2 AND HaveTopPair AND (TopPairRank>8 OR (Overcards=1 OR (TopPairRank>5 AND PotSize<12))) AND (Opponents<=2 OR (Position=Last AND Opponents<=3)) AND NOT (FlushPossible) AND NumberOfRaisesBeforeFlop=0 AND NOT f1 RETURN 27 FORCE
+WHEN betround=2 AND HaveFlushDraw AND HaveStraightDraw AND NOT (FlushPossible OR StraightPossible) AND NumberOfRaisesBeforeFlop=0 RETURN 27 FORCE 
+WHEN betround=2 AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw OR (HaveFlushDraw AND Position=Last)) AND ((Overcards=2) OR (HavePair AND NOT StraightPossible)) RETURN 27 FORCE
+
+/////////////      28         //////////// BET late CALL (^1/3 Pot) (Fold Reraise)
+WHEN betround=2 AND HaveFullHouse AND Have2ndOverPair AND (Hand=KK OR Hand=QQ OR Hand=JJ) AND NumberOfRaisesBeforeFlop=1 AND TripsOnBoard RETURN 28 FORCE
+WHEN betround=2 AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw OR (HaveFlushDraw AND Position=Last)) AND NOT StraightPossible RETURN 28 FORCE
+WHEN betround=2 AND Have2ndTopPair  AND HaveStraightDraw AND NOT (StraightPossible OR FlushPossible) AND (NumberOfRaisesOnFlop=0) RETURN 28 FORCE
+WHEN betround=2 AND Have2ndOverPair AND HaveStraightDraw AND NOT (StraightPossible OR FlushPossible) AND (NumberOfRaisesOnFlop=0) RETURN 28 FORCE
+WHEN betround=2 AND Have2ndTopPair  AND HaveInsideStraightDraw AND NOT FlushPossible AND NoBettingOnFlop RETURN 28 FORCE
+WHEN betround=2 AND Have2ndOverPair AND NOT (FlushPossible OR StraightPossible) AND Position=Last AND AmountToCall<=0 AND Opponents=1 RETURN 28 FORCE
+
+/////////////      29         //////////// BET FOLD
+WHEN betround=2 AND HaveTopPair AND (HaveBestKicker OR Have2ndBestKicker OR Have3rdBestkicker) AND NOT (HaveFlushDraw OR HaveStraightDraw) AND NOT (FlushPossible OR StraightPossible) AND (Opponents<3 OR Position=Last) AND NumberOfRaisesBeforeFlop=0  AND NOT (NumberOfRaisesBeforeFlop>0 AND BotsLastPreflopAction=Call) RETURN 29 FORCE 
+WHEN betround=2 AND HaveTopPair AND NOT (HaveBestKicker OR Have2ndBestKicker OR Have3rdBestkicker) AND NOT (HaveFlushDraw OR HaveStraightDraw)  AND NOT (FlushPossible) AND NumberOfRaisesBeforeFlop=0 AND Position=Last AND NOT (FlushPossible OR StraightPossible OR OpenEndedStraightDrawOnBoard)  AND NOT (NumberOfRaisesBeforeFlop>0 AND BotsLastPreflopAction=Call) RETURN 29 FORCE 
+
+/////////////      30         //////////// CHECK CALL (Pot) Bet Late 
+WHEN betround=2 AND HaveOverPair AND NOT StraightPossible RETURN 30 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=77) AND PairOnBoard RETURN 30 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=77 OR Hand=66) AND NOT PairOnBoard RETURN 30 FORCE
+WHEN betround=2 AND HaveOverPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND  NumberOfRaisesBeforeFlop=1 RETURN 30 FORCE
+WHEN betround=2 AND HaveOverPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) RETURN 30 FORCE
+WHEN betround=2 AND HaveOverPair AND (HaveStraightDraw) RETURN 30 FORCE
+WHEN betround=2 AND HaveTopPair AND (TopPairRank>8 OR (Overcards=1 OR (TopPairRank>5 AND PotSize<12))) AND (Opponents<=2 OR (Position=Last AND Opponents<=3)) AND NOT (FlushPossible) AND (NumberOfRaisesBeforeFlop>0 OR f1) RETURN 30 FORCE
+WHEN betround=2 AND HaveTopPair AND (HaveStraightDraw OR HaveFlushDraw OR (HaveInsideStraightDraw AND HaveFlushDraw)) RETURN 30 FORCE
+WHEN betround=2 AND HaveTopPair  AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) RETURN 30 FORCE
+WHEN betround=2 AND HaveTopPair  AND (HaveStraightDraw) AND NOT FlushPossible RETURN 30 FORCE
+WHEN betround=2 AND Have2ndTopPair AND Opponents<3 AND (HaveStraightDraw OR HaveNutFlushDraw OR (Have2ndNutFlushDraw AND Opponents<=2) OR (HaveFlushDraw AND Opponents=1) )  RETURN 30 FORCE
+WHEN betround=2 AND Have2ndOverPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR (Have3rdNutFlushDraw AND Opponents<3)) RETURN 30 FORCE
+WHEN betround=2 AND HaveFlushDraw AND HaveStraightDraw AND NOT (FlushPossible OR StraightPossible) AND NumberOfRaisesBeforeFlop=1 RETURN 30 FORCE 
+WHEN betround=2 AND HaveStraightDraw AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR (Have3rdNutFlushDraw AND Opponents<3)) AND NumberOfRaisesBeforeFlop=0 RETURN 30 FORCE
+
+/////////////      40         //////////// CHECK ^50% CALL (no Late bet)
+WHEN betround=2 AND HaveFullHouse AND Have2ndOverPair AND (Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99)  AND NumberOfRaisesBeforeFlop=0 AND TripsOnBoard RETURN 40 FORCE
+WHEN betround=2 AND HaveFullHouse AND Have2ndOverPair AND (Hand=88 OR Hand=77 OR Hand=66 OR Hand=55 OR Hand=44 OR Hand=33 OR Hand=22) AND NumberOfRaisesBeforeFlop=0 AND TripsOnBoard RETURN 40 FORCE
+WHEN betround=2 AND HaveTopPair AND NOT (FlushPossible OR StraightPossible) RETURN 40 FORCE
+WHEN betround=2 AND HaveTopPair AND (HaveBestKicker OR Have2ndBestKicker) AND FlushPossible AND NOT (StraightPossible) RETURN 40 FORCE
+WHEN betround=2 AND (HaveTopPair AND HaveInsideStraightDraw) AND StraightPossible AND NOT (FlushPossible) AND NumberOfRaisesBeforeFlop=0 AND Opponents<=2 RETURN 40 FORCE
+WHEN betround=2 AND HaveTopPair AND NOT (StraightPossible OR FlushPossible) AND Opponents>2 AND NumberOfRaisesBeforeFlop=0 RETURN 40 FORCE 
+WHEN betround=2 AND Have2ndOverPair AND (Hand=99 OR Hand=88 OR Hand=77 OR Hand=66) AND (Board=22 OR Board=33 OR Board=44 OR Board=55 OR Board=66 OR Board=77 OR Board=88 OR Board=99 OR Board=TT) AND NOT TripsOnBoard  AND NOT (User_Opponents3Betted AND BotsLastPreflopAction=Call) AND NOT TripsOnBoard RETURN 40 FORCE
+WHEN betround=2 AND Have2ndTopPair AND (HaveBestKicker OR HaveBackdoorNutFlushDraw) AND Opponents=1 AND OpponentsOnFlop<=2 AND RaisesBeforeFlop=0 AND NOT (FlushPossible OR StraightPossible)  AND NOT (User_Opponents3Betted AND BotsLastPreflopAction=Call)  RETURN 40 FORCE
+WHEN betround=2 AND Have2ndTopPair AND ((HaveBackdoorNutFlushDraw) OR (HaveBackdoor2ndNutFlushDraw AND Overcards=2)) AND Position=Last RETURN 40 FORCE
+WHEN betround=2 AND HaveFlushDraw AND SuitsOnBoard>1 AND Overcards>0 AND NOT PairOnBoard AND NumberOfRaisesBeforeFlop=0 RETURN 40 FORCE
+WHEN betround=2 AND HaveStraightDraw AND NOT (StraightPossible OR FlushPossible) AND Overcards>0 AND NumberOfRaisesOnFlop=0 AND AmountToCall<6 RETURN 40 FORCE
+WHEN betround=2 AND HaveInsideStraightDraw AND SuitsOnBoard=3 AND Overcards>0 AND NumberOfRaisesOnFlop=0 AND OpponentsOnFlop<3 RETURN 40 FORCE
+
+/////////////      50        //////////// CHECK CALL ^1/3 Pot (no Late bet)
+WHEN betround=2 AND HaveFullHouse AND Have2ndOverPair AND (Hand=88 OR Hand=77 OR Hand=66 OR Hand=55 OR Hand=44 OR Hand=33 OR Hand=22) AND NumberOfRaisesBeforeFlop>0 AND TripsOnBoard RETURN 50 FORCE
+WHEN betround=2 AND HaveFlushDraw AND HaveStraightDraw AND NOT (FlushPossible OR StraightPossible) RETURN 50 FORCE 
+WHEN betround=2 AND HaveNutStraightDraw AND SuitsOnBoard=2 AND NumberOfRaisesOnFlop=0 AND AmountToCall<=34% PotSize AND CallsSinceLastRaise<=1 RETURN 50 FORCE
+WHEN betround=2 AND HaveStraightDraw AND NOT (HaveFlushDraw OR StraightPossible OR SuitsOnBoard=1) RETURN 50 FORCE
+WHEN betround=2 AND HaveTopPair AND NOT (HaveBestKicker OR Have2ndBestKicker) AND NOT (HaveFlushDraw) AND SuitsOnBoard=1 AND Opponents<=2 RETURN 50 FORCE
+WHEN betround=2 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT) RETURN 50 FORCE
+WHEN betround=2 AND Have2ndOverPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NOT RaisesBeforeFlop AND Opponents<=3 RETURN 50 FORCE
+WHEN betround=2 AND (Have2ndTopPair OR Have2ndOverPair OR Have3rdOverPair) AND ((HaveStraightDraw AND NOT FlushPossible) OR HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) RETURN 50 FORCE
+WHEN betround=2 AND Have2ndTopPair AND Opponents=1 AND OpponentsOnFlop<=2 AND RaisesBeforeFlop=0 AND NOT FlushPossible RETURN 50 FORCE
+WHEN betround=2 AND Have2ndTopPair AND HaveInsideStraightDraw AND NOT FlushPossible AND RaisesBeforeFlop=0 RETURN 50 FORCE
+WHEN betround=2 AND ((HaveBackdoorNutFlushDraw) OR (HaveBackdoor2ndNutFlushDraw AND Overcards=2)) AND Position=Last RETURN 50 FORCE
+WHEN betround=2 AND Have2ndTopPair AND Overcards>0 AND ((Opponents=1) OR (Opponents=2 AND Position=Last)) AND OpponentsOnFlop<=2 AND RaisesBeforeFlop=0 AND NOT (FlushPossible OR StraightPossible) RETURN 50 FORCE
+WHEN betround=2 AND HaveInsideStraightDraw AND Overcards>2 AND NOT FlushPossible RETURN 50 FORCE
+/////////////      60        //////////// CHECK CALL ^1/4 Pot (no Late bet)
+//WHEN betround=2 AND Opponents=1 AND Position=Last AND (Overcards>0 OR HaveBackdoorNutFlushDraw OR HaveBackdoor2ndNutFlushDraw OR HaveBackdoor3rdNutFlushDraw) RETURN 60 FORCE
+
+/////////////      80        //////////// CHECK CALL MINI BET
+WHEN betround=2 AND HavePair AND (HaveInsideStraightDraw OR HaveFlushDraw) AND StraightPossible AND FlushPossible AND Overcards>0 AND NumberOfRaisesBeforeFlop=0 RETURN 80 FORCE
+
+/////////////      200         //////////// CHECK FOLD CALL MINI
+WHEN betround=2 AND HaveOverPair AND NumberOfRaisesBeforeFlop>0 AND BotsLastPreflopAction=Call AND StackSize>65 RETURN 200 FORCE
+WHEN betround=2 AND Have2ndOverPair AND FlushPossible AND NOT StraightPossible AND RaisesBeforeFlop AND Opponents<=2 RETURN 200 FORCE
+WHEN betround=2 AND HaveTopPair AND NOT (HaveBestKicker OR Have2ndBestKicker) AND NOT (HaveFlushDraw) AND SuitsOnBoard=1 RETURN 200 FORCE
+WHEN betround=2 AND HaveFlushDraw AND SuitsOnBoard>1 AND Overcards>0 AND NOT TwoPairOnBoard RETURN 200 FORCE
+WHEN betround=2 AND HaveInsideStraightDraw AND SuitsOnBoard=3 AND Overcards>0 AND NumberOfRaisesOnFlop=0 RETURN 200 FORCE
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+
+
+New Symbol THandStrenght
+
+/////////////      0         ////////////
+WHEN betround=3 AND HaveQuads AND NumberOfRaisesOnFlop>0 AND NOT Position=Last RETURN 0 FORCE
+WHEN betround=3 AND HaveStraightFlush AND NOT(StraightFlushOnBoard) RETURN 0 FORCE
+WHEN betround=3 AND (HaveBestFullHouse OR HaveNutFullHouse) RETURN 0 FORCE
+
+/////////////      5        //////////// GO ALLIN
+
+WHEN betround=3 AND opponents=1 AND OpponentStacksizeHeadsUp<PotSize AND OpponentStacksizeHeadsUp<20 AND (HaveNuts OR HaveFullHouse OR HaveFlush OR HaveStraight OR (HaveTwoPair AND NOT PairOnBoard) OR HaveTopPair OR HaveOverPair) RETURN 5 FORCE
+WHEN betround=3 AND HaveOverPair AND NumberOfRaisesBeforeFlop=0 AND BotsLastPreflopAction=Raise AND Opponents=1 AND StackSize <160% PotSize AND StackSize<40 RETURN 5 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveBestKicker AND NumberOfRaisesBeforeFlop=0 AND BotsLastPreflopAction=Raise AND Opponents=1 AND StackSize <160% PotSize AND StackSize<40 RETURN 5 FORCE
+WHEN betround=3 AND HaveTopPair AND Opponents=1 AND (OpponentVPIPHeadsUp>0.35 OR f1) AND AmountToCall>=StackSize AND AmountToCall<40 AND NOT (OneCardStraightPossible OR OneCardFlushPossible) AND NOT  FlushPossible AND NumberOfRaisesOnFlop=0 AND NOT PairOnBoard RETURN 5 FORCE 
+
+/////////////      10        //////////// VADO ROTTO
+WHEN betround=3 AND HaveQuads AND NumberOfRaisesOnFlop=0 RETURN 10 FORCE
+WHEN betround=3 AND HaveFullHouse AND TripsOnBoard AND (Hand=AA OR Hand=KK OR (Hand=QQ AND NumberOfRaisesBeforeFlop<=1)) RETURN 10 FORCE
+WHEN betround=3 AND HaveFullHouse AND TripsOnBoard AND HaveOverPair AND  (Hand=AA OR Hand=KK) AND NOT QuadsOnBoard RETURN 10 FORCE
+WHEN betround=3 AND HaveFullHouse AND PairOnBoard AND NOT TripsOnBoard AND PotSize> 50% StackSize RETURN 10 FORCE
+WHEN betround=3 AND HaveNutStraight AND HaveNutFlushDraw AND SuitsOnBoard>1 AND Opponents<=2 RETURN 10 FORCE
+WHEN betround=3 AND HaveNutStraight AND SuitsOnBoard>=2 AND ((HaveNutFlushDraw OR Have2ndNutFlushDraw)  OR (Have3rdNutFlushDraw AND Opponents=1)) RETURN 10 FORCE
+WHEN betround=3 AND Have2ndNutStraight AND SuitsOnBoard>=3 RETURN 10 FORCE
+WHEN betround=3 AND HaveSet AND NOT (HaveFullHouse OR StraightPossible OR FlushPossible) RETURN 10 FORCE
+WHEN betround=3 AND HaveTrips AND Overcards>0 AND NOT (StraightPossible OR FlushPossible) AND StackSize<60 RETURN 10 FORCE
+WHEN betround=3 AND HaveTopTwoPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NOT FlushPossible AND NOT (PairOnBoard OR (OneCardStraightPossible AND Opponents>3)) RETURN 10 FORCE
+WHEN betround=3 AND HaveTopTwoPair AND SuitsOnBoard>2 AND NOT (PairOnBoard OR OneCardStraightPossible) RETURN 10 FORCE
+WHEN betround=3 AND HaveTwoPair AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard OR FlushPossible OR StraightPossible) AND StackSize<60 RETURN 10 FORCE
+WHEN betround=3 AND HaveOverPair AND StackSize<50   AND NumberOfRaisesBeforeFlop<=1 AND BotsLastPreflopAction=Raise  RETURN 10 FORCE
+WHEN betround=3 AND HaveOverPair AND StackSize<=50 AND NumberOfRaisesBeforeFlop>1 AND (Hand=AA OR Hand=KK) AND NOT (Board=Q OR Board=J)  AND NOT (RaisesOnFlop OR StraightPossible OR FlushPossible) RETURN 10 FORCE
+WHEN betround=3 AND HaveOverPair AND StackSize<50   AND NOT (FlushPossible) AND NOT (OneCardStraightPossible AND OneCardFlushPossible) RETURN 10 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveNutFlushDraw AND NOT (FlushPossible OR StraightPossible) AND (HaveStraightDraw OR HaveInsideStraightDraw) AND NOT PairOnBoard RETURN 10 FORCE
+WHEN betround=3 AND HaveTopPair AND StackSize<=20 RETURN 10 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveBestKicker AND TotalInvested > 80% StackSize RETURN 10 FORCE
+WHEN betround=3 AND HaveOverPair AND HaveBestKicker AND TotalInvested > 80% StackSize RETURN 10 FORCE
+WHEN betround=3 AND HaveFlushDraw AND HaveStraightDraw AND StackSize<=25 AND NOT (FlushPossible OR StraightPossible) RETURN 10 FORCE
+WHEN betround=3 AND StackSize<15 AND (HaveFullHouse OR HaveStraight OR HaveSet OR HaveTrips OR HaveTwoPair OR HaveOverPair OR HaveTopPair OR HaveStraightDraw OR HaveFlushDraw) RETURN 10 FORCE
+WHEN betround=3 AND StackSize<15 AND ( (HavePair AND HaveFlushDraw) OR (HavePair AND HaveStraightDraw) OR (HavePair AND NOT (PairInHand) AND HaveInsideStraightDraw AND NOT (SuitsOnBoard=1 AND Opponents>2))) RETURN 10 FORCE
+
+/////////////      150         //////////// BET 4 RAISE 2 Call Reraise ^40
+WHEN betround=3 AND HaveFullHouse AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 150 FORCE
+WHEN betround=3 AND HaveNutFlush RETURN 150 FORCE
+WHEN betround=3 AND HaveFlush AND NOT (OneCardFlushPossible) AND NOT (FlushPossibleOnFlop) RETURN 150 FORCE
+WHEN betround=3 AND HaveSet AND NOT (HaveFullHouse OR OneCardStraightPossible OR (OneCardFlushPossible AND Opponents>2)) RETURN 150 FORCE
+WHEN betround=3 AND HaveTrips AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NumberOfRaisesOnFlop=0 RETURN 150 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT PairOnBoard AND OvercardsOnBoard<=1 RETURN 150 FORCE
+WHEN betround=3 AND HaveNutStraight AND HaveFlushDraw AND NOT HaveFlush AND SuitsOnBoard>1 AND Opponents<=2 RETURN 150 FORCE
+WHEN betround=3 AND HaveNutStraight AND NOT (HaveFlushDraw AND HaveFlush) AND SuitsOnBoard>2 AND Opponents<=2 RETURN 150 FORCE
+WHEN betround=3 AND HaveStraight AND SuitsOnBoard>2 RETURN 150 FORCE
+WHEN betround=3 AND HaveSet AND Opponents<3 AND NOT (HaveFullHouse OR StraightPossible OR OneCardFlushPossible) RETURN 150 FORCE
+WHEN betround=3 AND HaveSet AND NOT (HaveFullHouse OR OneCardStraightPossible OR FlushPossible) RETURN 150 FORCE
+WHEN betround=3 AND HaveSet AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 150 FORCE
+WHEN betround=3 AND HaveTrips AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 150 FORCE
+WHEN betround=3 AND HaveTrips AND Overcards>0 AND NOT (StraightPossible OR FlushPossible) RETURN 150 FORCE
+WHEN betround=3 AND HaveOverPair AND Hand=AA AND HaveNutFlushDraw AND NOT (PairOnBoard OR OneCardFlushPossible) RETURN 150 FORCE
+
+/////////////      170         //////////// BET 12 CALL 3+ CALL ^100
+WHEN betround=3 AND HaveFullHouse AND HaveOverPair AND TripsOnBoard AND NOT QuadsOnBoard RETURN 170 FORCE
+WHEN betround=3 AND HaveFullHouse AND TwoPairOnBoard AND HaveTopPair RETURN 170 FORCE //check this
+WHEN betround=3 AND HaveSet AND NOT CalledOnFlop AND NumberOfRaisesOnFlop=0 RETURN 170 FORCE
+WHEN betround=3 AND HaveTopTwoPair AND HaveOverPair AND NumberOfRaisesBeforeFlop=0 AND SuitsOnBoard>2 AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 170 FORCE
+WHEN betround=3 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT) AND NOT (FlushPossible OR OneCardStraightPossible OR PairOnBoard) RETURN 170 FORCE
+
+/////////        200         //////////// BET CALL (^Pot) CALL RERAISE
+WHEN betround=3 AND HaveFullHouse AND TripsOnBoard AND HaveTopPair AND NOT (QuadsOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveFullHouse AND HaveOverPair AND TripsOnBoard AND NOT QuadsOnBoard AND NumberOfRaisesBeforeFlop=1 RETURN 200 FORCE
+WHEN betround=3 AND HaveTrips AND NOT OneCardFlushPossible RETURN 200 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (FlushPossible OR StraightPossible) AND NOT (FullHouseOnBoard OR TripsOnBoard OR TwoPairOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (OneCardFlushPossible OR StraightPossible) AND Opponents<=2 AND NOT (FullHouseOnBoard OR TripsOnBoard OR TwoPairOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (FlushPossible OR StraightPossible)  AND NOT (FullHouseOnBoard OR TripsOnBoard OR TwoPairOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (FlushPossible OR OneCardStraightPossible OR PairOnBoard) AND OvercardsOnBoard<=1 AND NoBettingOnFlop AND StackSize>=35 RETURN 200 FORCE
+WHEN betround=3 AND HaveOverPair AND HaveStraightDraw AND NOT (FlushPossible OR StraightPossible) AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND HaveInsideStraightDraw AND NOT (StraightPossible) RETURN 200 FORCE
+WHEN betround=3 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND PairOnBoard AND StraightPossible AND Opponents=1 AND NOT SecondTopFlopCardPairedOnTurn RETURN 200 FORCE
+WHEN betround=3 AND HaveOverPair AND NOT (FlushPossible OR StraightPossible) AND Opponents<3 AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveStraightDraw AND (HaveFlushDraw) AND NOT (StraightPossible OR FlushPossible) AND NOT (OneCardFlushPossible AND OneCardStraightPossible) AND NoBettingOnFlop AND NOT TripsOnBoard RETURN 200 FORCE
+WHEN betround=3 AND HaveFlush AND (Opponents<3) AND NOT (OneCardFlushPossible) AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveFlush AND OneCardFlushPossible RETURN 200 FORCE
+WHEN betround=3 AND HaveTopPair AND (HaveStraightDraw AND NOT OneCardStraightPossible) AND NOT (RaisesOnFlop OR PairOnBoard) RETURN 200 FORCE
+WHEN betround=3 AND HaveTopPair AND (HaveNutFlushDraw) AND NOT RaisesOnFlop AND NOT PairOnBoard RETURN 200 FORCE
+WHEN betround=3 AND HaveTopPair AND ((Have2ndNutFlushDraw AND Opponents<=2) OR (HaveFlushDraw AND Opponents=1) ) AND NOT RaisesOnFlop AND NOT PairOnBoard RETURN 200 FORCE
+WHEN betround=3 AND (HaveTopPair AND HaveNutFlushDraw) AND NOT (FlushPossible OR OneCardStraightPossible) AND NumberOfRaisesOnFlop=1 AND Position=Last AND NOT RaisesOnFlop RETURN 200 FORCE
+WHEN betround=3 AND ((Have2ndTopPair AND (HaveBestKicker OR Have2ndBestKicker)) OR Have2ndOverPair) AND NoBettingOnFlop AND Opponents=1 AND NOT PairOnBoard AND NOT (OneCardStraightPossible AND NOT Position=Last) RETURN 200 FORCE
+WHEN betround=3 AND HaveOverPair AND NOT (HaveFlushDraw OR HaveStraightDraw) AND ((Opponents=1) OR (Position=Last AND Opponents<3)) AND NOT (OneCardStraightPossible OR OneCardFlushPossible) AND NOT (StraightPossible AND FlushPossible) AND NumberOfRaisesOnFlop=0 AND NoBettingOnFlop AND NOT SecondTopFlopCardPairedOnTurn RETURN 200 FORCE 
+WHEN betround=3 AND (Have2ndOverPair) AND (HaveFlushDraw) AND NOT (CalledOnFlop OR (NOT Position=Last AND AmountToCall>0)) AND NOT (OneCardFlushPossible OR OneCardStraightPossible) AND Opponents<4 RETURN 200 FORCE //HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw OR 
+WHEN betround=3 AND HaveNutFlush AND NOT PairOnBoard RETURN 200 FORCE
+WHEN betround=3 AND HaveNutStraight AND SuitsOnBoard>=3 RETURN 200 FORCE
+
+/////////        220         //////////// BET CALL (^Pot) FOLD RERAISE
+
+///////////        250         //////////// BET FOLD
+WHEN betround=3 AND HaveTopPair AND NOT (FlushPossible OR StraightPossible) AND Opponents<=2 AND NumberOfRaisesOnFlop<=1 AND NOT (PairOnBoard OR User_OpponentFaceBet) RETURN 250 FORCE
+WHEN betround=3 AND HaveTopPair  AND NOT (HaveFlushDraw OR HaveStraightDraw) AND ((Opponents=1 AND Position=Last) OR (Position=Last AND Opponents<3) OR (NoBettingOnFlop AND Opponents<3)) AND NOT (OneCardStraightPossible OR OneCardFlushPossible) AND NOT (StraightPossible AND FlushPossible) AND NumberOfRaisesOnFlop=0 AND NoBettingOnFlop AND NOT SecondTopFlopCardPairedOnTurn RETURN 250 FORCE 
+WHEN betround=3 AND (Have2ndOverPair) AND NOT (CalledOnFlop OR (BotRaisedOnFlop AND User_OneRaiseBeforeFirstActionOnFlop)) AND TopFlopCardPairedonTurn AND NumberOfRaisesBeforeFlop=0 AND opponents<3 RETURN 250 FORCE 
+WHEN betround=3 AND (Have2ndOverPair OR Have2ndTopPair) AND NoBettingOnFlop AND Position=Last AND Opponents<=2 RETURN 250 FORCE 
+WHEN betround=3 AND (Have2ndOverPair OR Have2ndTopPair) AND (BotRaisedBeforeFlop) AND NOT (CalledOnFlop OR (BotRaisedOnFlop AND User_OneRaiseBeforeFirstActionOnFlop) OR f1) AND NumberOfRaisesBeforeFlop=0 AND Opponents=1 OR (Opponents=2 AND Position=Last AND AmountToCall=0) RETURN 250 FORCE 
+WHEN betround=3 AND (Have2ndOverPair OR Have2ndTopPair) AND NoBettingOnFlop AND TopFlopCardPairedonTurn AND NumberOfRaisesBeforeFlop=0 AND opponents<3 AND NOT Position=First RETURN 250 FORCE 
+WHEN betround=3 AND (Have2ndOverPair) AND NoBettingOnFlop AND NOT (PairOnBoard OR StraightPossible OR OneCardFlushPossible) AND opponents=1 AND NumberOfRaisesBeforeFlop=0 AND opponents<3 RETURN 250 FORCE 
+WHEN betround=3 AND (Have2ndTopPair) AND HaveFlushDraw AND NoBettingOnFlop AND NOT (OneCardFlushPossible OR StraightPossible) AND opponents<3 AND NumberOfRaisesBeforeFlop=0  RETURN 250 FORCE 
+WHEN betround=3 AND ((Have2ndTopPair AND (HaveBestKicker OR Have2ndBestKicker)) OR Have2ndOverPair) AND NoBettingOnFlop AND Opponents=1 AND NOT PairOnBoard RETURN 250 FORCE
+
+///////////        300         //////////// BET CALL 1/3
+WHEN betround=3 AND HaveTwoPair AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 300 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveNutFlushDraw AND NOT (FlushPossible OR OneCardStraightPossible) AND NumberOfRaisesOnFlop=0 RETURN 300 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveStraightDraw AND Overcards>1 AND NOT FlushPossible AND Opponents<=2 RETURN 300 FORCE
+WHEN betround=3 AND HaveTopPair AND TopPairRank>8 AND NumberOfRaisesOnFlop=0  AND NOT CalledOnFlop AND NOT (FlushPossible OR OneCardStraightPossible) AND Opponents=1 AND Random<75 RETURN 300 FORCE
+WHEN betround=3 AND HaveTopPair AND TopPairRank>7 AND Overcards=1 AND PotSize<20 AND NumberOfRaisesOnFlop=0 AND NOT CalledOnFlop AND NOT (FlushPossible OR OneCardStraightPossible) AND Opponents<=2 RETURN 300 FORCE
+WHEN betround=3 AND HaveTopPair AND TopPairRank>10 AND Overcards=1 AND PotSize<20 AND NumberOfRaisesOnFlop=0 AND NOT CalledOnFlop AND NOT (FlushPossible OR OneCardStraightPossible) AND Opponents<=3 AND Position=Last RETURN 300 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveInsideStraightDraw AND NOT (FlushPossible OR OneCardStraightPossible) AND Opponents<=2 AND NumberOfRaisesOnFlop=0 AND NOT (PairOnBoard OR User_OpponentFaceBet) RETURN 300 FORCE
+WHEN betround=3 AND Have2ndTopPair AND HaveInsideStraightDraw AND NOT FlushPossible AND (NoBettingOnFlop OR NOT CalledOnFlop) RETURN 300 FORCE
+WHEN betround=3 AND HaveStraightDraw AND (HaveFlushDraw) AND NOT (StraightPossible OR FlushPossible) AND (NoBettingOnFlop OR NOT CalledOnFlop) AND NOT (TripsOnBoard) RETURN 300 FORCE
+WHEN betround=3 AND HavePair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) AND HaveStraightDraw  AND opponents<=2 AND ((NoBettingOnFlop) OR (BotRaisedOnFlop AND NOT CalledOnFlop)) AND NOT (OneCardFlushPossible OR OneCardStraightPossible) AND NOT PairOnBoard RETURN 300 FORCE
+
+
+/////////////      320         ///////////// CHECK CALL - CALL 2 RAISE - (^Pot) LATE BET
+
+
+/////////////      330         ///////////// CHECK CALL (^Pot) LATE BET
+WHEN betround=3 AND HaveFullHouse AND TripsOnBoard AND HaveOverPair AND NumberOfRaisesBeforeFlop<=1 AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 330 FORCE
+WHEN betround=3 AND HaveNutFlush AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 330 FORCE
+WHEN betround=3 AND HaveFlush AND NOT (OneCardFlushPossible) AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 330 FORCE
+//qui sotto verificare se full possibile
+WHEN betround=3 AND HaveSet AND FlushPossible AND StraightPossible AND NOT (OneCardFlushPossible OR OneCardStraightPossible) RETURN 330 FORCE
+WHEN betround=3 AND HaveNutStraight AND HaveFlushDraw AND NumberOfRaisesBeforeFlop>0 AND SuitsOnBoard>1 AND Opponents<=2 AND NOT OneCardFlushPossible RETURN 330 FORCE
+WHEN betround=3 AND HaveTrips AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NumberOfRaisesOnFlop>0 RETURN 330 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (FlushPossible OR OneCardStraightPossible OR PairOnBoard) AND OvercardsOnBoard>1 RETURN 330 FORCE
+WHEN betround=3 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND PairOnBoard AND StraightPossible AND Opponents=1 AND SecondTopFlopCardPairedOnTurn RETURN 330 FORCE
+WHEN betround=3 AND HaveOverPair AND HaveStraightDraw AND NOT (OneCardStraightPossible OR (OneCardFlushPossible AND NOT HaveFlushDraw)) RETURN 330 FORCE
+WHEN betround=3 AND HaveOverPair AND NOT (FlushPossible AND StraightPossible) AND NOT (  (OneCardFlushPossible AND NOT HaveFlushDraw) OR (OneCardStraightPossible)) AND Opponents<3 AND NOT HaveFullHouse RETURN 330 FORCE
+WHEN betround=3 AND HaveOverPair AND (Hand=99 OR Hand=88 OR Hand=77 OR Hand=66) AND NOT PairOnBoard RETURN 330 FORCE
+WHEN betround=3 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT) AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 330 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveNutFlushDraw AND NOT (FlushPossible OR OneCardStraightPossible) AND (HaveStraightDraw OR HaveInsideStraightDraw) AND NOT PairOnBoard RETURN 330 FORCE
+WHEN betround=3 AND HaveTopPair AND (HaveNutFlushDraw OR Have2ndNutFlushDraw) AND NOT FlushPossible RETURN 330 FORCE
+WHEN betround=3 AND HaveTopPair AND (HaveStraightDraw OR (HaveFlushDraw AND NOT FlushPossible) OR (HaveInsideStraightDraw AND HaveFlushDraw AND NOT FlushPossible )) AND PotSize<20 RETURN 330 FORCE
+WHEN betround=3 AND HaveTopPair AND (HaveStraightDraw OR HaveFlushDraw OR (HaveInsideStraightDraw AND HaveFlushDraw)) RETURN 330 FORCE
+WHEN betround=3 AND HaveFlushDraw AND (HaveStraightDraw OR HaveInsideStraightDraw) AND NOT (FlushPossible OR OneCardStraightPossible) AND NoBettingOnFlop AND Opponents>2 AND Position=Last RETURN 330 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (FlushPossible OR OneCardStraightPossible OR PairOnBoard) AND OvercardsOnBoard<=1 AND NoBettingOnFlop RETURN 330 FORCE
+/////////////      350         ///////////// CHECK FOLD BET LATE BET
+WHEN betround=3 AND HaveTopPair AND StraightPossible AND FlushPossible AND NOT (OneCardFlushPossible AND OneCardStraightPossible) AND NOT HaveStraightDraw AND NoBettingOnFlop RETURN 350 FORCE 
+
+///////////        400         //////////// CHECK CALL (^Pot) (No Late Bet)
+WHEN betround=3 AND HaveStraight AND NOT OpenEndedStraightDrawOnBoard AND FlushPossible AND NOT OneCardFlushPossible RETURN 400 FORCE
+WHEN betround=3 AND HaveStraight AND NOT OpenEndedStraightDrawOnBoard AND NOT FlushPossible RETURN 400 FORCE
+WHEN betround=3 AND HaveStraight AND ((SuitsOnBoard<=2 AND Opponents<=2) OR (SuitsOnBoard>=2 AND Opponents>2)) RETURN 400 FORCE
+WHEN betround=3 AND (HaveNutFlushDraw OR (Have2ndNutFlushDraw AND Opponents=1)) AND HaveInsideStraightDraw AND NOT (OneCardFlushPossible OR StraightPossible) AND NoBettingOnFlop AND NumberOfRaisesBeforeFlop=0 RETURN 400 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (OneCardFlushPossible OR OneCardStraightPossible) AND PotSize<6 RETURN 400 FORCE
+
+/////////////      500         //////////// CHECK CALL (^1/2 Pot) Late Bet
+WHEN betround=3 AND HaveSet AND OneCardStraightPossible AND NOT (OneCardFlushPossible OR HaveFullHouse)  RETURN 500 FORCE
+WHEN betround=3 AND HaveSet AND OneCardFlushPossible AND NOT (OneCardStraightPossible AND NOT HaveFullHouse)  RETURN 500 FORCE
+WHEN betround=3 AND (Have2ndTopPair OR Have2ndOverPair) AND HaveInsideStraightDraw AND Opponents<3 AND NOT (TwoPairOnBoard OR FlushPossible OR OneCardStraightPossible) AND NumberOfRaisesBeforeFlop=0 AND PotSize<20 RETURN 500 FORCE
+WHEN betround=3 AND (Have2ndTopPair OR Have2ndOverPair) AND Opponents<3 AND NOT (TwoPairOnBoard OR TripsOnBoard OR FlushPossible OR StraightPossible) AND NumberOfRaisesBeforeFlop=0 AND PotSize<20 RETURN 500 FORCE
+WHEN betround=3 AND (HaveNutFlushDraw OR (Have2ndNutFlushDraw AND Opponents<3)) AND HaveInsideStraightDraw AND NOT (FlushPossible OR OneCardStraightPossible) AND NoBettingOnFlop AND NumberOfRaisesBeforeFlop=0 RETURN 500 FORCE
+WHEN betround=3 AND HaveTopPair AND (HaveStraightDraw OR HaveNutFlushDraw OR (Have2ndNutFlushDraw AND Opponents=2) OR (HaveFlushDraw AND Opponents=1) ) AND NOT RaisesOnFlop AND PairOnBoard AND NOT (SecondTopFlopCardPairedOnTurn OR TwoPairOnBoard) RETURN 500 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveNutFlushDraw AND NOT (FlushPossible OR OneCardStraightPossible OR TwoPairOnBoard) AND (HaveStraightDraw OR HaveInsideStraightDraw) RETURN 500 FORCE
+WHEN betround=3 AND HaveTopPair AND HaveTwoPair AND NOT (OneCardFlushPossible OR OneCardStraightPossible OR TwoPairOnBoard) RETURN 500 FORCE
+WHEN betround=3 AND HaveTopPair AND StraightPossible AND FlushPossible AND NOT (TwoPairOnBoard) AND NOT (OneCardFlushPossible AND OneCardStraightPossible) AND HaveStraightDraw AND Opponents<2 AND NoBettingOnFlop RETURN 500 FORCE 
+WHEN betround=3 AND HaveTopPair AND NOT (FlushPossible OR StraightPossible OR TwoPairOnBoard) AND Opponents<=2 AND NumberOfRaisesOnFlop=0 AND PairOnBoard AND NOT (User_OpponentFaceBet) AND PotSize<20 RETURN 500 FORCE
+WHEN betround=3 AND HaveTopPair AND NumberOfRaisesOnFlop=0 AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 500 FORCE
+
+/////////////      600         //////////// CHECK CALL (^1/3 Pot) (No Late Bet)
+WHEN betround=3 AND HaveFullHouse AND NOT FullHouseOnBoard RETURN 600 FORCE
+WHEN betround=3 AND HaveOverPair AND NOT (FlushPossible OR StraightPossible) AND NOT (OneCardFlushPossible AND NOT HaveFlushDraw) AND (OneCardStraightPossible) AND Opponents<3 AND NOT RaisesOnFlop RETURN 600 FORCE
+WHEN betround=3 AND HaveTopPair AND NOT (FlushPossible OR StraightPossible) AND Opponents<=2 AND NumberOfRaisesOnFlop=0 AND PairOnBoard AND NOT (User_OpponentFaceBet) AND PotSize<40 RETURN 600 FORCE
+WHEN betround=3 AND HaveTopPair AND NOT (FlushPossible OR OneCardStraightPossible) AND Opponents<=2 AND NOT Position=First AND NOT User_OpponentFaceBet RETURN 600 FORCE
+WHEN betround=3 AND (HaveTopPair OR Have2ndTopPair) AND (HaveStraightDraw AND NOT StraightPossible) AND NOT FlushPossible RETURN 600 FORCE
+WHEN betround=3 AND (HaveTopPair OR Have2ndTopPair) AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NOT FlushPossible RETURN 600 FORCE
+WHEN betround=3 AND (HaveTopPair OR Have2ndTopPair) AND (HaveFlushDraw AND Opponents<3) AND NOT FlushPossible RETURN 600 FORCE
+WHEN betround=3 AND HaveTopPair AND StraightPossible AND FlushPossible AND NOT OneCardFlushPossible AND Opponents<=3 AND NOT RaisesOnFlop RETURN 600 FORCE 
+WHEN betround=3 AND HaveTopPair  AND NumberOfRaisesOnFlop>0 AND PotSize<20 AND NOT (FlushPossible OR StraightPossible) RETURN 600 FORCE
+WHEN betround=3 AND Have2ndTopPair AND HaveStraightDraw AND NOT (StraightPossible OR FlushPossible) AND NOT RaisesOnFlop RETURN 600 FORCE
+WHEN betround=3 AND Have2ndTopPair AND (HaveNutFlushDraw AND NOT OneCardFlushPossible) AND NOT RaisesOnFlop RETURN 600 FORCE
+WHEN betround=3 AND Have2ndTopPair AND (Have2ndNutFlushDraw OR Have3rdNutFlushDraw) AND NOT OneCardFlushPossible AND NOT RaisesOnFlop RETURN 600 FORCE
+WHEN betround=3 AND Have2ndTopPair AND (HaveFlushDraw AND NOT FlushPossible) AND NOT RaisesOnFlop RETURN 600 FORCE
+WHEN betround=3 AND ((Have2ndTopPair AND (HaveBestKicker OR Have2ndBestKicker)) OR Have2ndOverPair) AND (NumberOfRaisesBeforeFlop=0 OR NoBettingOnFlop) AND NOT (FlushPossible OR StraightPossible OR TwoPairOnBoard) RETURN 600 FORCE
+WHEN betround=3 AND Have2ndOverPair AND NOT OneCardStraightPossible AND NOT (RaisesOnFlop OR FlushPossible) AND NOT CalledOnFlop AND OpponentsOnTurn=1 RETURN 600 FORCE
+
+
+WHEN betround=3 AND HaveNutFlushDraw AND HaveInsideStraightDraw AND NOT (FlushPossible) AND OneCardStraightPossible AND NoBettingOnFlop AND NumberOfRaisesBeforeFlop=0 RETURN 600 FORCE
+WHEN betround=3 AND HaveNutFlushDraw AND Overcards>0 AND NOT FlushPossible RETURN 600 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (OneCardFlushPossible OR OneCardStraightPossible OR TwoPairOnBoard) RETURN 600 FORCE
+WHEN betround=3 AND Overcards>0 AND (Hand=A OR Hand=K OR Hand=Q OR hand=J) AND (HaveStraightDraw) AND NOT (PairOnBoard OR SuitsOnBoard>2 OR StraightPossible) RETURN 600 FORCE
+
+/////////////      700         //////////// CHECK CALL (^1/4 Pot | 5bb) (No Late Bet)
+WHEN betround=3 AND (HaveInsideStraightDraw AND Overcards=2) AND NOT (PairOnBoard OR FlushPossible OR StraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveStraightDraw AND NOT (StraightPossible AND SuitsOnBoard>2) AND NOT (PairOnBoard OR FlushPossible OR StraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveFlushDraw AND NOT (TwoPairOnBoard OR TripsOnBoard OR FlushPossible OR StraightPossible OR NumberOfRaisesOnFlop>1)  RETURN 700 FORCE
+WHEN betround=3 AND HaveInsideStraightDraw AND (HaveOverPair OR Have2ndOverPair) AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveInsideStraightDraw AND (HaveOverPair OR Have2ndOverPair) AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveStraightDraw AND HaveFlushDraw AND NOT (TripsOnBoard OR StraightPossible OR FlushPossible) AND NOT (OneCardFlushPossible AND OneCardStraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveNutFlushDraw AND HaveInsideStraightDraw AND NOT (TwoPairOnBoard OR TripsOnBoard OR OneCardFlushPossible OR StraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveTwoPair AND NOT (OneCardStraightPossible OR (OneCardFlushPossible AND Opponents>2)) RETURN 700 FORCE
+WHEN betround=3 AND HaveOverPair AND NOT (FlushPossible AND StraightPossible) AND NOT (OneCardFlushPossible AND NOT HaveFlushDraw) AND OneCardStraightPossible AND Opponents<3 AND RaisesOnFlop RETURN 700 FORCE
+WHEN betround=3 AND HaveTopPair AND StraightPossible AND FlushPossible AND NOT (OneCardFlushPossible AND OneCardStraightPossible) AND (HaveStraightDraw OR HaveInsideStraightDraw) AND Opponents<2 AND NoBettingOnFlop RETURN 700 FORCE 
+WHEN betround=3 AND (HaveNutFlushDraw OR Have2ndNutFlushDraw OR Have3rdNutFlushDraw OR (HaveFlushDraw AND Not FlushPossible AND opponents<3)) AND NOT OneCardFlushPossible RETURN 700 FORCE
+
+/////////////      750         //////////// CHECK CALL (^1/5 Pot | 3bb) (No Late Bet)
+WHEN betround=3 AND (HaveInsideStraightDraw) AND NOT (PairOnBoard OR FlushPossible OR StraightPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveStraightDraw AND NOT (TripsOnBoard OR StraightPossible OR FlushPossible) AND SuitsOnBoard>2 RETURN 700 FORCE
+WHEN betround=3 AND HaveFlushDraw AND NOT (FlushPossible OR PairOnBoard OR OneCardFlushPossible) RETURN 700 FORCE
+WHEN betround=3 AND HaveInsideStraightDraw AND (Have3rdOverPair OR Have4thOverPair) AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 700 FORCE
+
+/////////////      800         //////////// CHECK CALL Mini 1/10 
+WHEN betround=3 AND HaveStraightDraw AND HaveFlushDraw AND (TwoPairOnBoard OR TripsOnBoard) RETURN 800 FORCE
+WHEN betround=3 AND Overcards=2 AND (Hand=A) AND Opponents=1 AND NumberOfRaisesBeforeFlop=0 AND BotsLastPreflopAction=Raise AND NOT (StraightPossible OR FlushPossible) RETURN 800 FORCE
+WHEN betround=3 AND ((HavePair OR HaveStraightDraw OR HaveInsideStraightDraw OR HaveFlushDraw OR Have2ndTopPair OR Have3rdTopPair) OR (Overcards>0 AND Hand=A)) AND NOT (FlushPossible OR StraightPossible) RETURN 800 FORCE
+
+/////////////      900         //////////// CHECK CALL MINI/FOLD
+WHEN betround=3 AND HaveOverPair AND NOT (FlushPossible OR StraightPossible) AND NOT (OneCardFlushPossible AND NOT HaveFlushDraw) AND (OneCardStraightPossible) AND Opponents<3 AND NOT RaisesOnFlop RETURN 900 FORCE
+WHEN betround=3 AND Have2ndOverPair AND NOT StraightOnBoard AND NOT (OneCardStraightPossible OR FlushPossible) AND OpponentsOnTurn=1 RETURN 900 FORCE
+WHEN betround=3 AND HaveFullHouse AND TripsOnBoard AND HaveOverPair AND  NOT (Hand=AA OR Hand=KK OR Hand=QQ) AND NumberOfRaisesBeforeFlop>1 AND NOT QuadsOnBoard RETURN 900 FORCE
+WHEN betround=3 AND (HaveFlushDraw AND HaveInsideStraightDraw) AND NOT SuitsOnBoard<=2 AND TwoPairOnBoard RETURN 900 FORCE
+WHEN betround=3 AND (HaveFlushDraw AND HaveInsideStraightDraw) AND twoPairOnBoard RETURN 900 FORCE
+
+//CHECK CALL (^1/4 pot) NO LATE BET
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+New Symbol RHandStrenght
+
+
+/////////////      5         //////////// BET (ALSO IF NOT LEADER
+WHEN betround=4 AND HaveRunnerRunnerFlushAtRiver AND NOT PairOnBoard AND PlayersAtStartOfThisRound=2 AND StackSize<60 RETURN 5 FORCE
+
+/////////////      10         //////////// VADO ROTTO
+WHEN betround=4 AND HaveNuts RETURN 10 FORCE
+WHEN betround=4 AND HaveStraightFlush AND NOT ( StraightFlushOnBoard) RETURN 10 FORCE
+WHEN betround=4 AND HaveNutStraightFlush AND NOT StraightFlushOnBoard RETURN 10 FORCE
+WHEN betround=4 AND HaveQuads RETURN 10 FORCE
+WHEN betround=4 AND HaveNutStraight AND NOT (FlushPossible OR PairOnBoard) RETURN 10 FORCE
+WHEN betround=4 AND (HaveBestFullHouse OR (HaveNutFullHouse AND NOT TwoPairOnBoard)) RETURN 10 FORCE
+WHEN betround=4 AND HaveNutFlush AND NOT PairOnBoard RETURN 10 FORCE
+WHEN betround=4 AND Have3rdNutFlush AND NOT (PairOnBoard OR StraightPossible) AND NOT PairOnBoard RETURN 10 FORCE
+WHEN betround=4 AND HaveFullHouse AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 10 FORCE
+WHEN betround=4 AND HaveTopSet AND NOT HaveFullHouse AND NOT (StraightPossible OR FlushPossible) RETURN 10 FORCE
+WHEN betround=4 AND HaveTopSet AND NOT HaveFullHouse AND NOT (OneCardStraightPossible OR OneCardFlushPossible) RETURN 10 FORCE
+WHEN betround=4 AND HaveStraight AND opponents=1 AND NOT (TwoPairOnBoard OR TripsOnBoard OR FlushPossible) AND NOT (StraightOnBoard OR HaveUnderStraight) RETURN 10 FORCE
+
+/////////////      11         //////////// BET RAISE ^80
+WHEN betround=4 AND HaveStraightFlush RETURN 11 FORCE
+WHEN betround=4 AND HaveNutFlush AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 11 FORCE
+WHEN betround=4 AND Have2ndNutFlush AND NOT (OneCardFlushPossible AND Opponents>2) AND NOT PairOnBoard RETURN 11 FORCE
+WHEN betround=4 AND (HaveNutFlush OR Have2ndNutFlush) AND NoBettingOnTurn AND NOT PairOnBoard RETURN 11 FORCE
+WHEN betround=4 AND Have3rdNutFlush AND NOT (PairOnBoard OR StraightPossible) RETURN 11 FORCE
+WHEN betround=4 AND Have2ndNutStraight AND NOT (FlushPossible OR PairOnBoard) AND StraightOnBoard RETURN 11 FORCE
+WHEN betround=4 AND HaveTrips AND NOT HaveFullHouse AND NOT (StraightPossible OR FlushPossible) RETURN 11 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND NOT (FlushPossible OR OneCardStraightPossible) AND StackSize<50 RETURN 11 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND NOT (OneCardFlushPossible OR StraightPossible) AND StackSize<50 RETURN 11 FORCE
+
+/////////////      13         //////////// BET CALL (^50/Pot) Call Reraise //fix here
+WHEN betround=4 AND HaveNutFullHouse AND TwoPairOnBoard AND NOT FullHouseOnBoard RETURN 13 FORCE
+WHEN betround=4 AND (Have2ndNutFlush) AND NOT PairOnBoard AND NOT OneCardFlushPossible RETURN 13 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND NOT (OneCardFlushPossible OR OneCardStraightPossible) RETURN 13 FORCE
+WHEN betround=4 AND HaveTrips AND NOT HaveFullHouse AND NOT (FlushPossible OR OneCardStraightPossible) AND StackSize<35 RETURN 13 FORCE
+WHEN betround=4 AND HaveTrips AND NOT HaveFullHouse AND NOT (FlushPossible OR OneCardStraightPossible) AND WheelPossible AND Board=A RETURN 13 FORCE
+
+/////////////      15         //////////// BET CALL (^25/Pot) Fold Reraise 
+WHEN betround=4 AND HaveFullHouse AND HaveOverPair AND TripsOnBoard AND NOT FullHouseOnBoard RETURN 15 FORCE
+WHEN betround=4 AND HaveFullHouse AND PairOnBoard AND NOT (TripsOnBoard OR TwoPairOnBoard) RETURN 15 FORCE
+WHEN betround=4 AND (Have2ndNutFlush OR Have3rdNutFlush) AND NOT PairOnBoard RETURN 15 FORCE
+WHEN betround=4 AND (HaveNutFlush OR Have2ndNutFlush) AND NoBettingOnTurn AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 15 FORCE
+WHEN betround=4 AND HaveFlush AND NOT OneCardFlushPossible AND NOT RaisesOnTurn AND NOT PairOnBoard RETURN 15 FORCE
+WHEN betround=4 AND HaveStraight AND NOT (FlushPossible OR PairOnBoard OR TripsOnBoard) AND NOT OneCardStraightPossible RETURN 15 FORCE
+WHEN betround=4 AND HaveStraight AND NOT (FlushPossible OR TwoPairOnBoard OR TripsOnBoard) AND NOT StraightOnBoard AND NOT OneCardStraightPossible RETURN 15 FORCE
+WHEN betround=4 AND HaveTrips AND NOT HaveFullHouse AND NOT (OneCardStraightPossible OR OneCardFlushPossible) RETURN 15 FORCE
+WHEN betround=4 AND ((HaveTopTwoPair) OR (HaveTwoPair AND NOT TwoPairOnBoard)) AND NOT (StraightPossible OR FlushPossible) AND NOT PairOnBoard RETURN 15 FORCE
+WHEN betround=4 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND NOT (StraightPossibleOnFlop OR PairOnBoard OR OneCardStraightPossible OR OneCardFlushPossible) RETURN 15 FORCE
+//ADD KICKER
+WHEN betround=4 AND HaveTopPair AND PairOnBoard AND HaveTwoPair AND NOT (FlushPossible AND StraightPossible) AND PotSize<35 RETURN 15 FORCE 
+
+/////////      20         //////////// BET / CALL (^Pot) / FOLD RERAISE BET LATE
+WHEN betround=4 AND HaveFullHouse AND HaveOverPair AND TripsOnBoard RETURN 20 FORCE
+WHEN betround=4 AND HaveFullHouse AND HaveTopPair AND TripsOnBoard RETURN 20 FORCE
+WHEN betround=4 AND HaveStraight AND NOT (StraightOnBoard OR HaveUnderStraight) RETURN 20 FORCE
+WHEN betround=4 AND (HaveNutFlush OR Have2ndNutFlush OR Have3rdNutFlush) AND NumberOfRaisesOnTurn=0 AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 20 FORCE
+WHEN betround=4 AND HaveFlush AND NOT (RaisesOnTurn OR RaisesOnFlop OR OneCardFlushPossible OR TripsOnBoard) AND NumberOfRaisesOnFlop=0 AND NumberOfRaisesOnTurn=0 AND PotSize<80 AND opponents<3 RETURN 20 FORCE
+WHEN betround=4 AND HaveTwoPair AND Have2ndTopPair AND NOT (StraightPossible OR FlushPossible) AND NOT TwoPairOnBoard RETURN 20 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND (StraightPossible OR FlushPossible) AND NOT (OneCardStraightPossible OR OneCardFlushPossible) AND NOT (StraightPossible AND FlushPossible) RETURN 20 FORCE
+WHEN betround=4 AND HaveTrips AND NOT HaveFullHouse AND NOT (OneCardStraightPossible OR OneCardFlushPossible) RETURN 20 FORCE
+WHEN betround=4 AND HadTopPairOnFlopNoPairOnBoard AND (Opponents=1 AND NOT (OneCardStraightPossible OR FlushPossible))  RETURN 20 FORCE
+WHEN betround=4 AND HadTopPairOnFlopNoPairOnBoard AND (Opponents>1 AND NOT (FlushPossible OR StraightPossible))  RETURN 20 FORCE
+WHEN betround=4 AND HaveTwoPair  AND (StraightPossible OR FlushPossible) AND NOT (PairOnBoard OR OneCardStraightPossible OR OneCardFlushPossible) AND NOT PairOnBoard RETURN 20 FORCE
+
+/////////      25         //////////// BET CALL (3/4 Pot) FOLD RERAISE BET LATE
+WHEN betround=4 AND HaveOverPair AND Opponents<4 AND NOT (OneCardStraightPossible OR OneCardStraightPossible) AND Opponents=1 RETURN 25 FORCE
+WHEN betround=4 AND HaveOverPair AND NOT (StraightPossible OR FlushPossible) AND NOT (TopFlopCardPairedonRiver OR SecondTopFlopCardPairedOnRiver)  AND NOT (RaisesOnTurn) AND NOT User_Called3Bet RETURN 25 FORCE
+WHEN betround=4 AND HaveTopPair AND HaveBestKicker AND PairOnBoard AND NOT (StraightPossible OR FlushPossible) AND NOT (RaisesOnFlop OR RaisesOnTurn) RETURN 25 FORCE
+WHEN betround=4 AND HaveTopPair AND (HaveBestKicker OR Have2ndBestKicker) AND NOT (StraightPossible OR FlushPossible OR PairOnBoard) AND NOT (TopFlopCardPairedonTurn OR TopFlopCardPairedonRiver) AND NOT (RaisesOnFlop OR RaisesOnTurn) RETURN 25 FORCE
+WHEN betround=4 AND HaveTopPair AND NOT (FlushPossible OR StraightPossible) AND (Opponents<=2 OR Position=Last) AND NOT (TopFlopCardPairedonTurn OR TopFlopCardPairedonRiver) AND NOT PairOnBoard RETURN 25 FORCE
+WHEN betround=4 AND HaveTopPair AND HaveBestKicker AND Opponents=1 AND NOT (CalledOnTurn OR OneCardStraightPossible OR OneCardFlushPossible) RETURN 25 FORCE
+WHEN betround=4 AND HaveTopPair AND NOT (OneCardFlushPossible OR OneCardStraightPossible OR CalledOnTurn) AND Opponents<3 RETURN 25 FORCE
+WHEN betround=4 AND (Have2ndOverPair OR Have2ndTopPair) AND NOT (HaveFullHouse OR StraightPossible OR FlushPossible OR CalledOnFlop OR CalledOnTurn) AND Opponents<=2 AND Position=Last RETURN 25 FORCE
+WHEN betround=4 AND (Have2ndOverPair) AND NOT CalledOnTurn AND TurnCardPairedOnRiver AND NOT (TwoPairOnBoard OR TripsOnBoard OR OneCardStraightPossible OR OneCardFlushPossible) RETURN 25 FORCE
+
+
+/////////      80         //////////// BET FOLD BET LATE
+WHEN betround=4 AND HaveTopPair AND (HaveBestKicker OR Have2ndBestKicker) AND PairOnBoard AND NOT (TwoPairOnBoard OR FlushPossible) AND NOT (TopFlopCardPairedonTurn OR TopFlopCardPairedonRiver) AND NOT (RaisesOnFlop OR RaisesOnTurn) RETURN 80 FORCE
+WHEN betround=4 AND HaveFlush AND NOT FlushOnBoard AND PotSize<10 AND (Opponents<=2 OR (Opponents<=3 AND Bets=0 AND Raises=0 AND Position=Last)) AND NOT (RaisesOnFlop OR RaisesOnTurn) AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 80 FORCE
+WHEN betround=4 AND (Have2ndOverPair OR Have2ndTopPair) AND NOT (HaveFullHouse OR OneCardStraightPossible OR FlushPossible) AND NoBettingOnTurn AND Opponents=1 AND PotSize<50 RETURN 80 FORCE
+
+// FIX HERE!
+//WHEN betround=4 AND Had2ndOverPairOnFlop AND TopFlopCardPairedonTurn AND NOT Have2ndOverPair AND NoBettingOnFlop AND opponents<3 RETURN 80 FORCE
+//WHEN betround=4 AND HavePair AND NoBettingOnFlop AND NoBettingOnTurn AND Opponents=1 AND PotSize<10 AND NOT (HaveTwoPair OR HaveSet OR HaveTrips OR HaveStraight OR HaveFlush OR HaveFullHouse) RETURN 80 FORCE
+//WHEN betround=4 AND HavePair AND NOT (HaveBottomPair) AND Opponents=1 AND NoBettingOnTurn AND NoBettingOnFlop AND NOT (OneCardFlushPossible OR OneCardStraightPossible) AND NOT (HaveTwoPair OR HaveSet OR HaveTrips OR HaveStraight OR HaveFlush OR HaveFullHouse)  RETURN 80 FORCE
+
+/////////////      100         //////////// CHECK CALL ^Pot NO LATE BET
+WHEN betround=4 AND HaveFullHouse AND Have2ndOverPair AND TripsOnBoard RETURN 100 FORCE
+WHEN betround=4 AND HaveNutStraight AND NOT (OpenEndedStraightDrawOnBoard OR OneCardFlushPossible) RETURN 100 FORCE
+WHEN betround=4 AND HaveStraight AND NOT (OpenEndedStraightDrawOnBoard OR OneCardFlushPossible) AND NOT (StraightOnBoard) RETURN 100 FORCE
+WHEN betround=4 AND HaveStraight AND NOT (FlushPossible OR PairOnBoard OR TripsOnBoard) AND NOT StraightOnBoard AND NOT OneCardStraightPossible RETURN 100 FORCE
+WHEN betround=4 AND HaveOverPair AND NOT (OneCardStraightPossible OR OneCardFlushPossible) AND NOT PairOnBoard AND User_Called3Bet AND NOT RaisesOnTurn AND Opponents<3 RETURN 100 FORCE
+WHEN betround=4 AND HaveOverPair AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ) AND NOT (PairOnBoard OR OneCardStraightPossible OR OneCardFlushPossible) RETURN 100 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND NOT (OneCardFlushPossible) AND NOT StraightOnBoard AND (CallsSinceLastRaise=0 OR Opponents=1) AND PotSize<40 RETURN 100 FORCE
+WHEN betround=4 AND HaveOverPair AND NOT (StraightPossible OR FlushPossible) AND NOT (TopFlopCardPairedonRiver OR SecondTopFlopCardPairedOnRiver)  AND PotSize<50 RETURN 100 FORCE
+
+/////////////      110         //////////// CHECK CALL ^Pot LATE BET
+
+WHEN betround=4 AND (HaveNutFlush OR (  (Have2ndNutFlush OR Have3rdNutFlush) AND NOT OneCardFlushPossible)) AND PairOnBoard AND NOT (TwoPairOnBoard OR TripsOnBoard) RETURN 110 FORCE
+WHEN betround=4 AND HaveStraight AND NOT OneCardFlushPossible AND opponents<=2 AND NOT PairOnBoard RETURN 110 FORCE
+WHEN betround=4 AND (Have2ndOverPair OR Have2ndTopPair) AND NOT (HaveFullHouse OR OneCardStraightPossible OR FlushPossible) AND Opponents<=2 AND PotSize<50 RETURN 110 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND (OneCardFlushPossible) AND NOT OneCardStraightPossible AND PotSize<40 RETURN 110 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND NOT (OneCardFlushPossible) AND OneCardStraightPossible AND PotSize<40 RETURN 110 FORCE
+WHEN betround=4 AND HaveOverPair AND (TopFlopCardPairedonRiver OR SecondTopFlopCardPairedOnRiver) AND (StraightPossible OR FlushPossible) AND NOT (OneCardFlushPossible OR TwoPairOnBoard OR RaisesOnFlop OR RaisesOnTurn) AND PotSize<60 RETURN 110 FORCE
+WHEN betround=4 AND HaveFlush AND NOT (OneCardFlushPossible OR TripsOnBoard) AND PotSize<30 RETURN 110 FORCE
+
+/////////////      130         //////////// CHECK CALL ^1/2 Pot NO LATE BET
+WHEN betround=4 AND HaveFullHouse AND (Have2ndOverPair OR Have3rdOverPair) AND TripsOnBoard RETURN 130 FORCE
+WHEN betround=4 AND HadTopPairOnFlop AND (Have2ndTopPair OR Have2ndOverPair OR Have3rdTopPair) AND NOT (OneCardFlushPossible OR OneCardStraightPossible) AND opponents=1 RETURN 130 FORCE
+WHEN betround=4 AND HaveFullHouse AND TwoPairOnBoard AND HaveBottomTrips AND NOT (Have2ndOverPair or Have3rdOverPair) RETURN 130 FORCE
+WHEN betround=4 AND HaveSet AND NOT HaveFullHouse AND NOT (OneCardFlushPossible) AND NOT StraightOnBoard AND (CallsSinceLastRaise=0 OR Opponents=1) AND PotSize>=40 RETURN 130 FORCE
+WHEN betround=4 AND HaveTwoPair AND Have2ndTopPair AND NOT (FlushPossible) AND NOT TwoPairOnBoard RETURN 130 FORCE
+WHEN betround=4 AND HaveTopPair AND (StraightPossible OR FlushPossible) AND NOT (OneCardFlushPossible OR OneCardFlushPossible) AND NOT (StraightPossible AND FlushPossible) AND PotSize<35 RETURN 130 FORCE
+WHEN betround=4 AND HaveTwoPair AND (StraightPossible OR FlushPossible) AND NOT (PairOnBoard OR OneCardStraightPossible OR OneCardFlushPossible) AND PairOnBoard RETURN 130 FORCE
+WHEN betround=4 AND HaveOverPair AND (TopFlopCardPairedonRiver OR SecondTopFlopCardPairedOnRiver) AND (StraightPossible OR FlushPossible) AND NOT (OneCardFlushPossible OR OneCardFlushPossible OR TwoPairOnBoard) RETURN 130 FORCE
+WHEN betround=4 AND HaveTopPair AND (FlushPossible AND StraightPossible ) AND (OneCardFlushPossible OR OneCardStraightPossible) AND PotSize<18 AND Opponents<3 RETURN 130 FORCE
+WHEN betround=4 AND HaveTopPair AND (StraightPossible) AND NOT (OneCardStraightPossible AND FlushPossible) AND PotSize<35 AND Opponents<3 RETURN 130 FORCE
+WHEN betround=4 AND HaveTopPair AND (FlushPossible) AND NOT (OneCardFlushPossible AND StraightPossible) AND PotSize<35 AND Opponents<3 RETURN 130 FORCE
+WHEN betround=4 AND HaveTopPair AND PairOnBoard AND HaveTwoPair AND NOT (FlushPossible AND StraightPossible) RETURN 130 FORCE 
+WHEN betround=4 AND (Have2ndOverPair OR Have2ndTopPair) AND NOT (HaveFullHouse OR OneCardStraightPossible OR FlushPossible) AND NOT (RaisesOnFlop AND RaisesOnTurn) AND Opponents=2 AND PotSize<40 RETURN 130 FORCE
+WHEN betround=4 AND HaveTopPair AND NOT (FlushPossible OR OneCardStraightPossible) RETURN 130 FORCE
+
+/////////////      150         //////////// CHECK CALL ^1/2 Pot LATE BET
+WHEN betround=4 AND HaveFlush AND NOT OneCardFlushPossible AND RaisesOnTurn RETURN 150 FORCE
+WHEN betround=4 AND HaveOverPair AND NOT (StraightPossible OR FlushPossible) AND PotSize<60 RETURN 150 FORCE
+WHEN betround=4 AND HaveTwoPair AND NOT (PairOnBoard OR OneCardFlushPossible OR StraightOnBoard) AND PotSize<15 RETURN 150 FORCE
+WHEN betround=4 AND HaveTopPair AND NOT (FlushPossible OR StraightPossible) AND PotSize<20 RETURN 150 FORCE
+WHEN betround=4 AND HaveTopPair AND NOT (FlushPossible OR OneCardStraightPossible) AND PotSize<20 AND Opponents<3 RETURN 150 FORCE
+WHEN betround=4 AND Have2ndTopPair AND RankOfTopPairOnBoard > SecondTopPairRank AND PairOnBoard AND NOT (FlushPossible OR TwoPairOnBoard OR TripsOnBoard) AND PotSize<15 AND (NoBettingOnFlop OR NoBettingOnTurn) RETURN 150 FORCE
+WHEN betround=4 AND Had2ndOverPairOnTurn AND Opponents=1 AND NOT TwoPairOnBoard OR TripsOnBoard RETURN 150 FORCE
+
+/////////////      200         //////////// BET CALL ^1/3 Pot
+WHEN betround=4 AND Hand=A AND TwoPairOnBoard AND NOT (StraightPossible OR FlushPossible) AND NOT HaveFullHouse AND NoBettingOnTurn AND NOT CalledOnFlop AND PotSize<=15 RETURN 200 FORCE
+
+/////////////      300         //////////// CHECK CALL ^1/5 Pot
+WHEN betround=4 AND HaveTwoPair AND NOT (PairOnBoard OR OneCardFlushPossible OR StraightOnBoard) AND Opponents=1  AND PotSize<50 RETURN 300 FORCE
+
+/////////////      400         //////////// CHECK CALL ^MiniBet
+WHEN betround=4 AND (Hand=A) AND Overcards>1 AND Opponents=1 RETURN 400 FORCE
+
+
+/////////////      500         //////////// CHECK FOLD
+WHEN betround=4 AND HaveUnderPair AND TripsOnBoard RETURN 500 FORCE 
+WHEN Others RETURN -1 FORCE
+End Symbol
+
+preflop
+
+
+
+
+///////////////////////
+//   P R E F L O P 
+///////////////////////
+
+WHEN In Button AND Calls=0 User_StealingFromButton
+WHEN In SmallBlind AND Calls=0 User_StealingFromSmallBlind
+WHEN In BigBlind AND Calls=1 AND Opponents=1 AND FirstCallerPosition=1 User_StealingFromBigBlind
+WHEN (User_StealingFromButton OR User_StealingFromSmallBlind OR User_StealingFromSmallBlind) User_Stealing
+WHEN Raises = 1 AND (BotsLastAction = None OR BotsActionsOnThisRoundIncludingChecks=0) User_OneRaiseBeforeFirstActionPreflop
+WHEN HavePair AND raises=1 AND LastRaiserStackSize>1800% BetSize AND StackSize>=90% LastRaiserStackSize User_HaveStackOddsWithPairs 
+WHEN Raises <= 0 AND FirstCallerPosition = 5  User_Limper5
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop User_Opponents3Betted
+WHEN (In SmallBlind OR In BigBlind) AND LastRaiserPosition<=2 User_OpponentsStealAttempt
+	/////PT VARS
+WHEN Raises <= 0 AND Calls=1 AND PT_LastCaller_VPIP >= 0.40 User_CallingStationCaller
+WHEN Raises <= 0 AND Calls=1 AND PT_LastCaller_VPIP >= 0.30 AND PT_LastCaller_VPIP < 0.40 User_LooseCaller
+WHEN Raises <= 0 AND Calls=1 AND PT_LastCaller_VPIP >= 0.20 AND PT_LastCaller_VPIP < 0.30 User_SemiLooseCaller
+WHEN Raises <= 0 AND Calls=1 AND PT_LastCaller_VPIP <  0.20 User_TightCaller
+
+	///////////////////////
+	// WHEN BOT DID ACTED
+	///////////////////////
+
+	// OPPONENT ALLIN BEFORE WE ACT
+
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin>0              AND AmountToCall<=5 AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT) RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND (Hand=AA or Hand=KK) RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND AmountToCall<=15 AND CallsSinceLastRaise=0 AND (Hand=QQ or Hand=JJ or Hand=TT) RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND AmountToCall>15  AND CallsSinceLastRaise=0 AND (Hand=QQ or Hand=JJ) RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND AmountToCall<=15 AND CallsSinceLastRaise>0 AND (Hand=QQ)  RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND AmountToCall<=15 AND CallsSinceLastRaise>0 AND (Hand=JJ or Hand=TT)  CALL FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND AmountToCall>12 AND AmountToCall<60 AND (Hand=AA or Hand=KK or Hand=QQ or Hand=JJ or Hand=TT or Hand=99 or Hand=AK suited) CALL FORCE
+WHEN BotsLastAction = None AND NumberOfOpponentsAllin=1 AND Raises=1 AND Opponents=1 AND (In SmallBlind OR In BigBlind) AND islist400 AND AmountToCall<5 CALL FORCE
+WHEN BotsLastAction = None AND Raises=1 AND CallsSinceLastRaise=0 AND Calls<=2 AND AmountToCall<8 AND LastRaiserStackSize>0 AND LastRaiserStackSize<25 AND (Hand=AK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99) RAISE (LastRaiserStackSize) FORCE
+
+WHEN BotsLastAction = Raise AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND AmountToCall>100 AND (Hand=AA OR Hand=KK) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND AmountToCall<60 AND (Hand=QQ) CALL FORCE
+WHEN BotsLastAction = Raise AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND AmountToCall<45 AND (Hand=JJ) CALL FORCE
+WHEN BotsLastAction = Raise AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND AmountToCall<45 AND (Hand=JJ) CALL FORCE
+WHEN BotsLastAction = Raise AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND AmountToCall<30 AND (Hand=TT OR Hand=99 OR Hand=88 OR Hand=77 OR Hand=66) CALL FORCE
+WHEN BotsLastAction = Raise AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND AmountToCall<15 AND (Hand=55) CALL FORCE
+	//WHEN BotsLastAction = Raise AND NOT User_OneRaiseBeforeFirstAction AND NumberOfOpponentsAllin=1 AND BotsActionsOnThisRoundIncludingChecks=1 AND (Opponents=1 OR CallsSinceLastRaise=0) AND AmountToCall<70 AND StackSize<100 AND (Hand=AK Suited) RAISEMAX FORCE
+
+	// TOTALINVESTED AFTER WE RAISE
+WHEN BotsLastAction = Raise AND TotalInvested>100% StackSize RAISEMAX FORCE 
+	// FACING 3BET
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND StackSize<40 AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA OR Hand=KK) AND StackSize<45 RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA OR Hand=KK) AND AmountToCall>35% StackSize RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA OR Hand=KK) AND AmountToCall<=35% StackSize RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND Opponents=1 AND AmountToCall<15 AND LastRaiserStackSize<40 AND (Hand=QQ OR Hand=JJ OR Hand=AK) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND Opponents=1 AND AmountToCall<15 AND LastRaiserStackSize<30 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND Opponents=1 AND AmountToCall<15 AND LastRaiserStackSize<20 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK OR Hand=AQ) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND StackSize<75 AND (Hand=QQ OR Hand=JJ OR Hand=AK suited) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND AmountToCall<=50% StackSize AND (Hand=QQ) RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND AmountToCall<15 AND (Hand=QQ OR Hand=JJ OR Hand=AK suited) CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND AmountToCall<=50% StackSize AND (Hand=QQ) CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND AmountToCall<7% StackSize  AND (Hand=QQ OR Hand=JJ OR Hand=TT) CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND AmountToCall<15 AND (Hand=QQ OR Hand=JJ OR Hand=AK) CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND HavePair AND User_HaveStackOddsWithPairs CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND AmountToCall<TotalInvested AND AmountToCall<4 CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop AND CallsSinceLastRaise>0 AND AmountToCall<TotalInvested AND AmountToCall<5 CALL FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND NOT User_OneRaiseBeforeFirstActionPreflop FOLD FORCE
+	// FACING 4BET
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA or Hand=KK) AND AmountToCall<=40% StackSize RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA or Hand=KK) AND AmountToCall>40% StackSize RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA or Hand=KK) AND AmountToCall>40% StackSize RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AK suited) AND StackSize<60 RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AK) AND StackSize<75 RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=QQ) AND AmountToCall>40% StackSize RAISEMAX FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND NOT (Hand=AA OR Hand=KK) AND AmountToCall>20% StackSize FOLD FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND User_OneRaiseBeforeFirstActionPreflop AND NOT (Hand=AA OR Hand=KK) AND AmountToCall<=20% StackSize CALL FORCE
+	// FACING 5BET+
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA or Hand=KK) AND AmountToCall<=40% StackSize RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND User_OneRaiseBeforeFirstActionPreflop AND (Hand=AA or Hand=KK) AND AmountToCall>40% StackSize RAISEMAX FORCE
+
+	// FACING A RAISE AFTER A CALL
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall=1 CALL FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND RaisesSinceLastPlay=1 AND HavePair AND AmountToCall<8% StackSize CALL FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND RaisesSinceLastPlay=1 AND CallsSinceLastRaise=1 AND HavePair AND AmountToCall<10% StackSize CALL FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND RaisesSinceLastPlay=1 AND CallsSinceLastRaise=2 AND HavePair AND AmountToCall<13% StackSize CALL FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND RaisesSinceLastPlay=1 AND CallsSinceLastRaise=3 AND HavePair AND AmountToCall<14% StackSize CALL FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND RaisesSinceLastPlay=1 AND CallsSinceLastRaise>3 AND HavePair AND AmountToCall<17% StackSize CALL FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND (Hand=AA or Hand=KK) RAISE (StandardRaise) FORCE
+WHEN BotsLastAction = Call AND BotsActionsOnThisRoundIncludingChecks=1 AND (Hand=QQ or Hand=JJ or Hand=AK) CALL FORCE
+
+
+	////////////////////
+	// NO RAISES
+	////////////////////
+WHEN StillToAct=5  AND islist001 AND raises<=0 AND AmountToCall<=1 RAISE (StandardRaise) FORCE
+
+WHEN StillToAct=4  AND islist002 AND raises<=0 AND AmountToCall<=1 AND Calls=0 RAISE (StandardRaise) FORCE
+WHEN StillToAct=4  AND islist002 AND raises<=0 AND AmountToCall<=1 AND Calls>0 AND NOT User_Limper5 RAISE (StandardRaise) FORCE
+WHEN StillToAct=4  AND islist005 AND raises<=0 AND AmountToCall<=1 AND Calls>0 AND User_Limper5 RAISE (StandardRaise) FORCE
+WHEN StillToAct=4  AND               raises<=0 AND AmountToCall<=1 AND HavePair CALL FORCE
+
+WHEN (StillToAct=3  OR In Cutoff) AND islist060 AND raises<=0 AND AmountToCall<=1 AND Calls=0 RAISE (StandardRaise) FORCE
+WHEN (StillToAct=3  OR In Cutoff) AND islist061 AND raises<=0 AND AmountToCall<=1 RAISE (StandardRaise) FORCE
+WHEN (StillToAct=3  OR In Cutoff) AND islist063 AND raises<=0 AND AmountToCall<=1 CALL FORCE
+
+	//IN BUTTON
+	//No Callers
+When In Button     AND islist070 AND raises<=0 AND AmountToCall<=1 AND Calls=0  RAISE (StandardRaise) FORCE
+	
+When In Button     AND islist600 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_LooseCaller AND FirstCallerPosition=5 RAISE (StandardRaise) FORCE
+When In Button     AND islist610 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_LooseCaller AND FirstCallerPosition=4 RAISE (StandardRaise) FORCE
+When In Button     AND islist620 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_LooseCaller AND FirstCallerPosition=3 RAISE (StandardRaise) FORCE
+
+When In Button     AND islist610 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_SemiLooseCaller AND FirstCallerPosition=5 RAISE (StandardRaise) FORCE
+When In Button     AND islist610 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_SemiLooseCaller AND FirstCallerPosition=4 RAISE (StandardRaise) FORCE
+When In Button     AND islist620 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_SemiLooseCaller AND FirstCallerPosition=3 RAISE (StandardRaise) FORCE
+
+When In Button     AND islist620 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_TightCaller AND FirstCallerPosition=5 RAISE (StandardRaise) FORCE
+When In Button     AND islist620 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_TightCaller AND FirstCallerPosition=4 RAISE (StandardRaise) FORCE
+When In Button     AND islist620 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND User_TightCaller AND FirstCallerPosition=3 RAISE (StandardRaise) FORCE
+	
+When In Button     AND islist071 AND raises<=0 AND AmountToCall<=1 AND Calls=1  RAISE (StandardRaise) FORCE
+When In Button     AND islist072 AND raises<=0 AND AmountToCall<=1 AND Calls=2  RAISE (StandardRaise) FORCE
+When In Button     AND islist073 AND raises<=0 AND AmountToCall<=1 AND Calls=3  RAISE (StandardRaise) FORCE
+When In Button     AND islist074 AND raises<=0 AND AmountToCall<=1 AND Calls>3  RAISE (StandardRaise) FORCE
+When In Button     AND islist075 AND raises<=0 AND AmountToCall<=1 AND Calls>0  CALL FORCE
+
+When In SmallBlind AND islist080 AND raises<=0 AND AmountToCall<=1 AND Calls=0 RAISE (StandardRaise) FORCE
+When In SmallBlind AND islist100 AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND FirstCallerPosition<=3 RAISE (StandardRaise) FORCE
+When In SmallBlind AND islist091 AND raises<=0 AND AmountToCall<=1 RAISE (StandardRaise) FORCE
+When In SmallBlind AND islist200 AND raises<=0 AND AmountToCall<=1 AND Calls>0 CALL FORCE
+
+When In BigBlind   AND islist90  AND raises<=0 AND AmountToCall<=1 AND Calls=1 AND FirstCallerPosition<=3 RAISE (StandardRaise) FORCE
+When In BigBlind   AND islist100 AND raises<=0 AND AmountToCall<=1 AND Calls=2 AND FirstCallerPosition<=2 RAISE (StandardRaise) FORCE
+When In BigBlind                 AND raises<=0 AND AmountToCall<=1 AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK) RAISE (StandardRaise) FORCE
+
+When In BigBlind   				 AND raises<=0 AND AmountToCall<=1 AND AmountToCall=0 CALL FORCE
+	////////////////////
+	//     ONE RAISE    
+	////////////////////
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.01  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR HavePair) FOLD FORCE
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.02  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR Hand=KK OR HavePair) FOLD FORCE
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.03  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR Hand=KK OR Hand=QQ OR HavePair) FOLD FORCE
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.04  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK suited OR HavePair) FOLD FORCE
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.08  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK suited OR HavePair) FOLD FORCE
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.10  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK suited OR HavePair) FOLD FORCE
+When raises<=1 AND PT_LastRaiser_PFR>0 AND PT_LastRaiser_PFR<=0.15  AND PT_LastRaiser_Hands>0 AND NOT User_OpponentsStealAttempt AND NOT (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=77 OR Hand=AK OR Hand=AQ OR Hand=AJ suited OR Hand=KQ suited OR HavePair) FOLD FORCE
+
+When                                  raises<=1 AND (Hand=AA OR Hand=KK) RAISE (StandardRaise) FORCE
+When StillToAct=4                 AND raises<=1 AND AmountToCall<=7 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK OR Hand=AQ suited) RAISE (StandardRaise) FORCE
+When StillToAct=4                 AND raises<=1 AND AmountToCall<12 AND (Hand=QQ OR Hand=JJ) CALL FORCE
+When (StillToAct=3  OR In Cutoff) AND raises<=1 AND AmountToCall<=7 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK OR Hand=AQ suited) RAISE (StandardRaise) FORCE
+When (StillToAct=3  OR In Cutoff) AND raises<=1 AND AmountToCall<12 AND (Hand=QQ OR Hand=JJ OR Hand=AK) CALL FORCE
+When (StillToAct=3  OR In Cutoff) AND raises<=1 AND AmountToCall<=7 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=AK OR Hand=AQ OR Hand=AJ suited OR Hand=KQ suited) RAISE (StandardRaise) FORCE
+
+When In Button                    AND raises<=1 AND AmountToCall<6  AND LastRaiserPosition=5 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK) RAISE (StandardRaise) FORCE
+When In Button                    AND raises<=1 AND AmountToCall<6  AND LastRaiserPosition=4 AND Calls=0 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=AK OR Hand=AQ OR Hand=AJ OR Hand=KQ suited) RAISE (StandardRaise) FORCE
+When In Button                    AND raises<=1 AND AmountToCall<6  AND LastRaiserPosition=4 AND Calls=1 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK OR Hand=AQ OR Hand=AJ suited) RAISE (StandardRaise) FORCE
+When In Button                    AND raises<=1 AND AmountToCall<6  AND LastRaiserPosition=4 AND Calls>1 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK OR Hand=AQ suited) RAISE (StandardRaise) FORCE
+When In Button                    AND raises<=1 AND HavePair        AND  AmountToCall<5 AND User_HaveStackOddsWithPairs CALL FORCE
+When In Button                    AND raises<=1 AND AmountToCall<5  AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK) RAISE (StandardRaise) FORCE
+
+When In SmallBlind                AND raises<=1 AND AmountToCall<=5 AND CallsSinceLastRaise=0 AND (Hand=AK) RAISE (StandardRaise) FORCE
+When In SmallBlind                AND raises<=1 AND AmountToCall<=3 AND CallsSinceLastRaise=0 AND (Hand=AQ Suited) RAISE (StandardRaise) FORCE
+When In SmallBlind                AND raises<=1 AND AmountToCall<=5 AND CallsSinceLastRaise=0 AND (Hand=AQ Suited) CALL FORCE
+When In SmallBlind                AND raises<=1 AND AmountToCall<=7 AND CallsSinceLastRaise<3 AND (Hand=QQ OR Hand=JJ) RAISE (StandardRaise) FORCE
+When In SmallBlind                AND raises<=1 AND AmountToCall<12 AND CallsSinceLastRaise>2 AND (Hand=QQ OR Hand=JJ) CALL FORCE
+
+When In SmallBlind AND raises<=1 AND AmountToCall<=2 AND LastRaiserPosition=5 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=3 AND LastRaiserPosition=5 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=5 AND (Hand=QQ OR Hand=JJ OR Hand=AK suited) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=5 AND LastRaiserPosition=5 AND (Hand=QQ) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=5 AND LastRaiserPosition=5 AND (Hand=JJ OR Hand=TT OR Hand=99) CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=5 AND LastRaiserPosition=5 AND (Hand=JJ OR Hand=TT OR Hand=AK suited) CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=5 AND LastRaiserPosition=4 AND (Hand=JJ OR Hand=TT OR Hand=AK suited) CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=3 AND LastRaiserPosition=3 AND islist270 AND Calls=0 RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=3 AND islist275 AND Calls=0 RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<12 AND LastRaiserPosition=3 AND (Hand=QQ OR Hand=JJ) CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=2 AND LastRaiserPosition<=2 AND Calls=0 AND Opponents<=2 AND islist270 RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=3 AND LastRaiserPosition<=2 AND Calls=0 AND Opponents<=2 AND islist275 RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=7 AND LastRaiserPosition=2 AND Calls=0 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=77 OR Hand=AK OR Hand=AQ OR Hand=AJ OR Hand=KQ suited) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<12 AND LastRaiserPosition=2 AND Calls=0 AND (Hand=QQ OR Hand=JJ) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<12 AND LastRaiserPosition=2 AND Calls=0 AND (Hand=TT OR Hand=99 OR Hand=88 OR Hand=77 OR Hand=AK) CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<7 AND (Hand=QQ) RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<12 AND (Hand=QQ OR Hand=JJ OR Hand=TT) CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=3 AND LastRaiserPosition<=3 AND islist270 AND Calls=0 RAISE (StandardRaise) FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=2 AND 							        PT_LastRaiser_Hands<=80 AND islist294 AND Calls=0 CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=2 AND PT_LastRaiser_StealPct<=0.20  AND PT_LastRaiser_Hands>80  AND islist294 AND Calls=0 CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=2 AND PT_LastRaiser_StealPct<=0.25  AND PT_LastRaiser_Hands>80  AND islist295 AND Calls=0 CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=2 AND PT_LastRaiser_StealPct<=0.30  AND PT_LastRaiser_Hands>80  AND islist296 AND Calls=0 CALL FORCE
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=2 AND PT_LastRaiser_StealPct >0.30  AND PT_LastRaiser_Hands>80  AND islist297 AND Calls=0 CALL FORCE
+
+
+When In SmallBlind AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition=2 AND islist280 AND Calls=0 CALL FORCE
+
+When In BigBlind  AND raises<=1 AND LastRaiserPosition<=5 AND AmountToCall<6 AND (Hand=QQ) RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition<=5 AND AmountToCall<5 AND (Hand=JJ OR Hand=TT OR Hand=AK) RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition=3  AND AmountToCall<6 AND Calls>0 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=AK OR Hand=AQ suited OR Hand=AJ suited) RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition<=3 AND AmountToCall<4 AND Opponents=1 AND islist270 RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition<=3 AND AmountToCall<5 AND Opponents=1 AND islist275 RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition<=2 AND AmountToCall<5 AND Opponents=1 AND (Hand=AA OR Hand=KK OR Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=99 OR Hand=88 OR Hand=AK OR Hand=AQ OR Hand=KQ suited OR Hand=KJ suited OR Hand=KT suited) RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition=1 AND AmountToCall<5 AND Opponents>1 AND (Hand=QQ OR Hand=JJ OR Hand=TT OR Hand=AK OR Hand=AQ suited) RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND LastRaiserPosition=1 AND (Hand=QQ) RAISE (StandardRaise) FORCE
+When In BigBlind  AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition<=3 AND islist290 AND Calls=0 CALL FORCE
+When In BigBlind  AND raises<=1 AND HavePair AND User_HaveStackOddsWithPairs CALL FORCE
+When In BigBlind  AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition<=2 AND 							       PT_LastRaiser_Hands<=100 AND islist294 AND Calls=0 CALL FORCE
+When In BigBlind  AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition<=2 AND PT_LastRaiser_StealPct<=0.20 AND PT_LastRaiser_Hands>100  AND islist294 AND Calls=0 CALL FORCE
+When In BigBlind  AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition<=2 AND PT_LastRaiser_StealPct<=0.25 AND PT_LastRaiser_Hands>100  AND islist295 AND Calls=0 CALL FORCE
+When In BigBlind  AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition<=2 AND PT_LastRaiser_StealPct<=0.30 AND PT_LastRaiser_Hands>100  AND islist296 AND Calls=0 CALL FORCE
+When In BigBlind  AND raises<=1 AND AmountToCall<=4 AND LastRaiserPosition<=2 AND PT_LastRaiser_StealPct<=0.45 AND PT_LastRaiser_Hands>100  AND islist297 AND Calls=0 CALL FORCE
+When 			      raises<=1 AND AmountToCall<=3 AND HavePair AND CallsSinceLastRaise=0 CALL FORCE
+When 			      raises<=1 AND AmountToCall<=4 AND HavePair AND CallsSinceLastRaise=1 CALL FORCE
+When 			      raises<=1 AND AmountToCall<=5 AND HavePair AND CallsSinceLastRaise=2 CALL FORCE
+When 			      raises<=1 AND AmountToCall<=6 AND HavePair AND CallsSinceLastRaise=3 CALL FORCE
+When 			      raises<=1 AND AmountToCall<=7 AND HavePair AND CallsSinceLastRaise=4 CALL FORCE
+	///////////////////////
+	//     TWO RAISE         
+	///////////////////////
+When raises>=2 AND (Hand=AA OR Hand=KK) RAISE (StandardRaise) FORCE
+When OTHERS FOLD FORCE
+
+flop
+When betround=2 AND UncoordinatedFlop User_FlopBoardIsUncoordinated 
+When betround=2 AND HaveTwoPair AND NOT PairOnBoard User_HadTwoPairOnFlopNoPairOnBoard 
+When betround=2 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=RAISE AND NumberOfRaisesBeforeFlop=1 User_3Bet
+When betround=2 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=CALL AND NumberOfRaisesBeforeFlop=1 User_Called3Bet
+When betround=2 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=RAISE User_LastPreflopAggressor
+When betround=2 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=RAISE AND AmountToCall=1 User_OpponentDonkBet
+When betround=2 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=RAISE AND AmountToCall>2 User_OpponentBigDonkBet
+When betround=2 AND (Board=AKQ OR Board=AKJ OR Board=AKT OR Board=AQJ OR Board=AQT OR Board=AJT OR Board=KQJ OR Board=KJT OR Board=QJT OR Board=JT9) User_3StraightBrodway
+When betround=2 AND NumberOfRaisesOnFlop=0 AND BotsLastPreflopAction=Raise User_LastRaiser
+When betround=2 AND NOT PairOnBoard AND NOT (Board=9 OR Board=8 OR Board=7 OR Board=6 OR Board=5 OR Board=4 OR Board=3 OR Board=2) User_OnlyBroadWayOnBoard
+When betround=2 AND AmountToCall=1 User_FlopMiniBet
+When betround=2 AND Bets= 1 AND Raises=0 AND (BotsActionsOnThisRoundIncludingChecks=0 OR (BotsActionsOnThisRoundIncludingChecks=1 AND BotCheckedOnFlop)) User_OneRaiseBeforeFirstActionOnFlop 
+
+WHEN In Button AND Calls=0 User_StealingFromButton
+WHEN In SmallBlind AND Calls=0 User_StealingFromSmallBlind
+WHEN In BigBlind AND Calls=1 AND Opponents=1 AND FirstCallerPosition=1 User_StealingFromBigBlind
+
+//CBET	
+When (FlopCBet=1 AND NOT User_StealingFromSmallBlind) 
+	//When TotalInvested>200% StackSize RaiseMax FORCE	
+	
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND OpponentFoldToFCbetHeadsUp>=0.70 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND OpponentFoldToFCbetHeadsUp>=0.50 RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND OpponentFoldToFCbetHeadsUp<0.50 AND HaveNothing CALL FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND (HaveSet OR HaveStraight OR HaveFlush OR HaveFullHouse OR HaveQuads) <80 RAISE 66% FORCE
+	
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND (HaveStraightDraw OR HaveFlushDraw) RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND (HaveTopPair OR HaveOverPair OR Have2ndOverPair OR Have2ndTopPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush OR HaveFullHouse OR HaveQuads) AND Random <50 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND (HaveTopPair OR HaveOverPair OR Have2ndOverPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush OR HaveFullHouse OR HaveQuads) RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND UncoordinatedFlop AND HavePair AND random<50 RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND UncoordinatedFlop AND Random <40 RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND Random <35 RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND Random <65 AND PotSize<10 RAISE 66% FORCE	
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND Random <65 AND PotSize<15 RAISE 40% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=1 AND Random <65 AND PotSize<20 RAISE 33% FORCE
+	
+	
+	
+	When Bets = 0 AND Raises<=0 AND opponents=2 AND (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush OR HaveFullHouse OR HaveQuads OR HaveStraightFlush) AND Random<=20 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=2 AND (HaveStraightDraw OR HaveFlushDraw) AND Random <50 RAISE 33% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=2 AND UncoordinatedFlop AND Random<=10 RAISE 33% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents=2 AND UncoordinatedFlop AND Random<=20 RAISE 33% FORCE
+	//When Bets = 0 AND Raises<=0 AND opponents=2 AND Random <25 RAISE 66% FORCE
+
+	
+// NUTS ////////////////////////
+When (FHandStrenght=0)
+	When TotalInvested>100% StackSize RaiseMax Force
+	When StackSize<15 RaiseMax Force
+	When OpponentIsAllIn AND Opponents=1 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRound>0 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 AND StackSize<125% PotSize RAISEMAX  FORCE
+	When Bets = 0 AND Raises<=0 AND NOT Position=First AND Opponents>4 AND Random<50 RAISE 3 Force
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents>4 RAISE 3 Force
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=12 RAISE 50% Force
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=20 RAISE 33% Force
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize>20 RAISE 25% Force
+	When Bets = 0 AND Raises<=0 Call Force
+	When (Bets = 1 OR Raises = 1) AND opponents=1 AND OpponentStacksizeHeadsUp>0 AND OpponentStacksizeHeadsUp<60% PotSize RAISEMAX FORCE	
+	When (Bets = 1 OR Raises >= 1) Call Force
+ 	When Others Call Force
+ 
+//VADO ROTTO
+When (FHandStrenght=1) 
+	When TotalInvested>75% StackSize RaiseMax FORCE
+	When StackSize<15 RaiseMax FORCE	
+	When BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND BotsLastAction=Check AND LastRaiserStackSize>0 AND LastRaiserStackSize<250% AmountToCall AND AmountToCall<20 AND random<70 RAISEMAX FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND Opponents=1 AND LastRaiserStackSize>0 AND LastRaiserStackSize<80% PotSize RAISEMAX FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 AND StackSize<130% PotSize RAISEMAX  FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND (BotsLastPreflopAction=Raise OR BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=Raise) AND Opponents<3 Raise 66% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND BotsLastPreflopAction=Raise AND Opponents<=3 AND random<=60 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop>0 AND (BotsLastPreflopAction=CALL OR (BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=Call)) AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND opponents=1 AND OpponentStacksizeHeadsUp>0 AND OpponentStacksizeHeadsUp<60% PotSize RAISEMAX FORCE	
+	When (Bets = 1 OR Raises = 1) RAISE 66% FORCE	
+	When (Bets = 1 OR Raises >= 1) AND PotSize>40 RAISE 50% FORCE	
+ 	When Others RAISE 75% FORCE	
+
+//ALLIN
+When (FHandStrenght=5)
+	When TotalInvested>70% StackSize RAISEMAX Force
+	When StackSize<25 RAISEMAX Force
+	When OpponentIsAllin AND Opponents=1 Call Force
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND Opponents=1 AND MaxOpponentStackSize<PotSize AND MaxOpponentStackSize<25 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<10 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<10 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 RAISE 50% FORCE	
+	When Bets = 1 AND Raises<=1 AND CallsSinceLastRaise=0 AND AmountToCall<16 AND LastRaiserStackSize <50 AND StackSize<65 RAISEMAX FORCE
+ 	When Others RAISEMAX FORCE
+	
+//BET CALL (^Pot) (Call Reraise ^Pot|65) late Bet Raise Mini
+When (FHandStrenght=20) 
+	When TotalInvested>75% StackSize RaiseMax FORCE
+	When StackSize<15 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<=65 CALL FORCE	
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound=0 AND AmountToCall<60% PotSize Raise 50% FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound>0 AND AmountToCall<30% PotSize Raise 66% FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<20% PotSize CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<20% PotSize CALL FORCE
+	When BotsLastAction=Raise AND User_OneRaiseBeforeFirstActionOnFlop AND ((BotsActionsOnThisRoundIncludingChecks=2 AND BotCheckedOnFlop) OR BotsActionsOnThisRoundIncludingChecks=1) FOLD FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND (AmountToCall<=60% PotSize) CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND (AmountToCall>60% PotSize) FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 AND StackSize<150% PotSize RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 AND NOT Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=55% PotSize AND StackSize<130% PotSize RAISEMAX FORCE		
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Position=Last RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 RAISE 50% FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise>0 AND Opponents>1 AND AmountToCall<65 CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise=0 AND AmountToCall<65 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND AmountToCall<=35% PotSize CALL FORCE			
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=60% PotSize CALL FORCE		
+	When Others Fold FORCE	
+
+//BET CALL (^Pot) (Call Reraise ^Pot|40) late Bet Raise Mini
+When (FHandStrenght=22) 
+	When TotalInvested>75% StackSize RaiseMax FORCE
+	When StackSize<15 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<=40 CALL FORCE	
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<60% PotSize CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<60% PotSize CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<60% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND (AmountToCall<=60% PotSize) CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND (AmountToCall>60% PotSize) FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 AND StackSize<100% PotSize RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 AND Position=Middle AND Opponents=2 CALL FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Position=Last RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 RAISE 50% FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise>0 AND Opponents>1 AND AmountToCall<60% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise=0 AND AmountToCall<60% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND AmountToCall<=60% PotSize CALL FORCE			
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=60% PotSize CALL FORCE		
+	When Others Fold FORCE	
+	
+When (FHandStrenght=23) 
+	When TotalInvested>115% StackSize RaiseMax FORCE
+	When StackSize<18 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<=40 CALL FORCE	
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND StackSize<30 RAISEMAX FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<4 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND StackSize<30 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND AmountToCall<4 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND AmountToCall>4 FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND (NumberOfRaisesBeforeFlop>0) AND StackSize>35 AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND (NumberOfRaisesBeforeFlop>0) AND Position=Middle AND Opponents=2 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<20 AND StackSize<120% PotSize RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<7 AND Random<50 RAISEPOT FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<7 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<10 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND AmountToCall<=0 RAISE 66% FORCE
+	When Bets = 1 AND Raises<=0 AND AmountToCall=1 RAISE 50% FORCE	
+	When Bets = 1 AND Raises<=0 AND AmountToCall<=4 CALL FORCE	
+	When Bets = 1 AND Raises<=0 AND AmountToCall<60% PotSize CALL FORCE	
+	When Bets = 1 AND Raises<=1 AND Opponents=1 AND AmountToCall<55% PotSize CALL FORCE	
+	When Others Fold FORCE	
+	
+// BET CALL (^Pot) (Fold Reraise) late Bet Raise Mini
+When (FHandStrenght=25) 
+	When TotalInvested>75% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<65 CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<15% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<=15% PotSize) CALL FORCE	
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall>15% PotSize) FOLD FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall<=10% PotSize) CALL FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall>10% PotSize) FOLD FORCE		
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents>4 Call FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND Position=Middle RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last RAISE 66% FORCE			
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND AmountToCall<=2 RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents>1 AND AmountToCall<=2 AND Position=Last RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 RAISE 50% FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise>0 AND Opponents>1 AND AmountToCall<60% PotSize AND AmountToCall<65 CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise=0 AND AmountToCall<60% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=60% PotSize AND AmountToCall < 65 Call FORCE		
+	When Others Fold FORCE		
+
+// BET CALL (^1/2 Pot) (Fold Reraise) Late Bet 27
+When (FHandStrenght=27) 
+	When TotalInvested>100% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<20 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND BotsLastAction=Check AND LastRaiserStackSize>0 AND LastRaiserStackSize<250% AmountToCall AND AmountToCall<20 AND random<70 RAISEMAX FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<=15% PotSize) CALL FORCE	
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall>15% PotSize) FOLD FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall<=10% PotSize) CALL FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall>10% PotSize) FOLD FORCE		
+
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND PotSize<8 RAISE 66% FORCE	
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND PotSize<12 RAISE 50% FORCE	
+	When Bets = 0 AND Raises<=0 CALL FORCE		
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND AmountToCall<=2 Raise 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents>1 AND AmountToCall<=2 AND Position=Last RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 AND Random<50 RAISE 50% FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise>0 AND Opponents>1 AND AmountToCall<35% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise=0 AND AmountToCall<35% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=35% PotSize CALL FORCE		
+	When Others Fold FORCE		
+
+// BET CALL (^1/3 Pot) (Fold Reraise)
+When (FHandStrenght=28) 
+	When TotalInvested>130% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<15 Call FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<15% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<=15% PotSize) CALL FORCE	
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall>15% PotSize) FOLD FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall<=10% PotSize) CALL FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall>10% PotSize) FOLD FORCE		
+
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<8 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE		
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND AmountToCall<=2 Raise 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents>1 AND AmountToCall<=2 AND Position=Last RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 AND Random<50 RAISE 50% FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND Opponents=1 CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise>0 AND Opponents>1 AND AmountToCall<27% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 AND CallsSinceLastRaise=0 AND AmountToCall<27% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=27% PotSize CALL FORCE		
+	When Others Fold FORCE	
+
+// BET FOLD
+When (FHandStrenght=29) 
+	When TotalInvested>150% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<15 Call FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<15% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<=15% PotSize) CALL FORCE	
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall>15% PotSize) FOLD FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall<=10% PotSize) CALL FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall>10% PotSize) FOLD FORCE		
+	
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND NumberOfRaisesBeforeFlop>0 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<8 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE	
+	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=25% PotSize CALL FORCE		
+	When Others Fold FORCE	
+	
+				
+//CHECK CALL ^Pot late Bet Raise Mini
+When (FHandStrenght=30) 
+	When TotalInvested>150% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<30 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND Raises>1 Fold FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND Opponents=1 AND BotsLastAction=Check AND LastRaiserStackSize>0 AND LastRaiserStackSize<250% AmountToCall AND AmountToCall<20 AND random<70 RAISEMAX FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>=1 AND AmountToCall>60% PotSize FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=First CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND NumberOfRaisesBeforeFlop=0 AND Opponents<=2 RAISE 66% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=12 AND Opponents<=2 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize>CALL Call FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND NumberOfRaisesBeforeFlop=0 AND Opponents=1 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND AmountToCall<=60% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=60% PotSize AND NumberOfRaisesBeforeFlop=0 CALL FORCE	
+	//la seguente dipende dal tipo di oppo
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=60% PotSize AND AmountToCall<=25 AND NumberOfRaisesBeforeFlop>0 CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=60% PotSize AND AmountToCall>25 AND NumberOfRaisesBeforeFlop>0 FOLD FORCE
+	When Others FOLD FORCE	
+	
+//CHECK CALL ^50% NO Late Bet
+When (FHandStrenght=40) 
+	When TotalInvested>200% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND Raises>1 FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound=0 AND (AmountToCall<=67% PotSize OR AmountToCall<6) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound>0 AND AmountToCall<=25% PotSize AND StackSize>350% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound>0 AND AmountToCall>25% PotSize FOLD FORCE
+	When Bets = 0 AND Raises<=0  AND Position=Last AND Random<50 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0  Call FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND Position=Last AND AmountToCall<6 AND Random<50 AND NumberOfRaisesBeforeFlop=0 Raise 75% FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND CallsSinceLastRaise=0 AND (AmountToCall<=67% PotSize OR AmountToCall<6) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND CallsSinceLastRaise=1 AND (AmountToCall<=35% PotSize OR AmountToCall<6) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND CallsSinceLastRaise>1 AND (AmountToCall<=18% PotSize OR AmountToCall<6) CALL FORCE
+	When Raises > 1 FOLD FORCE	
+	When Others Fold FORCE
+
+// CHECK CALL ^1/3 Pot (no Late bet)
+When (FHandStrenght=50) 
+	When TotalInvested>200% StackSize RaiseMax FORCE
+	When StackSize<6 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND Raises>1 Fold FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=33% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall>33% PotSize FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<=15% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall>15% PotSize FOLD FORCE
+	When Bets = 0 AND Raises<=0  Call FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=33% PotSize Call FORCE
+	When Raises > 1 Fold FORCE	
+	When Others Fold FORCE
+
+//CHECK CALL ^1/4 Pot (no Late bet)
+When (FHandStrenght=60) 
+	When TotalInvested>200% StackSize RaiseMax FORCE
+	When StackSize<6 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND Raises>1 Fold FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=26% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall>26% PotSize FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<=15% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall>15% PotSize FOLD FORCE
+	When Bets = 0 AND Raises<=0  Call FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=26% PotSize Call FORCE
+	When Raises > 1 Fold FORCE	
+	When Others Fold FORCE
+
+//CHECK CALL MINI BET
+When (FHandStrenght=80) 
+	When BotsActionsOnThisRoundIncludingChecks>0 FOLD FORCE
+	When (Bets = 1 OR Raises<=1) AND AmountToCall<=1 Call FORCE	
+	When Others Fold FORCE		
+	
+//CHECK FOLD
+When (FHandStrenght=200) 
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall=1 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall>1 FOLD FORCE
+	When Bets = 0 AND Raises<=0 Call FORCE	
+	When Bets = 1 OR Raises=1 AND AmountToCall=1 Call FORCE	
+	When Others Fold FORCE	
+
+turn
+
+When betround=3 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=RAISE AND AmountToCall>1 User_BigDonkBet
+When betround=3 AND AmountToCall=1 User_FlopMiniBet
+//CBET
+// When (TurnCBet=1) 
+	// When TotalInvested>300% StackSize RaiseMax FORCE
+	// When StackSize<7 RaiseMax FORCE
+	// When Bets = 0 AND Raises<=0 AND Random<=66 AND opponents<=2 RAISE 75% FORCE
+	// When Bets = 0 AND Raises<=0 AND Random<=33 AND opponents<=2 RAISE 66% FORCE
+	// When Bets = 0 AND Raises<=0 AND opponents<=2 RAISE 50% FORCE
+	
+When (THandStrenght=0)
+	When TotalInvested>70% StackSize RaiseMax Force
+	When StackSize<10 RaiseMax Force
+	When OpponentIsAllin AND Opponents=1 Call Force
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND NOT (BotsLastAction=Raise) AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=12 RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=20 RAISE 33% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize>20 RAISE 25% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<=12 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<=20 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 RAISE 50% FORCE	
+	When (Bets = 1 OR Raises >= 1) CALL FORCE
+ 	When Others RAISEPOT FORCE
+
+//ALLIN
+When (THandStrenght=5)
+	When TotalInvested>70% StackSize RaiseMax Force
+	When StackSize<25 RaiseMax Force
+	When OpponentIsAllin AND Opponents=1 Call Force
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND NOT (BotsLastAction=Raise) AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last RAISEMAX FORCE	
+ 	When Others RAISEMAX FORCE
+
+//VADO ROTTO
+When (THandStrenght=10) 
+	When TotalInvested>70% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax Force
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 RAISE 75% FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 RAISE 75% FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND NOT (BotsLastAction=Raise) AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=0 AND CalledOnFlop AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<5 RAISEPOT FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<15 AND (RaisesBeforeFlop OR RaisesOnFlop) RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND (RaisesOnFlop OR RaisesBeforeFlop) RAISE 75% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<5 RAISEPOT FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<15 RAISE 75% FORCE
+	When (Bets = 1 OR Raises = 1) RAISE 66% FORCE
+	When Raises >= 1 RAISE 75% FORCE
+	When Others RAISE 75% FORCE	
+ 
+// BET1234-RAISE12
+ When (THandStrenght=150) 
+	When TotalInvested>150% StackSize RaiseMax FORCE
+	When StackSize<20 RaiseMax Force
+	When StackSize<220% PotSize RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND BotsActionsOnThisRoundIncludingChecks=0 AND AmountToCall<40 CALL FORCE	
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=7 RAISE 75% FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=15 RAISE 75% FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=40 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND AmountToCall<=50 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND AmountToCall>50 FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND Position=First AND StackSize>30 CALL FORCE
+	When Bets = 0 AND Raises<=0 Raise 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall>45% StackSize RAISEMAX FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND AmountToCall<=15 Raise 75% FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=1 AND AmountToCall<=15 Raise 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<30 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<=2 Raise 50% FORCE
+	When Raises >=1 AND AmountToCall<=40 Call FORCE
+	When Others CALL FORCE	
+ 
+//BET12-CALL3+ CALL ^100
+When (THandStrenght>=170 AND THandStrenght<=185)
+	When TotalInvested>120% StackSize RaiseMax FORCE
+	When StackSize<22 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<60 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<=100 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Raise AND AmountToCall<=100 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND BotsLastAction=Call AND AmountToCall<=100 CALL FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>=1 AND BotsLastAction=Call AND AmountToCall>100 FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>=1 AND TotalInvestedThisRound=0 AND AmountToCall>100 FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND NOT (BotsLastAction=Raise) AND Position=First  CALL FORCE
+	When Bets = 0 AND Raises<=0 AND (NumberOfRaisesOnFlop=0 OR CalledOnFlop) AND Opponents<=2 AND Position=First Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 Raise 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND StackSize<25 AND PotSize>StackSize RAISEMAX FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND StackSize<18 RAISEMAX FORCE
+	When Others CALL FORCE
+
+// BET CALL POT (Late Bet)
+When (THandStrenght=200)
+	When TotalInvested>140% StackSize RaiseMax FORCE
+	When StackSize<10 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Raise AND AmountToCall<60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<=30% PotSize CALL FORCE	
+	When BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall>30% PotSize FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=First AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 RAISEPOT FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND AmountToCall<60% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND AmountToCall<30% PotSize CALL FORCE	
+	When Others Fold FORCE
+
+// BET FOLD (Late Bet)
+When (THandStrenght=250)
+	When TotalInvested>150% StackSize RaiseMax FORCE
+	When StackSize<18 AND Opponents<=2 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<25 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound=0 AND AmountToCall<=15% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound>0 AND AmountToCall<=10% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Raise AND AmountToCall<=15% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Raise AND AmountToCall>15% PotSize FOLD FORCE
+	//GICOS: GO ALLIN IF 1 OPPONENTS WITH SMALL STACKSIZE
+	When Bets = 0 AND Raises<=0 AND Position=First AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop) AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<7 AND NOT CalledOnFlop RAISEPOT FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<10 AND NOT CalledOnFlop RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<20 AND NOT CalledOnFlop RAISE 50% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<40 AND NOT CalledOnFlop RAISE 40% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall=1 AND User_FlopMiniBet AND Opponents<=2 AND PotSize<15 RAISE 40% FORCE	
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<35% PotSize OR AmountToCall<12) CALL FORCE		
+	When Others Fold FORCE
+
+//  BET CALL 1/3
+When (THandStrenght=300) 
+	When TotalInvested>250% StackSize RaiseMax FORCE
+	When StackSize<12 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound=0 AND (AmountToCall<6 OR AmountToCall<=35% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound>0 AND (AmountToCall<6 OR AmountToCall<=37% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND (AmountToCall<6 OR AmountToCall<=25% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=2 AND BotsLastAction=Call AND (AmountToCall<8 OR AmountToCall<=12% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>2 AND BotsLastAction=Call FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND (NumberOfRaisesOnFlop>0 OR CalledOnFlop)  AND NOT (BotsLastAction=Raise) CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents<=2 AND NOT RaisesOnFlop Raise 66% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND (AmountToCall<6 OR AmountToCall<=35% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=1 AND (AmountToCall<6 OR AmountToCall<=27% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=2 AND (AmountToCall<6 OR AmountToCall<=20% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=3 AND (AmountToCall<6 OR AmountToCall<=15% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=4 AND (AmountToCall<6 OR AmountToCall<=12% PotSize) CALL FORCE
+	When Raises > 1 Fold FORCE	
+	When others fold FORCE
+	
+//CHECK CALL (^Pot) LATE BET
+When (THandStrenght=330)
+	When TotalInvested>150% StackSize RaiseMax FORCE
+	When StackSize<8 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<60 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<=60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Raise AND AmountToCall<=60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND BotsLastAction=Call AND AmountToCall<=30 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND BotsLastAction=Call AND AmountToCall>30 FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=15 AND NoBettingOnFlop AND NOT CalledOnFlop RAISE 50% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize>15 CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND NoBettingOnFlop AND PotSize<20 Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<60% PotSize CALL FORCE
+	When Others Fold FORCE
+	
+// CHECK FOLD LATE BET
+
+
+//CHECK CALL (^Pot) LATE BET
+When (THandStrenght=350)
+	When TotalInvested>300% StackSize RaiseMax FORCE
+	When StackSize<6 RaiseMax FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<60 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<=15% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Raise AND AmountToCall<=15% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND BotsLastAction=Call AND AmountToCall<=8 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 AND BotsLastAction=Call AND AmountToCall>8 FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND PotSize<=15 BET 50% FORCE	
+    When Bets = 0 AND Raises<=0 AND Position=Last AND PotSize<=12 AND Opponents<=2 RAISE 50% FORCE	
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND NOT CalledOnFlop AND Position=Last Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<15% PotSize CALL FORCE
+	When Others Fold FORCE
+	
+//CHECK CALL (^pot) NO LATE BET
+When (THandStrenght=400) 
+	When TotalInvested>250% StackSize RaiseMax FORCE
+	When StackSize<5 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call AND AmountToCall<=60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Raise AND AmountToCall<=60% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Raise AND AmountToCall>60% PotSize FOLD FORCE
+	When Bets = 0 AND Raises<=0 Call FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND NOT CalledOnFlop AND Position=Last Raise 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<60% PotSize CALL FORCE
+	When Raises > 1 Fold FORCE	
+	When others Fold FORCE
+
+//CHECK CALL (^1/2 pot) NO LATE BET
+When (THandStrenght=500) 
+	When TotalInvested>300% StackSize RaiseMax FORCE
+	When StackSize<10 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call  AND TotalInvestedThisRound=0 AND (AmountToCall<6 OR AmountToCall<=53% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call  AND TotalInvestedThisRound>0 AND (AmountToCall<6 OR AmountToCall<=33% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=2 AND BotsLastAction=Call                               AND (AmountToCall<8 OR AmountToCall<=15% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>2 AND BotsLastAction=Call  AND (AmountToCall>8 OR AmountToCall>15% PotSize) FOLD FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND NOT CalledOnFlop AND Position=Last AND Random<50 Raise 33% FORCE
+	When Bets = 0 AND Raises<=0 AND NumberOfRaisesBeforeFlop=0 AND NOT CalledOnFlop AND Position=Last Raise 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<6 OR AmountToCall<=53% PotSize) CALL FORCE
+	When Raises > 1 Fold FORCE	
+	When others fold FORCE
+
+// CHECK CALL (^1/3 Pot) (No Late Bet)
+When (THandStrenght=600) 
+	When TotalInvested>250% StackSize RaiseMax FORCE
+	When StackSize<12 RaiseMax FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound=0 AND (AmountToCall<6 OR AmountToCall<=30% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound>0 AND (AmountToCall<6 OR AmountToCall<=20% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND (AmountToCall<6 OR AmountToCall<=25% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=2 AND BotsLastAction=Call AND (AmountToCall<8 OR AmountToCall<=12% PotSize) CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>2 AND BotsLastAction=Call FOLD FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND (AmountToCall<6 OR AmountToCall<=20% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=1 AND (AmountToCall<6 OR AmountToCall<=18% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=2 AND (AmountToCall<6 OR AmountToCall<=15% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=3 AND (AmountToCall<6 OR AmountToCall<=15% PotSize) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=4 AND (AmountToCall<6 OR AmountToCall<=12% PotSize) CALL FORCE
+	When Raises > 1 Fold FORCE	
+	When others fold FORCE
+	
+//CHECK CALL (^1/4 pot) NO LATE BET
+When (THandStrenght=700) 
+	When TotalInvested>250% StackSize RAISEMAX FORCE
+	When StackSize<4 RAISEMAX FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Raise AND (AmountToCall<=25% PotSize)  CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Raise AND (AmountToCall>25%  PotSize)  FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call  AND (AmountToCall<=25% PotSize)  CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call  AND (AmountToCall>25%  PotSize)  FOLD FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 0) AND (AmountToCall<=25% PotSize OR  AmountToCall<2) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall<2 OR AmountToCall<28% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) FOLD FORCE
+	When others FOLD FORCE
+
+When (THandStrenght=750) 
+	When TotalInvested>300% StackSize RAISEMAX FORCE
+	When StackSize<3 RAISEMAX FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Raise AND (AmountToCall<=21% PotSize)  CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Raise AND (AmountToCall>21% PotSize)  FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call  AND (AmountToCall<=21% PotSize)  CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call  AND (AmountToCall<=21% PotSize)  CALL FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<=21% PotSize) CALL FORCE
+	When Raises > 1 FOLD FORCE	
+	When others FOLD FORCE
+
+//CHECK CALL Mini Bet
+When (THandStrenght=800) 
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call AND AmountToCall=1 Call FORCE
+	When BotsActionsOnThisRoundIncludingChecks>0 AND BotsLastAction=Call AND AmountToCall>1 Fold FORCE
+	When Bets = 0 AND Raises<=0 Call FORCE
+	When (Bets = 1 OR Raises = 1) AND AmountToCall=1 CALL FORCE
+	When others fold FORCE
+
+//CHECK FOLD
+When (THandStrenght=900) 		
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When Others Fold FORCE	
+
+river
+When betround=4 AND BotCheckedOnFlop AND CalledOnFlop User_FlopOpponentsBet
+When betround=4 AND BotsActionsOnThisRoundIncludingChecks=0 AND BotsLastAction=RAISE AND AmountToCall>1 User_OpponentBigDonkBet
+
+When (RHandStrenght=0)
+	When TotalInvested>120% StackSize RAISEMAX FORCE
+	When StackSize<25% PotSize RAISEMAX FORCE
+	When OpponentIsAllIn AND Opponents=1 Call FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>0 AND LastRaiserStackSize<225% PotSize RAISEMAX FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>0 RAISE 75% FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND NOT NoBettingOnTurn AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND NoBettingOnTurn AND NOT (BotsLastAction=Raise) RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 RAISE 85% FORCE
+	When Bets = 0 AND Raises<=0 RAISE 75% FORCE			
+	When (Bets = 1 OR Raises = 1) RAISE 75% FORCE
+	When Raises > 1 RAISEMAX FORCE
+ 	When Others RAISEMAX FORCE
+
+
+When (RHandStrenght=5)
+	When TotalInvested>90% StackSize RAISEMAX FORCE
+	When StackSize<120% PotSize RAISEMAX FORCE
+	When OpponentIsAllIn AND Opponents=1 CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>0 AND LastRaiserStackSize<225% PotSize RAISEMAX FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>0 Raise 75% FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND (NumberOfRaisesOnFlop>0 OR NOT NoBettingOnFlop) AND NOT NoBettingOnTurn AND NOT (BotsLastAction=Raise) AND random<50 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=0 Raise 85% FORCE
+	When Bets = 0 AND Raises<=0 Raise 75% FORCE			
+	When (Bets = 1 OR Raises = 1) Raise 75% FORCE
+	When Raises > 1 RAISEMAX FORCE
+ 	When Others RAISEMAX FORCE
+
+// VADO ROTTO
+When (RHandStrenght=10) 
+	When TotalInvested>110% StackSize RAISEMAX FORCE
+	When StackSize<25 AND BotsLastAction=Raise RAISEMAX FORCE
+	When StackSize<8 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 Raise 75% FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) AND StackSize>=40% PotSize CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) AND StackSize<35% PotSize RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents>3 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<=12 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<=12 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<=20 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize>20 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Opponents=1 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Opponents=2 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 AND Opponents>2 RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND StackSize<66% PotSize RAISEMAX FORCE	
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND AmountToCall<15 RAISE 75% FORCE	
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND AmountToCall<25 RAISE 66% FORCE	
+	When (Bets = 1 OR Raises = 1) Raise 50% FORCE
+	When (Bets = 1 OR Raises >= 1) AND PotSize<=40 RAISE 75% FORCE	
+	When (Bets = 1 OR Raises >= 1) AND PotSize>40 RAISE 75% FORCE	
+ 	When Others RAISEMAX FORCE
+
+// BET RAISE ^80
+When (RHandStrenght=11) 
+	When TotalInvested>100% StackSize RAISEMAX FORCE
+	When StackSize<15 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<100 CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound=0 RAISE 75% FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall<=80 CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND AmountToCall>80 FOLD FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>0 AND AmountToCall<200 %PotSize AND AmountToCall<80 CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE	
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<2) RAISE 50% FORCE
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<75% PotSize OR AmountToCall<50) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<35% PotSize) RAISE 50% FORCE
+ 	When Others FOLD FORCE
+
+//BET CALL (^40/Pot) Call Reraise
+When (RHandStrenght=13) 
+	When TotalInvested>100% StackSize RAISEMAX FORCE
+	When StackSize<20 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND (AmountToCall<=60 OR AmountToCall<60% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound=0 AND (AmountToCall<=40 OR AmountToCall<60% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound>0 AND (AmountToCall<=20 OR AmountToCall<15% PotSize) CALL FORCE
+	When     BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<=50 OR AmountToCall<20% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall<=50 OR AmountToCall<15% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall>50) FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 RAISE 33% FORCE	
+	When AmountToCall=0 RAISE 33% FORCE	
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<=50 OR AmountToCall<60% PotSize) CALL FORCE
+ 	When Others FOLD FORCE
+
+//BET CALL (^25/Pot) Fold Reraise	
+When (RHandStrenght=15) 
+	When TotalInvested>150% StackSize RAISEMAX FORCE
+	When StackSize<15 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND (AmountToCall<=25 OR AmountToCall<60% PotSize) AND AmountToCall<60 CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound=0 AND (AmountToCall<=25 OR AmountToCall<60% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND TotalInvestedThisRound>0 AND (AmountToCall<=12 OR AmountToCall<10% PotSize) CALL FORCE
+	When     BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<=30 OR AmountToCall<20% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall<=30 OR AmountToCall<15% PotSize) CALL FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks>1 AND (AmountToCall>30) FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) AND PotSize>15 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<10 RAISE 50% FORCE	
+	When Bets = 0 AND Raises<=0 AND PotSize<20 RAISE 40% FORCE	
+	When Bets = 0 AND Raises<=0 AND PotSize<30 RAISE 33% FORCE	
+	When Bets = 0 AND Raises<=0 AND PotSize<50 RAISE 25% FORCE	
+	When Bets = 0 AND Raises<=0 AND PotSize<100 RAISE 20% FORCE		
+	When (Bets = 1 OR Raises = 1) AND (AmountToCall<=30 OR AmountToCall<60% PotSize) AND AmountToCall<35 CALL FORCE
+ 	When Others FOLD FORCE
+
+//      20         ////////////  BET CALL (^Pot) BET LATE
+When (RHandStrenght=20) 
+	When TotalInvested>130% StackSize RAISEMAX FORCE
+	When StackSize<10 RAISEMAX FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND (AmountToCall<51% PotSize OR AmountToCall<25) CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=25% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall>25% PotSize FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents<=3 AND NOT CalledOnTurn Raise 33% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents>3 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<10 Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<20 Raise 66% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<30 Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<30 Raise 25% FORCE		
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn Raise 33% FORCE		
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents>2 Raise 33% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<=2 AND NOT CalledOnTurn Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<=3 AND NOT CalledOnTurn Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<15 RAISEPOT FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<40 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND (AmountToCall<51% PotSize OR AmountToCall<25) CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND (AmountToCall<25% PotSize OR AmountToCall<11) CALL FORCE	
+	When Others FOLD FORCE	
+
+/////////      25         //////////// BET CALL (3/4 Pot) FOLD RERAISE BET LATE
+When (RHandStrenght=25) 
+	When TotalInvested>130% StackSize RAISEMAX FORCE
+	When StackSize<10 RAISEMAX FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<44% PotSize AND AmountToCall<25 CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=25% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall>25% PotSize FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents<=3 AND NOT CalledOnTurn Raise 33% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents>3 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND NOT RaisesOnFlop AND PotSize<10 Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND NOT RaisesOnFlop AND PotSize<20 Raise 66% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND NOT RaisesOnFlop AND PotSize<30 Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND NOT RaisesOnFlop AND PotSize<30 Raise 25% FORCE		
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND NOT RaisesOnFlop Raise 33% FORCE		
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents>2 Raise 33% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<=2 AND NOT CalledOnTurn Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<=3 AND NOT CalledOnTurn Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<12 RAISEPOT FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<40 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 RAISE 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND (AmountToCall<44% PotSize OR AmountToCall<15) CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND AmountToCall<20% PotSize AND AmountToCall<12 CALL FORCE	
+	When Others FOLD FORCE	
+
+//      80         ////////////  BET FOLD
+When (RHandStrenght=80) 
+	When TotalInvested>250% StackSize RAISEMAX FORCE
+	When StackSize<10 RAISEMAX FORCE
+	When NOT BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<51% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall<=25% PotSize CALL FORCE
+	When BotsLastAction=Raise AND BotsActionsOnThisRoundIncludingChecks=1 AND AmountToCall>25% PotSize FOLD FORCE	
+	When Bets = 0 AND Raises<=0 AND BotsActionsOnThisRoundIncludingChecks=0 AND LastRaiserStackSize>0 AND LastRaiserStackSize<15% PotSize AND Opponents=1 RAISEMAX FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents<=3 AND NOT CalledOnTurn Raise 33% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND Opponents>3 CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<10 Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<20 Raise 66% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<30 Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn AND PotSize<30 Raise 25% FORCE		
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents<=2 AND NOT CalledOnTurn Raise 33% FORCE		
+	When Bets = 0 AND Raises<=0 AND Position=Middle AND Opponents>2 Raise 33% FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<=2 AND NOT CalledOnTurn Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<=3 AND NOT CalledOnTurn Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND opponents<3 RAISE 33% FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND AmountToCall<10  CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 FOLD FORCE	
+	When Others FOLD FORCE	
+	
+//      22         //////////// CHECK CALL ^Pot NO LATE BET
+When (RHandStrenght=100) 
+	When TotalInvested>250% StackSize RAISEMAX FORCE
+	When StackSize<10 RAISEMAX FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1  AND TotalInvestedThisRound>0 AND (AmountToCall<25%  PotSize OR AmountToCall<5) CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1  AND TotalInvestedThisRound>0 AND (AmountToCall<=12% PotSize OR AmountToCall<5) CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>=1 AND TotalInvestedThisRound>0 AND (AmountToCall>12%  PotSize OR AmountToCall<5) FOLD FORCE	
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1  AND TotalInvestedThisRound=0 AND (AmountToCall<60%  PotSize OR AmountToCall<5) CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>=1 AND TotalInvestedThisRound=0 AND (AmountToCall>12%  PotSize OR AmountToCall<5) FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND CalledOnTurn AND BotsActionsOnThisRoundIncludingChecks=0 AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND AmountToCall<60% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=1 AND AmountToCall<34% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=2 AND AmountToCall<26% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND AmountToCall<10% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>2 FOLD FORCE	
+	When Others FOLD FORCE	
+
+//      24         //////////// CHECK CALL ^Pot LATE BET
+When (RHandStrenght=110) 
+	When TotalInvested>250% StackSize RAISEMAX FORCE
+	When StackSize<10 RAISEMAX FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>=1  AND CallsSinceLastRaise>1 FOLD FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1   AND TotalInvestedThisRound>0 AND AmountToCall<25% PotSize CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1  AND TotalInvestedThisRound>0 AND AmountToCall<=12% PotSize CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks>=1  AND TotalInvestedThisRound>0 AND AmountToCall>12% PotSize FOLD FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1   AND TotalInvestedThisRound=0 AND CallsSinceLastRaise=0 AND AmountToCall<51% PotSize CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1   AND TotalInvestedThisRound=0 AND CallsSinceLastRaise=1 AND AmountToCall<34% PotSize CALL FORCE
+	When BotsLastAction=Call AND BotsActionsOnThisRoundIncludingChecks=1   AND TotalInvestedThisRound=0 AND CallsSinceLastRaise>1 AND AmountToCall<10% PotSize CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND NOT CalledOnTurn AND NOT (BotsLastAction=Raise) CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<3 AND PotSize<7 RaisePot FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<3 AND PotSize<12 Raise 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<3 AND PotSize<20 Raise 66% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents<3 AND PotSize<25 Raise 50% FORCE
+	When Bets = 0 AND Raises<=0 AND PotSize<30 Raise 66% FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise<2 AND AmountToCall<10 CALL FORCE		
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND AmountToCall<51% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=1 AND AmountToCall<34% PotSize CALL FORCE	
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>1 AND AmountToCall<10% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>1 FOLD FORCE	
+	When Others FOLD FORCE	
+	
+// CHECK CALL ^1/2 Pot NO LATE BET
+When (RHandStrenght=130) 
+	When TotalInvested>350% StackSize RAISEMAX FORCE
+	When StackSize<6 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<34% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound=0 AND AmountToCall<=34% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND TotalInvestedThisRound=0 AND AmountToCall<=34% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<=5 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall>5 FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND NOT NoBettingOnTurn AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND AmountToCall<35% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 AND AmountToCall<10% PotSize CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 FOLD FORCE
+	When Others Fold FORCE
+
+// CHECK CALL ^1/2 Pot LATE BET
+When (RHandStrenght=150) 
+	When TotalInvested>350% StackSize RAISEMAX FORCE
+	When StackSize<6 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<34% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Check AND AmountToCall<=35% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<=7 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall>7 FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND NOT NoBettingOnTurn AND NOT (BotsLastAction=Raise) CALL FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND (Opponents=1 OR (Opponents=2 AND NoBettingOnTurn)) AND PotSize<5 RAISE 75% FORCE
+	When Bets = 0 AND Raises<=0 AND Position=Last AND (Opponents=1 OR (Opponents=2 AND NoBettingOnTurn)) AND PotSize<10 RAISE 66% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise=0 AND (AmountToCall<35% PotSize OR AmountToCall<7) CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND CallsSinceLastRaise>0 FOLD FORCE
+	When Others Fold FORCE
+
+	// BET CALL ^1/3 Pot LATE BET
+When (RHandStrenght=200) 
+	When TotalInvested>300% StackSize RAISEMAX FORCE
+	When StackSize<4 RAISEMAX FORCE
+	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<33% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Check AND AmountToCall<=25% PotSize CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall<=5 CALL FORCE
+	When BotsActionsOnThisRoundIncludingChecks=1 AND BotsLastAction=Call AND AmountToCall>5 FOLD FORCE
+	When BotsActionsOnThisRoundIncludingChecks>1 FOLD FORCE
+	When Bets = 0 AND Raises<=0 AND Position=First AND NOT NoBettingOnTurn AND NOT CalledOnFlop AND NOT (BotsLastAction=Raise) CALL FORCE	
+	When Bets = 0 AND Raises<=0 AND Position=Last AND Opponents=1 AND NoBettingOnTurn AND NOT CalledOnFlop AND PotSize<10 AND Random<40 RAISE 33% FORCE
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND OpponentsOnRiver=1 AND NoBettingOnTurn AND NOT CalledOnFlop AND AmountToCall<25% PotSize CALL FORCE
+	When Others Fold FORCE
+	
+// CALL MINI BET
+When (RHandStrenght=300) 
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND AmountToCall<15% PotSize CALL FORCE
+	
+	When Others FOLD FORCE
+	
+// CALL MINI BET
+When (RHandStrenght=400) 
+	When Bets = 0 AND Raises<=0 CALL FORCE
+	When (Bets = 1 OR Raises = 1) AND Opponents=1 AND BetSize=1 CALL FORCE
+	When Others FOLD FORCE
+	
+When others FOLD FORCE

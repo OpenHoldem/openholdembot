@@ -14,19 +14,17 @@
 #include "stdafx.h"
 #include "CSymbolEnginePokerval.h"
 
-#include <assert.h>
 #include "CardFunctions.h"
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
-
 
 #include "CScraper.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "..\CTransform\CTransform.h"
-#include "inlines/eval.h"
+#include "CTransform/CTransform.h"
+#include "PokerEval/include/inlines/eval.h"
 
 
 

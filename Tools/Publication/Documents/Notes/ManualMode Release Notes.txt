@@ -1,0 +1,196 @@
+﻿v﻿13.1.3 2019-10-17
+==================
+MAINTENANCE:
+- Clicking "Macro" causes now first a reset of the table
+  in order to "guarantee" a handreset, which could be missed
+  if the same situation was setup multiple times.
+  Thanks to Leviy for reporting.
+  [THF]
+- Clicking "Reset" now only clears the table-display,
+  it no longer resets "istournament" and the blinds.
+  [THF]
+
+
+v﻿13.0.2 2017-05-02
+==================
+NEW STUFF:
+- Support for s§iXbuttondefaultlabel.
+  For details please refer to the manual.
+  [Nik0]
+  
+
+v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
+v11.1.3 2016-04-12
+==================
+BUG FIXES: 
+- The game-type selection in the game-info-dialog didn't work,
+  since we reordered the options when NL became default.
+  Thanks to JohnNash and Relhby for reporting.
+  [THF]
+- Added some missing poker networks to the drop-down-menu
+  of the game.info-dialog. Thanks to ValueBotty for reporting.
+  [THF]
+
+  
+v11.0.1 2016-01-14
+==================
+BUG FIXES: 
+- All folds happened at the userchair.
+  Thanks to Stars83 for reporting.
+  [THF]
+
+v11.0.0 2016-12-26
+==================
+NEW STUFF:
+- Support for Omaha.
+  Click the game-info-dialog and select the desired game-type.
+  The rest work like before.
+  [OpenHoldem, SingleMalt, THF]
+
+  
+v9.2.6 2016-08-30
+=================
+NEW STUFF:
+- Auto-adapting the clientsize to support all operating-systems
+  out of the box, independent of their window configuration
+  (theme, borders, titlebar, ...).
+  Thanks to Todamach for reporting incompatibilities with Win7.
+  [THF]
+BUG FIXES: 
+- Fix for broken dealer-command "N" in macro-definition.
+  Thanks to ZeeZooLaa for reporting.
+  [THF]
+
+
+v9.1.1 2016-04-01
+=================
+NEW STUFF:
+- Full support for Windows 10 and probably all other modern versions of Windows.
+  [THF]
+  
+
+v4.4.1 2014-02-10
+=================
+BUG FIXES: 
+- The new button-logic did not work if we were in BB and everybody just completed.
+  Thanks to PokerKid1 for reporting.
+  [THF]
+
+  
+v4.4.0 2014-01-14
+=================
+NEW STUFF:
+- ManualMode will now react to clicks at the action-buttons.
+  Swagging is now also fully supported.
+  [THF]
+- ManualMode will now set all valid buttons automatically
+  after a first click to any button-region.
+  [THF]
+
+  
+v4.0.0 2013-01-26
+=================
+MAINTENANCE:
+- Switching default mode to no-limit.
+  Thanks to BotForSale for the patch.
+  [THF]
+
+  
+v2.1.9.2 2011-12-24
+===================
+BUG FIXES: 
+- allin-bug: sum of bets and balances should be now correct. 
+  Thanks to Pingvvino for reporting. [THF]
+
+  
+v2.0.0 2009-05-22
+=================
+MAINTENANCE:
+- Migrated from SEH exception handling to Minidump exception handling. [OpenHoldem]
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
+
+NEW STUFF:
+- Added sit out, leave table, pre-fold and auto-post blinds buttons. [OpenHoldem]
+
+
+v1.0.9 2008-07-25
+=================
+MAINTENANCE - All level 3 compiler warnings have been addressed.
+
+
+v1.0.8 2008-07-25
+=================
+Bug fixes
+=========
+- ManualModeDlg bug in getbr fixed:
+    "else if (ncommoncards==4) br=4;
+     else if (ncommoncards==5) br=5;"
+
+
+v1.0.7 2008-05-16
+=================
+New stuff
+=========
+- Options dialog box with popup menu location setting (jumpingfences)
+
+
+v1.0.6 2008-04-11
+=================
+New stuff
+=========
+- A new "Network" option is now available which is used by OpenHoldem as the network for
+  Poker Tracker data.  This means s$sitename and s$network in the ManualMode table map are
+  no longer used for Poker Tracker.  (Thanks, Winngy) (quiqsilver)
+
+Bug fixes
+=========
+- Added missing keyboard accelerators for some menu items (Thanks, Winngy)  (OpenHoldem)
+
+
+v1.0.5 2008-03-28
+=================
+- Increment handnumber after reset.  (jumpingfences)
+- Allow user to drag modal dialogs away from table window so that they don't interfere 
+  with scraping and symbol calculation. (jumpingfences)
+- Expose to the scraper all flop cards at the same time as oppose to one by one. (jumpingfences)
+
+
+v1.0.4 2008-02-08
+=================
+- Updated table map to correctly recognize tournament mode (Thanks Zippy & Winngy)
+- WinHoldem/WinScrape profile has *not* been updated as I just don't really care anymore.  This is
+  left as an exercise for the reader.
+
+
+v1.0.3 2008-01-25
+=================
+- Updated table "profile" to a table map.  Both a WinHoldem/WinScrape .ws profile and a OpenHoldem/OpenScrape
+  table map are included in the archive.
+- Corrected tab order of controls on the stakes dialog.
+- In a macro, the "R" no longer resets handnumber, tournament, limit, sblind, bblind, bbet and ante.
+
+
+v1.0.2 2007-12-14
+=================
+- Macros were not setting common cards correctly (CManualModeDlg::OnBnClickedMacro) (Thanks, radi8tor)
+
+
+v1.0.1 2007-11-30
+=================
+- Class name of dialog changed to allow detection by OpenHoldem, and subsequent setting of "ismanual" symbol.
+- Scraper profile updated to correctly handle "check" button
+ 
+
+v1.0.0 2007-11-02
+=================
+First public release. 

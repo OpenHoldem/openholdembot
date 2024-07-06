@@ -15,7 +15,7 @@
 #define INC_CTABLEMAPLOADER_H
 
 #include "CSpaceOptimizedGlobalObject.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 
 // This function has to be global and can't be part of the class,
 // as it has to be called by the callback-function 

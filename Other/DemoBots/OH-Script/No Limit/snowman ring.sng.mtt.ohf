@@ -1,0 +1,1169 @@
+##2010-12-04 14:51:39##
+
+##notes##
+Contributed by PurpleKush37
+http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=12118&start=0
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+1000
+
+##f$alli##
+//open shoving
+br==1 && balance<11*bblind && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist1 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist2 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist3 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist4 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist5 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist6 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist7 ? 1 :
+
+br==1 && balance<11*bblind && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist11 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist12 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist13 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist14 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist15 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist16 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist17 ? 1 :
+
+br==1 && balance<11*bblind && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist21 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist22 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist23 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist24 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist25 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist26 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist27 ? 1 :
+
+br==1 && balance<11*bblind && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist31 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist32 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist33 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist34 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist35 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist36 ? 1 :
+br==1 && balance<11*bblind && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist37 ? 1 :
+
+// shoving on limpers
+br==1 && balance<13*bblind && f$stilltoact>=7 && f$raises==0 && islist40 ? 1 :
+br==1 && balance<13*bblind && f$stilltoact==6 && f$raises==0 && islist41 ? 1 :
+br==1 && balance<13*bblind && f$stilltoact==5 && f$raises==0 && islist42 ? 1 :
+br==1 && balance<13*bblind && f$stilltoact==4 && f$raises==0 && islist43 ? 1 :
+br==1 && balance<13*bblind && f$stilltoact==3 && f$raises==0 && islist44 ? 1 :
+br==1 && balance<13*bblind && f$stilltoact==2 && f$raises==0 && islist45 ? 1 :
+br==1 && balance<13*bblind && f$stilltoact==1 && f$raises==0 && islist40 ? 1 :
+
+// 3/4 bet shove
+br==1 && f$raises==1 && balance<20*bblind && f$3bet==1 && call<=4*bblind ? 1 :
+br==1 && f$raises==1 && balance<(7*(call+currentbet)) && f$3bet==1 && call>4*bblind ? 1 :
+br==1 && f$raises==2 && balance<(5*(call+currentbet)) && f$3bet==1 && call<=14*bblind ? 1 :
+br==1 && f$raises==2 && balance<(4*(call+currentbet)) && f$3bet==1 && call>14*bblind ? 1 :
+
+//
+f$callbigpot && call>0 && 2*call>balance ? 1 :
+f$rais_bigpot && call==0 && balance<pot*1.2 ? 1 :
+f$rais_bigpot && call>=0 && call*5>balance ? 1 :
+
+0
+
+##f$swag##
+//noraise
+
+//open raising
+br==1 && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist1 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist2 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist3 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist4 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist5 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist6 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist7 ? (3*bblind + f$betadjust) :
+
+br==1 && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist11 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist12 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist13 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist14 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist15 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist16 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist17 ? (3*bblind + f$betadjust) :
+
+br==1 && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist21 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist22 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist23 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist24 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist25 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist26 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist27 ? (3*bblind + f$betadjust) :
+
+br==1 && f$stilltoact>=7 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist31 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==6 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist32 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==5 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist33 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==4 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist34 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==3 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist35 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==2 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist36 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==1 && nopponentscalling==0 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist37 ? (3*bblind + f$betadjust) :
+
+br==1 && random>(nplayersplaying/10) && nopponentscalling==0 && f$raises==0 && f$ncallers>=2.5 && issuited && isconnector && rankloplayer>4 ? (3*bblind + f$betadjust) :
+br==1 && random>(nplayersplaying/10) && nopponentscalling==0 && f$raises==0 && f$ncallers<2.5 && ($22 || $33 || $44 || $55) ? (3*bblind + f$betadjust) :
+//raise the limpers
+br==1 && f$stilltoact>=7 && f$raises==0 && islist40 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==6 && f$raises==0 && islist41 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==5 && f$raises==0 && islist42 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==4 && f$raises==0 && islist43 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==3 && f$raises==0 && islist44 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==2 && f$raises==0 && islist45 ? (3*bblind + f$betadjust) :
+br==1 && f$stilltoact==1 && f$raises==0 && islist40 ? (3*bblind + f$betadjust) :
+
+// 3 and 4 bet code
+f$raises==1 && !f$slowplay && f$3bet==1 && call<=4*bblind ? 1.7*pot :
+f$raises==1 && !f$slowplay && f$3bet==1 && call>4*bblind ? 1.55*pot :
+f$raises==2 && !f$slowplay && f$3bet==1 && call<=14*bblind ? 1.55*pot :
+f$raises==2 && !f$slowplay && f$3bet==1 && call>14*bblind ? 1.4*pot :
+
+////////////////////////////////////////////FLOP PLAY///////////////////////////////////////////////////////
+call>0 && f$draws && random>.6 && prwin*nplayersplaying>1.5 && pt_raggtot<=1 ? (f$betsize + f$betadjust2) :
+call==0 && f$draws && random>.4 && prwin*nplayersplaying>1.5 && pt_raggtot<=1 ? (f$betsize + f$betadjust2) :
+
+br>=2 && f$rais_bigpot && !f$noraise ? (f$betsize + f$betadjust2) :
+
+
+!f$noraise && f$dpe && br==3 && !f$drawflop && didraisround2 && nplayersplaying<=3 && f$draws ? f$betsize :
+!f$noraise && !f$dpe && br==3 && f$draws && nplayersplaying<=3 && $$cr3>(($$cr2+$$cr1+$$cr0)/3)  ? f$betsize :
+0
+
+##f$srai##
+
+
+##f$rais##
+
+0
+
+##f$call##
+// limping code
+br==1 && f$stilltoact==7 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist1 ? 1 :
+br==1 && f$stilltoact==6 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist2 ? 1 :
+br==1 && f$stilltoact==5 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist3 ? 1 :
+br==1 && f$stilltoact==4 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist4 ? 1 :
+br==1 && f$stilltoact==3 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist5 ? 1 :
+br==1 && f$stilltoact==2 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist6 ? 1 :
+br==1 && f$stilltoact==1 && nopponentscalling>=1 && f$raises==0 && f$ncallers>.5 && f$ncallers<=1.5 && islist7 ? 1 :
+
+br==1 && f$stilltoact==7 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist11 ? 1 :
+br==1 && f$stilltoact==6 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist12 ? 1 :
+br==1 && f$stilltoact==5 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist13 ? 1 :
+br==1 && f$stilltoact==4 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist14 ? 1 :
+br==1 && f$stilltoact==3 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist15 ? 1 :
+br==1 && f$stilltoact==2 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist16 ? 1 :
+br==1 && f$stilltoact==1 && nopponentscalling>=1 && f$raises==0 && f$ncallers>1.5 && f$ncallers<=2.5 && islist17 ? 1 :
+
+br==1 && f$stilltoact==7 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist21 ? 1 :
+br==1 && f$stilltoact==6 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist22 ? 1 :
+br==1 && f$stilltoact==5 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist23 ? 1 :
+br==1 && f$stilltoact==4 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist24 ? 1 :
+br==1 && f$stilltoact==3 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist25 ? 1 :
+br==1 && f$stilltoact==2 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist26 ? 1 :
+br==1 && f$stilltoact==1 && nopponentscalling>=1 && f$raises==0 && f$ncallers>2.5 && f$ncallers<=3.5 && islist27 ? 1 :
+
+br==1 && f$stilltoact==7 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist31 ? 1 :
+br==1 && f$stilltoact==6 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist32 ? 1 :
+br==1 && f$stilltoact==5 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist33 ? 1 :
+br==1 && f$stilltoact==4 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist34 ? 1 :
+br==1 && f$stilltoact==3 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist35 ? 1 :
+br==1 && f$stilltoact==2 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist36 ? 1 :
+br==1 && f$stilltoact==1 && nopponentscalling>=1 && f$raises==0 && f$ncallers>3.5 && f$ncallers<=4.5 && islist37 ? 1 :
+
+// call da raiser
+br==1 && call<=6*bblind && f$raises==1 && islist100 ? 1 :
+br==1 && call>6*bblind && f$raises==1 && islist101 ? 1 :
+br==1 && f$raises==1 && f$flatrange==1 ? 1 :
+br==1 && call<=13*bblind && f$raises==2 && islist101==1 ? 1 :
+br==1 && call>13*bblind && f$raises==2 && islist102==1 ? 1 :
+br==1 && f$raises==2 && f$flatrange==1 ? 1 :
+br==1 && avgbetspf>10 && islist101 ? 1 :
+
+//pot committed
+br>=2 && (f$potodds*2)<prwin ? 1 :
+
+//da nuts
+nhandshi==0 ? 1 :
+//////////////////////////
+f$callbigpot ? 1 :
+
+//draws
+f$draws && prwin*nplayersplaying>1.25 && pt_raggtot>1 ? 1 :
+f$draws && prwin*nplayersplaying>1 && f$potodds<.4 ? 1 :
+
+0
+
+##f$prefold##
+// Don't prefold anything
+
+
+##f$rebuy##
+
+0
+
+##f$delay##
+
+0
+
+##f$chat##
+// No chat.
+0
+
+##f$P##
+//prwin simulation.
+
+(nopponentsplaying==0) ? 0 :
+nopponentsplaying + defcon*nopponentsfolded
+
+##f$play##
+//------------------------------------------------------------------------
+//    DISABLED RULE(S)
+!1                       ? -1 :  // 0=disabled 1=enabled
+!f9                      ? -1 :  // enabled when f9 is pressed
+//(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds
+
+
+//------------------------------------------------------------------------
+//    LEAVE RULE
+0                                // 0=off 1=on
+&& issittingout                  // i am sitting out
+&& elapsedhand >= 600            // 10 minutes since end of last hand
+&& elapsedauto >= 600            // 10 minutes since autoplayer has acted
+
+                         ? -2 :  // leave the table
+
+//------------------------------------------------------------------------
+//    SITIN RULE
+
+0                                // 0=off 1=on
+&& issittingout                  // i am sitting out
+//&& (br==2 || br==3)              // it is the flop or turn
+&& (nopponentsdealt >= 2)             // 6 or more opponents
+//&& nchairsdealtright==2          // i am about to be big blind
+
+                         ?  1 :  // sitin
+
+//------------------------------------------------------------------------
+//    SITOUT RULE
+1                                // 0=off 1=on
+&& issittingin                   // i am sitting in
+&& (br==2 || br==3)              // it is the flop or turn
+&& (nopponentsdealt <= 1)             // 5 or less opponents
+
+                         ?  0 :  // sitout
+
+//------------------------------------------------------------------------
+-1 // disabled
+
+##f$test##
+
+
+##f$debug##
+ 2416.0000 = elapsed
+    8.0000 = nopponentsplaying
+    2.0000 = nopponentsraising
+    0.0000 = nopponentscalling
+    6.0000 = nopponentschecking
+    2.0000 = bet
+    2.0000 = bblind
+           = f$p4raise
+    0.0833 = floppct
+    0.5000 = avgbetspf
+    1.6667 = f$ncallers
+    7.0000 = f$raischair1
+    0.0000 = f$callchair1
+    2.0000 = dealpositionrais
+    0.0000 = f$raises
+    2.0000 = call
+    0.0000 = currentbet
+  200.0000 = balance
+   -1.0000 = pt_pf_cr2
+   -1.0000 = pt_pf_cr3
+    0.1429 = ptt_raggtot4
+   -8.0000 = f$flopagg
+ ERR: div0 = f$agg
+   -1.0000 = pt_aggf2
+ ERR: div0 = f$evcall
+ ERR: div0 = f$evrais
+    2.0000 = nplayersblind
+    3.0000 = potplayer
+    0.0000 = potcommon
+    3.0000 = pot
+    0.0000 = rake
+   74.0000 = f$minopponentstacksize
+    4.0000 = chair
+ 1812.0000 = handrank2652
+860160.0000 = pokerval
+    0.0920 = prwin
+    0.8870 = prlos
+    0.0210 = prtie
+    9.0000 = nplayersplaying
+    9.0000 = nplayersseated
+    9.0000 = nplayersdealt
+    8.0000 = nopponents
+    2.0000 = dealpositionrais
+    1.0000 = ac_pf_bets
+    0.0833 = f$loosefactor
+    0.0000 = f$betadjust
+    1.0000 = nbetsround1
+  376.0000 = nhandshi
+  840.0000 = nhandslo
+
+
+##list1##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s KQs KJs KTs
+KA  QA  QK  JA  TA
+
+##list2##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s KQs KJs KTs QJs
+KA  QA  QK  JA  JK  TA  9A
+
+##list3##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s KQs KJs KTs K9s QJs
+KA  QA  QK  JA  JK  TA  TK  9A  8A
+
+##list4##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s KQs KJs KTs K9s QJs QTs
+KA  QA  QK  JA  JK  TA  TK  9A  8A  7A
+
+##list5##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s KQs KJs KTs K9s K8s QJs QTs
+KA  QA  QK  JA  JK  JQ  TA  TK  9A  9K  8A  7A
+
+##list6##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s KQs KJs KTs K9s K8s QJs QTs Q9s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  9A  9K  8A  7A
+
+##list7##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s QJs QTs Q9s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  9A  9K  8A  7A  6A  5A
+
+##list8##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s QJs QTs Q9s Q8s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  9A  9K  8A  8K  7A  6A  5A  4A
+
+##list9##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KA  QA  QK  JA
+
+##list10##
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QTs T9s 98s 87s 76s
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A
+
+##list11##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s KQs KJs KTs QJs
+KA  QA  QK  JA  TA
+
+##list12##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s KQs KJs KTs K9s QJs QTs JTs
+KA  QA  QK  JA  JK  TA
+
+##list13##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s KQs KJs KTs K9s QJs QTs JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  9A
+
+##list14##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s KQs KJs KTs K9s QJs QTs Q9s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  9A
+
+##list15##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s KQs KJs KTs K9s K8s QJs QTs Q9s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  9A  8A
+
+##list16##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s KQs KJs KTs K9s K8s QJs QTs Q9s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  9A  8A
+
+##list17##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s KQs KJs KTs K9s K8s QJs QTs Q9s JTs J9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  8A
+
+##list21##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs A9s KQs KJs KTs QJs QTs JTs
+KA  QA  QK  JA  TA
+
+##list22##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs A9s A8s KQs KJs KTs K9s QJs QTs JTs
+KA  QA  QK  JA  JK  JQ  TA
+
+##list23##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s KQs KJs KTs K9s QJs QTs Q9s JTs
+KA  QA  QK  JA  JK  JQ  TA  TK
+
+##list24##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s A5s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ
+
+##list25##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s A6s A5s KQs KJs KTs K9s K8s QJs QTs Q9s JTs J9s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A
+
+##list26##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s KQs KJs KTs K9s K8s K7s QJs QTs Q9s JTs J9s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A
+
+##list27##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s KQs KJs KTs K9s K8s K7s QJs QTs Q9s Q8s JTs J9s J8s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  8A
+
+##list31##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs A9s KQs KJs KTs QJs QTs JTs
+KA  QA  QK  JA  JK
+
+##list32##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs A9s A8s KQs KJs KTs K9s QJs QTs JTs
+KA  QA  QK  JA  JK  JQ  TA
+
+##list33##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs A9s A8s A7s KQs KJs KTs K9s QJs QTs Q9s JTs J9s
+KA  QA  QK  JA  JK  JQ  TA  TK
+
+##list34##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s A5s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ
+
+##list35##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s KQs KJs KTs K9s K8s QJs QTs Q9s JTs J9s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ
+
+##list36##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s KQs KJs KTs K9s K8s K7s QJs QTs Q9s Q8s JTs J9s T9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A
+
+##list37##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s QJs QTs Q9s Q8s JTs J9s J8s T9s T8s 98s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A
+
+##list40##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs
+KA
+
+##list41##
+AA  KK  QQ  JJ  TT  99  88  77
+AKs AQs AJs ATs
+KA  QA
+
+##list42##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs
+KA  QA  JA
+
+##list43##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs KQs
+KA  QA  JA  TA
+
+##list44##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s KQs KJs
+KA  QA  JA  TA
+
+##list45##
+AA  KK  QQ  JJ  TT  99  88  77  66
+AKs AQs AJs ATs A9s A8s KQs KJs KTs
+KA  QA  JA  TA
+
+##list46##
+AA  KK  QQ  JJ  TT  99  88  77  66  55
+AKs AQs AJs ATs A9s A8s KQs KJs KTs
+KA  QA  QK  JA  TA
+
+##list47##
+
+
+##list100##
+AA  KK  QQ  JJ  TT  99  88
+AKs AQs AJs ATs KQs
+KA  QA
+
+##list101##
+AA  KK  QQ  JJ  TT  99
+AKs
+
+##list102##
+AA  KK  QQ
+
+##f$evrais##
+0                                        // start with zero
+
+// DEBITS HERE
+
+- call                                   // calling cost
+- bet                                    // raising cost
+
+// CREDITS HERE
+
++  (
+
+      pot                                // current pot
+
+   + (call+bet*2)                        // my call my bet and a call (minimum)
+
+   + (raisshort-call-bet*2)              // additional callers
+      * 0.00                             //   0% (tight)
+//    * 0.50                             //  50% (guess)
+//    * 1.00                             // 100% (loose)
+
+   )
+
+   * (prwin+prtie/2)                     // adjust for winning chances
+   * (1+rake)                            // adjust for rake
+   * (1-((nopponentsraising/nopponentsplaying)/3)) //adjust constant for aggressors
+   * (1+((nopponentschecking/nopponentsplaying)/5)) //adjust constant for lurkers
+   * (1-((nopponentscalling/nopponentsplaying)/10)) //adjust constant for limpers
+
+##f$evcall##
+0                                        // start with zero
+
+// DEBITS HERE
+
+- call                                   // calling cost
+
+
+// CREDITS HERE
+
++  (
+
+      pot                                // current pot
+
+   +  call                               // my call (minimum)
+
+   + (callshort-call)                    // additional callers
+      //* 0.00                             //   0% (tight)
+      * 0.50                             //  50% (guess)
+//    * 1.00                             // 100% (loose)
+
+   )
+
+   * (prwin+prtie/2)                     // adjust for winning chances
+   * (1+rake)                            // adjust for rake
+   * (1-((nopponentsraising/nopponentsplaying)/4)) //adjust constant for aggressors
+   * (1+((nopponentschecking/nopponentsplaying)/10)) //adjust constant for lurkers
+   * (1-((nopponentscalling/nopponentsplaying)/20)) //adjust constant for waiters
+
+##f$p0raise##
+0 +
+((raisbits1>>0)&1 ? 1 : 0) +
+((raisbits2>>0)&1 ? 1 : 0) +
+((raisbits3>>0)&1 ? 1 : 0) +
+((raisbits4>>0)&1 ? 1 : 0)
+
+##f$p1raise##
+0 +
+((raisbits1>>1)&1 ? 1 : 0) +
+((raisbits2>>1)&1 ? 1 : 0) +
+((raisbits3>>1)&1 ? 1 : 0) +
+((raisbits4>>1)&1 ? 1 : 0)
+
+##f$p2raise##
+0 +
+((raisbits1>>2)&1 ? 1 : 0) +
+((raisbits2>>2)&1 ? 1 : 0) +
+((raisbits3>>2)&1 ? 1 : 0) +
+((raisbits4>>2)&1 ? 1 : 0)
+
+##f$p3raise##
+0 +
+((raisbits1>>3)&1 ? 1 : 0) +
+((raisbits2>>3)&1 ? 1 : 0) +
+((raisbits3>>3)&1 ? 1 : 0) +
+((raisbits4>>3)&1 ? 1 : 0)
+
+##f$p4raise##
+0 +
+((raisbits1>>4)&1 ? 1 : 0) +
+((raisbits2>>4)&1 ? 1 : 0) +
+((raisbits3>>4)&1 ? 1 : 0) +
+((raisbits4>>4)&1 ? 1 : 0)
+
+##f$p5raise##
+0 +
+((raisbits1>>5)&1 ? 1 : 0) +
+((raisbits2>>5)&1 ? 1 : 0) +
+((raisbits3>>5)&1 ? 1 : 0) +
+((raisbits4>>5)&1 ? 1 : 0)
+
+##f$p6raise##
+0 +
+((raisbits1>>6)&1 ? 1 : 0) +
+((raisbits2>>6)&1 ? 1 : 0) +
+((raisbits3>>6)&1 ? 1 : 0) +
+((raisbits4>>6)&1 ? 1 : 0)
+
+##f$p7raise##
+0 +
+((raisbits1>>7)&1 ? 1 : 0) +
+((raisbits2>>7)&1 ? 1 : 0) +
+((raisbits3>>7)&1 ? 1 : 0) +
+((raisbits4>>7)&1 ? 1 : 0)
+
+##f$p8raise##
+0 +
+((raisbits1>>8)&1 ? 1 : 0) +
+((raisbits2>>8)&1 ? 1 : 0) +
+((raisbits3>>8)&1 ? 1 : 0) +
+((raisbits4>>8)&1 ? 1 : 0)
+
+##f$raises##
+f$mraises>0 ? 2 :
+call>bblind ? 1 :
+
+0
+
+##f$sraimin##
+[currentbet+call]
+
+##f$swag_adjust##
+[swagtextmethod == 3 ? (call + currentbet) :
+ swagtextmethod == 2 ? (call) : 0]
+
+##f$on_da_button##
+dealposition==nplayersplaying ? 1 :
+0
+
+##f$stacksize##
+balance/bblind
+
+##f$in_smallblind##
+dealposition==1 ? 1 :
+0
+
+##f$in_bigblind##
+dealposition==2 ? 1 :
+0
+
+##f$fold##
+
+0
+
+##f$didrais##
+(didrais || didswag) ? 1 :
+
+0
+
+##f$limpers##
+
+
+##f$reraised##
+f$mraises>0 ? 1 :
+0
+
+##f$mraises##
+0 +
+(currentbet0>bblind && currentbet0<(currentbet+call) ? 1: 0)+
+(currentbet1>bblind && currentbet1<(currentbet+call) ? 1: 0)+
+(currentbet2>bblind && currentbet2<(currentbet+call) ? 1: 0)+
+(currentbet3>bblind && currentbet3<(currentbet+call) ? 1: 0)+
+(currentbet4>bblind && currentbet4<(currentbet+call) ? 1: 0)+
+(currentbet5>bblind && currentbet5<(currentbet+call) ? 1: 0)+
+(currentbet6>bblind && currentbet6<(currentbet+call) ? 1: 0)+
+(currentbet7>bblind && currentbet7<(currentbet+call) ? 1: 0)+
+(currentbet8>bblind && currentbet8<(currentbet+call) ? 1: 0)+
+(currentbet9>bblind && currentbet9<(currentbet+call) ? 1: 0)
+
+##f$raised##
+call>1.1*bblind && !f$reraised ? 1 :
+0
+
+##f$opponentisallin##
+raischair==0 && balance0==0 ? 1 :
+raischair==1 && balance1==0 ? 1 :
+raischair==2 && balance2==0 ? 1 :
+raischair==3 && balance3==0 ? 1 :
+raischair==4 && balance4==0 ? 1 :
+raischair==5 && balance5==0 ? 1 :
+raischair==6 && balance6==0 ? 1 :
+raischair==7 && balance7==0 ? 1 :
+raischair==8 && balance8==0 ? 1 :
+
+0
+
+##f$potodds##
+balance>=call ? call/pot:
+balance<call ? balance/pot:
+0
+
+##f$betsize##
+call>0 ? (.6*pot + 2*call ) :
+br==2 && call==0 ? pot :
+br==3 && call==0 ? .7*pot :
+br==4 && call==0 ? .5*pot :
+0
+
+##f$totalinvested##
+currentbet/bblind
+
+##f$minopponentstacksize##
+nplayersseated==9 ? (
+balance_rank8==balance0+currentbet0 ? balance0/bblind :
+balance_rank8==balance1+currentbet1 ? balance1/bblind :
+balance_rank8==balance2+currentbet2 ? balance2/bblind :
+balance_rank8==balance3+currentbet3 ? balance3/bblind :
+balance_rank8==balance4+currentbet4 ? balance4/bblind :
+balance_rank8==balance5+currentbet5 ? balance5/bblind :
+balance_rank8==balance6+currentbet6 ? balance6/bblind :
+balance_rank8==balance7+currentbet7 ? balance7/bblind :
+balance_rank8==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==8 ? (
+balance_rank7==balance0+currentbet0 ? balance0/bblind :
+balance_rank7==balance1+currentbet1 ? balance1/bblind :
+balance_rank7==balance2+currentbet2 ? balance2/bblind :
+balance_rank7==balance3+currentbet3 ? balance3/bblind :
+balance_rank7==balance4+currentbet4 ? balance4/bblind :
+balance_rank7==balance5+currentbet5 ? balance5/bblind :
+balance_rank7==balance6+currentbet6 ? balance6/bblind :
+balance_rank7==balance7+currentbet7 ? balance7/bblind :
+balance_rank7==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==7 ? (
+balance_rank6==balance0+currentbet0 ? balance0/bblind :
+balance_rank6==balance1+currentbet1 ? balance1/bblind :
+balance_rank6==balance2+currentbet2 ? balance2/bblind :
+balance_rank6==balance3+currentbet3 ? balance3/bblind :
+balance_rank6==balance4+currentbet4 ? balance4/bblind :
+balance_rank6==balance5+currentbet5 ? balance5/bblind :
+balance_rank6==balance6+currentbet6 ? balance6/bblind :
+balance_rank6==balance7+currentbet7 ? balance7/bblind :
+balance_rank6==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==6 ? (
+balance_rank5==balance0+currentbet0 ? balance0/bblind :
+balance_rank5==balance1+currentbet1 ? balance1/bblind :
+balance_rank5==balance2+currentbet2 ? balance2/bblind :
+balance_rank5==balance3+currentbet3 ? balance3/bblind :
+balance_rank5==balance4+currentbet4 ? balance4/bblind :
+balance_rank5==balance5+currentbet5 ? balance5/bblind :
+balance_rank5==balance6+currentbet6 ? balance6/bblind :
+balance_rank5==balance7+currentbet7 ? balance7/bblind :
+balance_rank5==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==5 ? (
+balance_rank4==balance0+currentbet0 ? balance0/bblind :
+balance_rank4==balance1+currentbet1 ? balance1/bblind :
+balance_rank4==balance2+currentbet2 ? balance2/bblind :
+balance_rank4==balance3+currentbet3 ? balance3/bblind :
+balance_rank4==balance4+currentbet4 ? balance4/bblind :
+balance_rank4==balance5+currentbet5 ? balance5/bblind :
+balance_rank4==balance6+currentbet6 ? balance6/bblind :
+balance_rank4==balance7+currentbet7 ? balance7/bblind :
+balance_rank4==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==4 ? (
+balance_rank3==balance0+currentbet0 ? balance0/bblind :
+balance_rank3==balance1+currentbet1 ? balance1/bblind :
+balance_rank3==balance2+currentbet2 ? balance2/bblind :
+balance_rank3==balance3+currentbet3 ? balance3/bblind :
+balance_rank3==balance4+currentbet4 ? balance4/bblind :
+balance_rank3==balance5+currentbet5 ? balance5/bblind :
+balance_rank3==balance6+currentbet6 ? balance6/bblind :
+balance_rank3==balance7+currentbet7 ? balance7/bblind :
+balance_rank3==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==3 ? (
+balance_rank2==balance0+currentbet0 ? balance0/bblind :
+balance_rank2==balance1+currentbet1 ? balance1/bblind :
+balance_rank2==balance2+currentbet2 ? balance2/bblind :
+balance_rank2==balance3+currentbet3 ? balance3/bblind :
+balance_rank2==balance4+currentbet4 ? balance4/bblind :
+balance_rank2==balance5+currentbet5 ? balance5/bblind :
+balance_rank2==balance6+currentbet6 ? balance6/bblind :
+balance_rank2==balance7+currentbet7 ? balance7/bblind :
+balance_rank2==balance8+currentbet8 ? balance8/bblind : 0) :
+nplayersseated==2 ? (
+balance_rank1==balance0+currentbet0 ? balance0/bblind :
+balance_rank1==balance1+currentbet1 ? balance1/bblind :
+balance_rank1==balance2+currentbet2 ? balance2/bblind :
+balance_rank1==balance3+currentbet3 ? balance3/bblind :
+balance_rank1==balance4+currentbet4 ? balance4/bblind :
+balance_rank1==balance5+currentbet5 ? balance5/bblind :
+balance_rank1==balance6+currentbet6 ? balance6/bblind :
+balance_rank1==balance7+currentbet7 ? balance7/bblind :
+balance_rank1==balance8+currentbet8 ? balance8/bblind : 0) :
+
+999
+
+##f$opponentswithlowerstack##
+nplayersseated==2 && f$minopponentstacksize<(balance+currentbet)/bblind ? 1 :
+0
+
+##f$preflop##
+
+
+
+##f$ncallers##
+(9/nplayersseated)*(nopponentsplaying-nopponentscalling)*floppct + nopponentscalling + 1
+
+##f$spd##
+ // static position dealer
+[ dealposition==nplayersdealt ]
+
+##f$spe##
+//LabOneLimit_v0009 8/25/2006
+// static position early
+[ dealposition >2 && dealposition >=nplayersdealt-8 && dealposition <=nplayersdealt-5 ]
+
+##f$spm##
+ // static position middle
+[ dealposition>nplayersdealt-5 && dealposition<nplayersdealt-1 ]
+
+##f$spl##
+ // static position late
+[ dealposition>=nplayersdealt-1 ]
+
+##f$stilltoact##
+nopponentsplaying-nopponentscalling
+
+##f$betadjust##
+0 -
+(istournament && f$tablebalance<20 ? .75*bblind : 0 ) +
+(f$loosefactor>.35 ? bblind : 0) +
+(f$loosefactor>.45 ? bblind : 0) +
+(nopponentscalling*bblind)
+
+##f$loosefactor##
+floppct * (9/nplayersseated)
+
+##f$rpe##
+// raiser position early
+[ dealpositionrais >2 && dealpositionrais >=nplayersdealt-8 && dealpositionrais <=nplayersdealt-5 ]
+
+##f$rpm##
+ // raiser position middle
+[ dealpositionrais>nplayersdealt-5 && dealpositionrais<nplayersdealt-1 ]
+
+##f$rpl##
+ // raiser position late
+[ dealpositionrais>=nplayersdealt-1 ]
+
+##f$prefloprange##
+f$raises==1 && f$rpe ? pt_rpfr/1.1 :
+f$raises==1 && f$rpm ? pt_rpfr*1.1 :
+f$raises==1 && f$rpl ? pt_rpfr*1.4 :
+f$raises==1 && f$rpd ? pt_rpfr/1.1 :
+
+f$raises==2 && f$rpe ? pt_rpfr/2.8 :
+f$raises==2 && f$rpm ? pt_rpfr/2.4 :
+f$raises==2 && f$rpl ? pt_rpfr/2 :
+f$raises==2 && f$rpd ? pt_rpfr/2.8 :
+
+0
+
+##f$rpd##
+ // raiser position dealer
+[ dealpositionrais==nplayersdealt ]
+
+##f$raiserrange##
+
+
+##f$3bet##
+f$raiserhands>11 && handrank169<=20 && handrank169<(169*f$prefloprange*.7) ? 1 :
+f$raiserhands<=11 && handrank169<=10 ? 1 :
+random<.06 && handrank169>20 && handrank169<=40 ? 1 :
+random<.06 && issuited && isconnector && rankloplayer>5 ? 1 :
+0
+
+##f$raiserhands##
+raischair==0 ? ptt_hands0 :
+raischair==1 ? ptt_hands1 :
+raischair==0 ? ptt_hands2 :
+raischair==0 ? ptt_hands3 :
+raischair==0 ? ptt_hands4 :
+raischair==0 ? ptt_hands5 :
+raischair==0 ? ptt_hands6 :
+raischair==0 ? ptt_hands7 :
+raischair==0 ? ptt_hands8 :
+
+0
+
+##f$slowplay##
+f$raiserhands>11 && random<((ptt_raggtot-1)*3) && handrank169<=20 ? 1 :
+0
+
+##f$flatrange##
+f$spe && f$raiserhands>11 && handrank169<=50 && (handrank169+10)<(169*f$prefloprange) ? 1 :
+f$spm && f$raiserhands>11 && handrank169<=50 && (handrank169+5)<(169*f$prefloprange) ? 1 :
+f$spl && f$raiserhands>11 && handrank169<=50 &&  handrank169<(169*f$prefloprange) ? 1 :
+f$spd && f$raiserhands>11 && handrank169<=50 &&  (handrank169+10)<(169*f$prefloprange) ? 1 :
+
+0
+
+##f$dpe##
+ // dynamic position early
+[ betposition==1 || betposition/nplayersplaying <=(1/2) ]
+
+##f$dpm##
+// dynamic middle position
+[ betposition/nplayersplaying > (1/2) &&
+  betposition/nplayersplaying <=(3/4) &&
+  betposition!=nplayersplaying
+]
+
+##f$dpl##
+ // dynamic late position
+[ betposition/nplayersplaying >(3/4) ]
+
+##f$raischair1##
+(raisbits1>>0)&1 ? 0 :
+(raisbits1>>1)&1 ? 1 :
+(raisbits1>>2)&1 ? 2 :
+(raisbits1>>3)&1 ? 3 :
+(raisbits1>>4)&1 ? 4 :
+(raisbits1>>5)&1 ? 5 :
+(raisbits1>>6)&1 ? 6 :
+(raisbits1>>7)&1 ? 7 :
+(raisbits1>>8)&1 ? 8 :
+
+0
+
+##f$callchair1##
+(callbits1>>0)&1 ? 0 :
+(callbits1>>1)&1 ? 1 :
+(callbits1>>2)&1 ? 2 :
+(callbits1>>3)&1 ? 3 :
+(callbits1>>4)&1 ? 4 :
+(callbits1>>5)&1 ? 5 :
+(callbits1>>6)&1 ? 6 :
+(callbits1>>7)&1 ? 7 :
+(callbits1>>8)&1 ? 8 :
+
+0
+
+##f$rais_bigpot##
+// This file is not to be changed except by Winngy
+0
+//-----------------------------------------------------------------
+|| mh_str_strflush  >=2
+//-----------------------------------------------------------------
+|| mh_str_quads          >=2
+//-----------------------------------------------------------------
+|| mh_str_fullhouse      >=3
+|| mh_str_fullhouse      >=2 && f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1)
+//-----------------------------------------------------------------
+|| mh_str_flush          >=4
+|| mh_str_flush          >=3 && f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1)
+//-----------------------------------------------------------------
+|| mh_str_straight       >=4
+|| mh_str_straight       >=3 && f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1)
+|| isstraight && nstraightfillcommon==2 && f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1)
+//-----------------------------------------------------------------
+|| mh_str_trips          >=4
+|| mh_str_trips          >=3 && f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1)
+//-----------------------------------------------------------------
+|| mh_str_twopair        >=4
+|| mh_str_twopair        >=3 && f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1)
+//-----------------------------------------------------------------
+|| mh_str_onepair        >=5 && (br==2||!didrais) && pt_raggtot>1
+|| mh_str_onepair        >=4 && (f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1) || (f$nbets<=3 && ishandup))
+//-----------------------------------------------------------------
+
+##f$betadjust3##
+0
+
+##f$betadjust2##
+0 +
+(br>=3 && call==0 ? f$p4raise*(.15*pot) : 0) +
+(call==0 && br==2 && nopponentsplaying>=2 && f$dpe ? -.5*pot : 0)
+
+##f$betadjust4##
+
+
+##f$draws##
+// last change 8/21/2006 Winngy v0007
+//Drawing Hands
+
+0
+|| [(br==2||br==3) && (mh_nouts/ncardsunknown) >= f$potodds ]
+
+
+//Nut Flush Draw
+|| [(br==2||br==3) && nsuited==4
+    && `((~srankbits&0x7fff)>>srankhiplayer)==0
+    && nsuitedcommon==2
+    ]
+
+//Pair and Flush Draw
+|| [(br==2||br==3) && prwinnow >.40
+   && nsuited==4 && nsuited>nsuitedcommon
+   && isonepair && (pokervalcommon < onepair)
+   ]
+
+//Second Nut Flush Draw
+|| [(br==2||br==3) && nsuited==4
+   && `((~srankbits&0x7fff)>>srankhiplayer)==1
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Third Nut Flush Draw
+|| [(br==2||br==3) && nsuited==4
+   && `((~srankbits&0x7fff)>>srankhiplayer)==2
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Good Flush Draw
+|| [(br==2||br==3) && nsuited==4
+   && nsuitedcommon==2
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]//call good flush draws
+
+//Good Straight Draw
+|| [(br==2||br==3) && nstraight==4 && nstraightcommon <= 2
+   && ((1.2/(prwin + prtie/2)-1) < ((pot + (callshort *.3))/call))]
+
+//Call draw that was raised
+|| [(br==2||br==3) && (didrais||didcall)
+   && ((nsuited==4 && nsuitedcommon==2)||(nstraight==4 && nstraightcommon==2))
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//COMBOS DRAWS...pair and draw
+
+//Pair and Flush Draw
+|| [(br==2||br==3) && prwinnow >.40
+   && nsuited==4 && nsuited>nsuitedcommon
+   && isonepair && (pokervalcommon < onepair)
+   && (((1.5/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Pair and Straight Draw
+|| [(br==2||br==3) && prwinnow >.40
+   && nstraight==4 && nstraight>nstraightcommon
+   && isonepair && (pokervalcommon < onepair)
+   && (((1.5/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Straight and Flush Draw
+|| [(br==2||br==3) && nsuited==4
+   && nsuited>nsuitedcommon && nstraight==4
+   && nstraight>nstraightcommon
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+##f$flopagg##
+0 +
+((opponentsplayingbits>>0)&1 ? pt_aggtot0 : 0) +
+((opponentsplayingbits>>1)&1 ? pt_aggtot1 : 0) +
+((opponentsplayingbits>>2)&1 ? pt_aggtot2 : 0) +
+((opponentsplayingbits>>3)&1 ? pt_aggtot3 : 0) +
+((opponentsplayingbits>>5)&1 ? pt_aggtot5 : 0) +
+((opponentsplayingbits>>6)&1 ? pt_aggtot6 : 0) +
+((opponentsplayingbits>>7)&1 ? pt_aggtot7 : 0) +
+((opponentsplayingbits>>8)&1 ? pt_aggtot8 : 0)
+
+##f$riveragg##
+
+
+##f$agg##
+f$flopagg/nopponentsplaying
+
+##f$callbigpot##
+// This file is not to be changed except by Winngy
+0
+//-----------------------------------------------------------------
+|| mh_str_strflush  >=1
+//-----------------------------------------------------------------
+|| mh_str_quads          >=2
+//-----------------------------------------------------------------
+|| mh_str_fullhouse      >=4
+|| mh_str_fullhouse      >=3 && f$raises<=2
+|| mh_str_fullhouse      >=2 && (f$raises<=1 || pt_raggtot>1)
+|| mh_str_fullhouse      >=2 && (didcall || didrais) && f$potodds<.5
+//-----------------------------------------------------------------
+|| mh_str_flush          >=4
+|| mh_str_flush          >=3 && f$raises<=2
+|| mh_str_flush          >=2 && (f$raises<=1 || pt_raggtot>1)
+|| mh_str_flush          >=2 && (didcall || didrais) && f$potodds<.5
+//-----------------------------------------------------------------
+|| mh_str_straight       >=4
+|| mh_str_straight       >=3 && f$raises<=2
+|| isstraight && nstraightfillcommon==2  && f$raises<=2
+|| mh_str_straight       >=2 && (f$raises<=1 || pt_raggtot>1)
+|| mh_str_straight       >=2 && (didcall||didrais) && f$potodds<.5
+//-----------------------------------------------------------------
+|| mh_str_trips          >=4
+|| mh_str_trips          >=3 && f$raises<=2
+|| mh_str_trips          >=2 && (f$raises<=1 || pt_raggtot>1)
+|| mh_str_trips          >=2 && (didcall||didrais) && f$potodds<.5 && pt_raggtot>1
+//-----------------------------------------------------------------
+|| mh_str_twopair        >=4
+|| mh_str_twopair        >=3 && f$raises<=1
+//-----------------------------------------------------------------
+|| mh_str_onepair        >=5 && ((br==2||!didrais) || pt_raggtot>1.5)
+|| mh_str_onepair        >=4 && ((f$raises<=1 && f$nbets<=2) || (br==4 && f$drawflop && pt_raggtot>1))
+|| mh_str_onepair        >=3 && (f$nbets<=1 || (f$nbets<=2 && pt_raggtot>1.2) || (br==2 && f$nbets<=2))
+//-----------------------------------------------------------------
+
+##f$nbets##
+raischair==0 ? f$p0raise :
+raischair==1 ? f$p1raise :
+raischair==2 ? f$p2raise :
+raischair==3 ? f$p3raise :
+raischair==4 ? f$p4raise :
+raischair==5 ? f$p5raise :
+raischair==6 ? f$p6raise :
+raischair==7 ? f$p7raise :
+raischair==8 ? f$p8raise :
+0
+
+##f$drawflop##
+br>1 && (
+   $$cs0==$$cs1
+|| $$cs0==$$cs2
+|| $$cs1==$$cs2
+|| ($$cr0-1)==$$cr1
+|| ($$cr0-1)==$$cr2
+|| ($$cr1-1)==$$cr2
+|| ($$cr0+1)==$$cr1
+|| ($$cr0+1)==$$cr2
+|| ($$cr1+1)==$$cr2
+|| ($$cr0-2)==$$cr1
+|| ($$cr0-2)==$$cr2
+|| ($$cr1-2)==$$cr2
+|| ($$cr0+2)==$$cr1
+|| ($$cr0+2)==$$cr2
+|| ($$cr1+2)==$$cr2
+|| ($$cr0-3)==$$cr1
+|| ($$cr0-3)==$$cr2
+|| ($$cr1-3)==$$cr2
+|| ($$cr0+3)==$$cr1
+|| ($$cr0+3)==$$cr2
+|| ($$cr1+3)==$$cr2
+        )
+
+##f$noraise##
+br==2 && f$dpe && nbetsround1>4 && didcallround1 ? 1 :
+br==3 && f$dpe && nbetsround2>10 && didcallround2 ? 1 :
+br==4 && f$dpe && nbetsround3>18 && didcallround3 ? 1 :
+0
+
+##f$tablebalance##
+((balance1 + balance2 + balance3 + balance4 + balance5 + balance6 + balance7 + balance8 + balance0)/nplayersseated)/bblind
+

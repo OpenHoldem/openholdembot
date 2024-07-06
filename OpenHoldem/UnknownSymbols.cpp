@@ -16,7 +16,7 @@
 #include "stdafx.h"
 #include "UnknownSymbols.h"
 #include "CParseErrors.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 char *title_outdated_symbol = "ERROR: outdated symbol";
 

@@ -18,10 +18,6 @@
 // or project specific include files that are used frequently,
 // but are changed infrequently
 
-#ifndef _SECURE_ATL
-#define _SECURE_ATL 1
-#endif
-
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
@@ -32,35 +28,21 @@
 #define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
 #endif
 
-#ifndef _WIN32_WINNT		// Allow use of features specific to Windows XP or later.                   
-#define _WIN32_WINNT 0x0501	// Change this to the appropriate value to target other versions of Windows.
-#endif						
+// Turn some warnings OFF, because we consider them harmless
+// NO NEED TO DO IT
 
-#ifndef _WIN32_WINDOWS		// Allow use of features specific to Windows 98 or later.
-#define _WIN32_WINDOWS 0x0410 // Change this to the appropriate value to target Windows Me or later.
-#endif
-
-#ifndef _WIN32_IE			// Allow use of features specific to IE 6.0 or later.
-#define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
-#endif
-
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
-#define _CRT_SECURE_NO_DEPRECATE 1          // secure functions with checks for buffer size 
-
-// Turn some warnings off, because we consider them harmless
+// Turn some warnings to ERRORS, because we consider them helpful
 //
 // https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwjqmYHZnMHMAhVHiywKHaB5DWUQFggiMAE&url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Faa233834%28v%3Dvs.60%29.aspx&usg=AFQjCNGv_QKRcNSaYPR7j5rYxWxvP7j3Nw&sig2=gvKmaviDIOuyH1_Di0bpWA
 // identifier1' has C-linkage specified, but returns UDT 'identifier2' which is incompatible with C
 // This warning gets caused by the PT-query-definitions-DLL
-// which returns CString instead of char* (inconvenient memory-menagement and string building).
+// which returns CString instead of char* (inconvenient memory-management and string building).
 // This is OK, as long as we call the DL from C / C++.
-#pragma warning(disable:4190)   
+#pragma warning(error:4190)
+//
 // https://msdn.microsoft.com/en-us/library/b6801kcy%28v=vs.100%29.aspx
 // forcing value to bool 'true' or 'false' (performance warning)
-// Harmless and impossible to be fixed (7691 cases of c4800)
-#pragma warning(disable:4800) 
-
-// Turn some warnings to errors, because we consider them helpful
+#pragma warning(error:4800) 
 //
 // https://msdn.microsoft.com/en-us/library/aa231853%28v=vs.60%29.aspx
 // macro redefinition
@@ -106,9 +88,6 @@
 // Local declaration of <variable> hides declaration of same name in outer scope.
 #pragma warning(error:6246)	
 
-// turns off MFC's hiding of some common and often safely ignored warning messages
-#define _AFX_ALL_WARNINGS
-
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
@@ -117,7 +96,7 @@
 #endif
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
+#endif
 
 // *************************************************************========================================
 
@@ -136,28 +115,25 @@
 
 // Version
 #define VERSION_NUMBER			14.10
-#define VERSION_TEXT				"14.0.2.0"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_TEXT			"14.0.2.0"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
-#include "poker_defs.h"
-#include "pokereval_export.h"
-#include "evx_defs.h"
-
-// Assertions
-#include <assert.h>
+#include "PokerEval/include/poker_defs.h"
+#include "PokerEval/include/pokereval_export.h"
+#include "PokerEval/include/evx_defs.h"
 
 // Important project headers
 #include "CValidator.h"
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
-#include "..\DLLs\Debug_DLL\debug.h"
-#include "..\DLLs\Files_DLL\files.h"
-#include "..\DLLs\Globals_DLL\globals.h"
-#include "..\DLLs\Preferences_DLL\Preferences.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
-#include "..\Shared\CCritSec\CCritSec.h"
-#include "..\Shared\MagicNumbers\MagicNumbers.h"
-#include "..\StructsDefines\structs_defines.h"
+#include "Debugger/debugger.h"
+#include "Files/files.h"
+#include "Globals/globals.h"
+#include "Preferences/Preferences.h"
+#include "StringFunctions/string_functions.h"
+#include "CCritSec/CCritSec.h"
+#include "MagicNumbers/MagicNumbers.h"
+#include "StructsDefines/structs_defines.h"
 
 // To avoid some race-conditions
 #define WAIT_FOR_CONDITION(condition) { while (!(condition)) { Sleep(250); } }

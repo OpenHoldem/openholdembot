@@ -16,7 +16,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineReplayFrameController.h"
 
-#include <assert.h>
 #include "CAutoPlayer.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
@@ -79,9 +78,7 @@ void CSymbolEngineReplayFrameController::UpdateOnHeartbeat() {
 	  ShootReplayFrameIfNotYetDone();
 	  return;
 	}
-  bool shoot_replay_frame_by_formula = p_function_collection->Evaluate(
-    k_standard_function_names[k_standard_function_shoot_replay_frame], 
-    Preferences()->log_hopper_functions());
+  bool shoot_replay_frame_by_formula = p_function_collection->Evaluate(k_standard_function_names[k_standard_function_shoot_replay_frame], Preferences()->log_hopper_functions()) != 0.0;
   if (shoot_replay_frame_by_formula) {
     write_log(Preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required by f$shoot_replay_frame\n");
     ShootReplayFrameIfNotYetDone();

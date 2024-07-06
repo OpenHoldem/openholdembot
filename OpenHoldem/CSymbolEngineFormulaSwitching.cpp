@@ -19,9 +19,9 @@
 #include <io.h>
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
-#include "..\DLLs\Debug_DLL\debug.h"
-#include "..\DLLs\Files_DLL\Files.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "Debugger/debugger.h"
+#include "Files/Files.h"
+#include "WindowFunctions/window_functions.h"
 
 CSymbolEngineFormulaSwitching::CSymbolEngineFormulaSwitching() {
 	// The values of some symbol-engines depend on other engines.

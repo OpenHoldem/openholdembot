@@ -16,7 +16,7 @@
 
 #include "CScraper.h"
 
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
 double Chair$(const char *name)

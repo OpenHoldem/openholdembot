@@ -1,0 +1,525 @@
+##2009-11-25 20:46:04##
+
+##notes##
+
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.100000
+
+##rake##
+-0.050000
+
+##nit##
+10000
+
+##f$alli##
+0                             //default is do not allin 
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+0                              //default is do not raise 
+
+
+//*** Pre-Flop no raises mid to late position *** 
+  || [br==1 && islist2 && ncallbets<=1 && (dealposition/nplayersdealt)>=.5] 
+
+//*** Pre-Flop 1 raise less than 3 players call *** 
+  || [br==1 && islist1 && ncallbets<=2 && nopponentsbetting < 5] 
+
+//*** Pre-Flop 2 raises *** 
+  || [br==1 && islist0 ] 
+
+
+//*** Flop No raises Pre Flop *** 
+  || [br==2 && nbetsround1==1 && ishipair && rankhicommon<11 && nsuitedcommon<3 && nrankedcommon==1 && nstraightcommon<3 && nstraightfill>2 && ncallbets<1] // Top Pair(below j) ace kicker 
+  || [br==2 && nbetsround1==1 && ishipair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && ncallbets<2 && nstraightfill>2 && rankloplayer>9 ]                     //Flop Hi (A,K,Q) Pair (Queen or better kicker) players have checked no flush,str8 or board pair 
+  || [br==2 && nbetsround1==1 && ncallbets<1 && ismidpair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && betposition==nplayersplaying]                          // Flop Mid Pair (Any Kicker) players have checked to me (last position) no str8 or straight draw no flush or flush draw no board pair 
+  || [br==2 && nbetsround1==1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && ncallbets<2]                                                          // Flop Two Pair no str8 no flush on the board 
+  || [br==2 && nbetsround1==1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && ncallbets<3]                                                     // Flop Trips w/ Pocket Pair no flush no str8 on board 
+  || [br==2 && nbetsround1==1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && nstraightfill==2 && ncallbets<=2]                                // Flop Trips with Board Paired no flush no str8 on board kicker less than Ace 
+  || [br==2 && nbetsround1==1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && rankhicommon==14 && ncallbets>1]                                 // Flop Trips with Board Paired no flush no str8 on board kicker is Ace or trip Aces 
+  || [br==2 && nbetsround1==1 && isstraight && nsuitedcommon<3 && nrankedcommon==1 && nstraightcommon<3 ]                                                                       // Flop notch Str8 with no Board Pair and no flush 
+  || [br==2 && nbetsround1==1 && isstraight && nsuitedcommon<3 && nrankedcommon==1 && ncallbets<=2]                                                                             // Flop str8      
+  || [br==2 && nbetsround1==1 && ishistraight && nsuitedcommon<=2 && nrankedcommon==1 ]                                                                                         // Flop nut str8 
+
+
+  || [br==2 && nbetsround1==1 && isflush &&  ncallbets<3 && nsuitedcommon<4]                                                                                                    //Flop Flush 
+  || [br==2 && nbetsround1==1 && isflush &&  nrankedcommon==2 && ncallbets<2]                                                                                                   //Flop Flush with board pair 
+  || [br==2 && nbetsround1==1 && ishiflush ]                                                                                                                                    // Flop HI flush 
+  || [br==2 && nbetsround1==1 && isfullhouse && nstraightflushcommon<3 && nstraightflushfill > 2 && nhandshi > 0 && ncallbets<3]                                                // Flop Boat no str8flush draw but better boat avail 
+  || [br==2 && nbetsround1==1 && isfullhouse && nrankedcommon<3]                                                                                                                // Flop nut Boat with pocket pair 
+  || [br==2 && nbetsround1==1 && isfourofakind && nhandshi==0]                                                                                                                  // Flop 4 of a kind                                                                              
+  || [br==2 && nbetsround1==1 && isstraightflush && nhandshi==0]                                                                                                                // Flop str8 Flush 
+
+  || [br==2 && nhandshi==0]                                                                                                                                                     // Best Hand 
+  
+  || [br==2 && ishipair && ncallbets<2 && nrankedcommon==1 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && rankloplayer>=8 && (betposition/nplayersplaying)>.5 ]               // Top Pair with 9 or better kicker no straight no flush no board pair 
+  || [br==2 && betposition==nplayersplaying && rankloplayer>rankhicommon && ncallbets==0 && nrankedcommon==1 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && ncallbets<1]      // Two overcards and no bets and betting on the button 
+  || [br==2 && betposition==nplayersplaying && nbetsround2==0 && (prwin+prtie)>(1/nplayersplaying) && betposition==nplayersplaying]                                                          // Equal share with no bets and betting on the button 
+  || [br==2 && isonepair && nbetsround2==0 && nbetsround1==1 && betposition==nplayersplaying && ncallbets<1]                                                                                    // Any pair and no bet and betting on the button 
+  || [br==2 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill<2 && ncallbets==0 && f$evrais>f$evcall] 
+
+
+//*** Flop  Raises Pre Flop *** 
+  || [br==2 && ispair && rankloplayer>rankhicommon && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && ncallbets==0 && (betposition/nplayersplaying)>.5]                              // Top Pocket Pair 
+  || [br==2 && nbetsround1>1 && ncallbets<1 && ishipair && nsuitedcommon<3 && nstraightcommon<2 && nrankedcommon==1 && nstraightfill>2 && rankloplayer>12 && ncallbets<2 ]                      // Flop Aces (King Kicker) players have checked no flush,str8 or board pair 
+  || [br==2 && nbetsround1>1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2 && ncallbets==1 && ncallbets<2]                                        // Flop Two Pair                                    
+  || [br==2 && nbetsround1>1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && rankhiplayer==rankhicommon && ncallbets>=1 && ncallbets<3]                             // Flop Top Two Pair no str8 no flush on the board 
+  || [br==2 && nbetsround1>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2 && ncallbets>=1 && ncallbets<3]                                   // Flop Trips  
+  || [br==2 && nbetsround1>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2 && rankhiplayer==rankhicommon && ncallbets>=1]                    // Flop Top Trips w/ Pocket Pair no flush no str8 on board 
+  || [br==2 && nbetsround1>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && rankhiplayer<14 && ncallbets>=1 && ncallbets<3]                                   // Flop Trips with Board Paired no flush no str8 on board kicker less than Ace 
+  || [br==2 && nbetsround1>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && rankhiplayer==14 && ncallbets>=1 && ncallbets<3]                                  // Flop Trips with Board Paired no flush no str8 on board kicker is Ace or trip Aces 
+  || [br==2 && nbetsround1>1 && isstraight && nsuitedcommon<2 && nstraightcommon<4 && nrankedcommon==1 && ncallbets>=1 && ncallbets<3]                                                          // Flop Str8 with no Board Pair no flush draw 
+  || [br==2 && nbetsround1>1 && ishistraight && nsuitedcommon<2 && nrankedcommon==1 && ncallbets>=1]                                                                                            // Flop nut str8 
+            
+  || [br==2 && nbetsround1>1 && isflush && nrankedcommon==1 && ncallbets>=1 && ncallbets<3]                                                                                                     //Flop Str8 with no board pair 
+  || [br==2 && nbetsround1>1 && ishiflush && nrankedcommon==1 && nstraightflushfill>2 && ncallbets>=1]                                                                                          // Flop nut flush 
+  || [br==2 && nbetsround1>1 && isfullhouse && nstraightflushcommon<3 && nstraightflushfill > 2 && nrankedcommon<3 && nhandshi > 0 && ncallbets<=2]                                             // Flop Boat no str8flush draw but better boat avail 
+  || [br==2 && nbetsround1>1 && isfullhouse && ispair && nrankedcommon<3 && ncallbets>=1 && rankhiplayer==rankhicommon]                                                                            // Flop nut Boat with pocket pair 
+  || [br==2 && nbetsround1>1 && isfourofakind && nhandshi==0 && ncallbets>=1]                                                                                                                   // Flop 4 of a kind                                                                            
+  || [br==2 && nbetsround1>1 && isstraightflush && nhandshi==0 && ncallbets>=1]                                                                                                                 // Flop st8 Flush 
+
+
+  || [br==2 && nhandshi==0 && ncallbets>=1]                                                                                                                                                     // No Hands Better 
+  || [br==2 && prlos<.1 && ncallbets>=1 && ncallbets<3]                                                                                                                                         // 90% chance to win 
+  || [br==2 && didraisround1 && nbetsround2==0 && nplayersplaying<4 && nbetsround2==0]                                                                                                          // Did raise preflop and less than 4 players remain                                        
+  || [br==2 && nbetsround2==0 && nplayersplaying<4 && rankloplayer>rankhicommon && ncallbets==0 && betposition==nplayersplaying]                                                                // Two over cards no bet on the button 
+
+
+//*** Turn No Raises  *** 
+  || [br==3 && nbetsround2<=1 && ncallbets<1 && ishipair &&  nsuitedcommon<3 && nstraightcommon<2 && nrankedcommon==1 && betposition==nplayersplaying]     // Aces (Any Kicker) players have checked no flush,str8 or board pair 
+  || [br==3 && nbetsround2<=1 && ishipair && ncallbets==0 && nrankedcommon==1 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 ]                                                      // Top Pair no bets 
+  || [br==3 && nbetsround2<=1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1  && ncallbets<2]                                                       // Turn Two Pair no str8 no flush on the board 
+  || [br==3 && nbetsround2<=1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2]                                                                 // Turn Trips w/ Pocket Pair no flush no str8 on board 
+  || [br==3 && nbetsround2<=1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && nstraightfill>2 && rankhicommon<14 && ncallbets<=2]                              // Turn Trips with Board Paired no flush no str8 on board kicker less than Ace 
+  || [br==3 && nbetsround2<=1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && nstraightfill>2 && rankhicommon==14]                                             // Turn Trips with Board Paired no flush no str8 on board kicker is Ace or trip Aces 
+  || [br==3 && nbetsround2<=1 && isstraight && nsuitedcommon<2 && nstraightcommon<4 && nrankedcommon==1 && ncallbets<=2]                                                                           // Turn Str8 with no Board Pair no flush draw 
+  || [br==3 && nbetsround2<=1 && ishistraight && nsuitedcommon<3 && nrankedcommon==1 && ncallbets<2 ]                                                                                           // Turn Str8 with flush draw 
+  || [br==3 && nbetsround2<=1 && ishistraight && nsuitedcommon<2 && nrankedcommon==1 ]                                                                                                          // Turn nut str8 
+            
+  || [br==3 && nbetsround2<=1 && isflush && nrankedcommon==1 && nsuitedcommon<4 &&  ncallbets<=2]                                                                                               // Turn Flush with no board pair 
+  || [br==3 && nbetsround2<=1 && ishiflush && ncallbets<3]                                                                                                                                      // TUrn High Flush board paired 
+  || [br==3 && nbetsround2<=1 && ishiflush && nrankedcommon==1]                                                                                                                                 // Turn Flush 
+  || [br==3 && nbetsround2<=1 && isfullhouse && nstraightflushcommon<3 && nstraightflushfill > 2  && ncallbets<=2]                                                                              // Turn Boat no str8flush draw but better boat avail 
+  || [br==3 && nbetsround2<=1 && isfullhouse && rankhiplayer==rankhicommon && ncallbets<3]                                                                                                      // Turn nut Boat with pocket pair 
+  || [br==3 && nbetsround2<=1 && isfourofakind && nhandshi==0]                                                                                                                                  // Turn 4 of a kind                                                                            
+  || [br==3 && nbetsround2<=1 && isstraightflush && nhandshi==0]                                                                                                                                // Turn st8 Flush 
+
+
+  || [br==3 && nhandshi==0]                                                                                                                                                                    // no hand better 
+  || [br==3 && nbetsround2==0 && f$evrais>(1/nplayersplaying) && ncallbets==0 && (betposition/nplayersplaying)>.66]                                                                            // late position and + expected return to raise 
+  || [br==3 && nbetsround2<=1 && ishipair && ncallbets==0 && betposition==nplayersplaying]                                                                                                      // bet hi pair on button no bets                                                                                                                        
+  || [br==3 && ismidpair && nplayersplaying<3 && ncallbets==0 && nbetsround2==0 && ncallbets<1]                                                                                                // mid pair no bets 
+  || [br==3 && didraisround2 && nbetsround3==0 && nplayersplaying<4 && rankloplayer>rankhicommon && ncallbets==0 && betposition==nplayersplaying]                                              // two over cards no bets on button 
+
+  || [br==3 && nbetsround2<=1 &&  randomround3>.8 && nbetsround3==1 && (prwin+prtie)>(1/nplayersplaying) && nplayersplaying<4]                                                                 // Random Semi Bluff 
+
+//*** Turn w/ Raises  *** 
+      
+  || [br==3 && nbetsround2>1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2 && ncallbets<1 && rankhiplayer==rankhicommon && betposition==nplayersplaying]   // Turn Top Two Pair no str8 no flush on the board 
+  || [br==3 && nbetsround2>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2]                                                                 // Turn Trips w/ Pocket Pair no flush no str8 on board 
+  || [br==3 && nbetsround2>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && rankhiplayer<14 && ncallbets<2]                                                  // TUrn Trips with Board Paired no flush no str8 on board kicker less than Ace 
+  || [br==3 && nbetsround2>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && rankhiplayer==14 && ncallbets<3]                                                 // Turn Trips with Board Paired no flush no str8 on board kicker is Ace or trip Aces 
+  || [br==3 && nbetsround2>1 && isstraight && nsuitedcommon<3 && nrankedcommon==1 && nstraightcommon<4 &&  ncallbets<=2]                                                                       // TUrn Str8 with no Board Pair no flush draw 
+  || [br==3 && nbetsround2>1 && ishistraight && nsuitedcommon<3 && nrankedcommon==1 && ncallbets<3 ]                                                                                           // Turn nut str8 with flush draw on board 
+  || [br==3 && nbetsround2>1 && ishistraight && nsuitedcommon<2 && nrankedcommon==1  ]                                                                                                         // Turn nut str8 with no flush draw on board 
+            
+  || [br==3 && nbetsround2>1 && isflush && nrankedcommon==1 && nsuitedcommon<4 && ncallbets<=2]                                                                                                //Turn Flush with no board pair 
+  || [br==3 && nbetsround2>1 && ishiflush && nrankedcommon==1]                                                                                                                                 // Turn nut flush 
+  || [br==3 && nbetsround2>1 && isfullhouse && nstraightflushcommon<3 && nstraightflushfill>2 && nrankedcommon<3 && ncallbets<=2]                                                              // Turn Boat no str8flush draw but better boat avail 
+  || [br==3 && nbetsround2>1 && isfullhouse && nrankedcommon==1 && rankhiplayer==rankhicommon]                                                                                                 // Turn 4 of a kind                                                                            
+  || [br==3 && nbetsround2>1 && isstraightflush && nhandshi==0]                                                                                                                                // Turn str8 Flush 
+
+
+  || [br==3 && nhandshi==0]                                                                                                                                                                    // no better hands 
+
+
+//*** River No Raises *** 
+  || [br==4 && nbetsround2==0 && nbetsround3==0 && islopair && ncallbets<1 && betposition==nplayersplaying] 
+  || [br==4 && nbetsround2==0 && nbetsround3==0 && ismidpair && ncallbets<1] 
+  || [br==4 && nbetsround3<=1 && ncallbets<1 && ishipair && rankhicommon==14 && nsuitedcommon<3 && nstraightcommon<2 && nstraightfill>2 && nrankedcommon==1 && ncallbets<2 && rankloplayer>8]  // Top Pair no flush,str8 or board pair 
+  || [br==4 && ishipair && nbetsround3==0 && ncallbets<1]                                                       // Top Pair no betting    
+  || [br==4 && nbetsround3<=1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && nrankedcommon==1 && ncallbets<2]                                                      //  Two Pair no str8 no flush on the board || 
+  || [br==4 && nbetsround3<=1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 &&  nrankedcommon==1]                                                               //  Trips w/ Pocket Pair no flush no str8 on board 
+  || [br==4 && nbetsround3<=1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2 && nstraightfill>2 && rankhicommon<14 && ncallbets<=2]                             //  Trips with Board Paired no flush no str8 on board kicker less than Ace 
+  || [br==4 && nbetsround3<=1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==2  && nstraightfill>2 && rankhicommon==14]                                           //  Trips with Board Paired no flush no str8 on board kicker is Ace or trip Aces 
+  || [br==4 && nbetsround3<=1 && isstraight && nsuitedcommon<2 && nrankedcommon==1 && ncallbets<=2 && nstraightcommon<4]                                                                       //  Str8 with no Board Pair no flush d 
+  || [br==4 && nbetsround3<=1 && ishistraight && nsuitedcommon<2 && nrankedcommon==1 ]                                                                                                         //  nut str8 
+            
+  || [br==4 && nbetsround3<=1 && isflush && nrankedcommon==1 && ncallbets<=2 && nsuitedcommon<4]                                                                                               // Str8 with no board pair 
+  || [br==4 && nbetsround3<=1 && ishiflush && nrankedcommon==1]                                                                                                                                //  nut flush 
+  || [br==4 && nbetsround3<=1 && isfullhouse && nstraightflushcommon<3 && nstraightflushfill > 2]                                                                                               //  Boat no str8flush draw but better boat avail 
+  || [br==4 && nbetsround3<=1 && isfullhouse && nrankedcommon==1 && nhandshi==0]                                                                                                               //  nut Boat with pocket pair 
+  || [br==4 && nbetsround3<=1 && isfourofakind && nhandshi==0]                                                                                                                                 //  4 of a kind                                                                            
+  || [br==4 && nbetsround3<=1 && isstraightflush && nhandshi==0]                                                                                                                               //  st8 Flush 
+
+
+  || [br==4 && nhandshi==0] 
+    
+  
+  || [br==4 && betposition==nplayersplaying && nbetsround4==0 && pokerval>=24 && ncallbets<1] 
+  || [br==4 && didraisround3 && nbetsround4==0] 
+
+
+
+  || [br==4 && nbetsround3<=1 && ncallbets<1 && betposition==nplayersplaying && prwin > (1/nplayersplaying) && randomround4 > .5 && ncallbets==0 && nrankedcommon==1 && nsuitedcommon<3 && nplayersplaying<4] 
+
+
+//*** River  Raises *** 
+  || [br==4 && nbetsround3>1 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill>2 && ncallbets<1 && (betposition/nplayersplaying > .5)]                //  Two Pair no str8 no flush on the board 
+  || [br==4 && nbetsround3>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && nstraightfill > 2 ]                                                             //  Trips w/ Pocket Pair no flush no str8 on board 
+  || [br==4 && nbetsround3>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && nrankedcommon==2 && rankhicommon<14 && ncallbets<=2]                             //  Trips with Board Paired no flush no str8 on board kicker less than Ace 
+  || [br==4 && nbetsround3>1 && isthreeofakind && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && nrankedcommon==2 && rankhicommon==14]                                            //  Trips with Board Paired no flush no str8 on board kicker is Ace or trip Aces 
+  
+  || [br==4 && nbetsround3>1 && isstraight && nsuitedcommon<2 && nrankedcommon==1 && ncallbets<=2 && nstraightcommon<4]                                                                       //  Str8 with no Board Pair no flush draw 
+  || [br==4 && nbetsround3>1 && ishistraight && nsuitedcommon<2 && nrankedcommon==1 ]                                                                                                         //  nut str8 
+            
+  
+  || [br==4 && nbetsround3>1 && isflush && nrankedcommon==1 && ncallbets<=2]                                                                                                                  //  Str8 with no board pair 
+  || [br==4 && nbetsround3>1 && ishiflush && nrankedcommon==1]                                                                                                                                // nut flush 
+  || [br==4 && nbetsround3>1 && isfullhouse && nstraightflushcommon<3 && nstraightflushfill > 2 && ncallbets<=2]                                                                              //  Boat no str8flush draw but better boat avail 
+  || [br==4 && nbetsround3>1 && isfullhouse && nrankedcommon==1 && rankhiplayer==rankhicommon]                                                                                                //  nut Boat with pocket pair 
+  || [br==4 && nbetsround3>1 && isfourofakind && nhandshi==0]                                                                                                                                 //  4 of a kind                                                                            
+  || [br==4 && nbetsround3>1 && isstraightflush && nhandshi==0]                                                                                                                               //  st8 Flush 
+
+
+  || [br==4 && nhandshi==0] 
+  || [br==4 && prlos <.15 && ncallbets <=1] 
+
+##f$call##
+ 0                         //default is do not call 
+
+
+//*** Pre-Flop no raises late deal *** 
+
+  || [br==1 && islist5 && ncallbets<=1 && (dealposition/nplayersplaying) >= .8] 
+  
+//*** Pre-Flop no raises early/mid deal *** 
+
+  || [br==1 && islist4 && ncallbets<=1 && (dealposition/nplayersplaying) >= .3] 
+
+//*** Pre-Flop Call raises less than 3 *** 
+
+  || [br==1 && islist3  && ncallbets<=2] 
+
+//*** Pre-Flop Call any *** 
+
+  || [br==1 && didrais] 
+
+  || [br==1 && islist0 && ncallbets>2] 
+
+  || [br==1 && islist1 && ncallbets>2] 
+  
+  
+  || [br==1 && islist2 && ncallbets>2] 
+  
+  || [br==1 && islist2 ] 
+  || [br==1 && islist1 ] 
+  || [br==1 && islist0 ] 
+  || [br==1 && f$evcall>(call) && ncallbets<=1 && nplayersplaying>2] 
+  || [br==1 && betposition==1 && nbetsround1==1 && handrank169<120] 
+  || [br==1 && prwin>(1/nplayersplaying) && ncallbets<=1] 
+
+
+  || [ call <= 0 ] // free to check 
+
+
+//*** FLOP A HAND *** 
+
+  || [br==2 && ismidpair && rankhicommon<rankhiplayer && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && ncallbets<2] 
+  || [br==2 && ishipair && ncallbets<=2 && nrankedcommon==1] 
+  || [br==2 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && nrankedcommon==1] 
+  || [br==2 && istwopair && ncallbets<=2] 
+  || [br==2 && isthreeofakind && nrankedcommon==1 && nsuitedcommon<3 && nstraightcommon<3] 
+  || [br==2 && isthreeofakind && ncallbets<=2] 
+  || [br==2 && isthreeofakind && nrankedcommon==2 && nsuitedcommon<3 && nstraightcommon<3 && rankhicommon>9] 
+  || [br==2 && isstraight && nsuitedcommon<3] 
+  || [br==2 && ishistraight && nsuitedcommon<3] 
+  || [br==2 && isstraight && ncallbets<3] 
+  || [br==2 && ishistraight && ncallbets<3] 
+
+  || [br==2 && isflush] 
+  || [br==2 && ishiflush] 
+  || [br==2 && isfullhouse] 
+  || [br==2 && isfourofakind] 
+  || [br==2 && isstraightflush] 
+  || [br==2 && didraisround2] 
+
+  
+
+//***DRAW INTO A HAND *** 
+
+
+  ||[  br==2 && nrankedcommon==1 && (nstraightflush==4 && !(srankbits&16386 && srankbits&8196) && isonepair) && f$evcall>call ]                                                // Board has No Pair and you have Open-ended straight flush draw w/ a pair 
+  ||[  br==2 && (nstraightflush==4 && !(srankbits&16386 && srankbits&8196) && rankloplayer>rankhicommon) && f$evcall>call]                                                     //Board has No Pair and you have Open-ended straight flush draw w/ 2 overcards 
+  ||[  br==2 && (nstraightflush==4 && !(srankbits&16386 && srankbits&8196)) && f$evcall>call]                                                                                  //Board has No Pair and you have Open-ended straight flush draw 
+  ||[  br==2 && (nstraightflush<=3 && nstraightflushfill==1 && isonepair) &&f$evcall>call]                                                                                    //Board has No Pair and you have Inside straight flush draw w/ a pair 
+  ||[  br==2 && (nstraightflush<=3 && nstraightflushfill==1 && rankloplayer>rankhicommon) && f$evcall>call]                                                                  //Board has No Pair and you have Inside straight flush draw w/ 2 overcards 
+  ||[  br==2 && (nstraightflush<=3 && nstraightflushfill==1) && f$evcall>call] //Board has No Pair and you have Inside straight flush draw 
+  ||[  br==2 && (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)==0) && f$evcall>call] //Board has No Pair and you have Nut flush draw w/ 2 cards 
+  ||[  br==2 && (nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==0) && f$evcall>call] //Board has No Pair and you have Nut flush draw w/ 1 card 
+  ||[  br==2 && (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)==1) && f$evcall>call] //Board has No Pair and you have 2nd nut flush draw w/ 2 card 
+  ||[  br==2 && (nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==1) && f$evcall>call] //Board has No Pair and you have 2nd nut flush draw w/ 1 card 
+  ||[  br==2 && (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0 && isonepair) && f$evcall>call] // Board has No Pair and you have Non-nut flush draw w/ a pair 
+  ||[  br==2 && (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0 && rankloplayer>rankhicommon) && f$evcall>call] // Board has No Pair and you have Non-nut flush draw w/ 2 overcards 
+  ||[  br==2 && (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0) && f$evcall>call] //Board has No Pair and you have Non-nut flush draw  
+  ||[  br==2 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && isonepair) && f$evcall>call] //Board has No Pair and you have Open-ended straight draw w/ a pair 
+  ||[  br==2 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && rankloplayer>rankhicommon && nsuitedcommon==1) && f$evcall>call] // Board has No Pair and you have Open-ended straight draw w/ 2 overcards (rainbow)  
+  ||[  br==2 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==1) && f$evcall>call] //Board has No Pair and you have Open-ended straight draw (rainbow)    
+  ||[  br==2 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==2) && f$evcall>call] //Board has No Pair and you have Open-ended straight draw (2 flushes on board) 
+  ||[  br==2 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==3) && f$evcall>call] // Board has No Pair and you have Open-ended straight draw (3 flushes on board)  
+  ||[  br==2 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && isonepair) && f$evcall>call] //Board has No Pair and you have Inside straight draw w/ a pair    
+  ||[  br==2 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && rankloplayer>rankhicommon && nsuitedcommon==1) && f$evcall>call] //Board has No Pair and you have Inside straight draw w/ 2 overcards    
+  ||[  br==2 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==1) && f$evcall>call] //Board has No Pair and you have Inside straight draw (rainbow)  
+  ||[  br==2 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==2) && f$evcall>call] //Board has No Pair and you have Inside straight draw (2 flushes on board)    
+  ||[  br==2 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==3) && f$evcall>call && ncallbets<2] //Board has No Pair and you have Inside straight draw (3 flushes on board)  
+  ||[  br==2 && (rankloplayer>rankhicommon && rankhiplayer==14 && rankloplayer>=10 && !ispair && nsuitedcommon==1 && nstraightcommon==1) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "Two overcards w/Ace (AK-AT rainbow)"    
+  ||[  br==2 && (rankloplayer>rankhicommon && rankhiplayer==13 && rankloplayer>=10 && !ispair && nsuitedcommon==1 && nstraightcommon==1) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "Two overcards w/ King (KQ-KT rainbow)"    
+  ||[  br==2 && (rankloplayer>rankhicommon && nsuitedcommon==2) && f$evcall>call] //Board has No Pair and you have Two overcards (2 flushes on board)  
+  ||[  br==2 && (rankloplayer>rankhicommon && {nstraightcommon==3||nsuitedcommon==3}) && f$evcall>call && ncallbets<2] // Board has No Pair and you have Two overcards (3-card straight or 3 flushes on board  
+  ||[  br==2 && (rankhiplayer==14 && pokerval<onepair && rankloplayer<=9 && rankloplayer<rankhicommon && nsuitedcommon==1 && nstraightcommon==1) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "One overcard w/Ace (A9-A2 rainbow)"  
+  ||[  br==2 && (rankhiplayer==13 && pokerval<onepair && rankloplayer<=9 && rankloplayer<rankhicommon && nsuitedcommon==1 && nstraightcommon==1 ) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "One overcard w/ King (K9-K2 rainbow)" 
+  
+
+
+
+//*** Turn A HAND *** 
+
+  || [br==3 && ismidpair && rankhicommon<rankhiplayer && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && ncallbets<2] 
+  || [br==3 && ishipair && ncallbets<=2 && nrankedcommon==1] 
+  || [br==3 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && nrankedcommon==1] 
+  || [br==3 && istwopair && ncallbets<=2] 
+  || [br==3 && isthreeofakind && nrankedcommon==1 && nsuitedcommon<3 && nstraightcommon<3] 
+  || [br==3 && isthreeofakind && ncallbets<=2] 
+  || [br==3 && isthreeofakind && nrankedcommon==2 && nsuitedcommon<3 && nstraightcommon<3 && rankhicommon>9] 
+  || [br==3 && isstraight && nsuitedcommon<3] 
+  || [br==3 && ishistraight && nsuitedcommon<3] 
+  || [br==3 && isstraight && ncallbets<3] 
+  || [br==3 && ishistraight && ncallbets<3] 
+
+  || [br==3 && isflush] 
+  || [br==3 && ishiflush] 
+  || [br==3 && isfullhouse] 
+  || [br==3 && isfourofakind] 
+  || [br==3 && isstraightflush] 
+  || [br==3 && didraisround3] 
+
+
+//*** Draw on the Turn *** 
+
+//*** TURN *** 
+
+  ||[  br==3 && nrankedcommon==1 && (nstraightflush==4 && !(srankbits&16386 && srankbits&8196) && isonepair) && f$evcall>call ]  // Board has No Pair and you have Open-ended straight flush draw w/ a pair 
+  ||[  br==3 && (nstraightflush==4 && !(srankbits&16386 && srankbits&8196) && rankloplayer>rankhicommon) && f$evcall>call] //Board has No Pair and you have Open-ended straight flush draw w/ 2 overcards 
+  ||[  br==3 && (nstraightflush==4 && !(srankbits&16386 && srankbits&8196)) && f$evcall>call] //Board has No Pair and you have Open-ended straight flush draw 
+  ||[  br==3 && (nstraightflush<=3 && nstraightflushfill==1 && isonepair) &&f$evcall>call]  //Board has No Pair and you have Inside straight flush draw w/ a pair 
+  ||[  br==3 && (nstraightflush<=3 && nstraightflushfill==1 && rankloplayer>rankhicommon) && f$evcall>call] //Board has No Pair and you have Inside straight flush draw w/ 2 overcards 
+  ||[  br==3 && (nstraightflush<=3 && nstraightflushfill==1) && f$evcall>call] //Board has No Pair and you have Inside straight flush draw 
+  ||[  br==3 && (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)==0) && f$evcall>call] //Board has No Pair and you have Nut flush draw w/ 2 cards 
+  ||[  br==3 && (nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==0) && f$evcall>call] //Board has No Pair and you have Nut flush draw w/ 1 card 
+  ||[  br==3 && (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)==1) && f$evcall>call] //Board has No Pair and you have 2nd nut flush draw w/ 2 card 
+  ||[  br==3 && (nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==1) && f$evcall>call] //Board has No Pair and you have 2nd nut flush draw w/ 1 card 
+  ||[  br==3 && (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0 && isonepair) && f$evcall>call] // Board has No Pair and you have Non-nut flush draw w/ a pair 
+  ||[  br==3 && (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0 && rankloplayer>rankhicommon) && f$evcall>call] // Board has No Pair and you have Non-nut flush draw w/ 2 overcards 
+  ||[  br==3 && (nsuited==4 && !`((~srankbits&0x7fff)>>srankhiplayer)==0) && f$evcall>call] //Board has No Pair and you have Non-nut flush draw  
+  ||[  br==3 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && isonepair) && f$evcall>call] //Board has No Pair and you have Open-ended straight draw w/ a pair 
+  ||[  br==3 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && rankloplayer>rankhicommon && nsuitedcommon==1) && f$evcall>call] // Board has No Pair and you have Open-ended straight draw w/ 2 overcards (rainbow)  
+  ||[  br==3 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==1) && f$evcall>call] //Board has No Pair and you have Open-ended straight draw (rainbow)    
+  ||[  br==3 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==2) && f$evcall>call] //Board has No Pair and you have Open-ended straight draw (2 flushes on board) 
+  ||[  br==3 && (nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon==3) && f$evcall>call] // Board has No Pair and you have Open-ended straight draw (3 flushes on board)  
+  ||[  br==3 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && isonepair) && f$evcall>call] //Board has No Pair and you have Inside straight draw w/ a pair    
+  ||[  br==3 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && rankloplayer>rankhicommon && nsuitedcommon==1) && f$evcall>call] //Board has No Pair and you have Inside straight draw w/ 2 overcards    
+  ||[  br==3 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==1) && f$evcall>call] //Board has No Pair and you have Inside straight draw (rainbow)  
+  ||[  br==3 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==2) && f$evcall>call] //Board has No Pair and you have Inside straight draw (2 flushes on board)    
+  ||[  br==3 && (nstraight<=3 && nstraightfill==1 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon==3) && f$evcall>call && ncallbets<2] //Board has No Pair and you have Inside straight draw (3 flushes on board)  
+  ||[  br==3 && (rankloplayer>rankhicommon && rankhiplayer==14 && rankloplayer>=10 && !ispair && nsuitedcommon==1 && nstraightcommon==1) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "Two overcards w/Ace (AK-AT rainbow)"    
+  ||[  br==3 && (rankloplayer>rankhicommon && rankhiplayer==13 && rankloplayer>=10 && !ispair && nsuitedcommon==1 && nstraightcommon==1) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "Two overcards w/ King (KQ-KT rainbow)"    
+  ||[  br==3 && (rankloplayer>rankhicommon && nsuitedcommon==2) && f$evcall>call] //Board has No Pair and you have Two overcards (2 flushes on board)  
+  ||[  br==3 && (rankloplayer>rankhicommon && {nstraightcommon==3||nsuitedcommon==3}) && f$evcall>call && ncallbets<2] // Board has No Pair and you have Two overcards (3-card straight or 3 flushes on board  
+  ||[  br==3 && (rankhiplayer==14 && pokerval<onepair && rankloplayer<=9 && rankloplayer<rankhicommon && nsuitedcommon==1 && nstraightcommon==1) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "One overcard w/Ace (A9-A2 rainbow)"  
+  ||[  br==3 && (rankhiplayer==13 && pokerval<onepair && rankloplayer<=9 && rankloplayer<rankhicommon && nsuitedcommon==1 && nstraightcommon==1 ) && f$evcall>call && ncallbets<2] //Board has No Pair and you have "One overcard w/ King (K9-K2 rainbow)" 
+
+  ||[  br==3 && nsuited==4 && nsuitedcommon==2 && f$evcall>call] 
+  ||[  br==3 && nstraight==4 && nsuitedcommon<2 && f$evcall>call] 
+
+
+//*** River *** 
+
+  || [br==4 && ismidpair && rankhicommon<rankhiplayer && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1 && ncallbets<2] 
+  || [br==4 && ishipair && ncallbets<=2 && nrankedcommon==1 && nsuitedcommon<4 && nstraightcommon<4 && nstraightfill>1] 
+  || [br==4 && istwopair && nsuitedcommon<3 && nstraightcommon<3 && nstraightfill>2 && nrankedcommon==1] 
+  || [br==4 && istwopair && ncallbets<=1] 
+  || [br==4 && isthreeofakind && nrankedcommon==1 && nsuitedcommon<3 && nstraightcommon<3] 
+  || [br==4 && isthreeofakind && ncallbets<=2] 
+  || [br==4 && isthreeofakind && nrankedcommon==2 && nsuitedcommon<3 && nstraightcommon<3 && rankhicommon>9] 
+  || [br==4 && isstraight && nsuitedcommon<3] 
+  || [br==4 && ishistraight && nsuitedcommon<3] 
+  || [br==4 && isstraight && ncallbets<3] 
+  || [br==4 && ishistraight && ncallbets<3] 
+
+  || [br==4 && isflush && nsuitedcommon<4] 
+  || [br==4 && isflush && nsuitedcommon==3 && rankhiplayer>9] 
+  || [br==4 && isflush && nsuitedcommon==4 && rankhiplayer>11] 
+  || [br==4 && ishiflush] 
+  || [br==4 && isfullhouse] 
+  || [br==4 && isfourofakind] 
+  || [br==4 && isstraightflush] 
+  || [br==4 && didraisround4] 
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+
+(nopponentsplaying==0) ? 0 : 
+
+nopponentsplaying + defcon*nopponentsfolded 
+
+##f$play##
+
+// CONDITION                       // RESULT 
+//--------------------------------------------------------------- 
+  
+  
+(br<=1 || 4<=br)           ? -1 :  // disabled in rounds 1 and 4 
+(nopponentsdealt >= 6)     ?  1 :  // sit in against 5 or more 
+                              0    // sit out 
+//--------------------------------------------------------------- 
+
+##f$test##
+
+
+##f$debug##
+
+                 = elapsed 
+
+                 = sblind 
+                 = bblind 
+                 = bet 
+
+                 = call 
+                 = currentbet 
+                 = balance 
+
+                 = f$evcall 
+                 = f$evrais 
+
+                 = potplayer 
+                 = potcommon 
+                 = pot 
+                 = rake 
+
+                 = chair 
+                 = handrank2652 
+                 = pokerval 
+                 = prwin 
+                 = prlos 
+                 = prtie 
+                 = nopponents 
+
+##list0##
+AA  KK  QQ  
+AKs AQs 
+
+##list1##
+KK  QQ  JJ  
+AJs ATs 
+KA  QA  
+
+##list2##
+AA  JJ  TT  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs 
+
+##list3##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s QJs QTs Q9s Q8s Q7s JTs T9s 98s 87s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  
+
+##list4##
+88  77  66  
+A9s A8s A7s A6s A5s A4s A3s A2s K9s K8s Q9s Q8s JTs J9s J8s J7s T9s T8s 98s 87s 
+9A  9K  9T  8A  
+
+##list5##
+55  44  33  22  
+K7s K6s K5s K4s K3s K2s Q9s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s T9s 98s 87s 76s 
+9A  9K  9Q  9J  9T  8A  7A  6A  5A  4A  3A  2A  
+
+##list6##
+
+
+##list7##
+
+
+##f$evrais##
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+- bet                                    // raising cost 
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   + (call+bet*2)                        // my call my bet and a call (minimum) 
+
+   + (raisshort-call-bet*2)              // additional callers 
+      * 0.00                             //   0% (tight) 
+//    * 0.33                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+  * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+
+##f$evcall##
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   +  call                               // my call (minimum) 
+
+   + (callshort-call)                    // additional callers 
+//   * 0.00                             //   0% (tight) 
+     * 0.5                             //  33% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+

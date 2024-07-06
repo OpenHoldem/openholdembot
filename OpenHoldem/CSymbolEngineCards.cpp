@@ -16,7 +16,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineCards.h"
 
-#include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 
@@ -25,8 +24,8 @@
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "inlines/eval.h"
-#include "..\CTransform\CTransform.h"
+#include "PokerEval/include/inlines/eval.h"
+#include "CTransform/CTransform.h"
 
 
 

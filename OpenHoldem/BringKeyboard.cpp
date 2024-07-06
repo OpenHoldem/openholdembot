@@ -106,7 +106,7 @@ void CheckBringKeyboard(void) {
 		input_count++;
 
 		CMyMutex mutex;
-    if (!mutex.IsLocked()) return;
+		if (!mutex.IsLocked()) return;
 
 		hwnd_focus = GetFocus();
 		GetCursorPos(&cur_pos);
@@ -117,7 +117,7 @@ void CheckBringKeyboard(void) {
 		SendInput(input_count, input, sizeof(INPUT));
 
 		Sleep(200);
-    input_count = 0;
+		input_count = 0;
 		// K down
 		ZeroMemory(&input[input_count],sizeof(INPUT));
 		input[input_count].type = INPUT_KEYBOARD;

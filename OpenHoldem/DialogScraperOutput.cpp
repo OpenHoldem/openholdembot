@@ -18,7 +18,7 @@
 #include "CHeartbeatThread.h"
 
 #include "CScraper.h"
-#include "..\CTransform\CTransform.h"
+#include "CTransform/CTransform.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 

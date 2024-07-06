@@ -1,0 +1,586 @@
+CUSTOM
+
+LISTS
+
+NEW LIST 003
+    AA KK QQ
+END LIST
+
+NEW LIST 004
+    AA KK QQ JJ
+    AKs
+    AK
+END LIST	
+
+NEW LIST 005
+    AA KK QQ JJ 
+	AKs AQs
+	AK AQ
+END LIST
+
+NEW LIST 055
+    AA KK QQ JJ TT
+	AKs AQs
+	AK AQ
+END LIST
+
+NEW LIST 006
+    TT 99 88 77 66 55 44 33 22
+END LIST
+
+NEW LIST 007
+    AA KK QQ JJ TT 99 88 
+    AKs AQs AJs
+    AK AQ AJ
+END LIST	
+
+NEW LIST 011
+    AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+	AKs AQs AJs 
+	AK AQ AJ
+	KQs
+	KQ
+END LIST
+
+NEW LIST 020
+    AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+	AKs AQs AJs ATs A9s A8s
+	AK AQ AJ AT A9 A8
+	KQs KJs KTs
+	KQ KJ KT
+	QJs QTs
+	QJ QT
+	JTs
+	JT
+END LIST
+
+NEW LIST 025
+    AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+	AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+	AK AQ AJ AT A9 A8
+	KQs KJs KTs K9s
+	KQ KJ KT
+	QJs QTs Q9s
+	QJ QT
+	JTs J9s
+	JT
+	T9s
+	89s
+	78s
+	67s
+END LIST
+
+NEW LIST 043
+    AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+	AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+	AK AQ AJ AT A9 A8 A7 A6 A5 A4 A3 A2
+	KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+	KQ KJ KT K9 K8 K7
+	QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s
+	QJ QT Q9 Q8
+	JTs J9s J8s J7s
+	JT J9 J8
+	T9s T8s
+	T9 T8
+	98s
+	98
+	78s
+	67s
+	65s
+	54s
+END LIST
+
+NEW LIST 100
+    AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+    AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s                                   
+    AK AQ AJ AT A9 A8 A7 A6 A5 A4 A3 A2
+    KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+    KQ KJ KT K9 K8 K7 K6 K5 K4 K3 K2 
+    QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+    QJ QT Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2
+    JTs J9s J8s J7s J6s J5s J4s J3s J2s 
+    JT J9 J8 J7 J6 J5 J4 J3 J2 
+    T9s T8s T7s T6s T5s T4s T3s T2s
+    T9 T8 T7 T6 T5 T4 T3 T2 
+    98s 97s 96s 95s 94s 93s 92s
+    98 97 96 96 95 94 93 92
+    87s 86s 85s 84s 83s 82s
+    87 86 85 84 83 82
+    76s 75s 74s 73s 72s
+    76 75 74 73 72
+    65s 64s 63s 62s
+    65 64 63 62   
+    54s 53s 52s
+    54 53 52
+    43s 42s
+    43 42
+    32s
+    32
+END LIST
+
+NEW SYMBOL IP
+    WHEN (Position = Last) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL OOP
+    WHEN (Position = (First OR Middle)) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL	
+
+PREFLOP
+WHEN (islist003)
+    WHEN (BotsLastAction = Raise AND Raises > 0) RAISEPOT FORCE
+	WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (5 OR 4 OR 3)) RAISE 4 FORCE
+	WHEN (Calls = 1 AND StillToAct = (5 OR 4 OR 3)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (5 OR 4 OR 3)) RAISE 7 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (2 OR 1)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (2 OR 1)) RAISE 7 FORCE
+	WHEN (Calls = 3 AND StillToAct = (2 OR 1)) RAISE 9 FORCE
+	WHEN (Calls = 4 AND StillToAct = (2 OR 1)) RAISE 12 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls = 2 AND InBigBlind) RAISE 7 FORCE
+	WHEN (Calls = 3 AND InBigBlind) RAISE 9 FORCE
+	WHEN (Calls = 4 AND InBigBlind) RAISE 12 FORCE
+	WHEN (Calls = 5 AND InBigBlind) RAISE 15 FORCE
+	
+WHEN (islist004)
+    WHEN (OpponentsLeft = 1 AND BotsLastAction = Raise AND Raises > 0) RAISEPOT FORCE
+	WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (5 OR 4 OR 3)) RAISE 4 FORCE
+	WHEN (Calls = 1 AND StillToAct = (5 OR 4 OR 3)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (5 OR 4 OR 3)) RAISE 7 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (2 OR 1)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (2 OR 1)) RAISE 7 FORCE
+	WHEN (Calls = 3 AND StillToAct = (2 OR 1)) RAISE 9 FORCE
+	WHEN (Calls = 4 AND StillToAct = (2 OR 1)) RAISE 12 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls = 2 AND InBigBlind) RAISE 7 FORCE
+	WHEN (Calls = 3 AND InBigBlind) RAISE 9 FORCE
+	WHEN (Calls = 4 AND InBigBlind) RAISE 12 FORCE
+	WHEN (Calls = 5 AND InBigBlind) RAISE 15 FORCE
+	
+WHEN (islist005)
+    WHEN (OpponentsLeft = 1 AND BotsLastAction = Raise AND Raises > 0) RAISEPOT FORCE
+	WHEN (OpponentsLeft = 1 AND BotsLastAction = Raise AND Raises > 0 AND LastRaiserPosition = (0 OR 1 OR 2 OR 3 OR 4)) RAISEPOT FORCE
+	WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (5 OR 4 OR 3)) RAISE 4 FORCE
+	WHEN (Calls = 1 AND StillToAct = (5 OR 4 OR 3)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (5 OR 4 OR 3)) RAISE 7 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (2 OR 1)) RAISE 7 FORCE
+	WHEN (Calls = 3 AND StillToAct = (2 OR 1)) RAISE 9 FORCE
+	WHEN (Calls = 4 AND StillToAct = (2 OR 1)) RAISE 12 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls = 2 AND InBigBlind) RAISE 7 FORCE
+	WHEN (Calls = 3 AND InBigBlind) RAISE 9 FORCE
+	WHEN (Calls = 4 AND InBigBlind) RAISE 12 FORCE
+	WHEN (Calls = 5 AND InBigBlind) RAISE 15 FORCE	
+	
+WHEN (islist055)
+	WHEN (OpponentsLeft = 1 AND BotsLastAction = Raise AND Raises > 0 AND LastRaiserPosition = (0 OR 1 OR 2 OR 3)) RAISEPOT FORCE
+	WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (5 OR 4 OR 3)) RAISE 4 FORCE
+	WHEN (Calls = 1 AND StillToAct = (5 OR 4 OR 3)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (5 OR 4 OR 3)) RAISE 7 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (2 OR 1)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (2 OR 1)) RAISE 7 FORCE
+	WHEN (Calls = 3 AND StillToAct = (2 OR 1)) RAISE 8 FORCE
+	WHEN (Calls = 4 AND StillToAct = (2 OR 1)) RAISE 9 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls = 2 AND InBigBlind) RAISE 7 FORCE
+	WHEN (Calls = 3 AND InBigBlind) RAISE 8 FORCE
+	WHEN (Calls = 4 AND InBigBlind) RAISE 9 FORCE
+	WHEN (Calls = 5 AND InBigBlind) RAISE 10 FORCE	
+	
+WHEN (islist007)
+	WHEN (OpponentsLeft = 1 AND BotsLastAction = Raise AND Raises > 0 AND LastRaiserPosition = (0 OR 1)) RAISEPOT FORCE
+	WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (5 OR 4 OR 3)) RAISE 4 FORCE
+	WHEN (Calls = 1 AND StillToAct = (5 OR 4 OR 3)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (5 OR 4 OR 3)) RAISE 6 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (2 OR 1)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (2 OR 1)) RAISE 6 FORCE
+	WHEN (Calls = 3 AND StillToAct = (2 OR 1)) RAISE 7 FORCE
+	WHEN (Calls = 4 AND StillToAct = (2 OR 1)) RAISE 8 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls = 2 AND InBigBlind) RAISE 6 FORCE
+	WHEN (Calls = 3 AND InBigBlind) RAISE 7 FORCE
+	WHEN (Calls = 4 AND InBigBlind) RAISE 8 FORCE
+	WHEN (Calls = 5 AND InBigBlind) RAISE 9 FORCE	
+	
+WHEN (islist011)
+	WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (5 OR 4 OR 3)) RAISE 4 FORCE
+	WHEN (Calls = 1 AND StillToAct = (5 OR 4 OR 3)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (5 OR 4 OR 3)) RAISE 6 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls = 2 AND StillToAct = (2 OR 1)) RAISE 6 FORCE
+	WHEN (Calls = 3 AND StillToAct = (2 OR 1)) RAISE 7 FORCE
+	WHEN (Calls = 4 AND StillToAct = (2 OR 1)) RAISE 8 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls = 2 AND InBigBlind) RAISE 6 FORCE
+	WHEN (Calls = 3 AND InBigBlind) RAISE 7 FORCE
+	WHEN (Calls = 4 AND InBigBlind) RAISE 8 FORCE
+	WHEN (Calls = 5 AND InBigBlind) RAISE 9 FORCE
+
+WHEN (islist020)
+	WHEN (Raises = 0 AND Calls = 0 AND InCutOff) RAISE 4 FORCE
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (2 OR 1)) RAISE 3 FORCE
+	WHEN (Calls = 1 AND StillToAct = (2 OR 1)) RAISE 5 FORCE
+	WHEN (Calls >= 2 AND StillToAct = (2 OR 1)) RAISE 6 FORCE
+	WHEN (Calls = 1 AND InBigBlind) RAISE 5 FORCE
+	WHEN (Calls >= 2 AND InBigBlind) RAISE 6 FORCE	
+	
+WHEN (islist025)
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = (2 OR 1)) RAISE 3 FORCE
+	
+WHEN (islist043)
+    WHEN (Raises = 0 AND Calls = 0 AND StillToAct = 1) RAISE 3 FORCE	
+	
+WHEN Others FOLD FORCE
+
+FLOP
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////PROGRAMACION DEL FLOP////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ESCALERA DE COLOR
+
+WHEN (HaveStraightFlush)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE	
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////POKER
+
+WHEN (HaveQuads)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FULL
+
+WHEN (HaveFullHouse)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+	
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////COLOR
+
+WHEN (HaveFlush)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ESCALERA
+
+WHEN (HaveStraight)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////TRIO
+
+WHEN (HaveSet)
+    WHEN (BotsLastAction = Raise AND Raises > 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEPOT FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////DOBLES PAREJAS
+
+WHEN (HaveTwoPair)
+    WHEN (BotsLastAction = Raise AND Raises > 0) RAISEPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEPOT FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PAREJA
+
+WHEN (HavePair)
+    WHEN (BotsLastAction = Raise AND Raises > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////CARTA ALTA
+
+WHEN (Overcards = 2)
+    WHEN (BotsLastAction = Raise AND Raises > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+	
+WHEN (Overcards = 1)
+    WHEN (BotsLastAction = Raise AND Raises > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE	
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PROYECTO
+
+WHEN (HaveOpenEndedStraightDraw)
+    WHEN (BotsLastAction = Raise AND Raises > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+	
+WHEN (HaveFlushDraw)	
+    WHEN (BotsLastAction = Raise AND Raises > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////NADA DE NADA
+
+WHEN (BotRaisedBeforeFlop AND OpponentsOnFlop >= 1 AND IP) RAISE 75% FORCE
+
+WHEN (BotRaisedBeforeFlop AND OpponentsOnFlop = 1 AND OOP AND LastCallerPosition = 0) RAISE 75% FORCE
+	
+
+WHEN Others FOLD FORCE
+
+
+
+TURN 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////PROGRAMACION DEL TURN////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ESCALERA DE COLOR
+
+WHEN (HaveStraightFlush)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////POKER
+
+WHEN (HaveQuads)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FULL
+
+WHEN (HaveFullHouse)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////COLOR
+
+WHEN (HaveFlush)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ESCALERA
+
+WHEN (HaveStraight)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEPOT FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////TRIO
+
+WHEN (HaveSet)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////DOBLES PAREJAS
+
+WHEN (HaveTopPair)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PAREJA
+
+WHEN (HavePair)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////CARTA ALTA
+
+WHEN (Overcards = 2)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PROYECTO
+
+WHEN (HaveOpenEndedStraightDraw)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+	
+WHEN (HaveFlushDraw)	
+    WHEN (BotsLastAction = Raise AND Raises >= 1) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////NADA DE NADA
+
+WHEN Others FOLD FORCE
+
+
+
+
+RIVER 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////PROGRAMACION DEL RIVER///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ESCALERA DE COLOR
+
+WHEN (HaveStraightFlush)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////POKER
+
+WHEN (HaveQuads)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISEPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEHALFPOT FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FULL
+
+WHEN (HaveFullHouse)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEMAX FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISEHALFPOT FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISEHALFPOT FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEMAX FORCE
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////COLOR
+
+WHEN (HaveFlush)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEMAX FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEMAX FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ESCALERA
+
+WHEN (HaveStraight)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEMAX FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEMAX FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////TRIO
+
+WHEN (HaveSet)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) RAISEMAX FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) RAISEMAX FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) RAISEMAX FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////DOBLES PAREJAS
+
+WHEN (HaveTopPair)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PAREJA
+
+WHEN (HavePair)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) CALL FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) CALL FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) CALL FORCE
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////CARTA ALTA
+
+WHEN (Overcards = 2)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) RAISE 75% FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) RAISE 75% FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PROYECTO
+
+WHEN (HaveOpenEndedStraightDraw)
+    WHEN (BotsLastAction = Raise AND Raises >= 1) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+	
+WHEN (HaveFlushDraw)	
+    WHEN (BotsLastAction = Raise AND Raises >= 1) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets = 0) FOLD FORCE
+	WHEN (OpponentsLeft >= 1 AND IP AND Bets > 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets = 0) FOLD FORCE
+    WHEN (OpponentsLeft >= 1 AND OOP AND Bets > 0) FOLD FORCE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////NADA DE NADA
+
+WHEN Others FOLD FORCE
+

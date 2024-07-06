@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>    
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OpenHoldem\OpenHoldem.vcxproj">
+      <Project>{4b4f8898-50c6-4f07-8771-b140482dba69}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ManualMode\ManualMode.vcxproj">
+      <Project>{912cbd08-cfc5-4e5c-a6b5-fd18379467f2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenScrape\OpenScrape.vcxproj">
+      <Project>{24fc33ae-eeca-44f8-924c-d3658612c383}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ReplayPlayer\ReplayPlayer.vcxproj">
+      <Project>{339b71a7-4462-40fd-ae9c-aba2eb73999a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ReplayShooter\ReplayShooter.csproj">
+      <Project>{f5c4791d-6d57-4d87-8baa-9db0d4a34a81}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="zip.ps1">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{b8242f1c-267e-499d-9ef8-849c0f7b7da4}</ProjectGuid>
+    <RootNamespace>Publication</RootNamespace>
+    <WindowsTargetPlatformVersion>
+    </WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)_pub\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)_pub\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>rmdir $(OutDir) /s/q
+mkdir $(OutDir)
+mkdir $(OutDir)\Tools
+robocopy $(ProjectDir)\Documents $(OutDir)\Documents /e /ndl /njh /njs /nc /ns /np
+robocopy $(ProjectDir)\Logic $(OutDir)\Logic /e /ndl /njh /njs /nc /ns /np
+robocopy $(ProjectDir)\Tables $(OutDir)\Tables /e /ndl /njh /njs /nc /ns /np
+robocopy $(ProjectDir)\Tools $(OutDir)\Tools /e /ndl /njh /njs /nc /ns /np
+robocopy $(SolutionDir)_out\$(Platform)\$(Configuration) $(OutDir) /e /ndl /njh /njs /nc /ns /np
+robocopy $(SolutionDir)_out\AnyCPU\$(Configuration) $(OutDir) /e /ndl /njh /njs /nc /ns /np
+robocopy $(SolutionDir)Libraries\OpenPPL $(OutDir)\Logic\OpenPPL /e /ndl /njh /njs /nc /ns /np *.dll
+copy /b/v/y $(ProjectDir)OpenHoldem.ini $(OutDir)OpenHoldem.ini
+del $(OutDir)*.lib /s
+del $(OutDir)*.exp /s
+del $(OutDir)*.ilk /s
+del $(OutDir)*.config /s
+del $(OutDir)*.iobj /s
+del $(OutDir)*.ipdb /s
+rmdir $(OutDir)\Logs /s/q
+move $(OutDir)Replay*.exe $(OutDir)\Tools
+move $(OutDir)ManualMode.exe $(OutDir)\Tools
+move $(OutDir)OpenScrape.exe $(OutDir)\Tools
+exit 0</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>rmdir $(OutDir) /s/q
+mkdir $(OutDir)
+mkdir $(OutDir)\Tools
+robocopy $(ProjectDir)\Documents $(OutDir)\Documents /e /ndl /njh /njs /nc /ns /np
+robocopy $(ProjectDir)\Logic $(OutDir)\Logic /e /ndl /njh /njs /nc /ns /np
+robocopy $(ProjectDir)\Tables $(OutDir)\Tables /e /ndl /njh /njs /nc /ns /np
+robocopy $(ProjectDir)\Tools $(OutDir)\Tools /e /ndl /njh /njs /nc /ns /np
+robocopy $(SolutionDir)_out\$(Platform)\$(Configuration) $(OutDir) /e /ndl /njh /njs /nc /ns /np
+robocopy $(SolutionDir)_out\AnyCPU\$(Configuration) $(OutDir) /e /ndl /njh /njs /nc /ns /np
+robocopy $(SolutionDir)Libraries\OpenPPL $(OutDir)\Logic\OpenPPL /e /ndl /njh /njs /nc /ns /np *.dll
+copy /b/v/y $(ProjectDir)OpenHoldem.ini $(OutDir)OpenHoldem.ini
+del $(OutDir)*.lib /s
+del $(OutDir)*.pdb /s
+del $(OutDir)*.exp /s
+del $(OutDir)*.ilk /s
+del $(OutDir)*.config /s
+del $(OutDir)*.iobj /s
+del $(OutDir)*.ipdb /s
+rmdir $(OutDir)\Logs /s/q
+move $(OutDir)Replay*.exe $(OutDir)\Tools
+move $(OutDir)ManualMode.exe $(OutDir)\Tools
+move $(OutDir)OpenScrape.exe $(OutDir)\Tools
+cd $(OutDir)
+cd ..
+copy /b/v/y $(ProjectDir)zip.ps1 zip.ps1
+powershell -ExecutionPolicy Unrestricted -File zip.ps1 -Configuration $(Configuration) -Platform $(Platform)
+del zip.ps1 /s
+move *.zip $(OutDir)
+exit 0</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

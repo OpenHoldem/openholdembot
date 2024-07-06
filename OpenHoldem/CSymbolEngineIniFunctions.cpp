@@ -18,7 +18,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineIniFunctions.h"
 
-#include <assert.h>
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"

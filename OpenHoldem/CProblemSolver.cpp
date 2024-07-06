@@ -25,7 +25,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableMapLoader.h"
 #include "CTableState.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CProblemSolver::CProblemSolver()
 {}

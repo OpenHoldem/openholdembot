@@ -15,7 +15,7 @@
 
 #include "CConfigurationCheck.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 
 CConfigurationCheck *p_configurationcheck = 0;
@@ -126,12 +126,12 @@ CString CConfigurationCheck::GetValue(CString mhive, int type, CString registry_
 				}
 
 			default :
-				return NULL;
+				return "0";
 		}
 	}
 	else
 	{
-		return NULL;
+		return "0";
 	}
 }
 
@@ -149,7 +149,7 @@ void CConfigurationCheck::CheckColourDepth()
 void CConfigurationCheck::CheckInputSettings()
 {
 	TCHAR KeyboardLayout[KL_NAMELENGTH];
-	bool Success = GetKeyboardLayoutName((LPSTR)&KeyboardLayout);
+	bool Success = GetKeyboardLayoutName((LPSTR)&KeyboardLayout) != 0;
 
 	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
 	{

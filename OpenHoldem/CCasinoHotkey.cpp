@@ -16,8 +16,8 @@
 
 #include "CCasinoInterface.h"
 
-#include "..\CTablemap\CTablemap.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "CTablemap/CTablemap.h"
+#include "StringFunctions/string_functions.h"
 
 const char kHotkeyUndefined = '\0';
 char KeyArray[2];

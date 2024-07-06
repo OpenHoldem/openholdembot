@@ -15,14 +15,13 @@
 #include "stdafx.h"
 #include "CSymbolEngineIsOmaha.h"
 
-#include <assert.h>
 #include "CEngineContainer.h"
 
 #include "CScraper.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 // The number of cards per player depends on the game-type.
 // This affects cards to be scraped and evaluated.

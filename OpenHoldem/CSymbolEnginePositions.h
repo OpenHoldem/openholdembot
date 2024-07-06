@@ -15,7 +15,7 @@
 #define INC_CSYMBOLENGINEPOSITIONS_H
 
 #include "CVirtualSymbolEngine.h"
-#include "..\CTransform\CTransform.h"
+#include "CTransform/CTransform.h"
 
 class CSymbolEnginePositions: public CVirtualSymbolEngine
 {

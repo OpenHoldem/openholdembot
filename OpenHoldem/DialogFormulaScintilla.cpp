@@ -37,13 +37,13 @@
 #include "DialogNew.h"
 #include "DialogRename.h"
 #include "MainFrm.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
-#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
-#include "../scintilla/include/SciLexer.h"
-#include "../scintilla/include/Scintilla.h"
-#include "WinMgr.h"
+#include "PokerTracker/PokerTracker.h"
+#include "Scintilla/include/SciLexer.h"
+#include "Scintilla/include/Scintilla.h"
+#include "CWinMgr/WinMgr.h"
 
 
 // CDlgFormulaScintilla dialog
@@ -412,7 +412,6 @@ void CDlgFormulaScintilla::RemoveSingleItemGroups()
 {
 	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
 	HTREEITEM hNextLevelItem = NULL, hNextItem = NULL;
-	CString fnName = 0;
 
 	while (hUDFChildItem != NULL)
 	{
@@ -1701,11 +1700,11 @@ void CDlgFormulaScintilla::SetEquiDistantFont(CScintillaWnd *pWnd) {
 		pWnd->SetFontname(i, logfont.lfFaceName);
 		pWnd->SetFontheight(i, -logfont.lfHeight);
 		pWnd->SetBold(i, (logfont.lfWeight==FW_BOLD ? true : false));
-		pWnd->SetItalic(i, logfont.lfItalic);
+		pWnd->SetItalic(i, logfont.lfItalic != 0x0);
 	}
   
   _edit_font.DeleteObject();
-  bool success = _edit_font.CreatePointFont(100, "Courier");
+  BOOL success = _edit_font.CreatePointFont(100, "Courier");
   assert(success);
 }
 

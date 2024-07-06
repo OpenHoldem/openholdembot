@@ -19,9 +19,9 @@
 
 #include "CTablemapCompletenessChecker.h"
 #include "CTablePointChecker.h"
-#include "..\CTablemap\CTablemapAccess.h"
-#include "..\DLLs\Files_DLL\Files.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "CTablemap/CTablemapAccess.h"
+#include "Files/Files.h"
+#include "WindowFunctions/window_functions.h"
 #include "OpenHoldem.h"
 
 CTableMapLoader *p_tablemap_loader = NULL;

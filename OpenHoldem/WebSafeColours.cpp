@@ -17,7 +17,7 @@
 
 #include "StdAfx.h"
 #include "WebSafeColours.h"
-#include <assert.h>
+#include "Debugger/debugger.h"
 
 int ClosestWebSafeColourComponent(const int red_or_green_or_blue_component) {
   assert(red_or_green_or_blue_component >= 0);

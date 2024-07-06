@@ -14,13 +14,12 @@
 #include "StdAfx.h"
 #include "CPokerTrackerThread.h"
 
-#include <assert.h>
 #include <process.h>
 #include <comdef.h>
 #include "CAutoConnector.h"
 #include "CEngineContainer.h"
 #include "CLevDistance.h"
-#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
+#include "PokerTracker/PokerTracker.h"
 #include "CPokerTrackerLookUp.h"
 
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -32,7 +31,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
 

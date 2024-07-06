@@ -83,7 +83,6 @@ const char *k_error_md5_creation_failed = " *** MD5 failed ***";
 CString CalculateMD5(const CString FileName)
 {
     int i, j;
-    FILE *fInput;
     MD5Context md5Hash;
     unsigned char bBuffer[4096];
     unsigned char b;
@@ -95,8 +94,9 @@ CString CalculateMD5(const CString FileName)
         return k_error_md5_creation_failed;
     }
     
-    fInput = fopen(FileName, "rb");
-    if(!fInput)
+	FILE *stream;
+	errno_t err = fopen_s(&stream, FileName, "rb");
+    if(err != 0)
 	{
         CryptCleanup();
         return k_error_md5_creation_failed;
@@ -104,14 +104,14 @@ CString CalculateMD5(const CString FileName)
     
     memset(&md5Hash, 0, sizeof(MD5Context));
     MD5Init(&md5Hash);
-    while(!feof(fInput)){
+    while(!feof(stream)){
         unsigned int nCount = fread(bBuffer, sizeof(unsigned char), 
-                                    4096, fInput);
+                                    4096, stream);
         MD5Update(&md5Hash, bBuffer, nCount);
     }
     MD5Final(&md5Hash);
     
-    fclose(fInput);
+    fclose(stream);
     //printf("\nChecksum of '%s' is: ", argv[1]);
     char *Value = new char[1024];int k = 0;
     for(i = 0; i < 16; i++)

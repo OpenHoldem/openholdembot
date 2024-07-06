@@ -15,7 +15,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineVariousDataLookup.h"
 
-#include <assert.h>
 #include <process.h>
 #include <float.h>
 
@@ -25,7 +24,7 @@
 #include "CEngineContainer.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
-#include "inlines/eval.h"
+#include "PokerEval/include/inlines/eval.h"
 #include "Chair$Symbols.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
@@ -35,13 +34,13 @@
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
-#include "..\CTablemap\CTablemap.h"
-#include "..\CTransform\CTransform.h"
+#include "CTablemap/CTablemap.h"
+#include "CTransform/CTransform.h"
 #include "CTableTitle.h"
 #include "CWhiteInfoBox.h"
 
 #include "OpenHoldem.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CSymbolEngineVariousDataLookup			*p_symbol_engine_various_data_lookup = NULL;
 

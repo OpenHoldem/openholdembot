@@ -19,9 +19,8 @@
 #include "stdafx.h"
 #include "CVersionInfo.h"
 
-#include <assert.h>
 #include "CFunctionCollection.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "MD5_Checksum.h"
 
 CVersionInfo *p_version_info = NULL;

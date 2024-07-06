@@ -19,7 +19,7 @@
 #include "CFormulaParser.h"
 #include "CParseErrors.h"
 #include "CParseTreeTerminalNodeEndOfFunction.h"
-#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
+#include "PokerTracker/PokerTracker.h"
 #include "CPokerTrackerThread.h"
 
 #include "CSymbolEngineCallers.h"
@@ -28,8 +28,8 @@
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "WindowFunctions/window_functions.h"
+#include "StringFunctions/string_functions.h"
 
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 {

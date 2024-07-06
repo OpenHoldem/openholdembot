@@ -15,9 +15,10 @@
 //
 
 #include "stdafx.h"
-#include "OpenHoldem.h"
 #include "DialogNew.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+
+#include "resource.h"
+#include "WindowFunctions/window_functions.h"
 #include "VerifyFunctionAndListNames.h"
 
 // CDlgNew dialog

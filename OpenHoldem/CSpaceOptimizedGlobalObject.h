@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <assert.h>
 #include "CMemoryPool.h"
+#include "Debugger/debugger.h"
 
 class CSpaceOptimizedGlobalObject {
  public:

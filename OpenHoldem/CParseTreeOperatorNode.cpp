@@ -30,8 +30,8 @@
 #include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "WindowFunctions/window_functions.h"
+#include "StringFunctions/string_functions.h"
 #include "TokenizerConstants.h"
 
 CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) : 
@@ -218,7 +218,7 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
 	  case kTokenOperatorLogicalXOr: 
       VerifyBooleanOperand(value_of_first_sibbling);
       VerifyBooleanOperand(value_of_second_sibbling);
-		  return bool(value_of_first_sibbling) != bool(value_of_second_sibbling);
+		  return (value_of_first_sibbling != 0.0) != (value_of_second_sibbling != 0.0);
 	  case kTokenOperatorBinaryAnd: 
 		  return (unsigned long)value_of_first_sibbling 
 			  & (unsigned long)value_of_second_sibbling;

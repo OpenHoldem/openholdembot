@@ -14,8 +14,8 @@
 #ifndef INC_DIALOGSCRAPEROUTPUT_H
 #define INC_DIALOGSCRAPEROUTPUT_H
 
-#include "..\CTablemap\CTablemap.h"
-#include "SizerBar.h"
+#include "CTablemap/CTablemap.h"
+#include "CWinMgr/SizerBar.h"
 #include "Resource.h"
 
 // CDlgScraperOutput dialog

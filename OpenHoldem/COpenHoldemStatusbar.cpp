@@ -28,7 +28,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "resource.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
 

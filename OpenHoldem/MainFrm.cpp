@@ -18,9 +18,9 @@
 #include "MainFrm.h"
 #include <io.h>
 #include <process.h>
-#include "..\DLLs\Files_DLL\Files.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "Files/Files.h"
+#include "StringFunctions/string_functions.h"
+#include "WindowFunctions/window_functions.h"
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
@@ -38,7 +38,7 @@
 #include "CSessionCounter.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "..\CTransform\CTransform.h"
+#include "CTransform/CTransform.h"
 #include "CValidator.h"
 #include "DialogFormulaScintilla.h"
 #include "DialogSAPrefs2.h"
@@ -61,7 +61,7 @@
 #include "DialogSAPrefs21.h"
 #include "DialogSAPrefs22.h"
 #include "DialogScraperOutput.h"
-#include "inlines/eval.h"
+#include "PokerEval/include/inlines/eval.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
@@ -419,7 +419,7 @@ BOOL CMainFrame::DestroyWindow() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20459
   // probably caused by incorrect order of deletion,
   // caused by incorrect position of StopThreads and KillTimers.
-  bool success = CFrameWnd::DestroyWindow(); 
+  BOOL success = CFrameWnd::DestroyWindow();
   write_log(Preferences()->debug_gui(), "[GUI] Window deleted\n");
   return success;
 }

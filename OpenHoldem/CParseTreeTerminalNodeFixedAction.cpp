@@ -27,8 +27,8 @@
 #include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "WindowFunctions/window_functions.h"
+#include "StringFunctions/string_functions.h"
 #include "TokenizerConstants.h"
 
 CParseTreeTerminalNodeFixedAction::CParseTreeTerminalNodeFixedAction(

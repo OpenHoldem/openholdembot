@@ -21,7 +21,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineVersus.h"
-#include "..\DLLs\GamestateValidation_DLL\GamestateValidation.h"
+#include "GamestateValidation/GamestateValidation.h"
 
 CValidator *p_validator = NULL;
 

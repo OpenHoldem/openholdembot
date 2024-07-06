@@ -1,0 +1,2 @@
+param([string]$Configuration, [string]$Platform)
+Compress-Archive -Path $Configuration -DestinationPath $('OpenHoldem_' + (Get-Item .\$Configuration\OpenHoldem.exe).VersionInfo.FileVersion.ToString() + '.zip') -Force

@@ -14,9 +14,6 @@
 #include "stdafx.h"
 #include "CardFunctions.h"
 
-#include <assert.h>
-
-
 int RankCharacterToRankNumber(char rank) {
 	switch (rank) {
 		case '2': return 2;

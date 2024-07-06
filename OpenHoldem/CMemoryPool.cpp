@@ -26,7 +26,7 @@
 #include "CMemoryPool.h"
 
 #include "CFormulaParser.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CMemoryPool *p_memory_pool_tablemaps = NULL;
 CMemoryPool *p_memory_pool_scraper = NULL;

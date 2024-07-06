@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GamestateValidation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GamestateValidation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_bets_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_buttons_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_cards_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_chip_amounts_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_general_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_handreset_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_history_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_limits_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_memory_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_number_of_bets_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_players_friends_opponents_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_table_stats_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\consistency_checks_time_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_action_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_autoplayer_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_card_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_chairs_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_chip_amounts_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_common_cards_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_flags_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_flushes_straights_sets_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_formula_file_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_general_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_handrank_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_icm_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_known_cards_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_limits_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_list_tests_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_nhands_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_NOT_TO_DO_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_number_of_bets_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_players_friends_opponents_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_poker_values_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_probabilities_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_rank_bits_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_rank_hi_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_rank_lo_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_rounds_positions_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_run_ron_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_table_stats_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_tablemap_symbols_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_time_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+    <None Include="Validator_Rules\range_checks_versus_inline.cpp_">
+      <Filter>Rules</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Rules">
+      <UniqueIdentifier>{78f29561-e0e8-4c43-b392-e5fe501bab1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

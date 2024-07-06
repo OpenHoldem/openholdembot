@@ -1,0 +1,323 @@
+// Contributed by StephH, Thu Mar 01, 2012
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=14752
+
+CUSTOM 
+
+LISTS
+// =====================================
+// Openraising Chart - Frühe Position
+// =====================================
+// Raise/All-In
+NEW LIST 100
+	AA KK QQ AK
+END LIST
+// Raise/Fold
+NEW LIST 101
+	JJ TT AQ AJs
+END LIST
+// =====================================
+// Openraising Chart - Mittlere Position
+// =====================================
+// Raise/All-In
+NEW LIST 102
+	AA KK QQ AK
+END LIST
+// Raise/Fold
+NEW LIST 103
+	JJ TT 99 88 AQ AJ ATs KQs
+END LIST
+// =====================================
+// Openraising Chart - CO
+// =====================================
+// Raise/All-In
+NEW LIST 104
+	AA KK QQ JJ AK
+END LIST
+// Raise/Fold
+NEW LIST 105
+	TT 99 88 77 AQ AJ AT A9s KQ
+END LIST
+// Steal/All-In
+NEW LIST 106
+	TT 99 AQ
+END LIST 
+// Steal/Fold
+NEW LIST 107
+	66 55 AT A9s KJs QJs
+END LIST
+// =====================================
+// Openraising Chart - BU + SB
+// =====================================
+// Raise/All-In
+NEW LIST 108
+	AA KK QQ JJ AK
+END LIST
+// Raise/Fold
+NEW LIST 109
+	TT 99 88 77 AQ AJ AT A9s KQ
+END LIST
+// Steal/All-In
+NEW LIST 110
+	TT 99 88 AQ AJs
+END LIST
+// Steal/Fold
+NEW LIST 111
+	22 33 44 55 66 A9 KJ KT QJ QT JT
+	A8s A7s A6s A5s A4s A3s A2s
+END LIST
+// =====================================
+// Openraising Chart - BB
+// =====================================
+// Raise/All-In
+NEW LIST 112
+	AA KK QQ JJ AK
+END LIST
+// Raise/Fold
+NEW LIST 113
+	TT 99 88 77 AQ AJ AT A9s KQ
+END LIST
+// Resteal/All-In
+NEW LIST 114
+	AA KK QQ JJ TT AK AQs 99
+END LIST
+// Resteal/Fold
+NEW LIST 115
+	88 77 AQo AJ
+END LIST
+// =====================================
+// Reraise Chart
+// =====================================
+// Position des Raisers: Mittlere Position
+// Reraise/All-In
+NEW LIST 120
+	AA KK QQ AK
+END LIST
+// Reraise/Fold
+NEW LIST 121
+	JJ AQ AJs
+END LIST
+// Position des Raisers: Späte Position
+// Reraise/All-In
+NEW LIST 122
+	AA KK QQ JJ AK
+END LIST
+// Reraise/Fold
+NEW LIST 123
+	TT 99 AQ AJ ATs
+END LIST
+// Position des Raisers: SB
+// Reraise/All-In
+NEW LIST 124
+	AA KK QQ JJ AK AQ
+END LIST
+// Reraise/Fold
+NEW LIST 125
+	TT 99 AJ ATs
+END LIST
+
+// >50 BB ALL-IN
+NEW LIST 200
+	AA KK
+END LIST
+
+// Functions
+SYMBOLS
+// my helper Function
+NEW SYMBOL CallsRaisesAfterMe
+	WHEN (Calls = 0 AND RaisesSinceLastPlay = 1) RETURN 1 FORCE
+	WHEN (RaisesSinceLastPlay = 1 AND (Calls - CallsSinceLastRaise = 0)) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+// Monsterhands
+NEW SYMBOL Monster
+	WHEN(HaveTwoPair) RETURN 1 FORCE
+	WHEN(HaveTrips) RETURN 1 FORCE
+	WHEN(HaveStraight) RETURN 1 FORCE
+	WHEN(HaveFlush) RETURN 1 FORCE
+	WHEN(HaveFullHouse) RETURN 1 FORCE
+	WHEN(HaveQuads) RETURN 1 FORCE
+	WHEN(HaveStraightFlush) RETURN 1 FORCE
+	WHEN(HaveNuts) RETURN 1 FORCE
+	WHEN(HaveSet) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+PREFLOP
+WHEN((StackSize < 30)) SITOUT FORCE
+
+// Go-AllIn if we spend to much Money preflop
+WHEN((BotsActionsOnThisRound < 0) AND (StartingStackSize - StackSize < 12 )) RAISEMAX FORCE
+// Go-AllIn if we spend to much Money preflop+flop
+WHEN((BotsActionsOnThisRound > 0) AND (StartingStackSize - StackSize < 10 )) RAISEMAX FORCE
+
+WHEN(StackSize > 50)
+	WHEN((StackSize > 50) AND InUTG) SITOUT FORCE
+	WHEN((StackSize > 50) AND (islist200)) RAISEMAX FORCE
+	WHEN Others FOLD FORCE
+// Frühe Position
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (InUTG OR InEarlyPosition2 OR InEarlyPosition3 OR InEarlyPosition1))
+	WHEN ((islist100 OR islist101)) RETURN (Calls + 3) FORCE
+// Raise Allin/Fold
+WHEN((RaisesSinceLastPlay = 1) AND (InUTG OR InEarlyPosition2 OR InEarlyPosition3 OR InEarlyPosition1))
+	WHEN(islist100) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 1) AND (InUTG OR InEarlyPosition2 OR InEarlyPosition3 OR InEarlyPosition1))
+	WHEN((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE
+	
+// Mittlere Position
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (InMiddePosition1 OR InMiddePosition2 OR InMiddePosition3))
+	WHEN ((islist102 OR islist103)) RETURN (Calls + 3) FORCE
+WHEN((RaisesSinceLastPlay = 1) AND (InMiddePosition1 OR InMiddePosition2 OR InMiddePosition3))
+	WHEN(islist102) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 1) AND (InMiddePosition1 OR InMiddePosition2 OR InMiddePosition3))
+	WHEN((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE
+
+// CO
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (Calls > 0) AND (InCutOff))	
+	WHEN((islist104 OR islist105)) RETURN (Calls + 3) FORCE
+WHEN((RaisesSinceLastPlay = 1) AND (CallsRaisesAfterMe = 0) AND (InCutOff))
+	WHEN(islist104) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 1) AND InCutOff)
+	WHEN((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE
+	// steal
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (Calls = 0) AND (InCutOff))
+	WHEN (InCutOff AND (islist106 OR islist107)) RAISE 3 FORCE
+WHEN (RaisesSinceLastPlay = 1 AND InCutOff)
+	WHEN (islist106 AND CallsRaisesAfterMe = 1) RAISEMAX FORCE
+	
+// BU / SB
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (Calls > 0) AND (InButton OR InSmallBlind))
+	WHEN((islist108 OR islist109)) RETURN (Calls + 3) FORCE
+WHEN((RaisesSinceLastPlay = 1) AND (CallsRaisesAfterMe = 0) AND (InButton OR InSmallBlind))
+	WHEN(islist108) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 1) AND (InButton OR InSmallBlind))
+	WHEN((Hand = AA) OR (Hand = KK) OR (Hand = QQ)) RAISEMAX FORCE
+	// steal
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (Calls = 0) AND (InButton OR InSmallBlind))
+	WHEN ((InButton OR InSmallBlind) AND (islist110 OR islist111)) RAISE 3 FORCE
+WHEN (RaisesSinceLastPlay = 1 AND (InButton OR InSmallBlind))
+	WHEN (islist110 AND CallsRaisesAfterMe = 1) RAISEMAX FORCE
+	
+// BB
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 0) AND (Calls > 0) AND (InBigBlind))
+	WHEN((islist112 OR islist113)) RETURN (Calls + 3) FORCE
+WHEN((RaisesSinceLastPlay = 1) AND (CallsRaisesAfterMe = 0) AND (InBigBlind))
+	WHEN(islist112) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 1) AND (InBigBlind))
+	WHEN((Hand = AA) OR (Hand = KK) OR (Hand = QQ)) RAISEMAX FORCE
+	// Resteal
+WHEN((BotsActionsOnThisRound < 1) AND (Raises = 1) AND ((LastRaiserPosition = 1) OR (LastRaiserPosition = 2) OR (LastRaiserPosition = 3)) AND (InBigBlind))
+	WHEN((islist114 OR islist115)) RETURN (BetSize * 3) FORCE
+WHEN((RaisesSinceLastPlay = 1) AND ((LastRaiserPosition = 1) OR (LastRaiserPosition = 2) OR (LastRaiserPosition = 3)) AND (InBigBlind))
+	WHEN(islist114) RAISEMAX FORCE
+
+// Reraise Chart
+WHEN((Raises = 1) AND (BotsActionsOnThisRound < 1))
+	WHEN(((LastRaiserPosition = 7) OR (LastRaiserPosition = 8) OR (LastRaiserPosition = 9)) AND ((Hand = AA) OR (Hand = KK) OR (Hand = QQ))) RETURN (BetSize * 3) FORCE
+	WHEN(((LastRaiserPosition = 4) OR (LastRaiserPosition = 5) OR (LastRaiserPosition = 6)) AND (islist120 OR islist121)) RETURN (BetSize * 3) FORCE
+	WHEN(((LastRaiserPosition = 2) OR (LastRaiserPosition = 3)) AND (islist122 OR islist123)) RETURN (BetSize * 3) FORCE
+	WHEN(((LastRaiserPosition = 1)) AND (islist124 OR islist125)) RETURN (BetSize * 3) FORCE
+WHEN((Raises > 1) AND (RaisesSinceLastPlay = 1))
+	WHEN(((LastRaiserPosition = 7) OR (LastRaiserPosition = 8) OR (LastRaiserPosition = 9)) AND ((Hand = AA) OR (Hand = KK) OR (Hand = QQ))) RAISEMAX FORCE
+	WHEN(((LastRaiserPosition = 4) OR (LastRaiserPosition = 5) OR (LastRaiserPosition = 6)) AND (islist120)) RETURN RAISEMAX FORCE
+	WHEN(((LastRaiserPosition = 2) OR (LastRaiserPosition = 3)) AND (islist122)) RETURN RAISEMAX FORCE
+	WHEN(((LastRaiserPosition = 1)) AND (islist124)) RETURN RAISEMAX FORCE
+
+// if more than 1 raise before us, just go allin with AA KK or QQ
+WHEN(Raises > 1)
+	WHEN((Hand = AA) OR (Hand = KK) OR (Hand = QQ)) RAISEMAX FORCE
+// just for security, push that cards if we fail to play them on top
+WHEN((Hand = AA) OR (Hand = KK) OR (Hand = QQ)) RAISEMAX FORCE
+
+FLOP
+// Go-AllIn if we spend to much Money preflop
+// WHEN((BotsActionsOnThisRound < 0) AND (StartingStackSize - StackSize < 12 )) RAISEMAX FORCE
+// Go-AllIn if we spend to much Money preflop+flop
+// WHEN((BotsActionsOnThisRound > 0) AND (StartingStackSize - StackSize < 10 )) RAISEMAX FORCE
+
+
+// Made Hands
+// Monster
+WHEN((BotsActionsOnThisRound < 1) AND (Monster = 1) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (Monster = 1) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (Monster = 1)) RAISEMAX FORCE
+// Overpair
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOverPair) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOverPair) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOverPair)) RAISEMAX FORCE
+// Top Pair, King+ Kicker
+WHEN((BotsActionsOnThisRound < 1) AND (HaveTopPair) AND (Have3rdBestKickerOrBetter) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+// one opponent
+WHEN((OpponentsLeft = 1) AND (BotsActionsOnThisRound < 1) AND (HaveTopPair) AND (Have3rdBestKickerOrBetter) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((OpponentsLeft = 1) AND (HaveTopPair) AND (Have3rdBestKickerOrBetter) AND (RaisesSinceLastPlay > 0)) RAISEMAX FORCE
+// more than one opponent
+
+// Top Pair, Weak Kicker
+WHEN((BotsActionsOnThisRound < 1) AND (HaveTopPair) AND (Raises = 0)) RETURN (PotSize*0.67) FORCE
+
+// Drawing Hands
+// Monsterdraws
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveDoubleGutshotDraw AND HaveFlushDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw)) RAISEMAX FORCE
+// OESD, Flushdraw
+WHEN((BotsActionsOnThisRound < 1) AND (HaveFlushDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveDoubleGutshotDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+
+// Gutshot
+WHEN((OpponentsLeft = 1) AND (BotsActionsOnThisRound < 1) AND (HaveInsideStraightDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+// WHEN((OpponentsLeft > 1) AND (BotsActionsOnThisRound < 1) AND (HaveInsideStraightDraw) AND (Raises < 0)) CHECK FORCE
+
+// Trash Hands
+// HIER ????
+WHEN((OpponentsLeft = 1) AND (BotsActionsOnThisRound < 1) AND (UncoordinatedFlop) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+
+
+TURN 
+// Go-AllIn if we spend to much Money preflop
+// WHEN((BotsActionsOnThisRound < 0) AND (StartingStackSize - StackSize < 8 )) RAISEMAX FORCE
+// Go-AllIn if we spend to much Money preflop+flop
+// WHEN((BotsActionsOnThisRound > 0) AND (StartingStackSize - StackSize < 5 )) RAISEMAX FORCE
+
+// Made Hands
+// Monster
+WHEN((BotsActionsOnThisRound < 1) AND (Monster = 1) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (Monster = 1) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (Monster = 1)) RAISEMAX FORCE
+// Overpair
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOverPair) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOverPair) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOverPair)) RAISEMAX FORCE
+// Top Pair
+WHEN((BotsActionsOnThisRound < 1) AND (HaveTopPair) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+// Drawing Hands
+// Monsterdraws
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveDoubleGutshotDraw AND HaveFlushDraw) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOpenEndedStraightDraw AND HaveFlushDraw)) RAISEMAX FORCE
+
+RIVER
+// Go-AllIn if we spend to much Money preflop
+// WHEN((BotsActionsOnThisRound < 0) AND (StartingStackSize - StackSize < 5 )) RAISEMAX FORCE
+// Go-AllIn if we spend to much Money preflop+flop
+// WHEN((BotsActionsOnThisRound > 0) AND (StartingStackSize - StackSize < 5 )) RAISEMAX FORCE
+// Made Hands
+// Monster
+WHEN((BotsActionsOnThisRound < 1) AND (Monster = 1) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (Monster = 1) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (Monster = 1)) RAISEMAX FORCE
+// Overpair
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOverPair) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveOverPair) AND (Raises > 0)) RAISEMAX FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveOverPair)) RAISEMAX FORCE
+// Top Pair
+WHEN((BotsActionsOnThisRound < 1) AND (HaveTopPair) AND (Raises < 0)) RETURN (PotSize*0.67) FORCE
+WHEN((BotsActionsOnThisRound < 1) AND (HaveTopPair) AND (Raises > 0)) CALL FORCE
+WHEN((RaisesSinceLastPlay > 0) AND (HaveTopPair)) CALL FORCE
+

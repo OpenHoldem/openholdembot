@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\CTransform">
+      <UniqueIdentifier>{6b73900a-ba07-415b-be2e-16fcf1ed614d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CTablemap">
+      <UniqueIdentifier>{9ce50843-6a56-404f-8a86-760bb7a9b788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\CTransform">
+      <UniqueIdentifier>{734f1bbf-3dd4-4e37-a652-b4d0db818735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CTablemap">
+      <UniqueIdentifier>{bbf17971-2484-426b-b51d-e116685f33e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\OpenHoldem_Functions">
+      <UniqueIdentifier>{bcdce719-3a7e-4c93-9963-9daf6aa7e6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OpenHoldem_Functions">
+      <UniqueIdentifier>{f39d27af-707c-4d10-969f-6bfa818da3ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CRegionCloner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTablemap_TroubleChecking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogCopyRegion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditFont.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditGrHashPoints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditHashPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditRegion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditSizes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditSymbols.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSelectTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogTableMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ListOfSymbols.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OpenHoldem\NumericalFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenScrape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenScrapeDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenScrapeView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StickyButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTransform\pdiff\CompareArgs.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTransform\CTransform.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTransform\hash\lookup3.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTransform\pdiff\LPyramid.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTransform\pdiff\Metric.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTransform\pdiff\RGBAImage.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTablemap\CTablemap.cpp">
+      <Filter>Source Files\CTablemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\CTablemap\CTablemapAccess.cpp">
+      <Filter>Source Files\CTablemap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OpenHoldem\WebSafeColours.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OpenHoldem\CTableTitle.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OpenHoldem\CTitleEvaluator.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="HScrollListBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CRegionCloner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogCopyRegion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditFont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditGrHashPoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditHashPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditRegion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditSizes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditSymbols.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSelectTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogTableMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ListOfSymbols.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OpenHoldem\NumericalFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenScrape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenScrapeDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenScrapeView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StickyButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\pdiff\CompareArgs.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\CTransform.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\hash\lookup3.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\pdiff\LPyramid.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\pdiff\Metric.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\pdiff\RGBAImage.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTransform\hash\stdint.h">
+      <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTablemap\CTablemap.h">
+      <Filter>Header Files\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\CTablemap\CTableMapAccess.h">
+      <Filter>Header Files\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OpenHoldem\CTableTitle.h">
+      <Filter>Header Files\OpenHoldem_Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OpenHoldem\CTitleEvaluator.h">
+      <Filter>Header Files\OpenHoldem_Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="HScrollListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\cursor1.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\drawrect.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\drawrect.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\OpenScrape.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\OpenScrape.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\OpenScrapeDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\picker.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\picker.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\pickerbi.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\pickercu.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\OpenHoldem\WebSafeColours.h">
+      <Filter>Header Files\CTransform</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OpenScrape.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

@@ -19,7 +19,7 @@
 #include "CBetsizeInputBox.h"
 #include "CCasinoInterface.h"
 
-#include "../CTablemap/CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "OpenHoldem.h"
 
 CAllinSlider::CAllinSlider() {

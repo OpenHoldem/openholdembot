@@ -30,7 +30,7 @@
 
 #include "CScraper.h"
 #include "CSymbolEngineTableLimits.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineBlinds.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -40,7 +40,7 @@
 #include "CTableState.h"
 
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CSymbolEngineICM::CSymbolEngineICM() {
   // The values of some symbol-engines depend on other engines.

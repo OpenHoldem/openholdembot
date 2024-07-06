@@ -16,7 +16,7 @@
 
 #include "CFunctionCollection.h"
 #include "CSymbolEngineMemorySymbols.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CSelftestParserEvaluator::CSelftestParserEvaluator() {
 }

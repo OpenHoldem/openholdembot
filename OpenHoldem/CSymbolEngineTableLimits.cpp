@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineTableLimits.h"
 
-#include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CBlindGuesser.h"
 #include "CCasinoInterface.h"
@@ -27,7 +26,7 @@
 #include "CTableState.h"
 #include "FloatingPoint_Comparisions.h"
 #include "Median.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 CSymbolEngineTableLimits::CSymbolEngineTableLimits() {
 	// The values of some symbol-engines depend on other engines.

@@ -1,0 +1,616 @@
+##2009-11-25 20:46:38##
+
+##notes##
+//************************************************************************* 
+//Low Limit Bot 
+//Based on Noob Bot and MecRobBot 
+// Author: Terrace256 and SWendts8 
+//************************************************************************* 
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+100000
+
+##f$alli##
+//************************************************************************* 
+0               // default is do not allin 
+//************************************************************************* 
+
+##f$swag##
+//************************************************************************* 
+0               // default is no stated wagers 
+//************************************************************************* 
+
+##f$srai##
+
+
+##f$rais##
+//************************************************************************* 
+0 
+|| [br == 1 ? f$rais_br1 : 0] 
+|| [br == 2 ? f$rais_br2 : 0] 
+|| [br == 3 ? f$rais_br2 : 0] 
+|| [br == 4 ? f$rais_br2 : 0] 
+
+// Probability of Win %100+ 
+|| [1 //OPEN RULE 
+&& prwin >= 1.00  
+]  //CLOSE RULE 
+
+// Probability of Loss %0-      
+|| [1 //OPEN RULE 
+&& prlos <= 0.00 
+]  //CLOSE RULE      
+
+// If its Bet Round 3+ and chance of Win is %90+ 
+|| [1 //OPEN RULE 
+&& br >=3 
+&& prwin >0.90 
+]  //CLOSE RULE 
+
+//************************************************************************* 
+
+##f$call##
+//************************************************************************* 
+0 
+|| [f$rais] // call if raise is true 
+
+|| [br == 1 ? f$call_br1 : 0] 
+|| [br == 2 ? f$call_br2 : 0] 
+|| [br == 3 ? f$call_br2 : 0] 
+|| [br == 4 ? f$call_br2 : 0] 
+
+
+|| [1 //OPEN RULE 
+&& prwin >= 1.00 
+]  //CLOSE RULE        // Probability of Win %100+ 
+
+|| [1 //OPEN RULE 
+&& call  <= 0.00 
+]  //CLOSE RULE        // zero call amount (check) 
+
+|| [1 //OPEN RULE 
+&& prlos <= 0.00 
+]  //CLOSE RULE        // Probability of Loss %0- 
+
+//************************************************************************* 
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+//************************************************************************* 
+(nopponentsplaying==0) ? 0 : //Halt WH if it cant see opponents 
+
+nopponentsplaying + defcon*nopponentsfolded  // Otherwise players in the hand plus the defence setting times players folded 
+//************************************************************************* 
+
+##f$play##
+//************************************************************************* 
+//------------------------------------------------------------------------ 
+//    DISABLED RULE(S) 
+1               ? -1 :        // 0=disabled 1=enabled 
+!f9              ? -1 :        // enabled when f9 is pressed 
+(elapsed%4)      ? -1 :        // disabled 3 out of 4 seconds 
+
+
+//------------------------------------------------------------------------ 
+//    LEAVE RULE 
+1                             // 0=off 1=on 
+&& issittingout               // i am sitting out 
+&& elapsedhand >= 600         // 10 minutes since end of last hand 
+&& elapsedauto >= 600         // 10 minutes since autoplayer has acted 
+? -2 :                        // leave the table 
+
+//------------------------------------------------------------------------ 
+//    SITIN RULE 
+1                             // 0=off 1=on 
+&& issittingout               // i am sitting out 
+&& (br==2 || br==3)           // it is the flop or turn 
+&& nopponentsdealt>=6         // 6 or more opponents 
+&& nchairsdealtright==2       // i am about to be big blind 
+?  1 :                        // sitin 
+
+//------------------------------------------------------------------------ 
+//    SITOUT RULE 
+1                             // 0=off 1=on 
+&& issittingin                // i am sitting in 
+&& (br==2 || br==3)           // it is the flop or turn 
+&& nopponentsdealt<=5         // 5 or less opponents 
+?  0 :                        // sitout 
+
+//------------------------------------------------------------------------ 
+-1 // disabled 
+//************************************************************************* 
+
+##f$test##
+//************************************************************************* 
+0 
+//************************************************************************* 
+
+##f$debug##
+//************************************************************************* 
+           26.00 = elapsed 
+
+            0.50 = sblind 
+            1.00 = bblind 
+            1.00 = bet 
+
+                 = call 
+                 = currentbet 
+                 = balance 
+
+         -1.#IND = f$evcall 
+         -1.#IND = f$evrais 
+
+               0 = potplayer 
+               0 = potcommon 
+               0 = pot 
+               0 = rake 
+
+               0 = chair 
+               0 = handrank2652 
+               0 = pokerval 
+         -1.#IND = prwin 
+         -1.#IND = prlos 
+         -1.#IND = prtie 
+               0 = nopponents 
+//************************************************************************* 
+
+##list0##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs QJs QTs JTs T9s 98s 87s 76s 65s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  
+
+##list1##
+AA  KK  QQ  JJ  TT  
+AKs AQs AJs ATs KQs 
+KA  QA  JA  
+
+##list2##
+AA  KK  QQ  JJ  TT  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs QJs QTs JTs 
+KA  QA  QK  JA  TA  
+
+##list3##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs QJs QTs JTs T9s 98s 87s 76s 65s 
+KA  QA  QK  JA  JK  JQ  TK  TQ  TJ  
+
+##list4##
+AA  KK  QQ  
+AKs AQs 
+KA 
+//************************************************************************* 
+
+##f$evrais##
+//************************************************************************* 
+0                                // start with zero 
+
+// DEBITS HERE 
+
+- call                           // calling cost 
+- bet                            // raising cost 
+
+// CREDITS HERE 
+
++ ( 
+
+   pot                           // current pot 
+   + (call+bet*2)                // my call my bet and a call (minimum) 
+   + (raisshort-call-bet*2)      // additional callers 
+//   * 0.00                      //   0% (tight) 
+   * 0.50                        //  50% (guess) 
+//   * 1.00                      // 100% (loose) 
+   ) 
+
+   * (prwin+prtie/2)             // adjust for winning chances 
+   * (1+rake)                    // adjust for rake 
+//************************************************************************* 
+
+##f$evcall##
+//************************************************************************* 
+0                        // start with zero 
+
+// DEBITS HERE 
+
+- call                   // calling cost 
+
+// CREDITS HERE 
+
++ ( 
+   pot                   // current pot 
+   +  call               // my call (minimum) 
+   + (callshort-call)    // additional callers 
+//      * 0.00           //   0% (tight) 
+   * 0.50                //  50% (guess) 
+//       * 1.00          // 100% (loose) 
+   ) 
+
+   * (prwin+prtie/2)     // adjust for winning chances 
+   * (1+rake)            // adjust for rake 
+//************************************************************************* 
+
+##f$rais_br1##
+//************************************************************************* 
+0 
+
+// Pre-Flop 
+
+// PFR, Any position 
+||  [ncallbets<=1 
+   && br==1 
+   && islist1] 
+
+|| [br==1&&islist4] 
+
+// PFR in Late Pos, Few Callers 
+||  [ncallbets<=1 
+   && br==1 
+   && dealposition>8 
+   && nopponentscalling<3 
+   && islist2] 
+
+//  PFR in Sb or Bb, Few Callers 
+||  [ncallbets<=1 
+   && br==1 
+   && dealposition<3 
+   && nopponentscalling<3 
+   && islist2] 
+
+
+//************************************************************************* 
+
+##f$rais_br2##
+//************************************************************************* 
+0 
+// THE NUTS -- FLOP THROUGH RIVER 
+
+// THE NUTS 
+||   [(prwin >= 1.00 || prlos<=0.00)] 
+
+// NUT FULL HOUSE 
+|| [isfullhouse 
+&& ispair 
+&& rankhiplayer==rankhicommon] 
+
+// FULL HOUSE 
+|| [isfullhouse 
+&& ispair 
+&& nrankedcommon<3] 
+
+// FULL HOUSE (w/pocket AA) 
+|| [isfullhouse 
+&& ispair 
+&& rankhiplayer==14 
+&& nrankedcommon==3] 
+
+// NUT FLUSH 
+|| [ishiflush 
+&& nrankedcommon<2] 
+
+// NUT STRAIGHT 
+|| [ishistraight 
+&& nsuitedcommon<3] 
+
+// FOUR OF A KIND 
+|| [isfourofakind 
+&& nrankedcommon<4] 
+
+// FOUR OF A KIND (Ace Kicker) 
+|| [isfourofakind 
+&& nrankedcommon==4 
+&& rankhiplayer==14] 
+
+// TOP SET 
+|| [isthreeofakind 
+&& ispair 
+&& rankhiplayer==rankhicommon 
+&& nsuitedcommon<3 
+&& nstraightfillcommon>1 
+&& nrankedcommon<3] 
+
+
+// POWERFUL HANDS -- FLOP THROUGH RIVER 
+
+// STRAIGHT FLUSH 
+|| [isstraightflush] 
+
+// FLUSH 
+|| [isflush 
+&& nrankedcommon<2 
+&& ncallbets<3 
+&& nbetstocall<2] 
+
+// STRAIGHT 
+|| [isstraight 
+&& nsuitedcommon<3 
+&& nrankedcommon<2 
+&&nbetstocall<3] 
+
+// TOP TRIPS 
+|| [isthreeofakind 
+&& rankhiplayer==rankhicommon 
+&& nsuitedcommon<3 
+&& nrankedcommon<3 
+&& nstraightfillcommon>1 
+&&nbetstocall<2] 
+
+// ANY SET 
+|| [isthreeofakind 
+&& ispair 
+&& nsuitedcommon<3 
+&& nrankedcommon<3 
+&& nstraightfillcommon>1 
+&& nbetstocall<2] 
+
+
+// STRONG HANDS -- FLOP THROUGH RIVER 
+
+// ANY TRIPS 
+|| [isthreeofakind 
+&& nsuitedcommon<3 
+&& nrankedcommon<3 
+&& nstraightfillcommon>1 
+&& ncallbets<3 
+&& nbetstocall<2] 
+
+// TWO PAIR 
+|| [istwopair 
+&& nsuitedcommon<3 
+&& nrankedcommon<2 
+&& nstraightfillcommon>1 
+&& ncallbets<3 
+&& nbetstocall<2] 
+
+// TWO PAIR (Pair on Board) 
+|| [istwopair 
+&& nsuitedcommon<3 
+&& nrankedcommon<2 
+&& nstraightfillcommon>1 
+&& ncallbets<3 
+&& nbetstocall<2] 
+
+// OVERPAIR 
+|| [ishipair 
+&& ispair 
+&& rankhiplayer>rankhicommon 
+&& nsuitedcommon<3 
+&& nstraightfillcommon>1 
+&& ncallbets<3 
+&& nbetstocall<2] 
+
+
+// GOOD HANDS -- FLOP THROUGH RIVER 
+
+// TOP PAIR (w/good kicker) 
+|| [ishipair 
+&& rankhiplayer==rankhicommon 
+&& rankloplayer>9 
+&& nsuitedcommon<3 
+&& nrankedcommon<2 
+&& nstraightfillcommon>1 
+&& ncallbets<3 
+&& nbetstocall<2] 
+
+// AK SAFE AFTER PFR 
+||    [ br==2 
+&& ncallbets<=1 
+&& nsuitedcommon<=2 
+&& nstraightfillcommon>=3 
+&& nopponentsplaying<3 
+&& $AK] 
+
+//************************************************************************* 
+
+##f$call_br1##
+//************************************************************************* 
+0 
+
+// Pre-Flop 
+
+// Call Re-Raise List 
+||  [nbetstocall<=1 
+   && br==1 
+   && islistrais] 
+
+// Early, Middle Position, Unraised Pot 
+||  [br==1 
+   && nbetstocall<=1 
+   && dealposition>=3 
+   && islist2] 
+
+// Late Position, Unraised Pot 
+||  [br==1 
+   && nbetstocall<=1 
+   && dealposition>8 
+   && islist3] 
+
+// Sb and Bb 
+||  [br==1 
+   && nbetstocall<=1 
+   && dealposition<=2 
+   && islist3] 
+
+//************************************************************************* 
+
+##f$call_br2##
+//************************************************************************* 
+0 
+// POWEFUL HANDS -- FLOP THROUGH RIVER 
+
+// FLUSH (against pair on board) 
+|| [isflush 
+&& nbetstocall<3] 
+
+// STRAIGHT (against flush on board) 
+|| [isstraight 
+&& nsuitedcommon<4 
+&& nbetstocall<3] 
+
+// STRAIGHT (against pair on board) 
+|| [isstraight 
+&& nrankedcommon>1 
+&& nbetstocall<3] 
+
+// NUT STRAIGHT 
+|| [ishistraight] 
+
+// ANY SET (against straight or flush on board) 
+|| [isthreeofakind 
+&& ispair 
+&& nrankedcommon<3 
+&& nsuitedcommon<4 
+&& nstraightfillcommon>1 
+&& nbetstocall<3] 
+
+
+// STRONG HANDS -- FLOP THROUGH RIVER 
+
+// ANY TRIPS (against straight or flush on board) 
+|| [isthreeofakind 
+&& nrankedcommon<3 
+&& nsuitedcommon<4 
+&& nstraightfillcommon>1 
+&& nbetstocall<3] 
+
+// TWO PAIR (against stronger hands) 
+|| [istwopair 
+&& nrankedcommon<2 
+&& nsuitedcommon<4 
+&& nstraightfillcommon>1 
+&& nbetstocall<3] 
+
+// OVERPAIR 
+|| [ishipair 
+&& ispair 
+&& rankhiplayer>rankhicommon 
+&& nsuitedcommon<4 
+&& nstraightfillcommon>1 
+&& ncallbets<4 
+&& nbetstocall<2] 
+
+// GOOD HANDS -- FLOP THROUGH RIVER 
+
+// TOP PAIR (w/good kicker) 
+|| [ishipair 
+&& rankhiplayer==rankhicommon 
+&& rankloplayer>9 
+&& nsuitedcommon<4 
+&& nrankedcommon<2 
+&& nstraightfillcommon>1 
+&& ncallbets<4 
+&& nbetstocall<2] 
+
+
+
+// FLOP -- RIVER 
+
+// Drawing Hands  
+
+//Open-End Straight Flush Draw 
+||  [nstraightflush==4 
+&& br<4 
+   && !(srankbits&16386 && srankbits&8196)] 
+
+//Inside Straight Flush Draw, don't call 3 Bet 
+||  [nbetstocall<=2 
+&& br<4 
+   &&nstraightflush<=3  
+   && nstraightflushfill==1] 
+
+//Nut flush draw w/ 2 cards 
+|| [  nsuited==4 
+&& br<4 
+&& nsuitedcommon==2 
+&& pot/call>=5 
+&& `((~srankbits&0x7fff)>>srankhiplayer)==0] 
+
+//Nut flush draw w/ 1 card 
+|| [  nsuited==4 
+&& br<4 
+&& nsuitedcommon==3  
+&& pot/call>=5 
+&& `((~srankbits&0x7fff)>>srankhiplayer)==0] 
+
+// 2nd nut flush draw w/ 2 card 
+|| [ nsuited==4 
+&& br<4 
+&& nsuitedcommon==2 
+&& pot/call>=5 
+&& `((~srankbits&0x7fff)>>srankhiplayer)==1 ] 
+
+// 2nd nut flush draw w/ 1 card  
+|| [  nsuited==4 
+&& br<4 
+&& nsuitedcommon==3  
+&& pot/call>=5 
+&& `((~srankbits&0x7fff)>>srankhiplayer)==1 ] 
+
+//Board has No Pair and have Non-nut flush draw  
+|| [  nrankedcommon==1 
+&& br<4 
+&& nsuited==4 
+&& pot/call>=5 
+&& !`((~srankbits&0x7fff)>>srankhiplayer)==0  ]  
+
+// Open-ended straight draw w/ 2 overcards (rainbow)  
+|| [  nstraight==4 
+&& br<4 
+&& !(rankbits&16386 && rankbits&8196) 
+&& pot/call>=3 
+&& rankloplayer>rankhicommon //2 OVERCARDS    
+&& nsuitedcommon==1 ] 
+
+// Open-ended straight draw (rainbow) 
+|| [ nstraight==4  
+&& br<4 
+&& !(rankbits&16386 && rankbits&8196)  
+&& pot/call>=5 
+&& nsuitedcommon==1 ]  
+
+// Open-ended straight draw (2 flush on board) 
+|| [ nstraight==4 
+&& br<4 
+&& !(rankbits&16386 && rankbits&8196)  
+&& nsuitedcommon<3  
+&& pot/call>=5 ]    
+
+//Board has No Pair, Inside straight draw w/ 2 overcards, no flush on board. 
+|| [  nrankedcommon==1 
+&& br<4 
+&& nstraight==3  
+&& nstraightfill==1  
+&& !(srankbits&16386 && srankbits&8196) 
+&& rankloplayer>rankhicommon //2 OVERCARDS    
+&& nsuitedcommon==1 
+&& pot/call>=8 ] 
+
+//************************************** 
+
+##f$stopCall##
+0 
+|| [ispair && !ishipair && ncallbets>1.1]   //Stops Calls with one pair only (<one bet) 
+
+//**************************************
+

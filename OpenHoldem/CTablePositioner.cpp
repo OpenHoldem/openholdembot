@@ -18,10 +18,10 @@
 
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
-#include "../CTablemap/CTableMapAccess.h"
+#include "CTablemap/CTableMapAccess.h"
 
 #include "WinDef.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 #include "Winuser.h"
 
 CTablePositioner *p_table_positioner = NULL;

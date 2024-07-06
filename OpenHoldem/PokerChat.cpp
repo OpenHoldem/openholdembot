@@ -29,7 +29,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <stdafx.h>
+#include "stdafx.h"
 #include "PokerChat.hpp"
 
 #include <math.h>
@@ -38,7 +38,7 @@
 #include <windows.h>
 #include <winuser.h>
 
-#include "..\DLLs\User_DLL\user.h"
+#include "User/user.h"
 
 char *_the_chat_message = NULL;
 

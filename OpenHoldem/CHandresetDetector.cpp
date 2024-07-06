@@ -15,7 +15,6 @@
 #include "stdafx.h"
 #include "CHandresetDetector.h"
 
-#include <assert.h>
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 
@@ -30,9 +29,9 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "CTableTitle.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 CHandresetDetector *p_handreset_detector = NULL;
 

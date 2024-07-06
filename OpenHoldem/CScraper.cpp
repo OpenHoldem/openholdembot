@@ -35,8 +35,8 @@
 #include "CTableState.h"
 #include "CTableTitle.h"
 #include "CTitleEvaluator.h"
-#include "..\CTransform\CTransform.h"
-#include "..\CTransform\hash\lookup3.h"
+#include "CTransform/CTransform.h"
+#include "CTransform/hash/lookup3.h"
 
 #include "MainFrm.h"
 #include "OpenHoldem.h"

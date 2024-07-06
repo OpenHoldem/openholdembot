@@ -147,7 +147,7 @@ void CDlgSAPrefs20::OnBnClickedToggleAllDebug() {
 }
 
 void CDlgSAPrefs20::ToggleButton(int button_ID) {
-  bool checked = IsDlgButtonChecked(button_ID);
+  bool checked = IsDlgButtonChecked(button_ID) != 0;
   if (checked) {
     CheckDlgButton(button_ID, MF_UNCHECKED);
   } else {

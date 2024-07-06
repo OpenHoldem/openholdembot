@@ -1,0 +1,297 @@
+##2009-11-25 20:46:17##
+
+##notes##
+As the simple starter by cout thread is becoming very long , 
+and still uses evcall,evrais instead of the new format , 
+I have posted this as an up-to date version. 
+(Hope you dont mind Cout) 
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.500000
+
+##rake##
+0.000000
+
+##nit##
+100000
+
+##f$alli##
+   0                                     // default is do not alli 
+
+   || [ prwin >= 1.00 ]                  // dead nuts 
+
+   || [ br==1 && islistalli ]            // listed opening hand 
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+  0                                     // default is do not rais 
+
+   || [ prwin >= 1.00 ]                  // dead nuts 
+
+   || [ prlos <= 0.00 ]                  // can't lose 
+
+   || [ br==1 && islistrais ]            // listed opening hand 
+
+   || [ br==1 && islistcall 
+        && ((dealposition/nplayersdealt) // middle and late position 
+           >= .50) ] 
+
+   || [ br==1 && islist2 
+        && ((dealposition/nplayersdealt) // late position 
+           >= .75) ] 
+
+   || [ br==1 && islist3 
+        && (dealposition==nplayersdealt)]// dealer 
+
+   || [ br>=2 && $AK                     // raise with AKs or AKo 
+        && ncallbets<=1 ]                // if pot has not been raised 
+  
+   || [ br==2                            // betting round two 
+        && ncallbets<=1                  // pot has not been raised 
+        && (prwin*pot)>=nplayersplaying] // equal share 
+
+   || [ br==2                            // betting round two 
+        && nrankedcommon==1              // if board not paired 
+        && nsuitedcommon<=2              // board not three to a flush 
+        && nstraightfillcommon>=3        // board not three to a straight 
+        && (prwin*pot)>=nplayersplaying] // equal share 
+
+   || [ br==2 && (f$evrais>f$evcall)         // better value to raise than call 
+        && ncallbets<=1                  // pot has not been raised 
+        && (f$evrais>(pot/2)) ]            // majority share 
+
+   || [ br==2 && (f$evrais>f$evcall)         // better value to raise than call 
+        && nrankedcommon==1              // if board not paired 
+        && nsuitedcommon<=2              // board not three to a flush 
+        && nstraightfillcommon>=3        // board not three to a straight 
+        && (f$evrais>(pot/2)) ]            // majority share 
+
+   || [ br==2 && didraisround1           // raised round one raise again round two 
+        && ncallbets<=1 ]                // if pot has not been raised 
+
+   || [ br==3 && didraisround2           // raised round two raise again round  
+        && ncallbets<=1                  // three if pot has not been raised 
+        && !didcallround2 ]              // was not re-raised on previous round 
+
+   || [ (br==3||br==4) && (f$evrais>0)     // positive expected value to raise 
+        && nrankedcommon==1              // if board not paired 
+        && nsuitedcommon<=2              // board not three to a flush 
+        && nstraightfillcommon>=3        // board not three to a straight 
+        && (f$evrais>f$evcall) ]             // better value to raise than call 
+
+   || [ br==3 && nsuited==5 &&           // round three raise 
+        `((~srankbits&0x7fff)>>          // if you have 
+        srankhiplayer)==1 ]              // second nut flush 
+
+   || [ br==3 && isstraight ]            // round three raise on any straight 
+  
+   || [ br==3 && nrankedcommon==2        // round three raise if board paired 
+        && isthreeofakind                // if you have three of a kind and 
+        && pokerval & threeofakind       // pokerval is three of a kind 
+        && {(trank==$$pr0 && $$pr1>=12)  // kicker is Q 
+        ||(trank==$$pr1 && $$pr0>=12)} ] // or higher 
+
+   || [ br==4 && didraisround3           // raised round three raise again round four 
+        && nopponentsbetting==0 ]        // if nobody has bet 
+
+   || [ br==4 && ishicard                // round 4 and ishicard 
+        && ncallbets==0                  // no bets have been made 
+        && betposition==nplayersplaying] // last to bet 
+
+##f$call##
+   0                                     // default is do not call 
+
+   || [ prwin >=1.00 ]                   // dead nuts 
+
+   || [ call  <= 0.00 ]                  // zero call amount (check) 
+
+   || [ prlos <= 0.00 ]                  // can't lose 
+
+   || [ br==1 && islistcall ]            // listed opening hand 
+
+   || [ br==1 && islist2 
+        && ((dealposition/nplayersdealt) // middle and late position 
+           >= .50) ] 
+  
+   || [ br==1 && islist3 
+        && ((dealposition/nplayersdealt) // late position 
+           >= .75) ] 
+    
+   || [ br==1 && nopponentsbetting>=4    // round one and five way pot 
+        && ((issuited && isconnector)    // any suited connectors 
+        || ispair) ]                     // any pocket pair 
+
+   || [ br==1 && dealposition==1         // small blind in round one 
+        && ($Ax||$Kxs)                   // Ace anything or King suited 
+        && ncallbets<=1 ]                // pot not raised 
+
+   || [ br==2 && 
+        (f$evcall>(pot/nplayersdealt)) ]   // equal share 
+
+   || [ (br==2||br==3) 
+        && (nsuited==4                   // four to a flush 
+        || nstraight==4) ]               // four to a straight 
+
+   || [ (br==3||br==4) && (f$evcall>0) ]   // positive expected value to call 
+
+// Backup of rais tab rules to insure call if four bet 
+
+   || [ br==1 && islistrais ]            // listed opening hand 
+
+   || [ br==2 && (f$evrais>f$evcall)         // better value to raise than call 
+        && (f$evrais>(pot/2)) ]            // majority share 
+
+   || [ br==2 && 
+        (prwin*pot)>= nplayersplaying ]  // equal share 
+
+   || [ (br==3||br==4) && (f$evrais>0)     // positive expected value to raise 
+        && (f$evrais>f$evcall) ]             // better value to raise than call 
+  
+   || [ br>=2 && $AK ] 
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+
+(nopponentsplaying==0) ? 0 : 
+
+nopponentsplaying + defcon*nopponentsfolded 
+
+##f$play##
+// DISABLED CONDITION 
+
+(elapsed%4 || br<2 || 3<br) ? -1 :        // 4 second cycle during flop and turn 
+
+// PLAY CONDITION 
+
+// [ -1 ]                                 // disabled by default 
+
+   [ nopponentsdealt>=5 ]                  // play against 5 opponents or more 
+
+##f$test##
+
+
+##f$debug##
+
+                 = elapsed 
+
+                 = sblind 
+                 = bblind 
+                 = bet 
+
+                 = call 
+                 = currentbet 
+                 = balance 
+
+                 = f$evcall 
+                 = f$evrais 
+
+                 = potplayer 
+                 = potcommon 
+                 = pot 
+                 = rake 
+
+                 = chair 
+                 = handrank2652 
+                 = pokerval 
+                 = prwin 
+                 = prlos 
+                 = prtie 
+                 = nopponents 
+
+##list0##
+AA  KK  QQ  JJ  TT  99  88  
+AKs AQs AJs ATs A9s A8s KQs KJs KTs QJs 
+KA  QA  JA  
+
+##list1##
+AA  KK  QQ  JJ  TT  99  
+AKs AQs AJs ATs KQs 
+KA  QA  
+
+##list2##
+AA  KK  QQ  JJ  TT  99  88  77  
+AKs AQs AJs ATs A9s A8s KQs KJs KTs QJs QTs JTs 
+KA  QA  QK  JA  TA  
+
+##list3##
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs QJs QTs JTs J9s 
+KA  QA  QK  JA  TA  
+
+##list7##
+AA  
+
+##f$evrais##
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+- bet                                    // raising cost 
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   + (call+bet*2)                        // my call my bet and a call (minimum) 
+
+   + (raisshort-call-bet*2)              // additional callers 
+//    * 0.00                             //   0% (tight) 
+      * 0.50                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+
+##f$evcall##
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   +  call                               // my call (minimum) 
+
+   + (callshort-call)                    // additional callers 
+//    * 0.00                             //   0% (tight) 
+      * 0.50                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+

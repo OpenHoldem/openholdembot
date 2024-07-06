@@ -16,7 +16,7 @@
 #include "stdafx.h"
 #include "CSymbolengineNutFullhouseOrFourOfAKind.h"
 
-#include "inlines/eval.h"
+#include "PokerEval/include/inlines/eval.h"
 #include "Card.h"
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"

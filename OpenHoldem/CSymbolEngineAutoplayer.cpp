@@ -68,7 +68,7 @@ void CSymbolEngineAutoplayer::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineAutoplayer::UpdateOnHeartbeat() {
-	_last_myturnbits = _myturnbits;
+	_last_myturnbits = _myturnbits != 0;
 	_myturnbits      = 0;
 	_issittingin     = false;
 	_isautopost      = false;

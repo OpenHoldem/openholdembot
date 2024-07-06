@@ -32,7 +32,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableMapLoader.h"
 #include "CTablepointChecker.h"
 #include "CTableTitle.h"

@@ -14,11 +14,10 @@
 #include "stdafx.h"
 #include "COpenHoldemTitle.h"
 
-#include <assert.h>
 #include "CAutoConnector.h"
 #include "CFunctionCollection.h"
 
-#include "../CTablemap/CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableTitle.h"
 #include "MainFrm.h"
 

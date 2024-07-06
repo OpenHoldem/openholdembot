@@ -15,7 +15,7 @@
 #define INC_CSYMBOLENGINERANDOM_H
 
 #include "CVirtualSymbolEngine.h"
-#include "..\CTransform\CTransform.h"
+#include "CTransform/CTransform.h"
 
 class CSymbolEngineRandom: public CVirtualSymbolEngine {
  public:

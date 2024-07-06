@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineCallers.h"
 
-#include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 #include "CScraper.h"
@@ -31,7 +30,7 @@
 
 #include "CTableState.h"
 
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 // Some symbols are only well-defined if it is my turn
 #define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_engine_container->symbol_engine_autoplayer()->ismyturn()) *result = kUndefined; }

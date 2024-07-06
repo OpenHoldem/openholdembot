@@ -25,8 +25,8 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "..\CTablemap\CTablemap.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "CTablemap/CTablemap.h"
+#include "WindowFunctions/window_functions.h"
 #include "OpenHoldem.h"
 #include <io.h>
 

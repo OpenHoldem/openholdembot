@@ -15,8 +15,8 @@
 #include "CTablemapCompletenessChecker.h"
 
 #include "CSessionCounter.h"
-#include "../CTablemap/CTablemap.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "CTablemap/CTablemap.h"
+#include "WindowFunctions/window_functions.h"
 
 CTablemapCompletenessChecker::CTablemapCompletenessChecker() {
 }

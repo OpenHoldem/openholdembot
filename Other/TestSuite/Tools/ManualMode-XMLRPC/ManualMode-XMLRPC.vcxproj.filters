@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\pokereval">
+      <UniqueIdentifier>{44a53f4c-4d7e-482a-900d-c6ce52feeb83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInfoDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualModeDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xmlrpc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInfoDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManualMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManualModeDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xmlrpc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\combinations.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\deck.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\deck_std.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\deck_undef.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\enumdefs.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\enumerate.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\enumord.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\eval.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\eval_low.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\eval_type.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\evx5.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\evx7.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\evx_action.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\evx_defs.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\inlines\evx_inlines.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\game_std.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\handval.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\handval_low.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\poker_config.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\poker_defs.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\poker_wrapper.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\pokereval_export.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\rules_std.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pokereval\include\rules_undef.h">
+      <Filter>Header Files\pokereval</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\bmp2h5.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ManualMode.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ManualMode.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="OpenHoldem.ManualMode.tm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ManualMode.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

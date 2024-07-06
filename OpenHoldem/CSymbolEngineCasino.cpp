@@ -15,23 +15,22 @@
 #include "stdafx.h"
 #include "CSymbolEngineCasino.h"
 
-#include <assert.h>
 #include <process.h>
 #include <float.h>
 
 #include "CAutoconnector.h"
 #include "CAutoplayerTrace.h"
-#include "inlines/eval.h"
+#include "PokerEval/include/inlines/eval.h"
 #include "Chair$Symbols.h"
 
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
-#include "..\CTablemap\CTablemap.h"
-#include "..\CTransform\CTransform.h"
+#include "CTablemap/CTablemap.h"
+#include "CTransform/CTransform.h"
 
 #include "OpenHoldem.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CSymbolEngineCasino	*p_symbol_engine_casino = NULL;
 

@@ -15,7 +15,6 @@
 #include "stdafx.h"
 #include "CSpaceOptimizedFormulaObject.h"
 
-#include <assert.h>
 #include "CMemoryPool.h"
 
 

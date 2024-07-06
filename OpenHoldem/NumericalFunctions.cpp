@@ -12,7 +12,7 @@
 //*******************************************************************************
 
 #include "stdafx.h"
-
+#include "Debugger/debugger.h"
 
 // Deals with floating points, ints, hex and binary
 double StringToNumber(CString number) {

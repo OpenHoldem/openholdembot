@@ -25,10 +25,10 @@
 #include "CScraper.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 CRebuyManagement *p_rebuymanagement = NULL;
 

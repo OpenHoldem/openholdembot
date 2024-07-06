@@ -1,0 +1,686 @@
+##2006-01-09 22:44:59## 
+
+##notes## 
+/* 
+POB is a nice simple little bot who likes playing percentages. 
+POB assumes that even the tighest player bluffs 10% of the time. 
+Although there are a few specific hand formulas, if the odds are right 
+this bot will fight for any pot; POB is a Pot Odds Bot. 
+There is no inclusion of implied odds, but this 
+could be as simple as... 
+"*nopponentsplaying 
+    *0.75             //  loose 
+||  *0.50             //  guess 
+||  *0.10             //  tight" 
+There is no play formula - POB isn't intimidated by big or small tables. 
+Although there are NL/PL formulas this is primarily a Limit bot. 
+Enjoy altering/enhancing/playing with this bot. 
+*/ 
+
+##bankroll## 
+0.000000 
+
+##defcon## 
+0.25 
+
+##rake## 
+-0.050000 
+
+##nit## 
+70000 
+
+##f$alli## 
+0                             //default is do not allin 
+
+|| [(((prwin+prtie)/2)+0.1)>=1] 
+
+##f$swag## 
+  
+f$srai < bet*2 ? 0 : 
+call + f$srai + f$swag_site_adjust 
+
+##f$srai## 
+
+(balance < call+bet*2)   ? 0 : // dont bother 
+(prwin <= 0.500)         ? 0 : // too risky 
+(prwin >= 1.000)         ? balance-call : // manual text allin 
+((((prwin - 0.500)*balance)/bet)^0)*bet 
+
+##f$rais## 
+0                              //default is do not raise 
+
+|| [br==1 && (islist1 || islist2) && nopponentsraising<=2] 
+
+|| [br==1 && ispair && nopponentsraising<=2] && f$betposition>=3] 
+
+|| [br==1 && nopponentsplaying<=2 && nopponentsraising<=2] 
+
+|| [br==1 && f$dealposition==3 && islist3 && nopponentsraising<=2] 
+|| [br==1 && f$dealposition==3 && issuited && isconnector && rankloplayer>8 && nopponentsraising<=2] 
+
+|| [br==1 && f$dealposition==4 && (islist4 || islist5) && nopponentsraising<=2] 
+|| [br==1 && f$dealposition==4 && issuited && isconnector && rankloplayer>7 && nopponentsraising<=2] 
+
+|| [br==1 && f$dealposition==5 && islist6 && nopponentsraising<=2] 
+|| [br==1 && f$dealposition==5 && issuited && isconnector && rankloplayer>5 && nopponentsraising<=2] 
+
+|| [br==1 && f$dealposition<=2 && issuited && isconnector && nopponentsraising==0] 
+
+|| [br>=2 && f$betposition>2 && randomround<prwin && prwin>(bet/(pot+bet)) && nopponentsraising==0] 
+
+|| [nopponentsplaying==1 && f$versus >=2] 
+|| [br>1 && f$$XX >=2 && nopponentsraising==0] 
+|| [br==1 && f$$XX >=2 && nopponentsraising<=2] 
+|| [ispair && rankloplayer>=9 && f$pocketpair >=2] 
+
+##f$call## 
+0                         //default is do not call 
+
+|| [br==1 && (islist1 || islist2)] 
+
+|| [br==1 && f$betposition>=3 && islist12 && nopponentsplaying<=4] 
+
+|| [br==1 && f$betposition>=3 && islist13 && nopponentsplaying<=3] 
+
+|| [br==1 && f$dealposition==1 && islist12 && nopponentsraising<=2] 
+
+|| [br==1 && ispair && nopponentsraising<=2] 
+
+|| [br==1 && nopponentsplaying<=2] 
+
+|| [br==1 && f$dealposition==3 && islist3 && nopponentsraising<=2] 
+|| [br==1 && f$dealposition==3 && issuited && isconnector && rankloplayer>8] 
+
+|| [br==1 && f$dealposition==4 && (islist4 || islist5) && nopponentsraising<=2] 
+|| [br==1 && f$dealposition==4 && issuited && isconnector && rankloplayer>7] 
+
+|| [br==1 && f$dealposition==5 && islist6 && nraisbets<=2] 
+|| [br==1 && f$dealposition==5 && issuited && isconnector && rankloplayer>5] 
+
+|| [br==1 && f$dealposition<=2 && issuited && isconnector] 
+
+
+|| [br>=2 && (prwin)>(call/(pot+call))] 
+
+|| [nopponentsplaying==1 && f$versus ==1] 
+|| [f$$XX ==1] 
+|| [ispair && rankloplayer>=9 && f$pocketpair ==1] 
+
+##f$evrais## 
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+- bet                                    // raising cost 
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   + (call+bet*2)                        // my call my bet and a call (minimum) 
+
+   + (raisshort-call-bet*2)              // additional callers 
+      * 0.00                             //   0% (tight) 
+//    * 0.33                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+  * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+
+##f$evcall## 
+0                                        // start with zero 
+
+// DEBITS HERE 
+
+- call                                   // calling cost 
+
+
+// CREDITS HERE 
+
++  ( 
+
+      pot                                // current pot 
+
+   +  call                               // my call (minimum) 
+
+   + (callshort-call)                    // additional callers 
+//   * 0.00                             //   0% (tight) 
+     * 0.5                             //  33% (guess) 
+//    * 1.00                             // 100% (loose) 
+
+   ) 
+
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+
+##f$P## 
+
+(nopponentsplaying==0) ? 0 : 
+
+nopponentsplaying + defcon*nopponentsfolded 
+
+##f$play## 
+-1 
+
+##f$test## 
+
+
+##f$debug## 
+
+                 = elapsed 
+
+                 = sblind 
+                 = bblind 
+                 = bet 
+
+                 = call 
+                 = currentbet 
+                 = balance 
+
+                 = f$evcall 
+                 = f$evrais 
+
+                 = potplayer 
+                 = potcommon 
+                 = pot 
+                 = rake 
+
+                 = chair 
+                 = handrank2652 
+                 = pokerval 
+                 = prwin 
+                 = prlos 
+                 = prtie 
+                 = nopponents 
+
+##list1## 
+AA  KK  QQ  JJ  
+AKs 
+##list2## 
+TT  
+AQs AJs KQs 
+KA  
+##list3## 
+99  
+ATs KJs QJs JTs 
+QA  
+##list4## 
+88  
+KTs QTs J9s T9s 98s 
+QK  JA  
+##list5## 
+77  
+A9s A8s A7s A6s A5s A4s A3s A2s Q9s T8s 97s 87s 76s 65s 
+JK  JQ  TJ  
+##list6## 
+66  
+K9s J8s 86s 75s 54s 
+TA  TK  TQ  
+##list12## 
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s QJs QTs Q5s JTs J9s J8s 
+T9s T8s 98s 97s 87s 86s 76s 75s 65s 54s 
+AK  AQ  AJ  AT  KQ  KJ  KT  QJ  QT  JT 
+##list13## 
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s QJs QTs Q9s Q8s 
+Q5s JTs J9s J8s T9s T8s 98s 97s 87s 86s 76s 75s 65s 54s 
+AK  AQ  AJ  AT  A9  A8  A7  A6  A5  A4  A3  A2  KQ  KJ  KT  K9  QJ  QT  JT  J9  J8  T9 
+
+##f$swag_site_adjust## 
+
+(site==0) ? call : // user (spend) 
+(site==1) ? call : // paradise (spend) 
+(site==2) ? currentbet+call : // stars (result) 
+(site==3) ? currentbet+call : // party (result) 
+(site==4) ? 0 : // ub (raise) 
+(site==5) ? call : // pacific (spend) 
+(site==6) ? currentbet+call : // fulltilt (result) 
+0 
+
+##f$dealposition## 
+[ 
+//SB=1 BB=2 Early=3 Middle=4 Late=5 
+
+dealposition==1 ? 1: 
+dealposition==2 ? 2: 
+
+nplayersdealt==10 ? (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 3 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 4 : 
+                     dealposition==8 ? 4 : 
+                     dealposition==9 ? 5 : 
+                     dealposition==10? 5 : 0):  
+
+nplayersdealt==9 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 3 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 4 : 
+                     dealposition==8 ? 5 : 
+                     dealposition==9 ? 5 : 0): 
+
+nplayersdealt==8 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 4 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 5 : 
+                     dealposition==8 ? 5 : 0): 
+
+nplayersdealt==7 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 4 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 5 : 0): 
+  
+nplayersdealt==6 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 4 : 
+                     dealposition==5 ? 4 : 
+                     dealposition==6 ? 5 : 0): 
+                      
+nplayersdealt==5 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 4 : 
+                     dealposition==5 ? 5 : 0): 
+                      
+nplayersdealt==4 ?  (dealposition==3 ? 4 : 
+                     dealposition==4 ? 5 : 0): 
+                    
+nplayersdealt==3 ?  (dealposition==3 ? 5 : 0):0 
+] 
+
+##f$betposition## 
+[ 
+//First to act=1 Early=2 Middle=3 Late=4 
+
+nopponentsplaying==9 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 1 : 
+                         betposition==3 ? 1 : 
+                         betposition==4 ? 2 : 
+                         betposition==5 ? 2 : 
+                         betposition==6 ? 2 : 
+                         betposition==7 ? 3 : 
+                         betposition==8 ? 3 : 
+                         betposition==9 ? 4 : 
+                         betposition==10 ? 4 : 0): 
+
+nopponentsplaying==8 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 1 : 
+                         betposition==3 ? 1 : 
+                         betposition==4 ? 2 : 
+                         betposition==5 ? 2 : 
+                         betposition==6 ? 3 : 
+                         betposition==7 ? 3 : 
+                         betposition==8 ? 4 : 
+                         betposition==9 ? 4 : 0): 
+
+nopponentsplaying==7 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 1 : 
+                         betposition==3 ? 2 : 
+                         betposition==4 ? 2 : 
+                         betposition==5 ? 3 : 
+                         betposition==6 ? 3 : 
+                         betposition==7 ? 4 : 
+                         betposition==8 ? 4 : 0): 
+  
+nopponentsplaying==6 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 1 : 
+                         betposition==3 ? 2 : 
+                         betposition==4 ? 2 : 
+                         betposition==5 ? 3 : 
+                         betposition==6 ? 3 : 
+                         betposition==7 ? 4 : 0): 
+                      
+nopponentsplaying==5 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 1 : 
+                         betposition==3 ? 2 : 
+                         betposition==4 ? 2 : 
+                         betposition==5 ? 3 : 
+                         betposition==6 ? 4 : 0): 
+                      
+nopponentsplaying==4 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 1 : 
+                         betposition==3 ? 2 : 
+                         betposition==4 ? 3 : 
+                         betposition==5 ? 4 : 0): 
+                    
+nopponentsplaying==3 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 2 : 
+                         betposition==3 ? 3 : 
+                         betposition==4 ? 4 : 0): 
+
+nopponentsplaying==2 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 2 : 
+                         betposition==3 ? 4 : 0): 
+
+nopponentsplaying==1 ?  (betposition==1 ? 1 : 
+                         betposition==2 ? 4 : 0):0 
+] 
+
+##f$pocketpair## 
+{ 
+0 // default is do not raise 
+
+|| [ isfullhouse ] 
+|| [ isfourofakind] 
+|| [ isthreeofakind && nstraightfillcommon>2 && nsuitedcommon<3 && nopponentsraising<=1] 
+|| [ br==1 && (prwin+0.05)>(call/(pot+call))] 
+|| [ br<=3 && isthreeofakind && nopponentsplaying<=2] 
+|| [ isthreeofakind && f$betposition==4 && nbetsround==0] 
+|| [ istwopair && rankloplayer>rankhicommon && nstraightfillcommon>2 && nsuitedcommon<3 && f$betposition==4 && nbetsround==0] 
+|| [ isonepair && nstraightfillcommon>2 && nsuitedcommon<3 && rankhicommon<rankhiplayer && rankhiplayer>9 && nopponentsraising==0] 
+  
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call 
+|| [ br==4 && isthreeofakind && nstraightfillcommon>1 && nsuitedcommon<4 && didraisround3] 
+|| [ istwopair && rankloplayer>rankhicommon && nstraightfillcommon>2 && nsuitedcommon<3] 
+|| [ br==4 && istwopair && rankloplayer>rankhicommon && nstraightfillcommon>1 && nsuitedcommon<4 && didraisround3] 
+|| [ isthreeofakind && nstraightfillcommon>2 && nsuitedcommon<3] 
+|| [ br==1] 
+|| [ br<=3 && isthreeofakind && nopponentsplaying<=2] 
+|| [ isthreeofakind && f$betposition==4 && nbetsround==0] 
+|| [ istwopair && rankloplayer>rankhicommon && nstraightfillcommon>2 && nsuitedcommon<3] 
+|| [ isonepair && nstraightfillcommon>2 && nsuitedcommon<3 && rankhicommon<rankhiplayer && rankhiplayer>9] 
+} 
+? 1 : // call 
+0 // fold 
+
+##f$versus## 
+{ 
+0 // default is do not raise 
+
+|| [br==1 && randomhand<(vs$13$prwin+0.1)>(bet/(pot+bet)) && betposition==2 && nbetsround==0] 
+|| [br==2 && randomhand<(vs$13$prwin+0.1)>(bet/(pot+bet)) && betposition==2 && nbetsround==0] 
+|| [br==3 && randomhand<(vs$12$prwin+0.2)>(bet/(pot+bet)) && betposition==2 && nbetsround==0] 
+|| [br==4 && randomhand<(vs$12$prwin+0.3)>(bet/(pot+bet)) && betposition==2 && nbetsround==0] 
+
+} 
+? 2 : // raise 
+
+{ 
+0 // default is do not call 
+
+
+|| [br==1 && randomhand<(vs$13$prwin+0.1)>(bet/(pot+bet))] 
+|| [br==2 && randomhand<(vs$13$prwin+0.1)>(bet/(pot+bet))] 
+|| [br==3 && randomhand<(vs$12$prwin+0.2)>(bet/(pot+bet))] 
+|| [br==4 && randomhand<(vs$12$prwin+0.3)>(bet/(pot+bet))] 
+
+} 
+
+? 1 : // call 
+
+0 // fold 
+
+
+##f$AA## 
+{ 
+0 // default is do not raise 
+|| [br>=1 && isonepair && nstraightfillcommon>1 && nsuitedcommon<4 && f$betposition==4 && nbetsround==0] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$KK## 
+{ 
+0 // default is do not raise 
+|| [br>=1 && isonepair && ishipair && nstraightfillcommon>1 && nsuitedcommon<4 && f$betposition==4 && nbetsround==0] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$QQ## 
+{ 
+0 // default is do not raise 
+|| [br>=1 && isonepair && ishipair && nstraightfillcommon>1 && nsuitedcommon<4 && f$betposition==4 && nbetsround==0] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$JJ## 
+{ 
+0 // default is do not raise 
+|| [br>=1 && isonepair && ishipair && nstraightfillcommon>1 && nsuitedcommon<4 && betposition==4 && nbetsround==0] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$TT## 
+{ 
+0 // default is do not raise 
+|| [br>=1 && isonepair && ishipair && nstraightfillcommon>1 && nsuitedcommon<4 && betposition==4 && nbetsround==0] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$99## 
+0 
+
+##f$88## 
+0 
+
+##f$77## 
+0 
+
+##f$66## 
+0 
+
+##f$55## 
+0 
+
+##f$44## 
+0 
+
+##f$33## 
+0 
+
+##f$22## 
+0 
+
+##f$AK## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+##f$AQ## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$AJ## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$AT## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$A9## 
+0 
+
+##f$A8## 
+0 
+
+##f$A7## 
+0 
+
+##f$A6## 
+0 
+
+##f$A5## 
+0 
+
+##f$A4## 
+0 
+
+##f$A3## 
+0 
+
+##f$A2## 
+0 
+
+##f$KQ## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 9<rankhicommon<14 && 0.344>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 9<rankhicommon<14 && 0.174>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 9<rankhicommon<14 && 0.645>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 9<rankhicommon<14 && 0.326>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$KJ## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 9<rankhicommon<14 && 0.344>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 9<rankhicommon<14 && 0.174>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 9<rankhicommon<14 && 0.645>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 9<rankhicommon<14 && 0.326>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$KT## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 9<rankhicommon<14 && 0.344>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 9<rankhicommon<14 && 0.174>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 9<rankhicommon<14 && 0.645>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 9<rankhicommon<14 && 0.326>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && rankhicommon==(9 || 14) && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 
+
+##f$K9## 
+{ 
+0 // default is do not raise 
+
+|| [ br==2 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.172>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightfill==1 && nstraightfillcommon>2 && nsuitedcommon<3 && nrankedcommon==1 && 0.087>(bet/pot)*(1+rake) && nbetsround<=1] 
+
+|| [ br==2 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.516>(bet/pot)*(1+rake) && nbetsround<=1] 
+|| [ br==3 && nstraightflushfill==1 && nstraightflushfillcommon>2 && nrankedcommon==1 && 0.261>(bet/pot)*(1+rake) && nbetsround<=1] 
+} 
+? 2 : // raise 
+{ 
+0 // default is do not call  
+} 
+? 1 : // call 
+0 // fold 

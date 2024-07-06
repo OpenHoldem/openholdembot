@@ -1,9 +1,0 @@
-##f$test_00##
-/*comment*/0
-
-##f$test_01##
-0
-/* Comment ending in another function
-
-##f$test_02##
-*/

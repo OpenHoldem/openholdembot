@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineBlinds.h"
 
-#include <assert.h>
 #include "CEngineContainer.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"

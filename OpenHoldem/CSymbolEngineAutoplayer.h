@@ -15,7 +15,6 @@
 #define INC_CSYMBOLENGINEAUTOPLAYER_H
 
 #include "CVirtualSymbolEngine.h"
-#include "assert.h"
 #include "CSymbolEngineTableLimits.h"
 
 class CSymbolEngineAutoplayer: public CVirtualSymbolEngine {

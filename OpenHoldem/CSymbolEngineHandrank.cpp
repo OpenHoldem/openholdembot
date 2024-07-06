@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineHandrank.h"
 
-#include <assert.h>
 #include "CEngineContainer.h"
 #include "COpenHoldemStatusbar.h"
 #include "CScraper.h"

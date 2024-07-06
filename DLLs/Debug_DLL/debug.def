@@ -1,9 +1,0 @@
-LIBRARY	debug
-EXPORTS
-start_log
-stop_log
-clear_log
-write_log_vl
-write_log
-write_log_nostamp
-write_log_separator

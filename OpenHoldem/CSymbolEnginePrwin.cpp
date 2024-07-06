@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEnginePrwin.h"
 
-#include <assert.h>
 #include <math.h>
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"

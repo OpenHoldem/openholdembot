@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CAutoplayerFunctions.h"
 
-#include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
@@ -24,8 +23,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 
-
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 // TODO make it a symbol-engine?
 // Call it!

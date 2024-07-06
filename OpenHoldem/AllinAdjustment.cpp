@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "AllinAdjustment.h"
 
-#include <assert.h>
 #include "BetpotCalculations.h"
 #include "CFunctionCollection.h"
 
@@ -23,7 +22,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "..\..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
 #include "SwagAdjustment.h"

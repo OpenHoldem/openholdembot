@@ -1,0 +1,566 @@
+﻿v﻿13.1.3 2019-10-17
+==================
+MAINTENANCE:
+- The mandatory maxumim value for the spin-buttons of region-coordinates
+  has been changed to 32.000.  Both the default (100) 
+  and the former value (1600) are too small.
+  Thanks to PeterRabbit for reporting.
+  [THF]
+ 
+BUG FIXES:
+- Fixed bug with HotKeys.
+  Also improved and added many more keys.
+  Full info here...
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19741&p=159914&hilit=hotkeys#p167879
+  [Trish]
+  .
+
+v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
+v11.2.0 2017-05-26
+==================
+BUG FIXES:
+- OpenScrapes title-evaluator used the original title
+  instead of the preprocessed title.
+  Thanks to Trish for reporting.
+  [THF]
+
+v11.1.0 2017-02-01
+==================
+NEW STUFF:
+- Support for popup-handling and the symbol "ispopup"
+  [THF]
+
+
+v11.0.2 2017-01-22
+==================
+BUG FIXES:
+- It was not possible to edit the tablemap symbols 
+  "titletext", "!titletext", "ttlimits" and "c0limits" because 
+  the  rewritten list of symbols was incomplete.
+  Thanks to Chillit for reporting and to ChuckNeverMuck 
+  for finding the reason of the problem.
+  [THF]
+
+v11.0.1 2017-01-14
+==================
+BUG FIXES:
+- Due to a rewritten list of symbols that missed a small piece of code
+  it was only possible to edit and clone symbols, but not to create new ones.
+  Thanks to Chillit for reporting.
+  [THF]
+
+v11.0.0 2016-12-26
+==================
+NEW STUFF:
+- Support for Omaha.
+  OpenScrape provides now additional symbols for the 3rd and 4th card,
+  named pXcardface2 and pXcardface3 (where X = 0..9 is the player)
+  pXcardfaceYrank (Y = 0..3 for the cards), pXcardfaceYsuit 
+  and pXcardfaceYnocard.
+  The region-cloner got also adapted to support two more cards.
+  If a tablemap supports both game-types at once,
+  then it is expected that cards 0 and 1 scrape the cards for Hold'em.
+  [OpenHoldem, SingleMalt, THF]
+  
+
+v9.3.0 2016-10-29
+=================
+NEW STUFF:
+- Improved preprocessing of tiles, bets, balances and pots 
+  to handle non-standard number formats (extra dots, spaces in numbers, ...)
+  Some ttlimits might need small changes, please revisit your tablemaps.
+  For details please see http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
+  [THF]
+MAINTENANCE:
+- The introduction of advanced preprocessing for titles, bets and balances
+  made the tablemap-options "balancenumbersonly" and "scraperpreprocessordll" superfluous.
+  Therefore they got removed.
+  [THF]
+  
+
+v9.2.1 2016-07-21
+==================
+NEW stuff:
+- Support for betpot-buttons and hotkeys.
+  [THF]
+
+v9.1.0 2016-02-16
+==================
+BUG FIXES:
+- One array was two elements too large and contained uninitialized data.
+  This caused annoying error-messages when new regions got added.
+  Thanks to Micro111 for reporting.
+  [THF]
+
+v7.7.5 2015-07-08
+==================
+NEW stuff:
+- Support for z$targetsize to resize the table after connection.
+  [THF]
+- Handling numbers with commas in the title-string.
+  [THF]
+
+v7.6.0 2015-02.26
+==================
+NEW stuff:
+- Improved region-cloner, which clones now all p0-regions
+  relative to the balance regions of all players.
+  p0 has to be complete, pX balance must exist for the other players,
+  the rest works automatically.
+  [Relhby]
+
+v7.5.0 2015-02.05
+==================
+NEW stuff:
+- Automatically positioning the OS windows for better usability.
+  [THF]
+- Creating a global hotkey Ctrl+R to refresh the table-view.
+  Now it is possible to refresh without OS needing the input focus
+  (casino might display differently if the table is active).
+  [THF]
+
+v7.4.2 2015-01-22
+==================
+BUG FIXES:
+- OpenScrape was no longer able to add symbol-records to a tablemap.
+  This has now been fixed, Thanks to Eagle_1 for reporting.
+  [WinLo]
+
+v5.0.3 2014-07-18
+==================
+BUG FIXES:
+- OpenHoldem and OpenScrape could crash when evaluating ttlimits,
+  as a very rarely executed branch of the code had a missing 
+  pointer-dereference, but the code was compileable anyway.
+  Thanks to SuperBlak for reporting and for providing replay-frames and TM.
+  [THF]
+
+v5.0.1 2014-07-05
+==================
+NEW STUFF: 
+- support fr pXcardfaceYnocard and c0cardfaceXbocard regions
+  for better error-detection and faster scraping.
+  [THF]
+
+v4.2.4 2013-09-xx
+==================
+NEW STUFF: 
+- OpenScrape still uses a list-dialog to allow the user to select the table.
+  That was a bit difficult however for tables without a title.
+  Therefore we show now a fake title: "HWND: xyz1234" for such case.
+  [Termitapalahermita]
+
+v4.1.0 2013-04-23
+==================
+BUG FIXES:
+- The code to handle regions had no call to disable_and_clear_all(),
+  so some data could be initialized with old values.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16412 
+  Thanks to ZooBoy for reporting.
+  [THF]
+
+v4.0.2 2013-02-08
+=================
+BUG FIXES:
+- One function had an IO-parameter instead of a local variable.
+  The input got never set and the output never used.
+  This caused a an exception and has now been fixed.
+  [THF]
+
+NEW STUFF: 
+- Support for new symbol isfinaltable (OH 4.0.0)
+  [THF]
+
+MAINTENANCE:
+- Removed support for now unused symbol istournament.
+  [THF]
+  
+v4.0.0 2013-01-26
+=================
+NEW STUFF:
+- Added a tool to clone regions (Menu -> Tools -> Region Cloner).
+  This tool simplifies the task of creating a tablemap.
+  Once you have all regions for player0 and the first common-card defined
+  just use the region-cloner to create regions with equal properties
+  for all other chairs and cards. The regions will even get moved
+  to somewhat reasonable places at the table.
+  All you have to do: fine-tune the positions.
+  [THF]
+
+v2.1.8 2011-01-15
+=================
+BUG FIXES:
+- OpenScrape crashed when pressing the "+" and "-" buttons for the pixel separation view.
+  This has now been fixed. [JumpingFences]
+
+v2.1.6 2010-07-xx
+=================
+MAINTENANCE:
+- Improved some cryptic error messages. [THF] 
+
+v2.1.3 2010-03-03
+=================
+BUG FIXES:
+- The code to modify or delete the character "(" failed,
+  as the lookup of the font-type was not able to handle 
+  the special case "( (N)" with 2 open brackets  
+  instead of usually one bracket "X (N)". That has been fixed. 
+  Thanks to Funnydwag and Winny for reporting and reproducing the problem. 
+  [THF]
+
+v2.1.0 2009-12-26
+=================
+NEW STUFF
+- Added "scraperpredll" to valid s$strings list.  This new symbols instructs OpenHoldem to load the specified external scraperpre
+  DLL file. [OpenHoldem]
+
+v2.0.3 2009-10-23
+=================
+BUG FIXES:
+- OS allowed to create fonts with more or less than 1 character,
+  which caused malformed tablemaps.
+  This is now prevented by a sanity-check. [THF]
+
+v2.0.2 2009-09-01
+==============
+BUG FIXES:
+- OS didn't handle t3-records. [BillW]
+- Images with negative width or negative height caused a crash.
+  Thanks to BBUK for reporting and to Ares for explaining. [THF]
+
+v2.0.1 2009-07-17
+=================
+BUG FIXES:
+- Initialized a pointer to NULL, which previously was not initialized. Thanks to fishyphil5 for the patch. [THF]
+- File-archive was closed incorrectly, which caused a crash for debug-builds. Thanks to fishyphil5 for the patch. [THF]
+- Fixed some memory leaks. [THF]
+
+v2.0.0 2009-05-22
+=================
+BUG FIXES:
+- Fixed a crash when you delete the last Hash from a hast type (Hash0 for example). This crash was only in the pre-release versions [spew]
+- Fix to Add New Symbol dialog, whereby change to dropdown was not always enabling/disabling TitleText, ParseResults,
+  and ParseButton fields correctly.
+- Applied fix from maintenance branch that addresses an internal index not being updated when deleting a font record, 
+  causing a scrambling of OCR results when a T-transform region was displayed after the delete.  Thanks to USBFreak for 
+  identifying the problem [OpenHoldem]
+- Table map region rectangles are now properly drawn and utilized.  Previously, the right and bottom edges of the
+  rectangle were ignored, both when being drawn in OpenScrape, and when being used in transforms in OpenHoldem.  The
+  implications of this is that v1 regions require updating, and will be handled automatically in OpenScrape.
+  The file version for .tm's will be updated to ".osdb2" when saved with version 2.0.0+ of OpenScrape.  Opening 
+  of older .tm file versions in either OpenHoldem or OpenScrape will result in a warning message with similar 
+  information to the above being displayed. [OpenHoldem]
+- Tab order in table map dialog was incorrect.  Thanks, Friday.  [OpenHoldem]
+      
+MAINTENANCE:
+- Migration of table map z, s, r, t, p, h and i record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
+
+NEW STUFF:
+- Added "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" to valid s$strings list.
+  The settings that might be saved in the registry from previous OpenHoldem versions are now ignored for these methods.  If these
+  methods are not specified in the .tm file, then the default actions are:
+  swagselectionmethod = Dbl Click  (valid values are "Sgl Click", "Dbl Click", "Click Drag" or "Nothing")
+  swagdeletionmethod = Delete  (valid values are "Delete", "Backspace" or "Nothing")
+  swagconfirmationmethod = Enter  (valid values are "Enter", "Click Bet" or "Nothing")
+  buttonclickmethod = Double  (valid values are "Single" or "Double")
+  [OpenHoldem]
+- Added "handresetmethod" to valid s$strings list.  This new symbol instructs the OpenHoldem engine as to which scrape changes 
+  should be used as a trigger to identify a "hand reset" event. This is a bitmapped integer; only one of the selected scrape
+  changes needs to occur in order for the scrape to be considered a "hand reset".  The values below are in hexadecimal format,
+  but the value assigned to the "handresetmethod" symbol must be specified in decimal (base-10) format.  As an example, if you
+  want to instruct OpenHoldem to treat a change in dealer button OR a change in player cards as a "hand reset", then 
+  "handresetmethod" should be set to 5.  If you want to instruct OpenHoldem to treat only a change in dealer button as a 
+  "hand reset", then "handresetmethod" should be set to 1.
+  - 0x00000001 = dealer button
+  - 0x00000010 = handnumber
+  - 0x00000100 = player cards (not triggered by change to "no cards" or to "card backs")
+  [OpenHoldem]
+- Added uXdealer and uXbet to valid r$strings list.  These new regions correlate to the pXdealer and pXbet regions in much the
+  same way as uXname/pXname and uXbalance/pXbalance. [OpenHoldem]
+- Added "scraperdll" to valid s$strings list.  This new symbols instructs OpenHoldem to load the specified external scraper
+  override DLL file. [spew]
+- Added "balancenumbersonly" to valid s$strings list.  This setting allows you to specify that all characters besides numbers 
+  (0-9 and dot/decimal separator) are stripped from the text transform result for balance regions.  This is useful for those
+  casinos that include spurious/changing alphanumeric information in their balance boxes.  Setting this string to "True" or
+  "Yes" will enable balance cleansing, any other value or the absence of this string will result in no balance cleansing.
+  Thanks to Nick Coldhand for the patch.  [OpenHoldem]
+- Added "chipscrapemethod" to valid s$strings list.  This setting allows you to specify that the scraper engine should check
+  either all 200 possible chip locations (10 stacks of 20 chips) or a certain grid of chip locations everytime a chip scrape 
+  region is required.  The direction searched is determined by the 01 and 10 landing spots in relation to the 00 landing spot.
+  The default behavior is to stop checking a given stack when there is no match, and to stop checking all stacks when the base 
+  chip for that stack does not match. 
+  . This new symbols is only valid when a region specifies the 00, 01, and 10 locations only.  For regions that specify 
+  other chip landing spots, those chips/stacks will be checked as per previous behavior.  
+  . A value of "All" will trigger the "check all 200 locations" behavior.
+  . A value of "XxY" will trigger the check of X stacks of Y chips.
+  . Any other value will result in the original stop checking behavior as described.  [OpenHoldem]
+- Upon creating a new hash record "Create Hash", the hash will be calculated and inserted in the new record.  Previously,
+  a zero hash was inserted necessitating the use of menu item "Edit/Update Hashes" to calculate the correct values.
+  [OpenHoldem]
+- Menu item added to duplicate regions - select a region in the map, and choose "Edit/Duplicate Region".  A dialog will be
+  presented with a list of related regions that are valid copy targets. You can multi-select in this dialog with the standard
+  Control-click and Shift-click modifiers.  [OpenHoldem]
+- Applied Oscar's keyboard control patch for OpenScrape. You can now move regions using he arrow keys, fast-move regions using
+  shift+arrow keys, and resize regions using ctrl+arrow keys. Applied Bender's patch to allow diagonal movement with
+  the corner numpad keys (1,3,7,9) [OpenHoldem]
+- Added option to group regions in display tree by type or name (View/Group Regions, View/Ungroup Regions) [OpenHoldem]
+- Added display of rectangle size in rectangle box (Thanks BillW for the patch) [OpenHoldem]
+- Applied Oscar's patch:
+  - When you select refresh it will bring the targeted window to the front, scrape it, then place it to the back again.
+  - Also if you are connected to OHReplay it moves to the next screen before scraping
+  - Keyboard shortcuts: F3 - Connect, F4 - Show Region Boxes, F5 - Refresh Scrape, F1 - Help/About, Control + U - Update Hashes
+  [OpenHoldem]
+- Applied Bender's patch, replaces "Create hash" dialog with four create hash buttons.  [OpenHoldem]
+- Applied Bender's patch, enables Insert and Delete keys for adding/deleting records to the .tm file.  [OpenHoldem]
+
+
+v1.1.8 2008-10-21
+=================
+MAINTENANCE:
+- Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.
+- Further stabilization of code tree, especially regarding class encapsulation and thread critical section handling.
+- The Optimizer in the compiler has now been enabled by default for Release builds.
+
+
+v1.1.7 2008-08-22
+=================
+MAINTENANCE:
+- All level 3 compiler warnings have been addressed.
+
+BUG FIXES:
+- Eliminated artificial limitations on the number of font or hash records that can be present in any given tablemap (.tm) file.
+  Previously this was set to 512 for each.  Thank you to Nick Coldhand & Folder for busting the limit.  (OpenHoldem)
+  
+
+v1.1.6 2008-08-22
+=================
+MAINTENANCE:
+- Minidumps are now generated automatically upon a crash - dumps can be found in your OpenScrape
+  startup directory. This feature requires dbghelp.dll to be distributed with OpenScrape.  This file
+  should be placed in the same directory where OpenScrape.exe lives. 
+
+
+v1.1.5 2008-05-16
+================
+NEW STUFF:
+- Added image ("I") transform capability with perceptual difference algorithm (OpenHoldem)
+- Removed warning and region removal for handle and slider regions, to support the
+  addition of slider jamming code into OH. (BillW)
+  
+BUG FIXES:
+- Removed the statusbar of the tablemap dialog, which caused mispositioning and flickering.
+  Displaying the information about unscraped cards and fonts now in 2 text fields. (TheHighFish)
+
+MAINTENANCE:
+- As part of the pdiff implementation and tuning, I got tired of updating the table map load/save
+  code in two places, and have moved this code to the CTransform class where it belongs.  A great
+  deal of code was touched (more than I anticipated), so please test carefully.  (OpenHoldem)
+  
+  
+v1.1.4 2008-04-25
+================
+NEW STUFF:
+- Edit button functionality added for font records. Only character and font group can be changed. (BillW)
+
+v1.1.3 2008-04-11
+================
+NEW STUFF:
+- New symbol s$activemethod is now available.  This is used to determine how OH treats
+  information from the pXactive and uXactive regions.
+  - 1: (default, legacy) Inactive unless pXactive/uXactive returns true/active
+  - 2: (new) Active unless pXactive/Uxactive returns false/inactive/out/away  (Thanks,
+    Nick Coldhand)  (quiqsilver)
+
+
+v1.1.2 2008-03-28
+================
+NEW STUFF:
+- New symbol s$potmethod is now available.  This is used to determine the appropriate
+  site interpretation for the contents of c0pot0.  s$potmethod can be set to these values:
+  - 1: (default, legacy) Common pot
+  - 2: (new) Total pot, including current bets and side bets  (Thanks, Nick Coldhand)
+  (quiqsilver)
+
+
+v1.1.1 2008-03-15
+================
+NEW STUFF:
+- New symbol s$network is now available.  This is used to determine the appropriate
+  network to pull Poker Tracker data for when s$sitename is not a PT supported site.  OH will
+  first check s$sitename for a supported network name, then s$network.  These are the supported
+  names for both s$sitename and s$network and must be lowercase: stars, party, ultimate, absolute,
+  microgaming, ongame, cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker, tain,
+  bodog, everest, boss, and betfair. (quiqsilver)
+  
+- The entry window now has a status bar which displays common characters that are missing a font
+  definition on the left side, and cards that are missing a hash on the right side for easy
+  reference. (Thanks, Folder and dipitlow)
+  - The entry window now has a "Tracker" section to set options for what is displayed in the status
+    bar: (Thanks, Nick Coldhand)
+    - Fonts Set: Select which font set to display missing fonts for.
+    - Fonts #: Select the number of fonts desired for each character in the currently selected set.
+    - Cards #: Select the number of card hashes desired for each card. (quiqsilver)
+    
+- OpenScrape's behavior when creating hashes and images is now consistent with its font creation
+  behavior: 
+  - The selection will now return to the previously selected image or region respectively.
+  - When the first hash or image is created, the respective section will gain the '+' button to
+    indicate it now has a member and can be expanded. (quiqsilver)
+
+BUG FIXES:
+- Create Font button would search all groups to find unknown character when it should have
+  only searched within the matching text group (spew)
+
+- Launching a .tm file from the Windows shell launches OS, which crashes immediately. (quiqsilver)
+
+- CTransform::h_transform; check for left>right or bottom>top added to prevent crashes.  (OpenHoldem)
+
+- CTransform::do_plain_font_scan:  fix for searching of matching fonts across groups applied to
+  CTransform class; same problem as Spew's fix above.
+
+- Source code:  CTransform class (transform.cpp and transform.h) now live outside of the OpenHoldem and OpenScrape
+  directories, so it can be shared without manually needing to copy code from place to place.  (OpenHoldem)
+    
+
+v1.1.0 2008-02-22
+================
+NEW STUFF:
+- Table maps using fuzzy fonts can now be created.
+  - Decide which fonts will be fuzzy, and create those in a specifc group (e.g. group 1).
+    Fonts can be created with the font color as the foreground, or the background color
+    as the foreground (inverse fonting).  If using the font color for the foreground, it is
+    probably best to make the fonts as thick as possible using large radii.  If using the
+    background color as the foreground, a radius of zero probably works best.
+  - Set the symbol t1type to "fuzzy" for default tolerance (25%), or to a specific tolerance
+    value (0.50 for 50%, 0.33 for 33%, for example).  If this symbol is set to anything besides
+    "fuzzy" or a floating point value, then the engine will used the old pixel-by-pixel font
+    recognition engine.
+  - You can create multiple samples for various characters, and it will help.  6/8/3, for example
+    are all so similar that distinguishing fuzzy versions of these is difficult.  Create more
+    font records for the various 6's, 8s and 3's will help with the recognition.
+
+- OpenHoldem and OpenScrape now use a unified CTransform class (this is found in the
+  transform.cpp/.h files).
+
+- Add Font (CDlgTableMap::OnBnClickedCreateFont):
+  - When adding font records via the add font dialog, the selection will now return to the
+    previously selected region record, instead of nothing.
+  - Known characters are now *not* added to the "Add Font" dialog.
+  
+- Added nudge buttons to move region around.  (Thanks to the many suggestions for this)
+
+- Added tooltips to the main table map editor dialog.
+
+
+
+BUG FIXES:
+- Clicking new when "Size" was selected would not create a new size record on closure of the
+  Add Sizes dialog box.  (Thanks, quiqsilver)  (CDlgTableMap::OnBnClickedNew)
+  
+- Rare bug fixed where clicking on "Create Font" and when the character separation algorithm
+  detected characters in excess of the largest width allowed (31 pixels) would cause a crash.
+  The algorithm now checks for more than 31 pixels and truncates the size of that character to 
+  31 pixels.  (Thanks, the_whopper)  (CDlgTableMap::OnBnClickedCreateFont)
+  
+- Drawing region rectangles will now operate properly whether you draw top-left to bottom-right,
+  bottom-right to top-left, top-right to bottom-left, or bottom-left to top-right.
+  (COpenScrapeView::OnLButtonUp, COpenScrapeView::OnMouseMove) (Thanks, cidertime)
+  
+
+v1.0.5 2008-02-15
+================
+BUG FIXES:
+- More stupidity with clicking "New" and crashing has been corrected.  num_s$strings was 
+  set to an incorrect value. (OpenScrapeDoc.h)
+  
+
+v1.0.4 2008-02-08
+================
+NEW STUFF:
+- Commented out "Hash record created.  Don't forget to 'Edit/Update Hashes'." MessageBox.
+  (Thanks, Nick)  (CDlgTableMap::OnBnClickedCreateHash)
+  
+
+BUG FIXES:
+- New button was not working for symbols and regions.  (Thanks, JumpingFences) 
+  (CDlgTableMap::OnBnClickedNew)
+  
+
+
+v1.0.3 2008-02-01
+================
+NEW STUFF:
+- Added graphical hash point editor.  Select the "Hash Points" parent node in the tree and click the
+  edit button.  Make sure to not select one of the specific hash point child records, as this will 
+  bring up the editor for just that record - this capability has been retained in case you still need
+  it.
+
+
+BUG FIXES:
+- Multiple t$ records specifying the same character are now allowed.  (Thanks, Nick Coldhand)
+  (CDlgTableMap::OnBnClickedCreateFont)
+- Internal fix to use SetItemData/GetItemData methods of CTreeCtrl, to allow for more efficient
+  and flexible handling of data display when a tree item is clicked.   This was required by the
+  multiple t$ record fix, and has been extended throughout the code base.  In addition, the
+  SortChildren method of the CTreeCtrl class is now used instead of a manual bubble sort (the
+  bubble sort was always intended as a quick testing piece, and just failed to get replaced
+  by production code).  Sorry :(
+- Changing zoom on an Image record would cause a crash.  (CDlgTableMap::OnZoomChange)
+
+
+v1.0.2 2008-01-25
+================
+NEW STUFF:
+- Added item to View menu to display the client size for the currently attached window
+  if any.  (Thanks, Winngy)
+  
+
+BUG FIXES:
+- The Add Font dialog will now default the font group of unknown characters to the text transform group
+  of the currently selected region.  (Thanks, Nick Coldhand)  (CDlgTableMap::OnBnClickedCreateFont)
+
+
+
+v1.0.1 2008-01-11
+================
+NEW STUFF:
+Nil.
+
+
+BUG FIXES:
+- Refresh button was not refreshing internal cache of screen bits, leading to
+  incorrect images being saved.  (Bug identification by many, code  fix by UKbotter)
+  Added new method, CMainFrame::SaveBmpPbits, and added calls to this function
+  from OnViewConnecttowindow and OnViewRefresh.
+  
+- Per WinScrape specs, the maximum width of any given individual character in a text 
+  transform field is 31 pixels.  Changed MAX_SINGLE_CHAR_WIDTH in structs_defines.h from
+  30 to 31 to account for this.
+
+- Added "t0type", "t1type", "t2type", "t3type" as valid symbols.  Although the OpenScrape/
+  OpenHoldem engine does not yet support fuzzy text scraping, this have been added for
+  handling future capabilities.
+  
+- Added "c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", 
+  "c0limits6", "c0limits7", "c0limits8", "c0limits9" as valid symbols.  These were inadventently
+  left out in version 1.0.0.
+
+- Removed "h0type", "h1type", "h2type", "h3type" as valid symbols.  These are not used in OH/OS
+  as there is only a single hashing algorithm used, and the hash seeds for the types 0-3 are 
+  hard coded.
+  
+  
+v1.0.0 2008-01-04
+================
+- First public release.

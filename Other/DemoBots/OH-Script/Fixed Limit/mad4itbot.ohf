@@ -1,0 +1,1406 @@
+##2009-11-25 20:46:44##
+
+##notes##
+  
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+0
+
+##f$alli##
+  
+
+##f$swag##
+0 
+  
+
+##f$srai##
+0 
+  
+
+##f$rais##
+0 
+   || [  prwin >= 1.00 ]                  // the absolute nuts 
+   || [  prtie >= 1.00 ]                  // cannot lose 
+   || [  prlos <= 0.00 ]                  // cannot lose 
+||[ f$$XXx == 2 ] || [ f$$XX == 2 ]  // multiplexor is true 
+||f$smallblind == 2 
+||f$bigblind == 2 
+||f$onthebutton == 2 
+  
+
+##f$call##
+0 
+|| [ prwin >= 1.00 ]                  // the absolute nuts 
+|| [ prtie >= 1.00 ]                  // cannot lose 
+|| [ prlos <= 0.00 ]                  // cannot lose 
+|| [ call <= 0.00 ]                   // check! 
+  
+|| [ f$$XXx >= 1 ] || [ f$$XX >= 1 ]  // multiplexor is true 
+|| br==1 && nbetstocall <=1 && f$evcall >0    // call based on ev 
+  
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+
+
+##f$play##
+
+
+##f$test##
+
+
+##f$debug##
+
+
+##f$evrais##
+0                                        // start with zero 
+  
+// DEBITS HERE 
+- call                                   // calling cost 
+  
+// CREDITS HERE 
++  ( pot                                 // current pot 
++    call                                // my call (minimum) 
++  ( callshort-call)                     // additional callers 
+      * 0.10                             //   0% (tight) 
+//    * 0.50                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+   ) 
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+  
+
+##f$evcall##
+0                                        // start with zero 
+  
+// DEBITS HERE 
+- call                                   // calling cost 
+- bet                                    // raising cost 
+  
+// CREDITS HERE 
++  ( pot                                 // current pot 
++  ( call+bet*2)                         // my call my bet and a call (minimum) 
++  ( raisshort-call-bet*2)               // additional callers 
+      * 0.10                             //   0% (tight) 
+//    * 0.50                             //  50% (guess) 
+//    * 1.00                             // 100% (loose) 
+   ) 
+   * (prwin+prtie/2)                     // adjust for winning chances 
+   * (1+rake)                            // adjust for rake 
+  
+
+##f$dealposition##
+[ 
+//SB=1 BB=2 Early=3 Middle=4 Late=5 
+  
+dealposition==1 ? 1: 
+dealposition==2 ? 2: 
+  
+nplayersdealt==10 ? (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 3 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 4 : 
+                     dealposition==8 ? 4 : 
+                     dealposition==9 ? 5 : 
+                     dealposition==10? 5 : 0): 
+  
+nplayersdealt==9 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 3 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 4 : 
+                     dealposition==8 ? 5 : 
+                     dealposition==9 ? 5 : 0): 
+  
+nplayersdealt==8 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 4 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 5 : 
+                     dealposition==8 ? 5 : 0): 
+  
+nplayersdealt==7 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 3 : 
+                     dealposition==5 ? 4 : 
+                     dealposition==6 ? 4 : 
+                     dealposition==7 ? 5 : 0): 
+  
+nplayersdealt==6 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 4 : 
+                     dealposition==5 ? 4 : 
+                     dealposition==6 ? 5 : 0): 
+                      
+nplayersdealt==5 ?  (dealposition==3 ? 3 : 
+                     dealposition==4 ? 4 : 
+                     dealposition==5 ? 5 : 0): 
+                      
+nplayersdealt==4 ?  (dealposition==3 ? 4 : 
+                     dealposition==4 ? 5 : 0): 
+                    
+nplayersdealt==3 ?  (dealposition==3 ? 5 : 0):0 
+] 
+  
+  
+  
+
+##f$AA##
+br==1 ? 2: 
+1 
+  
+
+##f$KK##
+br==1  ? 2: 
+1 
+  
+
+##f$QQ##
+br==1  ? 2: 
+1 
+  
+
+##f$JJ##
+//IF RERAISED 
+br==1 && nbetstocall<=2 && (didrais||didcall) ==1 ? 2: // If raised, then got reraised, then raise 
+  
+  
+  
+//EARLY POSITION 
+br==1 && f$dealposition==3 && nbetstocall <=2 ? 2 : // Raise one bet regardless 
+  
+
+//MIDDLE POSITION 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling<3 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==4 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling>= 3 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+//LATEPOSITION 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling<3 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==5 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling>= 3 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+//SMALL BLIND 
+br==1 && f$dealposition==1 && nbetstocall<1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+  
+//BIG BLIND 
+  
+br==1 && f$dealposition==2 && nbetstocall<1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==2 && nbetstocall<=2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==2 && nbetstocall<=2 && nopponentscalling>=2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+0 
+  
+
+##f$TT##
+//IF RERAISED 
+br==1 && nbetstocall<=2 && (didrais||didcall) ==1 ? 1: // If raised, then got reraised, then call 
+  
+  
+  
+//EARLY POSITION 
+br==1 && f$dealposition==3 && nbetstocall <=2 ? 2 : // Raise one bet regardless 
+  
+
+//MIDDLE POSITION 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==4 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+//LATEPOSITION 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==5 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+//SMALL BLIND 
+br==1 && f$dealposition==1 && nbetstocall<1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+  
+//BIG BLIND 
+  
+br==1 && f$dealposition==2 && nbetstocall<1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==2 && nbetstocall<=1 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==2 && nbetstocall<=1 && nopponentscalling>=2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+0 
+  
+
+##f$99##
+//IF RERAISED 
+br==1 && nbetstocall<=2 && (didrais||didcall) ==1 ? 1: // If raised, then got reraised, then call 
+  
+  
+  
+//EARLY POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==3 ? 1 : // no raise then call 
+  
+
+//MIDDLE POSITION 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==4 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+//LATEPOSITION 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==5 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+//SMALL BLIND 
+br==1 && f$dealposition==1 && nbetstocall<1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+  
+//BIG BLIND 
+  
+br==1 && f$dealposition==2 && nbetstocall<1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==2 && nbetstocall<=1 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==2 && nbetstocall<=1 && nopponentscalling>=2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+0 
+  
+
+##f$88##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised and got reraised then call 
+  
+//EARLY POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==3 ? 1 : // no raise then call 
+  
+//MIDDLE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==4 ? 1 : // no raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==4 && nopponentscalling >2 ? 1 : //raise and 3 callers, then call 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling== 0 ? 2 : //first to act raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1 : // no raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : //raise and 3 callers, then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>1 ? 1 : // raise and at least 2 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentscalling<=2 ? 2:  // No raise, then raise if only 2 callers or less 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentscalling>2 ? 1: // No Raise, then call if more than 2 callers 
+br==1 && nbetstocall <=1 && nopponentsplaying <=2 && f$dealposition==2 && dealpositionrais==1 ? 2 ://if small blind raised, then reraise if 2 opponents or less 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // re raise and at least 3 callers then call 
+0 
+  
+
+##f$77##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised and got reraised then call 
+  
+//EARLY POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==3 ? 1 : // no raise then call 
+//MIDDLE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==4 ? 1 : // no raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==4 && nopponentscalling >2 ? 1 : //raise and 3 callers, then call 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling== 0 ? 2 : //first to act raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1 : // no raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : //raise and 3 callers, then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=2 && f$dealposition==1 ? 1 : // one bet then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentscalling<=2 ? 2:  // No raise, then raise if only 2 callers or less 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentscalling>2 ? 1 : // No Raise, then call if more than 2 callers 
+br==1 && nbetstocall <=1 && nopponentsplaying <=2 && f$dealposition==2 && dealpositionrais==1 ? 2 ://if small blind raised, then reraise if 2 opponents or less 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // re raise and at least 3 callers then call 
+0 
+  
+
+##f$66##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised and got reraised then call 
+  
+//EARLY POSITION 
+  
+//MIDDLE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==4 ? 1 : // no raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==4 && nopponentscalling >2 ? 1 : //raise and 3 callers, then call 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling== 0 ? 2 : //first to act raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1 : // no raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : //raise and 3 callers, then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 ? 1 : // raise and at least 2 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentscalling<=2 ? 2:  // No raise, then raise if only 2 callers or less 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentscalling>2 ? 1: // No Raise, then call if more than 2 callers 
+br==1 && nbetstocall <=1 && && nopponentsplaying <=2 f$dealposition==2 && dealpositionrais==1 ? 2 ://if small blind raised, then reraise if 2 opponents or less 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://raise then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // re raise and at least 3 callers then call 
+0 
+  
+
+##f$55##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+//EARLY POSITION 
+  
+//MIDDLE POSITION 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling==0 ? 2 :  // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : // raise and at least 3 callers then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponents ==1 ? 2 :  // small blind calls, all other fold then raise 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // raise and at least 3 callers then call 
+  
+
+0 
+  
+
+##f$44##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) && nopponentsplaying==1 ? 1: // If you raised the big blind and he reraised you, then call 
+br==1 && nbetstocall <=1 && (didrais||didcall) && nopponentscalling>0 ? 1: //if you raised or called and got reraised then call if there is another caller 
+  
+//EARLY POSITION 
+  
+//MIDDLE POSITION 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling==0 ? 2 :  // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : // raise and at least 3 callers then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponents ==1 ? 2 :  // small blind calls, all other fold then raise 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // raise and at least 3 callers then call 
+  
+
+0 
+  
+
+##f$33##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) && nopponentsplaying==1 ? 1: // If you raised the big blind and he reraised you, then call 
+br==1 && nbetstocall <=1 && (didrais||didcall) && nopponentscalling>0 ? 1: //if you raised or called and got reraised then call if there is another caller 
+  
+//EARLY POSITION 
+  
+//MIDDLE POSITION 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling==0 ? 2 :  // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : // raise and at least 3 callers then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponents ==1 ? 2 :  // small blind calls, all other fold then raise 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // raise and at least 3 callers then call 
+  
+
+0 
+  
+
+##f$22##
+// COMPLETE - Last update 13/12/05 
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) && nopponentsplaying==1 ? 1: // If you raised the big blind and he reraised you, then call 
+br==1 && nbetstocall <=1 && (didrais||didcall) && nopponentscalling>0 ? 1: //if you raised or called and got reraised then call if there is another caller 
+  
+//EARLY POSITION 
+  
+//MIDDLE POSITION 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling==0 ? 2 :  // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >2 ? 1 : // raise and at least 3 callers then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponents ==1 ? 2 :  // small blind calls, all other fold then raise 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 ://other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: // raise and at least 3 callers then call 
+  
+
+0 
+  
+
+##f$AKs##
+br==1 && ncallbets <4 ? 2: 
+1 
+  
+
+##f$AK##
+br==1 && ncallbets <4 ? 2: 
+1 
+  
+
+##f$KQs##
+//IF Reraised 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: // If you raised the big blind and he reraised you, then call 
+  
+
+//SMALL BLIND 
+br==1 && f$dealposition==1 && nbetstocall<=1 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==1 && nbetstocall<=2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+  
+  
+//MIDDLE POSITION 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==4 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==4 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+
+//LATEPOSITION 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling<2 ? 2 : // Reraise if a raise and less than 2 callers 
+br==1 && f$dealposition==5 && nbetstocall<2 ? 2 : // Raise if no raise so far 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+  
+0 
+  
+
+##f$AJs##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised and got reraised then call 
+br==1 && nbetstocall <=2 && (didrais||didcall) && nopponentscalling> 1 ? 1 : // if reraised twice only call if callers 
+  
+//EARLY POSITION 
+  
+br==1 && nbetstocall <=1 && f$dealposition==3 ? 1 : 
+  
+
+//MIDDLE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==4 ? 1 : 
+br==1 && nbetstocall <=2 && f$dealposition==4 && dealpositionrais>5 && nopponentscalling >1 ? 1 : 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling== 0 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  : 
+br==1 && nbetstocall <=2 && f$dealposition==5 && dealpositionrais>5 && nopponentscalling <=1 ? 2: 
+br==1 && nbetstocall <=2 && f$dealposition==5 && dealpositionrais>5 && nopponentscalling >1 ? 1 : 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying==1 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 : 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>1 ? 1 : 
+  
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1: 
+  
+0 
+  
+
+##f$AQs##
+br==1 && ncurrentbets <2 ? 2: 
+br==1 && ncurrentbets >=2  ? 1: 
+0 
+  
+
+##f$AQ##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised and got reraised then call 
+br==1 && nbetstocall <=2 && (didrais||didcall) && nopponentscalling >1  ? 1 : // if reraised twice only call if callers 
+  
+//EARLY POSITION 
+  
+br==1 && nbetstocall <=2 && f$dealposition==3 ? 2 : 
+  
+
+//MIDDLE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==4 && nopponentscalling<=2 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==4 && nopponentscalling>2 ? 1 : 
+br==1 && nbetstocall <=2 && f$dealposition==4 && dealpositionrais>5 && nopponentscalling >1 ? 1 : 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling<=3 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  : 
+br==1 && nbetstocall <=2 && f$dealposition==5 && dealpositionrais>5 && nopponentscalling <=1 ? 2: 
+br==1 && nbetstocall <=2 && f$dealposition==5 && dealpositionrais>5 && nopponentscalling >1 ? 1 : 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying==1 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 2 : 
+br==1 && nbetstocall <=3 && f$dealposition==1 ? 1 : 
+  
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 2: 
+  
+0 
+  
+
+##f$AJ##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//MIDDLE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==4 && nopponentscalling<=2 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==4 && nopponentscalling>2 ? 1 : 
+br==1 && nbetstocall <=2 && f$dealposition==4 && dealpositionrais>5 && nopponentscalling >1 ? 1 : 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling== 0 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==5 ? 1  : 
+br==1 && nbetstocall <=2 && f$dealposition==5 && dealpositionrais>5 && nopponentscalling <=1 ? 2: 
+br==1 && nbetstocall <=2 && f$dealposition==5 && dealpositionrais>5 && nopponentscalling >1 ? 1 : 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying==1 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 : 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>1 ? 1 : 
+  
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+br==1 && nbetstocall <=2 && f$dealposition==2 && nopponentscalling>2 ? 1: 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1: 
+  
+0 
+  
+
+##f$AT##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 &&nopponentsplaying<3 ? 2: 
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>2 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall <=2 && f$dealposition==1 ? 1 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+0 
+  
+
+##f$ATs##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//LATE POSITION 
+br==1 && nbetstocall <=1 && nopponentscalling == 0 && f$dealposition ==5 ? 2 : //first to act raise 
+br==1 && nbetstocall <=1 && f$dealposition ==5 ? 1:  // callers then call 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 &&nopponentsplaying<3 ? 2: 
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=0 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=0 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+0 
+  
+
+##f$A9s##
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+  
+  
+//LATE POSITION 
+br==1 && nbetstocall <=1 && nopponentscalling == 0 && f$dealposition ==5 ? 2 : //first to act raise 
+br==1 && nbetstocall <=1 && f$dealposition ==5 ? 1:  // callers then call 
+  
+  
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$A8s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+//LATE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+
+//LATE POSITION 
+  
+0 
+  
+
+##f$A7s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+//LATE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$A6s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+//LATE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$A5s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+
+//LATE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$A4s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+
+//LATE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$A3s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+
+//LATE POSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$A2s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+  
+  
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >3? 1  :  // other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==5 && nopponentscalling >4 ? 1 : // raise and at least 3 callers then call 
+  
+
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$KQ##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 && nopponentsplaying>3 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=2 && f$dealposition==1 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+br==1 && nbetstocall <=1 && f$dealposition==2 ?1 : 
+  
+//LATEPOSITION 
+  
+br==1 && f$dealposition==5 && nbetstocall<2 ? 1 : // Call if no raise so far 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+0 
+  
+
+##f$KJ##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 &&nopponentsplaying<3 ? 2: 
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==2 ? 1 : 
+br==1 && nbetstocall <=0 && f$dealposition==2 && nopponentsplaying<=3 ? 2 : 
+0 
+  
+
+##f$KJs##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 &&nopponentsplaying<3 ? 2: 
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=0 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=0 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+0 
+  
+
+##f$KT##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 && nopponentsplaying>3 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==2 && nopponentsplaying==1 ? 1: //1 bet to call on the BB then call 
+  
+//LATEPOSITION 
+  
+br==1 && f$dealposition==5 && nbetstocall<2 ? 1 : // Call if no raise so far 
+br==1 && f$dealposition==5 && nbetstocall==2 && nopponentscalling>= 2 ? 1 : // Call if there's been a raise and at least 2 callers 
+0 
+  
+
+##f$KTs##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >=2 ? 1 : 
+0 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 && nopponentsplaying<3 ? 2: 
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 ? 1: 
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+  
+  
+//BIG BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+br==1 && nbetstocall <=0 && f$dealposition==1 && nopponentsplaying<=3 ? 2 : 
+br==1 && nbetstocall <=0 && f$dealposition==1 && nopponentsplaying>3 ? 1 : 
+  
+
+##f$K9##
+0 
+  
+
+##f$K9s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+  
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$K8##
+0 
+  
+
+##f$K7##
+0 
+  
+
+##f$K6##
+0 
+  
+
+##f$K5##
+0 
+  
+
+##f$K4##
+0 
+  
+
+##f$K3##
+0 
+  
+
+##f$K2##
+0 
+  
+
+##f$QJ##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=1 && nopponentsplaying>4 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+0 
+  
+
+##f$QJs##
+//IF Reraised 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: // If you raised the big blind and he reraised you, then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >=2 ? 1 : 
+0 
+  
+
+##f$QT##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=2 && nopponentsplaying>4 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentsplaying>= 3 ? 1 : 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+0 
+  
+
+##f$QTs##
+//IF Reraised 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: // If you raised the big blind and he reraised you, then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >=3 ? 1 : 
+  
+0 
+  
+
+##f$Q9s##
+//IF Reraised 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: // If you raised the big blind and he reraised you, then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >=4 ? 1 : 
+0 
+  
+
+##f$Q9##
+0 
+  
+
+##f$Q8##
+0 
+  
+
+##f$Q7##
+0 
+  
+
+##f$Q6##
+0 
+  
+
+##f$Q5##
+0 
+  
+
+##f$Q4##
+0 
+  
+
+##f$Q3##
+0 
+  
+
+##f$Q2##
+0 
+  
+
+##f$JT##
+0 
+  
+
+##f$JTs##
+  
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+//LATEPOSITION 
+br==1 && nbetstocall <=1 && f$dealposition==5 && nopponentscalling >=2 ? 1 : 
+0 
+  
+
+##f$J9##
+0 
+  
+
+##f$J9s##
+//IF RERAISED 
+  
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$J8##
+0 
+  
+
+##f$J7##
+0 
+  
+
+##f$J6##
+0 
+  
+
+##f$J5##
+0 
+  
+
+##f$J4##
+0 
+  
+
+##f$J3##
+0 
+  
+
+##f$J2##
+0 
+  
+
+##f$T9##
+0 
+  
+
+##f$T9s##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=1 && nopponentsplaying>4 ? 1: 
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall ==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+0 
+  
+
+##f$T8##
+0 
+  
+
+##f$T7##
+0 
+  
+
+##f$T6##
+0 
+  
+
+##f$T5##
+0 
+  
+
+##f$T4##
+0 
+  
+
+##f$T3##
+0 
+  
+
+##f$T2##
+0 
+  
+
+##f$98##
+0 
+  
+
+##f$98s##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=1 && nopponentsplaying>4 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+
+//BIG BLIND 
+br==1 && nbetstocall==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+0 
+  
+
+##f$97##
+0 
+  
+
+##f$96##
+0 
+  
+
+##f$95##
+0 
+  
+
+##f$94##
+0 
+  
+
+##f$93##
+0 
+  
+
+##f$92##
+0 
+  
+
+##f$87##
+0 
+  
+
+##f$87s##
+//FACING RERAISE 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: 
+  
+//ON THE BUTTON 
+  
+br==1 && dealposition==nplayersdealt && nbetstocall<=1 && nopponentscalling>4 ? 1: 
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+  
+//BIG BLIND 
+br==1 && nbetstocall==0 && f$dealposition==2 && nopponentsplaying==1 ? 2: 
+0 
+  
+
+##f$86##
+0 
+  
+
+##f$85##
+0 
+  
+
+##f$84##
+0 
+  
+
+##f$83##
+0 
+  
+
+##f$82##
+0 
+  
+
+##f$76##
+0 
+  
+
+##f$76s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+  
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$75##
+0 
+  
+
+##f$74##
+0 
+  
+
+##f$73##
+0 
+  
+
+##f$72##
+0 
+  
+
+##f$65##
+0 
+  
+
+##f$65s##
+//IF RERAISED 
+br==1 && nbetstocall <=1 && (didrais||didcall) ? 1: //if you raised or called and got reraised then call 
+  
+  
+  
+//SMALL BLIND 
+br==1 && nbetstocall <=1 && f$dealposition==1 && nopponentscalling==0 ? 2 : // First to act then raise 
+br==1 && nbetstocall <=1 && f$dealposition==1 ? 1 :  //other callers then call 
+br==1 && nbetstocall <=2 && f$dealposition==1 && nopponentscalling>2 ? 1 : // raise and at least 3 callers then call 
+0 
+  
+
+##f$64##
+0 
+  
+
+##f$63##
+0 
+  
+
+##f$62##
+0 
+  
+
+##f$54##
+0 
+  
+
+##f$53##
+0 
+  
+
+##f$52##
+0 
+  
+
+##f$43##
+0 
+  
+
+##f$42##
+0 
+  
+
+##f$32##
+0 
+  
+
+##f$smallblind##
+br==1 && f$dealposition == 1 && (didrais||didcall) ==1 ? 1: 
+br==1 && f$dealposition == 1 && nopponentscalling == 0 && prwin >= 0.50 ? 2: 
+br==1 && f$dealposition == 1 && nopponentscalling == 0 && prwin >= 0.43 ? 1: 
+br==1 && f$dealposition == 1 && nopponentscalling >= 1 && nbetstocall/pot <= (prwin + 0.025*nopponentscalling +0.1) ? 1: 
+//br==1 && f$dealposition == 1 && nbetstocall <=1 && prwin >= 0.38 ? 1: 
+0 
+] 
+
+##f$bigblind##
+br==1 && f$dealposition == 2 && (didrais||didcall) ==1 ? 1: 
+br==1 && f$dealposition == 2 && nopponents == 1 && nbetstocall <1 && prwin >= 0.55 ? 2 : 
+br==1 && f$dealposition == 2 && nopponents == 2 && nbetstocall <1 && prwin >= 0.39 ? 2 : 
+br==1 && f$dealposition == 2 && dealpositionrais >6 && nbetstocall <=1 && prwin >0.40 ? 1: 
+0] 
+  
+
+##f$onthebutton##
+br==1 && f$dealposition == 2 && (didrais||didcall) ==1 ? 1: 
+br==1 && dealposition==nplayersdealt && nopponents ==2 && prwin >= 0.34 ? 2: 
+0] 
+

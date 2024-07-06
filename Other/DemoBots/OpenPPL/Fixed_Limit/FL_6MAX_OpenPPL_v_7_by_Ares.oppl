@@ -1,0 +1,579 @@
+##notes##
+//
+// You will need versus.bin   
+// https://openholdembot.googlecode.com/files/versus.bin%20for%20OpenHoldem%202007-10-13.rar            
+//	
+// 		  
+// LISTS
+//
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+
+##list01##
+//3.77% CAP 
+AA  KK  QQ  JJ  TT 
+AKs AQs AKo 
+
+
+##list10##
+//13.12% Raise UTG Limp
+99 88 77 66 
+AJs ATs A9s A8s KQs KJs KTs QJs QTs JTs 
+AQo KQo AJo KJo ATo  
+
+
+##list11##
+//17.19% Raise MP Limp
+99 88 77 66 55 
+AJs ATs A9s A8s A7s A6s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s 
+AQo KQo AJo KJo QJo ATo A9o  
+
+
+##list12##
+//24.59% Raise CO LIMPA
+99 88 77 66 55 44 
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s QJs QTs Q9s Q8s JTs J9s J8s T9s 98s 
+AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o A8o A7o  
+
+
+##list13##
+//37.25% Raise BU Limp
+99  88  77  66  55  44  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s JTs J9s J8s J7s T9s T8s 98s 87s 76s 
+AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o K9o Q9o J9o A8o K8o A7o K7o A6o A5o A4o A3o A2o  
+
+
+##list14##
+//62.29% Raise SB LIMPA
+99  88  77  66  55  44  33  22  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s J8s J7s J6s J5s J4s J3s J2s T9s T8s T7s T6s T5s T4s T3s 98s 97s 96s 95s 94s 87s 86s 85s 76s 
+AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o K9o Q9o J9o T9o A8o K8o Q8o J8o T8o 98o A7o K7o Q7o J7o T7o 97o 87o A6o K6o Q6o J6o T6o A5o K5o Q5o J5o A4o K4o Q4o A3o K3o A2o  
+
+
+##list20##
+//17.19% Raise 1 Limper
+99 88 77 66 55 
+AJs ATs A9s A8s A7s A6s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s 
+AQo KQo AJo KJo QJo ATo A9o   
+
+
+##list21##
+//14.33% Raise 2 Limpers 
+99 88 
+AJs ATs A9s A8s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s 
+AQo KQo AJo KJo ATo A9o  
+
+
+##list22##
+//8.75% Raise 3 Limpers  
+99 
+AJs ATs KQs 
+AQo KQo AJo ATo  
+
+
+##list23##
+//5.43% Call 2 Limpers 
+77 66 55 44 
+A7s A6s K9s Q9s J9s T9s 
+QJo A9o 
+
+
+##list24##
+//13.73% Call 3 Limpers 
+88 77 66 55 44 33 22 
+A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs K9s K8s K7s K6s QJs QTs Q9s Q8s Q7s JTs J9s T9s 98s 87s 76s 65s 54s 43s 32s 
+QJo A9o 
+
+
+##list30##
+//6.94% 3-Bet 1 Raiser UTG 
+99 
+AJs ATs KQs 
+AQo AJo  
+
+
+##list31##
+//3.92% Pos=SB 3-BET 1 RAISER UTG 
+99 
+AJs ATs 
+
+
+##list32##
+//9.05% 3-Bet 1 Raiser MP 
+99 
+AJs ATs A9s KQs 
+AQo KQo AJo ATo 
+
+
+##list33##
+//8.14% Pos=SB 3-BET 1 RAISER MP 
+99 
+AJs ATs A9s KQs 
+AQo AJo ATo  
+
+
+##list34##
+//12.97% 3-Bet 1 Raiser CO 
+99 
+AJs ATs A9s A8s A7s A6s KQs KJs KTs QJs QTs 
+AQo KQo AJo ATo A9o A8o  
+
+
+##list35##
+//12.07% Pos=SB 3-BET 1 RAISER CO 
+99 
+AJs ATs A9s A8s A7s KQs KJs KTs 
+AQo KQo AJo ATo A9o A8o  
+
+
+##list36##
+//23.98% 3-Bet 1 Raiser BU
+99 88 77 66 55 44 33 22 
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s QJs QTs 
+AQo KQo AJo KJo ATo KTo A9o A8o A7o A6o A5o A4o A3o  
+
+
+##list40##
+88  77  66  55  44  33  22 
+
+
+##list41##
+KJs QTs JTs 
+
+
+##list42##
+KJs
+
+
+##list50##
+//18.70% Call Raise UTG I BB
+99 88 77 66 55 44 33 22 
+ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s QJs QTs Q9s JTs J9s J8s T9s T8s 98s 87s 76s 65s 54s 
+KQo AJo KJo QJo ATo A9o A8o A7o  
+
+
+##list51##
+//24.13% Call Raise MP I BB
+A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s JTs J9s J8s T9s T8s T7s 98s 97s 87s 76s 65s 54s 
+KQo KJo QJo ATo KTo QTo JTo A9o A8o A7o A6o A5o A4o A3o A2o  
+
+
+##list52##
+//32.58% Call Raise CO I BB
+A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s JTs J9s J8s J7s J6s T9s T8s T7s T6s 98s 97s 96s 87s 86s 85s 76s 75s 65s 64s 54s 53s 
+KQo KJo QJo KTo QTo JTo A9o K9o Q9o J9o T9o A8o K8o 98o A7o A6o A5o A4o A3o A2o  
+
+
+##list53##
+//41.03% Call Raise BU I BB
+33 22 
+A3s A2s KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s J8s J7s J6s J5s J4s J3s T9s T8s T7s T6s T5s T4s 98s 97s 96s 95s 87s 86s 85s 84s 76s 75s 74s 65s 64s 63s 54s 53s 43s 
+QJo KTo QTo JTo K9o Q9o J9o T9o A8o K8o Q8o J8o T8o 98o A7o K7o 97o 87o A6o K6o 76o A5o K5o A4o K4o A3o A2o  
+
+
+##list54##
+22 
+K5s K4s K3s K2s QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s J8s J7s J6s J5s J4s J3s J2s T9s T8s T7s T6s T5s T4s T3s T2s 98s 97s 96s 95s 94s 93s 92s 87s 86s 85s 84s 76s 75s 74s 65s 64s 63s 54s 53s 52s 43s 
+QTo JTo Q9o J9o T9o Q8o J8o T8o 98o K7o Q7o J7o T7o 97o 87o K6o Q6o J6o T6o 96o 86o 76o K5o Q5o J5o 65o K4o Q4o K3o Q3o K2o Q2o  
+
+
+##list55##
+//4.98% Raise 1 Raise UTG I BB
+AA KK QQ JJ TT 
+AKs AQs AJs 
+AKo AQo 
+
+
+##list56##
+//6.64% Raise 1 Raise MP I BB
+AA KK QQ JJ TT 99 
+AKs AQs AJs ATs 
+AKo AQo AJo  
+
+
+##list57##
+//8.75% Raise 1 Raise CO I BB
+AA KK QQ JJ TT 99 88 77 
+AKs AQs AJs ATs A9s 
+AKo AQo AJo ATo  
+
+
+##list58##
+//15.54% Raise 1 Raise BU I BB
+99 88 77 66 55 44 
+AJs ATs A9s A8s A7s A6s A5s KQs KJs 
+AQo KQo AJo KJo ATo A9o A8o
+
+
+##list59##
+//27.75% Raise 1 Raise CO I BB
+99 88 77 66 55 44 33 
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s QJs 
+AQo KQo AJo KJo QJo ATo KTo A9o K9o A8o K8o A7o A6o A5o A4o A3o A2o  
+
+
+##list80##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s JTs J9s T9s T8s 98s 97s 87s 86s 76s 75s 65s 64s 54s 53s 43s 
+AKo AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o K9o Q9o J9o T9o A8o 98o A7o 87o A6o 76o A5o A4o A3o A2o  
+
+
+##list100##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s J8s J7s J6s J5s J4s J3s J2s T9s T8s T7s T6s T5s T4s T3s T2s 98s 97s 96s 95s 94s 93s 92s 87s 86s 85s 84s 83s 82s 76s 75s 74s 73s 72s 65s 64s 63s 62s 54s 53s 52s 43s 42s 32s 
+AKo AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o K9o Q9o J9o T9o A8o K8o Q8o J8o T8o 98o A7o K7o Q7o J7o T7o 97o 87o A6o K6o Q6o J6o T6o 96o 86o 76o A5o K5o Q5o J5o T5o 95o 85o 75o 65o A4o K4o Q4o J4o T4o 94o 84o 74o 64o 54o A3o K3o Q3o J3o T3o 93o 83o 73o 63o 53o 43o A2o K2o Q2o J2o T2o 92o 82o 72o 62o 52o 42o 32o  
+
+
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+//
+//SYMBOLS
+//
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+
+##f$Round_First_Action##
+	WHEN (NOT didrais AND NOT didcall AND NOT didchec) RETURN 1 FORCE 
+	WHEN (Others) RETURN 0 FORCE
+
+
+##f$PostFlop_Senario##
+// 1. Eu sou o primeiro a agir 
+// 2. Viloes checaram sou o ultimo a agir
+// 3. Viloes checaram nao sou o ultimo a agir
+// 4. Vilao fez Raise
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN (f$Round_First_Action = 1 AND betposition = 1) RETURN 1 FORCE
+	WHEN (f$Round_First_Action = 1 AND nbetstocall =0 AND (betposition = nplayersround)) RETURN 2 FORCE
+	WHEN (f$Round_First_Action = 1 AND nbetstocall =0 AND betposition!=1 AND (betposition != nplayersround)) RETURN 3 FORCE
+	WHEN (didrais AND nbetstocall > 0) RETURN 5 FORCE
+	WHEN (nbetstocall > 0) RETURN 4 FORCE
+ 
+
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+
+##f$preflop##
+WHEN ((list01)) Raise FORCE
+WHEN (list01) Call FORCE
+WHEN ((didrais AND ncallbets <= 3)) Call FORCE// Eu fiz Raise e recebi reraise
+WHEN ((Raises = 2 AND didrais AND ncallbets <= 4 AND BotsActionsOnThisRoundIncludingChecks = 1)) Call FORCE // Call 4bet
+WHEN ((didcall AND ncallbets <= 2)) Call FORCE
+
+// Chart Open Raise
+WHEN ((( Raises = 0 AND Calls = 0 AND ncallbets <= 1)))
+	WHEN ((InSmallBlind AND list14 ))		 Raise FORCE
+	WHEN ((InButton AND list13))			 Raise FORCE
+	WHEN ((InCutOff AND list12))			 Raise FORCE
+	WHEN ((InMiddlePosition AND list11))	 Raise FORCE
+	WHEN ((InUTG AND list100))    			 Raise FORCE
+	WHEN (f1 AND list100)  Raise FORCE
+	WHEN (Others) Fold FORCE
+	
+// Raise 1 Limp	
+WHEN ((( Raises = 0 AND Calls = 1)))
+	WHEN ((list20)) Raise FORCE 
+	WHEN (Others) Fold FORCE
+
+// Raise/Call 2 Limp	
+WHEN ((( Raises = 0 AND Calls = 2)))
+	WHEN ((list21)) Raise FORCE
+	WHEN ((list23)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+// Raise/Call 3 Limp	
+WHEN ((( Raises = 0 AND Calls = 3)))
+	WHEN ((list22)) Raise FORCE 
+	WHEN ((list24)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN ((( Raises = 1 AND Calls <= 1 AND f$Round_First_Action = 1)))
+	WHEN ((FirstRaiserPosition = 5 AND list30)) Raise FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list32)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 3 AND list34)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 2 AND list36)) Raise FORCE
+	WHEN (Others) Fold FORCE
+
+//3bet	
+WHEN ((( Raises = 1 AND Calls <= 1 AND InSmallBlind)))
+	WHEN ((FirstRaiserPosition = 5 AND list31)) Raise FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list33)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 3 AND list35)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 2 AND list36)) Raise FORCE
+	WHEN (Others) Fold FORCE
+	
+// Actions against 1 Raise and at least 1 Call
+WHEN ((( Raises = 1 AND Calls <= 1)))
+	WHEN ((FirstRaiserPosition >= 4 AND (list40 OR list41))) Call FORCE 
+	WHEN ((FirstRaiserPosition  = 3 AND (list40 OR list42))) Call FORCE 
+	WHEN ((FirstRaiserPosition  = 2 AND list40)) Call FORCE 
+	WHEN (Others) Fold FORCE
+	
+WHEN ((( Raises = 1 AND Calls = 0 AND InBigBlind)))
+	WHEN ((FirstRaiserPosition = 5 AND list55)) Raise FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list56)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 3 AND list57)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 2 AND list58)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 1 AND list59)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 1 AND list54)) Call FORCE 
+	WHEN ((FirstRaiserPosition = 2 AND list53)) Call FORCE 
+	WHEN ((FirstRaiserPosition = 3 AND list52)) Call FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list51)) Call FORCE 
+	WHEN ((FirstRaiserPosition = 5 AND list50)) Call FORCE 
+	WHEN (Others) Fold FORCE
+
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+	
+##f$flop##
+WHEN (((f$PostFlop_Senario = 1)))
+//Eu sou o primeiro a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE 
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((Overcards = 2 AND (1 - vs$list80$prlos) >= .45)) Raise FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$list80$prlos) >= .48)) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Raise FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Raise FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Raise FORCE
+	WHEN (Others) Fold FORCE
+	
+	
+WHEN (((f$PostFlop_Senario = 2)))
+// 2. Viloes checaram sou o ultimo a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .50))) Raise FORCE	
+	WHEN ((Overcards = 2 AND (1 - vs$list80$prlos) >= .45)) Raise FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$list80$prlos) >= .48)) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Raise FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Raise FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Raise FORCE
+	WHEN (Others) Fold FORCE
+	
+	
+WHEN (((f$PostFlop_Senario = 3)))
+// 3. Viloes checaram nao sou o ultimo a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .50))) Raise FORCE	
+	WHEN ((Overcards = 2 AND (1 - vs$list80$prlos) >= .45)) Raise FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$list80$prlos) >= .48)) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Raise FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Raise FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Raise FORCE	
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 4)))
+// 4. Vilao fez Raise
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .50))) Call FORCE
+	WHEN ((Overcards = 2 AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$list80$prlos) >= .48)) Call FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Call FORCE	
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 5)))
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Call FORCE // preciso melhorar aqui de 61 ate quanto e Call
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .851))) Raise FORCE
+	WHEN ((HaveSet AND ((1 - vs$list80$prlos >= .65) AND (1 - vs$list80$prlos <= .85)))) Call FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Call FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Call FORCE
+	WHEN ((HaveTwoPair AND ((1 - vs$list80$prlos >= .50) AND (1 - vs$list80$prlos <= .75)))) Call FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .751))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .50))) Call FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+	
+WHEN (Others)
+    WHEN (Others) Fold FORCE
+
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+
+##f$turn##
+WHEN (((f$PostFlop_Senario = 1)))
+//Eu sou o primeiro a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .60))) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 2)))
+// 2. Viloes checaram sou o ultimo a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .60))) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 3)))
+// 3. Viloes checaram nao sou o ultimo a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .60))) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 4)))
+// 4. Vilao fez Raise
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .60))) Call FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$list80$prlos) >= .50)) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 5)))
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN ((1 - vs$list80$prlos >= .94)) Raise FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .851))) Raise FORCE
+	WHEN ((HaveSet AND ((1 - vs$list80$prlos >= .65) AND (1 - vs$list80$prlos <= .85)))) Call FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Call FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Call FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Call FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .60))) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$list80$prlos) >= .45)) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (Others)
+    WHEN (Others) Fold FORCE
+
+//=========================================================================================================
+//=========================================================================================================
+//=========================================================================================================
+
+##f$river##
+WHEN (((f$PostFlop_Senario = 1)))
+//Eu sou o primeiro a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .70))) Raise FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 2)))
+// 2. Viloes checaram sou o ultimo a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .70))) Raise FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 3)))
+// 3. Viloes checaram nao sou o ultimo a agir
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .70))) Raise FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 4)))
+// 4. Vilao fez Raise
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .65))) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Raise FORCE
+	WHEN ((HaveFlush AND ((1 - vs$list80$prlos >= .76) AND (1 - vs$list80$prlos <= .86)))) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .861))) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .75))) Call FORCE
+	WHEN (Others) Fold FORCE
+
+WHEN (((f$PostFlop_Senario = 5)))
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN ((1 - vs$list80$prlos >= .94 AND nhandshi < 4)) Raise FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  )) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$list80$prlos >= .61))) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$list80$prlos >= .851))) Raise FORCE
+	WHEN ((HaveSet AND ((1 - vs$list80$prlos >= .65) AND (1 - vs$list80$prlos <= .85)))) Call FORCE
+	WHEN ((HaveTrips AND (1 - vs$list80$prlos >= .69))) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$list80$prlos >= .86))) Call FORCE
+	WHEN ((HaveStraight AND (1 - vs$list80$prlos >= .88))) Call FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$list80$prlos >= .50))) Call FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$list80$prlos >= .80))) Call FORCE	
+	WHEN (Others) Fold FORCE
+
+WHEN (Others)
+    WHEN (Others) Fold FORCE
+
+
+	

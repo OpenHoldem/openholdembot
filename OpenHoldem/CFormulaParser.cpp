@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CFormulaParser.h"
 
-#include <assert.h>
 #include <io.h>
 #include "CDebugTab.h"
 #include "CEngineContainer.h"
@@ -41,7 +40,7 @@
 #include "CWatchdog.h"
 #include "MemoryLogging.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 #include "TokenizerConstants.h"
 
 #ifdef _DEBUG

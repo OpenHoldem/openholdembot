@@ -13,7 +13,7 @@
 
 #include "StdAfx.h"
 #include "CStringMatch.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 
 CStringMatch *p_string_match = NULL;
 

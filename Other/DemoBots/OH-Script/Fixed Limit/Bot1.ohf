@@ -1,0 +1,360 @@
+##2009-11-25 20:46:08##
+
+##notes##
+
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+0
+
+##f$alli##
+
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+0 
+
+||(f$AKAQAJ=2) 
+||(f$JJto88=2) 
+||(f$AAKKQQAKs=2) 
+
+##f$call##
+0 
+
+||(f$AKAQAJ=1) 
+||(f$JJto88=1) 
+||(f$AAKKQQAKs=1) 
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+(nopponentsplaying==0) ? 0 : 
+
+nopponentsplaying + defcon*nopponentsfolded 
+
+##f$play##
+//------------------------------------------------------------------------ 
+//    DISABLED RULE(S) 
+
+(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds 
+
+
+//------------------------------------------------------------------------ 
+//    LEAVE RULE 
+issittingout                     // i am sitting out 
+&& elapsedhand >= 300            // 5 minutes since end of last hand 
+&& elapsedauto >= 300            // 5 minutes since autoplayer has acted 
+
+                         ? -2 :  // leave the table 
+
+//------------------------------------------------------------------------ 
+//    SITIN RULE 
+issittingout                     // i am sitting out 
+&& (br==2 || br==3)              // it is the flop or turn 
+&& nopponentsdealt>=7           // 7 or more opponents 
+
+                         ?  1 :  // sitin 
+
+//------------------------------------------------------------------------ 
+//    SITOUT RULE 14400 
+issittingin                      // i am sitting in 
+&& (br==2 || br==3)              // it is the flop or turn 
+&& elapsed>=14400                // been more than 4 hrs 
+&& nchairsdealtright==2          // i am about to be big blind 
+
+                         ?  0 :  // sitout 
+
+//------------------------------------------------------------------------ 
+//    SITOUT RULE 
+issittingin                      // i am sitting in 
+&& (br==2 || br==3)              // it is the flop or turn 
+&& nopponentsdealt<=6            // 6 or less opponents 
+
+
+                         ?  0 :  // sitout 
+
+//------------------------------------------------------------------------ 
+-1 // disabled 
+
+##f$test##
+
+
+##f$debug##
+
+
+##list1##
+AA  KK  QQ  
+AKs 
+
+##list2##
+JJ  TT 99 88 
+  
+
+##list3##
+AK AQ AJ
+
+##f$evrais##
+
+
+##f$evcall##
+
+
+##f$AAKKQQAKs##
+islist1 ?                        //If I have any hand on list1(AA, KK, QQ or AKs) then 
+
+//PREFLOP 
+
+((br==1) ? 2:                    //If it is preflop, raise, otherwise 
+
+//FLOP 
+                          
+(br==2                           //If it is the flop    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall<=0.01                //And there are zero bets to call 
+) ? 2 :                          //raise, otherwise 
+
+(br==2                           //If it is the flop 
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall<5.01              //And there are less than five bets to call 
+) ? 1 :                          //call, otherwise 
+
+(br==2                           //If it is the flop 
+&& nsuited==4                    //And I have four cards of one suit 
+&& srankhiplayer==(14||13)       //And the highest suited card in my hand is an Ace or King 
+&& nbetstocall<5.01              //And there are less than five bets to call 
+) ? 1 :                          //call, otherwise 
+
+//TURN 
+
+(br==3                           //If it is the turn 
+&& pokerval>onepair              //And I have more than one pair 
+&& nbetstocall>.99               //And there is one bet or more to call 
+) ? 2 :                          //raise, otherwise 
+
+(br==3 
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nsuited==4                    //And I have four cards of one suit 
+&& srankhiplayer==(14||13)       //And the highest suited card in my hand is an Ace or King 
+&& nbetstocall>.99               //And there is one bet or more to call 
+) ? 2 :                          //raise, otherwise 
+
+(br==3 
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))   //And the top pair I have is not a board pair 
+&& nbetstocall>.99               //And there is one bet or more to call 
+&& ncallbets<2.01                //And if I call I will have 2 bets or less in front of me 
+) ? 2 :                          //raise, otherwise 
+
+(br==3                           //If it is the turn 
+&& pokerval>onepair              //And I have more than one pair 
+) ? 1 :                          //call, otherwise 
+
+(br==3 
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall<5.01                 //And there are less than five bets to call 
+) ? 1 :                          //call, otherwise 
+
+(br==3                           //If it is the flop 
+&& nsuited==4                    //And I have four cards of one suit 
+&& srankhiplayer==(14||13)       //And the highest suited card in my hand is an Ace or King 
+&& nbetstocall<5.01                 //And there are less than five bets to call 
+) ? 1 :                          //call, otherwise 
+
+//RIVER 
+
+(br==4                           //If it is the river 
+&& pokerval>onepair              //And I have more than one pair 
+&& nbetstocall<5.01                //And there are less than five bets to call 
+) ? 2 :                          //raise, otherwise 
+
+
+(br==4                           //If it is the river 
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))   //And the top pair I have is not a board pair 
+&& nbetstocall<5.01                 //And there are less than five bets to call 
+) ? 1 :                          //call, otherwise 
+
+
+0):                              //fold 
+0 
+
+##f$JJto88##
+
+islist2 ?                        //If I have any hand on list1(AA, KK, QQ or AKs) then 
+
+//PREFLOP 
+
+((br==1) ? 1:                    //If it is preflop, call, otherwise 
+
+//FLOP 
+                          
+(br==2                           //If it is the flop    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall<=.01                //And there are zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 2 :                          //raise, otherwise 
+
+(br==2                           //If it is the flop 
+&& isthreeofakind                //I have three of a kind 
+) ? 1:                           //call, otherwise 
+
+(br==2                           //If it is the flop    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall>=.01                //And there are more than zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 1 :                          //call, otherwise 
+
+
+(br==2                           //If it is the flop 
+&& nbetstocall<=1.01             //And there is one or less bets to call 
+&& ncallbets<1.01                //And if I call I will have 1 bet or less in front of me 
+) ? 1:                           //call, otherwise 
+
+
+//TURN 
+
+(br==3                           //If it is the turn 
+&& isthreeofakind                //I have three of a kind 
+&& rankhiplayer==trank           //I have a set 
+) ? 2:                           //raise, otherwise 
+
+(br==3                           //If it is the turn    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall>=.01                //And there are more than zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 1 :                          //call, otherwise 
+
+//RIVER 
+
+(br==3                           //If it is the river 
+&& isthreeofakind                //I have three of a kind 
+&& rankhiplayer==trank           //I have a set 
+) ? 2:                           //raise, otherwise 
+
+(br==3                           //If it is the river    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall>=.01              //And there are more than zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 1 :                          //call, otherwise 
+
+
+
+
+
+
+
+0):                              //fold 
+0 
+
+##f$AKAQAJ##
+
+islist3 ?                        //If I have any hand on list1(AA, KK, QQ or AKs) then 
+
+//PREFLOP 
+
+((br==1) ? 1:                    //If it is preflop, call, otherwise 
+
+//FLOP 
+                          
+(br==2                           //If it is the flop    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall<=.01                //And there are zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 2 :                          //raise, otherwise 
+
+(br==2                           //If it is the flop 
+&& isthreeofakind                //I have three of a kind 
+) ? 1:                           //call, otherwise 
+
+(br==2                           //If it is the flop    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall>=.01                //And there are more than zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 1 :                          //call, otherwise 
+
+
+(br==2                           //If it is the flop 
+&& nbetstocall<=1.01             //And there is one or less bets to call 
+&& ncallbets<1.01                //And if I call I will have 1 bet or less in front of me 
+) ? 1:                           //call, otherwise 
+
+
+//TURN 
+
+(br==3                           //If it is the turn 
+&& isthreeofakind                //I have three of a kind 
+&& rankhiplayer==trank           //I have a set 
+) ? 2:                           //raise, otherwise 
+
+(br==3                           //If it is the turn    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall>=.01                //And there are more than zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 1 :                          //call, otherwise 
+
+(br==3                           //If it is the flop 
+&& nsuited==4                    //And I have four cards of one suit 
+&& srankhiplayer==(14||13)       //And the highest suited card in my hand is an Ace or King 
+&& nbetstocall<5.01                 //And there are less than five bets to call 
+) ? 1 :                          //call, otherwise 
+
+//RIVER 
+
+(br==4                           //If it is the river 
+&& pokerval>onepair              //And I have more than one pair 
+&& nbetstocall<5.01                //And there are less than five bets to call 
+) ? 2 :                          //raise, otherwise 
+
+(br==4                           //If it is the turn    
+&& ishipair                      //And I have the top pair 
+&& ((rankhiplayer>rankhicommon && ispair)||(($$pr0==rankhicommon)||($$pr1==rankhicommon)))    //And the top pair I have is not a board pair 
+&& nbetstocall>=.01              //And there are more than zero bets to call 
+&& ncallbets<5.01                //And if I call I will have 5 bets or less in front of me 
+) ? 1 :                          //call, otherwise 
+
+
+
+
+
+
+
+0):                              //fold 
+0 
+

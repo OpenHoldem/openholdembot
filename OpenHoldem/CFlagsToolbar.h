@@ -24,7 +24,7 @@ class CFlagsToolbar: public CWnd {
 	bool GetFlag(const int i); 
 	int  GetFlagMax();
 	long int  GetFlagBits();
-  void SetFlag(int flag_number, bool new_value);
+  void SetFlag(int flag_number, BOOL new_value);
  public:
 	void ResetButtonsOnConnect();
 	void ResetButtonsOnDisconnect();

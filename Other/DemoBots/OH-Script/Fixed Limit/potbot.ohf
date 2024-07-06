@@ -1,0 +1,186 @@
+##2009-11-25 20:47:12##
+
+##notes##
+/* 
+ potbot is designed for limit holdem 
+  
+ NL is probably not a good idea 
+ seeing as all of the pot estimations 
+ are geared toward limit holdem where 
+ the calculations are rather deterministic 
+*/ 
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.500000
+
+##rake##
+0.000000
+
+##nit##
+100000
+
+##f$alli##
+   0                                     // default is do not alli 
+   || [ prwin >= 1.00 ]                  // dead nuts 
+   || [ prtie >= 1.00 ]                  // fold a newb 
+   || [ prlos <= 0.00 ]                  // cant lose 
+   || [ br==1 && islistalli ]            // listed opening hand 
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+   0                                     // default is do not rais 
+   || [ f$alli ]                         // safe conditions 
+   || [ br==1 && islistrais ]            // listed opening hand 
+   || [ f$evrais > 0.00 ]                // positive ev 
+
+##f$call##
+   0                                     // default is do not call 
+   || [ f$alli ]                         // safe conditions 
+   || [ br==1 && islistcall ]            // listed opening hand 
+   || [ f$evcall > 0.00 ]                // positive ev 
+   || [ call  <= 0.00 ]                  // zero call amount (check) 
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+nopponentsplaying 
+? nopponentsplaying + defcon*nopponentsfolded 
+: 0 
+
+##f$play##
+
+!1                       ? -1 :  // 0=disabled 1=enabled 
+!f9                      ? -1 :  // enabled when f9 toolbar flag is pressed 
+(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds 
+(br < 2)                 ? -1 :  // disabled before the flop 
+(br > 3)                 ? -1 :  // disabled after the turn 
+
+(nopponentsdealt >= 2) 
+
+##f$test##
+
+
+##f$debug##
+
+
+##f$evrais##
+0                 // start at 0 
+- f$finalpayrais  // my maximum showdown cost 
++ f$finalpotrais  // the raising showdown pot 
+* (prwin+prtie/2) // my winning chances 
+* (1+rake)        // the house rake 
+
+##f$evcall##
+0                 // start at 0 
+- f$finalpaycall  // my maximum showdown cost 
++ f$finalpotcall  // the calling showdown pot 
+* (prwin+prtie/2) // my winning chances 
+* (1+rake)        // the house rake 
+
+##f$currentpay##
+(br==1) ? currentbet : 
+(br==2) ? nbetsround1*bet1 + currentbet : 
+(br==3) ? nbetsround1*bet1 + nbetsround2*bet2 + currentbet : 
+(br==4) ? nbetsround1*bet1 + nbetsround2*bet2 + nbetsround3*bet3 + currentbet : 
+0 
+
+##f$finalpaymin##
+f$currentpay+call 
+
+##f$finalpaymax##
+(br==1) ? bet1*4           + bet2*4           + bet3*4           + bet4*4 : 
+(br==2) ? bet1*nbetsround1 + bet2*4           + bet3*4           + bet4*4 : 
+(br==3) ? bet1*nbetsround1 + bet2*nbetsround2 + bet3*4           + bet4*4 : 
+(br==4) ? bet1*nbetsround1 + bet2*nbetsround2 + bet3*nbetsround3 + bet4*4 : 
+0 
+
+##f$finalpotmin##
+pot+call 
+
+##f$round2potmax##
+nplayersplaying*bet2*4 
+
+##f$round3potmax##
+nplayersplaying*bet3*4 
+
+##f$round4potmax##
+nplayersplaying*bet4*4 
+
+##f$roundpotmax##
+(pot+callshort+(nplayersplaying*(4-ncallbets)*bet)) 
+
+##f$finalpotmax##
+(br==1) ? f$roundpotmax + f$round2potmax + f$round3potmax + f$round4potmax : 
+(br==2) ? f$roundpotmax + f$round3potmax + f$round4potmax : 
+(br==3) ? f$roundpotmax + f$round4potmax : 
+(br==4) ? f$roundpotmax : 
+0 
+
+##f$round2potworst##
+2*bet2*4 
+
+##f$round3potworst##
+2*bet3*4 
+
+##f$round4potworst##
+2*bet4*4 
+
+##f$roundpotworst##
+(pot+call+(2*(4-ncallbets)*bet)) 
+
+##f$finalpotworst##
+(br==1) ? f$roundpotworst + f$round2potworst + f$round3potworst + f$round4potworst : 
+(br==2) ? f$roundpotworst + f$round3potworst + f$round4potworst : 
+(br==3) ? f$roundpotworst + f$round4potworst : 
+(br==4) ? f$roundpotworst : 
+0 
+
+##f$finalpotcall##
+f$finalpotmax 
+
+##f$finalpotrais##
+f$finalpotworst 
+
+##f$finalpaycall##
+f$finalpaymax 
+
+##f$finalpayrais##
+f$finalpaymax 
+
+##f$futurepaymax##
+[ 
+(br==1) ? bet1*4 + bet2*4 + bet3*4 + bet4*4 : 
+(br==2) ? bet2*4 + bet3*4 + bet4*4 : 
+(br==3) ? bet3*4 + bet4*4 : 
+(br==4) ? bet4*4 : 
+0 
+] 
+-currentbet 
+
+##f$futurepaycall##
+f$futurepaymax 
+
+##f$futurepayrais##
+f$futurepaymax 
+

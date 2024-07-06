@@ -15,7 +15,6 @@
 #define INC_CSYMBOLENGINECHIPAMOUNTS_H
 
 #include "CVirtualSymbolEngine.h"
-#include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"

@@ -20,7 +20,7 @@
 #include "COHScriptObject.h"
 #include "COHScriptList.h"
 #include "CParseErrors.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 
 // Format of a formula file:
 // * Date and time (OH-script only)

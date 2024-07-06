@@ -23,7 +23,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "StringFunctions/string_functions.h"
 
 const int prime_coded_card_ranks[k_rank_ace+1] = {
 	1,	// rank = 0, unused, exists due to C++-definition

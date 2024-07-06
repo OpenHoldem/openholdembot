@@ -23,7 +23,7 @@
 
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "WindowFunctions/window_functions.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 

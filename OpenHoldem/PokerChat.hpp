@@ -17,7 +17,7 @@
 //
 //******************************************************************************
 
-#include "..\DLLs\User_DLL\user.h"
+#include "User/user.h"
 
 //  Enumeration constants for simple chat messages.
 //

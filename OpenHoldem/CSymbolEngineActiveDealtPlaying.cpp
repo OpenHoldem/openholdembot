@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 
-#include <assert.h>
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 
@@ -23,7 +22,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CTableState.h"
 
 

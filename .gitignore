@@ -1,5 +1,4 @@
 *.db
-*.dll
 *.exe
 *.obj
 *.ilk
@@ -7,33 +6,29 @@
 *.pdb
 *.exp
 *.jar
-*.lyx~
-*.lyx#
-*.user
 *.log
-*.tlog
 *.pch
-*.ipch
-*.manifest
-*.lastbuildstate
-*.opendb
-*.opensdf
 *.sdf
 *.suo
 *.swp
 *.vspx
-..bfg-report
-UpgradeLog*
-Debug
-DLLs/DLL_Template
-Documentation/OpenHoldem_Manual.chm
-Documentation/Chapters/titlepage/images/Temp
-Documentation/Chapters/titlepage/original_images
-OpenHoldem/Release - Optimized
-Release
-Release - Optimized
-scintilla/bin
-\.vs/OpenHoldem/v14/.suo
-\.vs/
+*.ipch
+*.user
+*.tlog
+*.opendb
+*.opensdf
+*.manifest
+*.lastbuildstate
 
+bin/
+ipch/
+Debug/
+Release/
 
+.vs/
+_int/
+_out/
+_pub/
+
+#exclusions
+!Tools/Publication/Tools/*.exe

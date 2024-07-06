@@ -11,8 +11,8 @@
 //
 //******************************************************************************
 
-#ifndef INC_DIALOGNEW_H
-#define INC_DIALOGNEW_H
+#pragma once
+#include "resource.h"
 
 // CDlgNew dialog
 
@@ -41,5 +41,3 @@ public:
 	virtual BOOL OnInitDialog();
 	CStatic m_Desc;
 };
-
-#endif //INC_DIALOGNEW_H

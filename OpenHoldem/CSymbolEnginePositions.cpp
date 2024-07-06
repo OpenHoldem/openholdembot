@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CSymbolEnginePositions.h"
 
-#include <assert.h>
 #include "CEngineContainer.h"
 #include "CScraper.h"
 #include "CStringMatch.h"

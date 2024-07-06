@@ -94,7 +94,7 @@ bool COHScriptObject::IsOpenPPLSymbol(CString name) {
   // IsOpenPPLSymbol() needs to consider this fact
   // as it affects e.g. the autoplayer-trace.
   if (name == "Random") return false;
-  return isupper(name[0]); 
+  return isupper(name[0]) != 0; 
 }
 
 bool COHScriptObject::IsMainOpenPPLFunction(CString name) {

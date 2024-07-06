@@ -1,0 +1,1285 @@
+##2009-11-25 20:47:17##
+
+##notes##
+/*
+ potbot is designed for limit holdem
+ 
+ NL is probably not a good idea
+ seeing as all of the pot estimations
+ are geared toward limit holdem where
+ the calculations are rather deterministic
+*/
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.400000
+
+##rake##
+0.000000
+
+##nit##
+30000
+
+##f$alli##
+0
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+br==1 && (currentbet/bet1)>=2 && nbetstocall > 0 ? 0 :
+br==2 && (currentbet/bet2)>=2 && nbetstocall > 0 ? 0 :
+br==3 && (currentbet/bet3)>=2 && nbetstocall > 0 ? 0 :
+br==4 && (currentbet/bet4)>=2 && nbetstocall > 0 ? 0 : 
+(
+   0                                     // default is do not rais
+   || [ br==1 && f$pfrais ]              // listed opening hand
+   || [ f$evbluff > 0.00 ]                        // bluff
+   || [ br>=2 && f$EVouts==2 ] // positive ev trough number of outs
+   || [ br >=2 && f$evrais > 0.00 && (nbetstocall==0 || f$evrais > f$evcall || br==4) ]       // positive ev
+)
+// Blind Aggression
+//|| f$defendblinds>1 
+//|| f$stealblinds>1
+
+##f$call##
+f$rais==0? 
+(
+   0                                     // default is do not call
+   || [ br==1 && f$pfcall ]            // listed opening hand
+   || [ br==1 && f$pfrais==1 && f$rais==0 ]
+   || [ br>=2 && (f$evcall > 0.00 || (f$evrais > 0.00 && f$rais==0)) ]                // positive ev
+   || [ br>=2 && f$EVouts==1 ] // positive ev trough number of outs
+   || [ call  <= 0.00 ]                  // zero call amount (check)
+   //|| f$defendblinds 
+   //|| f$stealblinds 
+) : 0
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+nopponentsplaying
+? nopponentsplaying + defcon*nopponentsfolded
+: 0
+
+##f$play##
+1 ? -1 :
+(elapsed%4)              ? -1 :     // disabled 3 out of 4 seconds 
+// (br==2 && balance > 150) ? 0 :
+//------------------------------------------------------------------------ 
+//************************************************************************** 
+                         // leave the table 
+//------------------------------------------------------------------------ 
+// LEAVE RULE - Game broken up 
+1                                   // 0=off 1=on 
+&& issittingout                     // sitting out 
+&& nopponentsdealt<=2               // super short handed
+&& (br==2 || br==3)                 // flop or turn  
+? -2 :                              // leave the table 
+//------------------------------------------------------------------------ 
+
+// LEAVE RULE - Wait around, but get out before you get booted 
+1                                   // 0=off 1=on 
+&& issittingout                     // sitting out 
+&& elapsedauto>=100                 // dynamic rule  
+     *nopponentsdealt               // 100 seconds times opponents dealt
+&& (br==2 || br==3)                 // flop or turn  
+? -2 :                              // leave the table 
+//------------------------------------------------------------------------ 
+// SITIN RULE - Based on players 
+1                                   // 0=off 1=on 
+&& issittingout                     // sitting out
+&& (br==2 || br==3)                 // flop or turn 
+&& nchairsdealtright==2             // about to be big blind 
+&& nopponentsdealt>=5               // 5 or more opponents
+ 
+?  1 :                              // sitin 
+//------------------------------------------------------------------------ 
+
+// SITOUT RULE - Based on players 
+1                                   // 0=off 1=on 
+&& issittingin                      // sitting in
+&& br==2 && nopponentsdealt<=5      // Getting short          
+?  0 :                              // sitout 
+//------------------------------------------------------------------------ 
+// SITOUT RULE - based on Time 
+0                                   // 0=off 1=on 
+&& issittingin                      // sitting in 
+&& (br==2 || br==3)                 // flop or turn 
+&&  elapsed>21600                   // playing 6 hours
+?  0 :                              // sitout 
+//************************************************************************** 
+-1                                  // disabled
+
+##f$test##
+
+
+##f$debug##
+          4.0000 = handsplayed       
+         -0.3280 = f$evcall
+          2.9709 = f$evrais
+          0.0000 = f$actionmeter
+          0.0000 = avgbetspf
+          2.0000 = f$avgbetsf
+          1.0000 = f$avgbetst
+          1.2000 = f$avgbetsr
+          0.0000 = f$wsdpct
+          0.0000 = floppct
+          0.2000 = turnpct
+          0.0000 = riverpct
+          0.0000 = f$pfrais
+          0.0000 = f$pfcall
+          0.8537 = f$prwin
+          0.0000 = f$opponent_hand_bucket
+          0.8537 = (prwin+prtie/2)
+          0.8659 = (vs$107$prwin + (0.5 * vs$107$prtie)) **2
+          5.0000 = ac_postflop_pos
+          0.0000 = nbetstocall
+          0.0000 = (currentbet/bet2)
+       ERR: div0 = f$evbluff
+         -4.2000 = (mh_nouts*0.04*f$finalpotrais)-f$finalpayrais 
+          0.9442 = (dll$prwin+dll$prtie/2)
+          0.0000 = dll$getv01+dll$getv02
+          4.2000 = f$finalpayrais
+          6.9500 = f$finalpotrais
+          4.2000 = bet2*(2+(f$avgbetsf*nopponentsplaying*(1-(floppct-turnpct))))  + bet3*(2+(f$avgbetst*nopponentsplaying*riverpct))  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct)
+
+##list1##
+AA KK QQ AKS AKO //EARLY TIGHT V.S. RAISE (RAISE)
+
+##list2##
+JJ TT //RAISE FROM ANY POS, RERAISE IF RAISED ONCE, CALL IF RERAISED ALREADY 
+
+##list3##
+AQS AJS  // CALL AGAINST A RAISE, RAISE WITHOUT
+
+##list4##
+AQO // FOLD AGAINST A RAISE, RAISE AGAINST NO RAISE IN LATE POS
+
+##list5##
+99 ATS KQS KJS AQO AJO KQO //RAISE AGAINST NOTHING FROM MIDDLE AND LATE
+
+##list6##
+A9S A8S KJS KTS QJS ATO // RAISE AGAINST NOTHING FROM LATE
+
+##list7##
+KQS // CALL AGAINST ONE RAISE
+
+##list8##
+77 66 55 44 33 22 OJS JTS T9S //CALL FROM LATE AGAINST A RAISE
+
+##list9##
+99 88 77 ATS KJS KTS QJS QTS JTS AJO KQO// CALL AGAINST NO RAISE FROM ANY POSITION
+
+##list10##
+66 55 44 33 22 A9S A8S A7S A6S A5S A4S A3S A2S K9S Q9S J9S T9S 98S ATO KJO // CALL AGAINST NO RAISE FROM MIDDLE/LATE POSITION
+
+##list11##
+87S 76S 65S 54S KTO QJO QTO JTO // CALL AGAINST NO RAISE FROM LATE
+
+##list12##
+99 88 77 66 55 44 33 22 //CALL AGAINST A RAISE AND ONE OTHER PLAYER HAS CALLED FROM SB POSITION
+
+##list13##
+99 88 77 ATS KJS KTS QJS QTS JTS AJO KQO 66 55 44 33 22 A9S A8S A7S A6S A5S A4S A3S A2S K9S Q9S J9S T9S 98S 87S 76S 65S 54S  //CALL AGAINST A RAISE FROM BB POS
+
+##list14##
+AA KK QQ JJ TT 99 AKS AQS AJS ATS KQS KJS AKO AQO //RAISE AGAINST NOTHING ON SB/BB POSITION
+
+##list15##
+99 88 77 ATS KJS KTS QJS QTS JTS AJO KQO 66 55 44 33 22 A9S A8S A7S A6S A5S A4S A3S A2S K9S Q9S J9S T9S 98S 87S 76S 65S 54S ATO KJO KTO QJO QTO JTO //CALL AGAINST NOTHING IN SB POSITION
+
+///////LOOSELISTS/////////
+
+##list16##
+AA KK QQ JJ TT AKS AQS AJS KQS AKO  //CALL AGAINST A RAISE AND A RERAISE FROM ANY POSITION
+
+##list17##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 AKS AQS AJS ATS KQS KJS KTS QJS JTS AKO AQO  // CALL AGAINST A RAISE FROM ANY POSITION
+
+##list18##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS QJS QTS JTS T9S 98S 87S 76S AKO AQO //CALL AGAINST A RAISE FROM LATE POSITION
+
+##list19##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S QJS QTS Q9S JTS J9S T9S 98S AKO AQO AJO ATO KQO KJO //CALL FROM ANY POSITION
+
+##list20##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S QJS QTS Q9S Q8S JTS J9S J8S J7S T9S 98S 87S 76S 65S 54S 43S T8S 97S 86S 64S 53S AKO AQO AJO ATO KQO KJO KTO QJO QTO JTO //CALL FROM LATE POSITION
+
+##list21##
+AA KK QQ JJ TT 99 AKS AQS AJS KQS AKO //RAISE AGAINST A RAISE FROM ANY POSITION
+
+##list22##
+ATS KJS AQO AJO KQO //RAISE FROM ANY POSITION
+
+##list23##
+88 AKS AQS AJS ATS KQS KJS KTS QJS JTS A9S A8S K9S // RAISE FROM LATE POSITION
+
+##list24##
+AA KK QQ JJ TT 99 AKS AQS AJS KQS KJS AKO AQO
+
+##list25##
+JJ TT 99 AQS AJS ATS KQS KJS AKO AQO
+
+##list26##
+ATS A9S A8S A7S A6S A5S A4S A3S A2S
+KQS KJS KTS K9S QJS QTS Q9S QA JA TA 9A 8A 7A 6A
+QK JK TK QJ TQ KA
+77 88 99 TT JJ QQ KK AA
+
+//SHORTHANDED: CALL AGAINST A RAISE, RAISE WITHOUT
+
+##list101##
+AA  KK  QQ
+AKS
+KA 
+//2.56%
+
+##list102##
+AA  KK  QQ  JJ  TT
+AKS AQS AJS KQS
+KA  QA  QK  JA 
+//7.09%
+
+##list103##
+AA  KK  QQ  JJ  TT  99  88  77
+AKS AQS AJS KQS KJS QJS
+KA  QA  QK  JA  JK  JQ 
+
+//10,86%
+
+##list104##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS QJS QTS JTS
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ 
+//20,36%
+
+##list105##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S QJS QTS
+ Q9S JTS J9S T9S 98S 87S 76S 65S 54S 43S 32S
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9T  8A  89  7A  78  6A  67
+ 5A  4A  3A  2A 
+//34,54%
+
+##list106##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S K7S
+ K6S K5S K4S K3S K2S QJS QTS Q9S Q8S JTS J9S J8S T9S T8S T7S 98S 97S 96S
+ 87S 86S 85S 76S 75S 74S 65S 64S 63S 54S 53S 43S 42S 32S
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  89  7A
+ 78  6A  67  5A  4A  3A  2A 
+//43.59%
+
+##list107##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S K7S
+ K6S K5S K4S K3S K2S QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S JTS J9S J8S
+ J7S J6S J5S J4S J3S J2S T9S T8S T7S T6S T5S T4S T3S T2S 98S 97S 96S 95S
+ 87S 86S 85S 84S 76S 75S 74S 73S 65S 64S 63S 62S 54S 53S 52S 43S 42S 32S
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  8K  8Q
+ 8J  8T  89  7A  7K  7Q  7J  7T  79  78  6A  6K  69  68  67  5A  58  57
+ 56  4A  47  46  45  3A  34  2A  23
+//68,33%
+
+##list0##
+
+
+##f$evrais##
+nopponentsplaying==1 && br<=3 ?
+0
+- f$finalpayrais  // my maximum showdown cost
++ f$finalpayrais*2  // the raising showdown pot
+* f$prwin         // my winning chances
+* (1+rake)        // the house rake
+
+:
+
+
+br<=3 ? 
+
+0                 // start at 0
+- f$finalpayrais  // my maximum showdown cost
++ f$finalpotrais  // the raising showdown pot
+* f$prwin         // my winning chances
+* (1+rake)        // the house rake
+
+
+:
+
+
+((f$prwin * (pot+raisshort)))
+-((1-f$prwin) * (call+bet))
+-((prwin*pot) + (prtie*(pot/2)))
+
+##f$evcall##
+br<=3 ? 
+
+0                 // start at 0
+- f$finalpaycall  // my maximum showdown cost
++ f$finalpotcall  // the calling showdown pot
+* f$prwin         // my winning chances
+* (1+rake)        // the house rake
+
+
+
+:
+
+
+((f$prwin * (pot+callshort)))
+-((1-f$prwin) * call)
+-((prwin*pot) + (prtie*(pot/2)))
+
+##f$currentpay##
+(br==1) ? currentbet :
+(br==2) ? nbetsround1*bet1 + currentbet :
+(br==3) ? nbetsround1*bet1 + nbetsround2*bet2 + currentbet :
+(br==4) ? nbetsround1*bet1 + nbetsround2*bet2 + nbetsround3*bet3 + currentbet :
+0
+
+##f$finalpaycall##
+nbetstocall==0 ?
+(br==1) ? bet1*(1+avgbetspf) + bet2*f$avgbetsf  + bet3*f$avgbetst  + bet4*f$avgbetsr :
+(br==2) ? bet1*nbetsround1   + bet2*f$avgbetsf  + bet3*f$avgbetst  + bet4*f$avgbetsr :
+(br==3) ? bet1*nbetsround1   + bet2*nbetsround2 + bet3*f$avgbetst  + bet4*f$avgbetsr :
+(br==4) ? bet1*nbetsround1   + bet2*nbetsround2 + bet3*nbetsround3 + bet4*f$avgbetsr :
+0 :
+(br==1) ? bet1*(nbetstocall+avgbetspf) + bet2*(f$avgbetsf)  + bet3*(f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==2) ? bet1*nbetsround1   + bet2*(nbetstocall+f$avgbetsf)  + bet3*(f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==3) ? bet1*nbetsround1   + bet2*nbetsround2 + bet3*(nbetstocall+f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==4) ? bet1*nbetsround1   + bet2*nbetsround2 + bet3*nbetsround3 + bet4*(nbetstocall+f$avgbetsr) :
+0
+
+##f$finalpayrais##
+nbetstocall==0 ?
+(
+(br==1) ? bet1*(2+avgbetspf) + bet2*(f$avgbetsf)  + bet3*(f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==2) ? bet1*nbetsround1   + bet2*(1+f$avgbetsf)  + bet3*(f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==3) ? bet1*nbetsround1   + bet2*nbetsround2     + bet3*(1+f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==4) ? bet1*nbetsround1   + bet2*nbetsround2     + bet3*nbetsround3     + bet4*(1+f$avgbetsr) :
+0 
+):
+(
+(br==1) ? bet1*(3+avgbetspf) + bet2*(f$avgbetsf)  + bet3*(f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==2) ? bet1*nbetsround1   + bet2*(2+f$avgbetsf)  + bet3*(f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==3) ? bet1*nbetsround1   + bet2*nbetsround2     + bet3*(2+f$avgbetst)  + bet4*(f$avgbetsr) :
+(br==4) ? bet1*nbetsround1   + bet2*nbetsround2     + bet3*nbetsround3     + bet4*(2+f$avgbetsr) :
+0 
+)
+
+##f$finalpotmin##
+pot+call
+
+##f$round2potcall##
+floppct > 0 && turnpct > 0 ?
+(
+nbetstocall >=1 ? (((nopponentsplaying*(1-(floppct-turnpct)))*f$avgbetsf))*bet2*f$avgbetsf :
+(((nopponentsplaying*(1-(floppct-turnpct)))*f$avgbetsf)+3)*bet2*f$avgbetsf 
+)
+:
+(
+nbetstocall >=1 ? (((nopponentsplaying*0.5)*f$avgbetsf))*bet2*f$avgbetsf :
+((nopponentsplaying*(0.5)*f$avgbetsf)+3)*bet2*f$avgbetsf 
+)
+
+##f$round3potcall##
+turnpct > 0 && riverpct > 0 ? 
+(
+nbetstocall >=1 ? (((nopponentsplaying*(1-(turnpct-riverpct)))*f$avgbetst))*bet3 :
+(((nopponentsplaying*(1-(turnpct-riverpct)))*f$avgbetst)+3)*bet3
+)
+:
+(
+nbetstocall >=1 ? (((nopponentsplaying*(0.4))*f$avgbetst))*bet3 :
+((nopponentsplaying*(0.4)*f$avgbetst)+3)*bet3
+)
+
+##f$round4potcall##
+riverpct>0 ?
+(
+nbetstocall >=1 ? (((nopponentsplaying*(1-(riverpct-f$wsdpct)))*f$avgbetsr))*bet4 :
+(((nopponentsplaying*(1-(riverpct-f$wsdpct)))*f$avgbetsr)+3)*bet4
+) :
+(
+nbetstocall >=1 ? (((nopponentsplaying*(0.3))*f$avgbetsr))*bet4 :
+((nopponentsplaying*(0.3)*f$avgbetsr)+3)*bet4
+)
+
+##f$roundpotcall##
+nbetstocall >=1 ? ((nopponentsplaying*((dll$psfnow-nopponentsfolded)/nopponentsdealt))+3)*bet1 :
+((nopponentsplaying*((dll$psfnow-nopponentsfolded)/nopponentsdealt))+3)*bet1 
+
+##f$finalpotcall##
+nbetstocall==0 ?
+(br==1) ? pot + bet1*(1+(avgbetspf*nopponentsplaying*(1-(f$prallfold)))) + bet2*(f$avgbetsf*nopponentsplaying*turnpct)  + bet3*(f$avgbetst*nopponentsplaying*riverpct)  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==2) ? pot + bet2*(f$avgbetsf*nopponentsplaying*(1-(f$prallfold)))  + bet3*(f$avgbetst*nopponentsplaying*riverpct)  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==3) ? pot + bet3*(f$avgbetst*nopponentsplaying*(1-(f$prallfold)))  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==4) ? pot + bet4*(f$avgbetsr*nopponentsplaying*(1-(f$prallfold))) :
+0 :
+(br==1) ? pot + bet1*(nbetstocall+((avgbetspf+nbetstocall)*nopponentsplaying*(1-(f$prallfold)))) + bet2*(2+(f$avgbetsf*nopponentsplaying*turnpct))  + bet3*(f$avgbetst*nopponentsplaying*riverpct)  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==2) ? pot + bet2*(nbetstocall+((f$avgbetsf+nbetstocall)*nopponentsplaying*(1-(f$prallfold))))  + bet3*(2+(f$avgbetst*nopponentsplaying*riverpct))  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==3) ? pot + bet3*(nbetstocall+((f$avgbetst+nbetstocall)*nopponentsplaying*(1-(f$prallfold)))) + bet4*(2+(f$avgbetsr*nopponentsplaying*f$wsdpct)) :
+(br==4) ? pot + bet4*(nbetstocall+((f$avgbetsr+nbetstocall)*nopponentsplaying*(1-(f$prallfold)))) :
+0
+
+##f$round2potrais##
+floppct > 0 && turnpct > 0 ?
+(
+nbetstocall >=1 ? (((nopponentsplaying*(1-(floppct-turnpct)))*f$avgbetsf)+2)*bet2*f$avgbetsf :
+(((nopponentsplaying*(1-(floppct-turnpct)))*f$avgbetsf)+5)*bet2*f$avgbetsf 
+)
+:
+(
+nbetstocall >=1 ? (((nopponentsplaying*0.5)*f$avgbetsf)+2)*bet2*f$avgbetsf :
+((nopponentsplaying*(0.5)*f$avgbetsf)+5)*bet2*f$avgbetsf 
+)
+
+##f$round3potrais##
+turnpct > 0 && riverpct > 0 ? 
+(
+nbetstocall >=1 ? (((nopponentsplaying*(1-(turnpct-riverpct)))*f$avgbetst)+2)*bet3 :
+(((nopponentsplaying*(1-(turnpct-riverpct)))*f$avgbetst)+5)*bet3
+)
+:
+(
+nbetstocall >=1 ? (((nopponentsplaying*(0.4))*f$avgbetst)+2)*bet3 :
+((nopponentsplaying*(0.4)*f$avgbetst)+5)*bet3
+)
+
+##f$round4potrais##
+riverpct > 0 ?
+(
+nbetstocall >=1 ? (((nopponentsplaying*(1-(riverpct-f$wsdpct)))*f$avgbetsr)+2)*bet4 :
+(((nopponentsplaying*(1-(riverpct-f$wsdpct)))*f$avgbetsr)+5)*bet4
+) :
+(
+nbetstocall >=1 ? (((nopponentsplaying*(0.3))*f$avgbetsr)+2)*bet4 :
+((nopponentsplaying*(0.3)*f$avgbetsr)+5)*bet4
+)
+
+##f$roundpotrais##
+nbetstocall >=1 ? ((nopponentsplaying*(dll$psfnow))+2)*bet1 :
+((nopponentsplaying*(dll$psfnow))+5)*bet1 
+
+##f$finalpotrais##
+nbetstocall==0 ?
+(br==1) ? pot + bet1*(2+(avgbetspf*nopponentsplaying*(1-(f$prallfold)))) + bet2*(1+(f$avgbetsf*nopponentsplaying*turnpct))  + bet3*(f$avgbetst*nopponentsplaying*riverpct)  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==2) ? pot + bet2*(2+(f$avgbetsf*nopponentsplaying*(1-(f$prallfold))))  + bet3*(2+(f$avgbetst*nopponentsplaying*riverpct))  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==3) ? pot + bet3*(2+(f$avgbetst*nopponentsplaying*(1-(f$prallfold))))  + bet4*(1+(f$avgbetsr*nopponentsplaying*f$wsdpct)) :
+(br==4) ? pot + bet4*(2+(f$avgbetsr*nopponentsplaying*(1-(f$prallfold)))) :
+0 :
+(br==1) ? pot + bet1*(nbetstocall+2+((nbetstocall+avgbetspf/2)*nopponentsplaying*(1-(f$prallfold)))) + bet2*(2+(f$avgbetsf*nopponentsplaying*turnpct))  + bet3*(2+(f$avgbetst*nopponentsplaying*riverpct))  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==2) ? pot + bet2*(nbetstocall+2+((nbetstocall+f$avgbetsf/2)*nopponentsplaying*(1-(f$prallfold))))  + bet3*(2+(f$avgbetst*nopponentsplaying*riverpct))  + bet4*(f$avgbetsr*nopponentsplaying*f$wsdpct) :
+(br==3) ? pot + bet3*(nbetstocall+2+((nbetstocall+f$avgbetst/2)*nopponentsplaying*(1-(f$prallfold)))) + bet4*(2+(f$avgbetsr*nopponentsplaying*f$wsdpct)) :
+(br==4) ? pot + bet4*(nbetstocall+2+((nbetstocall+f$avgbetsr/2)*nopponentsplaying*(1-(f$prallfold)))) :
+0
+
+##f$pfrais##
+0
+   ///fullring preflop strategy///
+   ///tight games///
+   || [ br==1 && islist1] //raise and reraise and re-reraise in any game from any position
+   || [ br==1 && islist2 && f$actionmeter>= 0 && nbetstocall <= 2 ] //raise and reraise from any position
+   || [ br==1 && (islist3 || islist4) && f$actionmeter>= 0 && nbetstocall <= 1] //raise from any position
+   || [ br==1 && islist5 && ac_preflop_pos>=4 && f$actionmeter>= 0 && nbetstocall <= 1] //raise middle/late position
+   || [ br==1 && islist6 && (ac_preflop_pos>=6 || ac_preflop_pos<=2)  && f$actionmeter>= 0 && nbetstocall <= 1] //raise from late position
+   || [ br==1 && islist14 && ac_preflop_pos<=2 && f$actionmeter>= 0 && nbetstocall <= 1] //raise from SB/BB position
+   ///loose games///
+   || [ br==1 && islist21 && f$actionmeter>= 1 && nbetstocall >= 2]  //raise and reraise from any position
+   || [ br==1 && islist22 && f$actionmeter>= 1 && nbetstocall <= 1]  //raise from any position
+   || [ br==1 && islist23 && (ac_preflop_pos>=5 || ac_preflop_pos<=2)  && f$actionmeter>= 1 && nbetstocall <= 1 ]//raise from late position  
+   || [ br==1 && islist24 && ac_preflop_pos<=2 && f$actionmeter>= 1 && nbetstocall <= 1] //raise from SB/BB position
+
+//6max games
+   || [ br==1 && nopponentsdealt<=6 && islist26 && nbetstocall<=1]
+
+##f$pfcall##
+   ///preflop strategy///
+   ///tight games///
+[ br==1 && islist2 && f$actionmeter>= 0 && nbetstocall <= 2] //call v.s. reraise from any position
+   || [ br==1 && islist25 && f$actionmeter>= 0 && nbetstocall >= 2 && (nopponentsplaying/nplayersdealt) >= 0.35 ] //call v.s. reraise from any position if more than 30% are joining in
+   || [ br==1 && islist3 ]
+   || [ br==1 && islist4 && nbetstocall<=2 ]
+   || [ br==1 && islist8 && (ac_preflop_pos>=5 || ac_preflop_pos<=2)  && f$actionmeter>= 0 && nbetstocall <= 2 && nplayersplaying>=3] //call v.s. raise from late position
+   || [ br==1 && islist9 && nbetstocall <= 1] //call from any position
+   || [ br==1 && islist10 && ac_preflop_pos>=4 && f$actionmeter>= 0 && nbetstocall <= 1] //call from middle/late position
+   || [ br==1 && islist11 && (ac_preflop_pos>=5 || ac_preflop_pos<=2)  && f$actionmeter>= 0 && nbetstocall <= 1 && nopponentsplaying>=3] //call from late position and 3+ players have entered            --------
+   || [ br==1 && islist12 && ac_preflop_pos==1 && f$actionmeter>= 0 && nbetstocall <= 2 && nopponentsplaying>=2] //call v.s. raise from SB position and at least 2 players are in --------
+   || [ br==1 && islist13 && ac_preflop_pos==2 && f$actionmeter>= 0 && nbetstocall <= 2] //call v.s. raise from BB position
+   || [ br==1 && islist15 && ac_preflop_pos==1 && f$actionmeter>= 0 && nbetstocall <= 1] //call from SB position
+   ///loose games///
+   || [ br==1 && islist2 && f$actionmeter>= 1 && nbetstocall >= 2] //call v.s. reraise from any position
+   || [ br==1 && islist25 && f$actionmeter>= 1 && nbetstocall >= 2 && (nopponentsplaying/nplayersdealt) >= 0.3 ] //call v.s. reraise from any position if more than 30% are joining in
+   || [ br==1 && islist16 && f$actionmeter>= 1 && nbetstocall >= 2] //call v.s. raise from any position
+   || [ br==1 && islist17 && f$actionmeter>= 1 && nbetstocall <= 2] //call v.s. raise from any position
+   || [ br==1 && islist18 && (ac_preflop_pos>=5 || ac_preflop_pos<=2)  && f$actionmeter>= 1 && nbetstocall <= 2] //call v.s. raise from late position
+   || [ br==1 && islist19 && f$actionmeter>= 1 && nbetstocall <= 1] //call from any position
+   || [ br==1 && islist20 && (ac_preflop_pos>=5 || ac_preflop_pos<=2)  && f$actionmeter>= 1 && nbetstocall <= 1] //call from late position
+
+//6max games
+   || [ br==1 && nplayersdealt<=6 && islist26 && nbetstocall<=2]
+
+##f$avgbetsf##
+dll$avbet2 > 0.00 ? dll$avbet2 : 1.2
+
+##f$actionmeter##
+handsplayed > 40 && floppct > 0.45 ? 1 : 0
+
+##f$avgbetst##
+dll$avbet3 > 0.00 ? dll$avbet3 : 1.2
+
+##f$avgbetsr##
+dll$avbet4 > 0.00 ? dll$avbet4 : 1.2
+
+##f$wsdpct##
+nplayersdealt==10 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3) +
+
+(pt_wsdp5 > 0 ? pt_wsdp5 : riverpct*2/3) +
+
+(pt_wsdp6 > 0 ? pt_wsdp6 : riverpct*2/3) +
+
+(pt_wsdp7 > 0 ? pt_wsdp7 : riverpct*2/3) +
+
+(pt_wsdp8 > 0 ? pt_wsdp8 : riverpct*2/3) +
+
+(pt_wsdp9 > 0 ? pt_wsdp9 : riverpct*2/3) +
+
+(pt_wsdp10 > 0 ? pt_wsdp10 : riverpct*2/3))/nplayersdealt :
+
+nplayersdealt==9 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3) +
+
+(pt_wsdp5 > 0 ? pt_wsdp5 : riverpct*2/3) +
+
+(pt_wsdp6 > 0 ? pt_wsdp6 : riverpct*2/3) +
+
+(pt_wsdp7 > 0 ? pt_wsdp7 : riverpct*2/3) +
+
+(pt_wsdp8 > 0 ? pt_wsdp8 : riverpct*2/3) +
+
+(pt_wsdp9 > 0 ? pt_wsdp9 : riverpct*2/3))/nplayersdealt :
+
+nplayersdealt==8 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3) +
+
+(pt_wsdp5 > 0 ? pt_wsdp5 : riverpct*2/3) +
+
+(pt_wsdp6 > 0 ? pt_wsdp6 : riverpct*2/3) +
+
+(pt_wsdp7 > 0 ? pt_wsdp7 : riverpct*2/3) +
+
+(pt_wsdp8 > 0 ? pt_wsdp8 : riverpct*2/3))/nplayersdealt :
+
+nplayersdealt==7 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3) +
+
+(pt_wsdp5 > 0 ? pt_wsdp5 : riverpct*2/3) +
+
+(pt_wsdp6 > 0 ? pt_wsdp6 : riverpct*2/3) +
+
+(pt_wsdp7 > 0 ? pt_wsdp7 : riverpct*2/3))/nplayersdealt :
+
+nplayersdealt==6 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3) +
+
+(pt_wsdp5 > 0 ? pt_wsdp5 : turnpct*2/3) +
+
+(pt_wsdp6 > 0 ? pt_wsdp6 : riverpct*2/3))/nplayersdealt :
+
+
+nplayersdealt==5 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3) +
+
+(pt_wsdp5 > 0 ? pt_wsdp5 : riverpct*2/3))/nplayersdealt :
+
+
+nplayersdealt==4 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3) +
+
+(pt_wsdp4 > 0 ? pt_wsdp4 : riverpct*2/3))/nplayersdealt :
+
+
+
+nplayersdealt==3 ? ((pt_wsdp1 > 0 ? pt_wsdp1 : riverpct*2/3) +
+
+(pt_wsdp2 > 0 ? pt_wsdp2 : riverpct*2/3) +
+
+(pt_wsdp3 > 0 ? pt_wsdp3 : riverpct*2/3))/nplayersdealt : turnpct*2/3
+
+##f$prwin##
+nopponentsplaying==1 && floppct>0 ?
+(
+f$opponent_hand_bucket==101 ? (vs$101$prwin + (0.5 * vs$101$prtie)) : 
+f$opponent_hand_bucket==102 ? (vs$102$prwin + (0.5 * vs$102$prtie)) : 
+f$opponent_hand_bucket==103 ? (vs$103$prwin + (0.5 * vs$103$prtie)) : 
+f$opponent_hand_bucket==104 ? (vs$104$prwin + (0.5 * vs$104$prtie)) : 
+f$opponent_hand_bucket==105 ? (vs$105$prwin + (0.5 * vs$105$prtie)) : 
+f$opponent_hand_bucket==106 ? (vs$106$prwin + (0.5 * vs$106$prtie)) :
+f$opponent_hand_bucket==107 ? (vs$107$prwin + (0.5 * vs$107$prtie)) : (dll$prwin+dll$prtie/2))
+**f$prwinpowerfactor : 
+
+handsplayed<10 || (dll$prwin+dll$prtie/2) < 0.01  ?
+(
+br==2 ? (prwin+prtie/2)
+**f$prwinpowerfactor :
+br==3 ? (prwin+prtie/2)
+**f$prwinpowerfactor :
+br==4 ? (prwin+prtie/2)
+**f$prwinpowerfactor : (dll$prwin+dll$prtie/2)
+**f$prwinpowerfactor
+)
+
+:
+
+br==2 ? (dll$prwin+dll$prtie/2)
+**f$prwinpowerfactor :
+br==3 ? (dll$prwin+dll$prtie/2)
+**f$prwinpowerfactor :
+br==4 ? (dll$prwin+dll$prtie/2)
+**f$prwinpowerfactor : (dll$prwin+dll$prtie/2)
+**f$prwinpowerfactor 
+
+##f$opponent_hand_bucket##
+floppct <= 0 ? 0 :
+floppct <= 0.0256 ? 101 :
+floppct <= 0.0709 ? 102 :
+floppct <= 0.1086 ? 103 :
+floppct <= 0.2036 ? 104 :
+floppct <= 0.3454 ? 105 :
+floppct <= 0.4359 ? 106 :
+floppct <= 0.6833 ? 107 : 0
+
+##f$evbluff##
+0                 // start at 0
+- f$finalpayrais  // my maximum showdown cost
++ f$finalpotrais  // the raising showdown pot
+* f$prallfold         // my winning chances
+* (1+rake)        // the house rake
+
+##f$prallfold##
+nbetstocall==0 && ac_postflop_pos >= 4  && handsplayed < 30  && floppct > 0 ?
+(
+br==2 ?
+(((floppct-turnpct)/floppct)*f$avgbetsf)**nopponentsplaying //% players that will fold
+*(!didcallround1*1.6)
+//needed: standard deviation of folding players pct
+
+:
+br==3 ?
+(((turnpct-riverpct)/turnpct)*f$avgbetst)**nopponentsplaying //% players that will fold
+*(!didcallround1*1.6)*(!didcallround2*1.6)
+//needed: standard deviation of folding players pct
+
+:
+br==4 ?
+(((riverpct-f$wsdpct)/riverpct)*f$avgbetsr)**nopponentsplaying //% players that will fold
+*(!didcallround1*1.6)*(!didcallround2*1.6)*(!didcallround3*1.3)
+//needed: standard deviation of folding players pct
+
+:0 ):0
+
+##f$ifabr1##
+0
+
+##f$ifabr2##
+0
+
+##f$ifabr3##
+0
+
+##f$ifabr4##
+0
+//invoked when a new hand starts - could typically reset everything with dll$reset00to99
+
+##f$newhand##
+0
+//the formulae invoked by dll$setvXX calls
+
+##f$setv00##
+0
+
+##f$setv01##
+0
+
+##f$setv02##
+0
+
+##f$setv99##
+0
+//the formulae invoked by dll$onceXX calls
+
+##f$once00##
+0
+
+##f$once01##
+0
+
+##f$once02##
+0
+//clone as needed up to...
+
+##f$once99##
+0
+
+// for the WHUVARS2 functionality
+
+##f$nit##
+30000
+
+##f$willplay##
+169*floppct
+
+##f$wontplay##
+f$willplay*1.33
+
+//replicate as needed up to 99 to control short-circuiting
+
+##f$vtrue00##
+0
+
+##f$vfalse00##
+0
+
+// for the whuvars3 functionality
+
+##f$topclip##
+nplayersdealt>6 ? nbetsround1>1?0:10 : nbetsround1>1?0:15
+
+//for the whuvars4 functionality
+
+##f$hammer##
+prevaction<0?1:0
+//f$cheapbb has been removed, since whuvars4 no longer uses it
+
+##f$spe##
+//LabOneLimit_v0009 8/25/2006
+// static position early
+[ dealposition >2 && dealposition >=nplayersdealt-8 && dealposition <=nplayersdealt-5 ]
+
+##f$spm##
+ // static position middle
+[ dealposition>nplayersdealt-5 && dealposition<nplayersdealt-1 ]
+
+##f$spl##
+ // static position late
+[ dealposition>=nplayersdealt-1 ]
+
+##f$spd##
+ // static position dealer
+[ dealposition==nplayersdealt ]
+
+##f$dpe##
+ // dynamic position early
+[ betposition==1 || betposition/nplayersplaying <=(1/2) ]
+
+##f$dpm##
+// dynamic middle position
+[ betposition/nplayersplaying > (1/2) &&
+  betposition/nplayersplaying <=(3/4) &&
+  betposition!=nplayersplaying             
+]
+
+##f$dpl##
+ // dynamic late position
+[ betposition/nplayersplaying >(3/4) ]
+
+##f$dpd##
+ // dynamic dealer position
+[ betposition==nplayersplaying ]
+
+##f$DP##
+
+nplayersdealt==10 ? ( 
+dealposition==3 ? 3 : 
+dealposition==4 ? 3 : 
+dealposition==5 ? 3 :  0): 
+
+nplayersdealt==9 ? ( 
+dealposition==3 ? 3 : 
+dealposition==4 ? 3 :  0): 
+
+nplayersdealt==8 ? ( 
+dealposition==3 ? 3 : 0):  0
+
+##f$PF3Bet_Raise##
+//**3-Bets top 70% of raiser's pre-flop raise range 
+(f$Raiser_pfr * 169 * 0.70)
+
+##f$Raiser_pfr##
+[(raischair==0 ? pt_hands0<30 ? 0.10 : 0 : 
+ raischair==1 ? pt_hands1<30 ? 0.10 : pt_pfr1 : 
+ raischair==2 ? pt_hands2<30 ? 0.10 : pt_pfr2 : 
+ raischair==3 ? pt_hands3<30 ? 0.10 : pt_pfr3 : 
+ raischair==4 ? pt_hands4<30 ? 0.10 : pt_pfr4 : 
+ raischair==5 ? pt_hands5<30 ? 0.10 : pt_pfr5 : 
+ raischair==6 ? pt_hands6<30 ? 0.10 : pt_pfr6 : 
+ raischair==7 ? pt_hands7<30 ? 0.10 : pt_pfr7 : 
+ raischair==8 ? pt_hands8<30 ? 0.10 : pt_pfr8 : 
+ raischair==9 ? pt_hands9<30 ? 0.10 : pt_pfr9 : 0) ]
+
+##f$tight_openers##
+// OPENING HANDS TO RAISE (5 or less players on average flop)
+      [ br==1 && (                      
+             f$spe && ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )          
+               || ( $AA || $KK || $QQ || $AKs )            
+               ) 
+          || f$spm && (      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ  || $ATs || $KQ || $KJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || f$spl && (                      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK  || $AQ || $AJ  || $AT || $A9s || $A8s || $KQ || $KJs || $KTs || $QJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || (dealposition==1)  && (              
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                          
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )          
+               || ( $AA || $KK || $QQ || $AKs )            
+               )                
+          || (dealposition==2)  && ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                      
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                                  
+               || ( $AA || $KK || $QQ || $AKs )                
+               ) 
+          ) 
+     ] 
+? 2 : 
+// OPENING HANDS TO CALL (5 or less players on average flop) 
+     [ br==1 && ( 
+           f$spe && ( 
+                nbetsround<=1 && ( (ispair && trank>=7) || (issuited && rankloplayer>=10) || $AK || $AQ || $AJ || $KQ || $QTs ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )          
+             || ( $AA || $KK || $QQ || $AKs ) 
+             )              
+        || f$spm && (      
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || $98s || $Ax && rankloplayer>=10 || $KQ || $KJ  ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )            
+             || ( $AA || $KK || $QQ || $AKs )    
+             ) 
+        || f$spl && (  
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || (issuited && isconnector && rankloplayer>=4) || rankloplayer>=10 ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )            
+             || ( $AA || $KK || $QQ || $AKs )    
+             ) 
+        || (dealposition==1)  && (                
+                nbetsround<=1 && ( ispair || issuited || rankloplayer>=10 )              
+             || nbetsround<=2 && ( 
+                     ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs ) 
+                  || ( callposition>=2 && ispair ) 
+                  )                
+             || ( $AA || $KK || $QQ || $AKs )            
+             )    
+        || (dealposition==2)  && ( 
+                nbetsround<=2 && ( ispair || $Axs || (issuited && rankloplayer>=9) || (issuited && isconnector && rankloplayer>=4) || rankloplayer>=12 || $AJ )                        
+             || ( $AA || $KK || $QQ || $AKs )                
+             ) 
+        ) 
+     ] 
+? 1 : 
+0
+
+##f$loose_openers##
+// OPENING HANDS TO RAISE (6 or more players on average flop)
+     [ br==1 && (                      
+             f$spe &&  ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ || $ATs || $KQ || $KJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ )          
+               || ( $AA || $KK || $QQ || $AKs )            
+               ) 
+          || f$spm && (      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ || $ATs || $KQ || $KJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ )                    
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || f$spl && nopponentsbetting>=6 && (                      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $88 || $AK  || $AQ || $AJ  || $KQ || (issuited && rankloplayer>=10) || $A9s || $A8s || $K9s ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs || $KQs )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || f$spl && (                      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ  || $AT || $A9s || $A8s || $KQ || $KJs || $KTs || $QJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || (dealposition==1)  && (              
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                          
+               || ( $AA || $KK || $QQ || $JJ || $TT || $AK )                                  
+               )            
+          || (dealposition==2)  && ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                      
+               || ( $AA || $KK || $QQ || $JJ || $TT || $AK )                                  
+               ) 
+          ) 
+     ] 
+? 2 : 
+// OPENING HANDS TO CALL (6 or more players on average flop) 
+     [ br==1 && ( 
+           f$spe && ( 
+                nbetsround<=1 && ( ispair || $Axs || $Kxs || (issuited && rankloplayer>=9) || $98s || $AK || $AQ || $AJ || $AT || $KQ || $KJ ) 
+             || nbetsround<=2 && ( ispair || (issuited && rankloplayer>=10 && !$QTs) || $AK || $AQ )            
+             || ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQs || $AJs || $KQs ) 
+             )              
+        || f$spm && (      
+                nbetsround<=1 && ( ispair || $Axs || $Kxs || (issuited && rankloplayer>=9) || $98s || $AK || $AQ || $AJ || $AT || $KQ || $KJ ) 
+             || nbetsround<=2 && ( ispair || (issuited && rankloplayer>=10 && !$QTs) || $AK || $AQ )              
+             || ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQs || $AJs || $KQs )  
+             ) 
+        || f$spl && nopponentsbetting>=5 && (  
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || $Q8s || $J8s || $J7s || (issuited && (rankhiplayer-2>=rankloplayer) && rankloplayer>=3) || rankloplayer>=10 ) 
+             || nbetsround<=2 && ( ispair || issuited && rankloplayer>=10 || $Axs || (issuited && isconnector && rankloplayer>=6) || $AK || $AQ )            
+             || ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQs || $AJs || $KQs )    
+             ) 
+        || f$spl && (  
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || (issuited && isconnector && rankloplayer>=4) || rankloplayer>=10 ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )            
+             || ( $AA || $KK || $QQ || $AKs )    
+             ) 
+        || (dealposition==1)  && (                
+                nbetsround<=1 && ( ispair || rankloplayer>=10 )          
+             || ( ispair || (issuited && rankloplayer>=10 && !$QTs) || $AK || $AQ )              
+             )    
+        || (dealposition==2)  && ( ispair || $Axs || (issuited && rankloplayer>=9) || $Q8s || $J8s || $J7s || (issuited && (rankhiplayer-2>=rankloplayer) && rankloplayer>=3) || $AK || $AQ || $AJ || $KQ )                        
+        ) 
+     ] 
+? 1 : 
+0
+
+##f$defendblinds##
+// last change 8/22/2006 cout v0008a
+// Defend Blinds 
+   [br==1 && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+   nraisbets<=2 &&  (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || (issuited && isconnector && rankloplayer>4)
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [br==2 && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    didraisround1 && !didcallround1 && 
+    pt_iconlastr1<11 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [br==3 && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    nbetsround<2 && (
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ] 
+// nobody hit their draws, so bluff/opponent often CAN'T call, even if they doubt we have it. 
+|| [br==4 && dealposition<=2 && nbetsround<1 &&
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    f$openboard && (    
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ]  
+? 2 :
+   [br==1 && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+   nraisbets<=2 &&  (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || (issuited && isconnector && rankloplayer>4)
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+
+|| [br==2 && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    didraisround1 && !didcallround1 && 
+    pt_iconlastr1>10 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [br==3 && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    nbetsround<2 && (
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ] 
+// nobody hit their draws, so bluff/opponent often CAN'T call, even if they doubt we have it. 
+|| [br==4 && dealposition<=2 && nbetsround<1 &&
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    f$openboard && (    
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ]  
+? 1 :
+0
+
+/*
+// last change 8/18/2006 Winngy v0003
+   [br==1 && dealposition==1 && nplayersplaying<=3 && dealpositionrais==nplayersdealt     && !didcall && handrank169<30 && nraisbets==3] //Defend our small blind - button raise 
+|| [br==1 && dealposition==1 && nplayersplaying<=3 && dealpositionrais==(nplayersdealt-1) && !didcall && handrank169<25 && nraisbets==3] //Defend our small blind - cutoff raise 
+|| [br==1 && dealposition==2 && nplayersplaying==2 && dealpositionrais==1		  && !didcall && handrank169<35 && nraisbets==3] //Defend our big blind - sblind raise 
+|| [br==1 && dealposition==2 && nplayersplaying<=3 && dealpositionrais==nplayersdealt     && !didcall && handrank169<30 && nraisbets==3] //Defend our big blind - button raise 
+|| [br==1 && dealposition==2 && nplayersplaying<=3 && dealpositionrais==(nplayersdealt-1) && !didcall && handrank169<25 && nraisbets==3] //Defend our big blind - cutoff raise
+*/
+
+##f$stealblinds##
+// last change 8/22/2006 cout v0008a
+// Steal Blinds 
+   [br==1 && (f$spl||dealposition==1) && nraisbets<=2 && nopponentscalling==0 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10 && issuited
+     || rankloplayer>=10 && f$spd  
+     || (issuited && isconnector && rankloplayer>4 && f$spd)
+     || $Kxs && rankloplayer>8 && f$spd
+     )
+   ] 
+|| [br==2 && (f$spl||dealposition==1) && 
+    (dealpositionrais<=2||dealpositionrais>=nplayersdealt-1) && 
+    nbetsround1<=2 && nopponentsplaying<=1 && 
+    didraisround1 && !didcallround1 && (
+        pokerval>onepair
+     ||(nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))
+     || $Axs && nsuited>2 
+     || rankloplayer>=10 && (nstraight>2||nstraightfill<2)
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && nsuited>3 
+     )
+   ] 
+|| [br==3 && (f$spl|dealposition==1) && 
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) && 
+    nbetsround<1 && (
+        ispair
+     || nsuited==4
+     || nstraight==4
+     || nstraightfill==1 && f$spd
+     )
+   ] 
+// nobody hit their draws so semi-bluffers often CAN'T call, even if they doubt we have it. 
+|| [br==4 && (f$spd||dealposition==1) && call<=0 &&
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) &&  
+    f$SAFEBOARD && pokerval>onepair
+   ]
+? 2 :
+   [br==1 && didrais && (f$spl||dealposition==1) && ncallbets<2 && nopponentscalling==0 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10 
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [br==2 && didrais && (f$spl||dealposition==1) && 
+    (dealpositionrais<=2||dealpositionrais>=nplayersdealt-1) && 
+    nbetsround1<=2 && nopponentsplaying<=1 && 
+    didraisround1 && !didcallround1 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [br==3 && didrais && (f$spl||dealposition==1) && 
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) && 
+    nbetsround<1 && (
+        ispair
+     || nsuited==4
+     || nstraight==4
+     )
+   ] 
+|| [br==4 && (f$spl||dealposition==1) && 
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) &&  
+    f$SAFEBOARD && pokerval>onepair
+   ]
+? 1 :
+0
+
+##f$first_into_pot##
+br==1 ? [potplayer<=sblind+bblind] : potplayer<=0.1
+
+##f$SAFEBOARD##
+[nrankedcommon<2 && 
+ nsuitedcommon<3 && 
+ nstraightcommon<3 && 
+ nstraightfillcommon>1 ]
+&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)
+
+##f$openboard##
+// impossible to have a boat ,flush, or straight; top set is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon>=3 ]
+
+##f$ifabr1##
+0
+
+##f$ifabr2##
+0
+
+##f$ifabr3##
+0
+
+##f$ifabr4##
+0
+//invoked when a new hand starts - could typically reset everything with dll$reset00to99
+
+##f$newhand##
+0
+//the formulae invoked by dll$setvXX calls
+
+##f$setv00##
+0
+
+##f$setv01##
+0
+
+##f$setv02##
+0
+
+##f$setv99##
+0
+//the formulae invoked by dll$onceXX calls
+
+##f$once00##
+0
+
+##f$once01##
+0
+
+##f$once02##
+0
+//clone as needed up to...
+
+##f$once99##
+0
+
+// for the WHUVARS2 functionality
+
+##f$nit##
+30000
+
+##f$willplay##
+169*floppct
+
+##f$wontplay##
+f$willplay*1.33
+
+//replicate as needed up to 99 to control short-circuiting
+
+##f$vtrue00##
+0
+
+##f$vfalse00##
+0
+
+// for the whuvars3 functionality
+
+##f$topclip##
+nplayersdealt>6 ? nbetsround1>1?0:10 : nbetsround1>1?0:15
+
+//for the whuvars4 functionality
+
+##f$hammer##
+prevaction<0?1:0
+//f$cheapbb has been removed, since whuvars4 no longer uses it
+
+##f$cost_to_fold##
+
+
+##f$EVouts##
+br==2 ? 
+(
+(mh_nouts*0.0425*f$finalpotcall)-f$finalpaycall > 0.00 ? 
+(
+(mh_nouts*0.0425*f$finalpotcall)-f$finalpaycall > (mh_nouts*0.0425*f$finalpotrais)-f$finalpayrais ? 1 //EV outs call
+: 2 //EVouts rais
+) : 0) :
+
+br==3 ?
+((mh_nouts*0.0217*f$finalpotcall)-f$finalpaycall > 0.00 ?
+((mh_nouts*0.0217*f$finalpotcall)-f$finalpaycall > (mh_nouts*0.0217*f$finalpotrais)-f$finalpayrais ? 1 // EV outs call
+: 2 ) //EVouts rais
+: 0) : 0
+
+##f$prwinpowerfactor##
+nopponentsplaying==1 ?
+(
+br==2 ? (1.20+ncallbets/4+(3-ac_postflop_pos)/10) : 0
+||br==3 ? (1.20+ncallbets/4+(3-ac_postflop_pos)/10+(didraisround2 ? nbetsround2-1.5 : nbetsround2-0.5)/4) : 0
+||br==4 ? (1.20+ncallbets/3+(3-ac_postflop_pos)/10+(didraisround3 ? nbetsround3-1.5 : nbetsround3-0.5)/4+(didraisround2 ? nbetsround2-1.5 : nbetsround2-0.5)/8) : 0
+):
+(
+br==2 ? (1+ncallbets/5+(3-ac_postflop_pos)/10) : 0
+||br==3 ? (1+ncallbets/5+(3-ac_postflop_pos)/10+(didraisround2 ? nbetsround2-1.5 : nbetsround2-0.5)/5) : 0
+||br==4 ? (1+ncallbets/5+(3-ac_postflop_pos)/10+(didraisround3 ? nbetsround3-1.5 : nbetsround3-0.5)/5+(didraisround2 ? nbetsround2-1.5 : nbetsround2-0.5)/10) : 0
+)
+

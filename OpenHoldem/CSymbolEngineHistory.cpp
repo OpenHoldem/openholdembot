@@ -22,7 +22,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineChecksBetsFolds.h"
-#include "..\CTablemap\CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "FloatingPoint_Comparisions.h"
 
 

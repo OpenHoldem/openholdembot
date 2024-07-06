@@ -73,11 +73,11 @@ BOOL CDlgSAPrefs22::OnInitDialog()
 
 void CDlgSAPrefs22::OnOK()
 {
-	if (bool(_popup_minimize.GetCheck()) == true)
+	if (_popup_minimize.GetCheck() != 0)
 	{
 		Preferences()->SetValue(k_prefs_popup_blocker, k_popup_minimize);
 	}
-	else if (bool(_popup_kill.GetCheck()) == true)
+	else if (_popup_kill.GetCheck() != 0)
 	{
 		Preferences()->SetValue(k_prefs_popup_blocker, k_popup_kill);
 	}

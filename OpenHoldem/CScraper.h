@@ -17,7 +17,7 @@
 #define INC_CSCRAPER_H
 
 #include <stdint.h>
-#include "../CTablemap/CTablemap.h"
+#include "CTablemap/CTablemap.h"
 #include "CSpaceOptimizedGlobalObject.h"
 
 
