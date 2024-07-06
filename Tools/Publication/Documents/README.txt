@@ -1,1 +1,1 @@
-Check our wiki https://github.com/OpenHoldem/openholdembot/wiki
+Check our wiki https://github.com/Lab0ne/openholdembot/wiki

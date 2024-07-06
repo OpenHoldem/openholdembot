@@ -1,1 +1,1 @@
-start "" https://github.com/rub3r0id/OpenHoldemBot/wiki#openppl
+start "" https://github.com/Lab0ne/OpenHoldemBot/wiki#openppl
