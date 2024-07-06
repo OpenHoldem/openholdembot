@@ -139,7 +139,7 @@ const int k_double_click_delay = 100; // ms
 
 // Tablemap constants
 #define RGB_MASK	0x00FFFFFF
-const int k_max_number_of_font_groups_in_tablemap = 8;
+const int k_max_number_of_font_groups_in_tablemap = 10;
 const int k_max_number_of_hash_groups_in_tablemap = 4;
 const int k_max_number_of_titletexts = 10;
 const int k_max_number_of_tablepoints = 10;

@@ -32,7 +32,7 @@ public:
 	CString			character;
 	int				group;
 	bool			delete_sort_enabled;
-	CArray <STablemapFont, STablemapFont>		*new_t$_recs[8];
+	CArray <STablemapFont, STablemapFont>		*new_t$_recs[k_max_number_of_font_groups_in_tablemap];
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
