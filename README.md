@@ -21,3 +21,10 @@ In poker botting, stealth is of primary importance. Never download OpenHoldem fr
 
 https://github.com/orgs/OpenHoldem/discussions/5
 </p>
+
+<h2>A new MTT profile released: </h2>
+<p>
+Downoad free here:
+
+https://github.com/orgs/OpenHoldem/discussions/9
+</p>
