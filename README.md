@@ -1,4 +1,4 @@
-<h1>The Official OpenHoldem Project GitHub </h1>
+<h1> <center> The Official OpenHoldem Project GitHub </center> </h1> 
 
 <h2>Download Now</h2>
 <p>
