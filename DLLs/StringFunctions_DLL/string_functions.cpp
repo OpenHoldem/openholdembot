@@ -624,7 +624,7 @@ void WarnAboutNonASCIICharacters(const CString *s) {
 }
 
 // For the symbol-engines to build a ctring with a list of symbols
-// like currentbet0..currentbet9, separates by spaces
+// like currentbet0..currentbet9, separated by spaces
 CString RangeOfSymbols(CString format_string, int first, int last) {
   CString result;
   CString next_symbol;
@@ -635,4 +635,27 @@ CString RangeOfSymbols(CString format_string, int first, int last) {
     result += " ";
   }
   return result;
+}
+
+// For the symbol-engines to build a ctring with a list of symbols
+// like i0button..iFbutton, separated by spaces
+// Works up to 35: 0..9, A..Z
+CString RangeOfSymbolsHex(CString format_string, int first, int last) {
+	CString result;
+	CString next_symbol;
+	assert(last >= first);
+	for (int i = first; i <= last; ++i) {
+		if (i < 10) {
+			next_symbol.Format(format_string, '0' + i);
+		}
+		else if (i <= 35) {
+			next_symbol.Format(format_string, 'A' + i - 10); 
+		}
+		else {
+			next_symbol.Format(format_string, '#');
+		}
+		result += next_symbol;
+		result += " ";
+	}
+	return result;
 }

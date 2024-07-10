@@ -3393,6 +3393,10 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			else if (regionName.Mid(0,1)=="i")
 				groupName = regionName.Mid(0,2);
 
+
+			else if (regionName.Left(6) == "betpot")
+				groupName = "betpot";
+
 			else
 				groupName.Empty();
 
@@ -3414,6 +3418,9 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 
 			else if (regionName.Find("pot")!=-1 && regionName.Find("chip")!=-1)
 				groupName = "pot-chip";
+
+			else if (regionName.Find("betpot") != -1)
+				groupName = "betpot";
 
 			else if (regionName.Find("pot")!=-1)
 				groupName = "pot";

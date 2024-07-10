@@ -32,6 +32,9 @@ STRING_FUNCTIONS_API CString Number2CString(double number, int default_precision
 // For the symbol-engines to build a ctring with a list of symbols
 // like currentbet0..currentbet9, separated by spaces
 STRING_FUNCTIONS_API CString RangeOfSymbols(CString format_string, int first, int last);
+// For the symbol-engines to build a ctring with a list of symbols
+// like i0button..iFbutton, separates by spaces
+STRING_FUNCTIONS_API CString RangeOfSymbolsHex(CString format_string, int first, int last);
 STRING_FUNCTIONS_API void RemoveExtraDotsInNumbers(CString *s);
 STRING_FUNCTIONS_API void RemoveLeftWhiteSpace(CString *s);
 STRING_FUNCTIONS_API void RemoveMultipleWhiteSpaces(CString *s);
