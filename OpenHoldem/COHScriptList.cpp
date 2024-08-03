@@ -106,7 +106,10 @@ bool COHScriptList::IsOnList(int first_rank, int second_rank) {
   // Normating to [0..12]
   first_rank -= 2;
   second_rank -= 2;
-  return _handlist_matrix[second_rank][first_rank];
+  if (_handlist_weight_matrix[second_rank][first_rank] >= rand() % 101)
+	  return _handlist_matrix[second_rank][first_rank];
+  else
+	  return false;
 };
 
 bool COHScriptList::Set(CString list_member) {
