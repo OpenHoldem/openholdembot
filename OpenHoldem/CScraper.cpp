@@ -249,11 +249,11 @@ void CScraper::ScrapeSeated(int chair) {
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
-			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
+			if (p_string_match->IsStringSeated(result)) {
+				p_table_state->Player(chair)->set_seated(true);
+				return;
+			}
 		}
-	}
-	if (p_table_state->Player(chair)->seated()) {
-		return;
 	}
 	// try u region next uXseated,
 	// but only if we didn't get a positive result from the p region
