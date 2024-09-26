@@ -1,0 +1,4691 @@
+##MTT_Chiller_Notes##
+//
+// MTT_Chiller_ByTrish A bot to get you going...
+//
+// Created First Of July 2024
+// V 1.07 -- 26 - 12 - 2020
+// Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// f$SlowPlayPremiums is included to show an example of using memory symbols
+//
+// Weighted Prwin is included search Weighted to learn how to use it.
+//
+// ICM is included search below for functions containing ICM to learn how to use it.
+//
+
+
+##f$preflop##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Preflop
+//////////////////////////////////////////////////////////////////////////////////////
+
+//\\ OverRides \\//
+
+// At the start of pre-flop we use some general overrides
+// Add your own here
+When TotalInvested > 33% StackSize RaiseMax Force
+//Raise sitouts
+When Calls = 0 and Raises = 0 And OpponentsLeftSittingOut RaiseMin Force
+// Don't fold premiums
+When BotsLastAction = Raise And StackSize <= 20 And listCat2 RaiseMax Force
+When BotsLastAction = Raise And listCat2 RaisePot Force
+// It's over...
+When StackSize <= 2 And (ante > 0 Or InTheBlinds) RaiseMax Force
+When AmountToCall < 1 And balance_bigstackchair < bblind Raise Force
+When Not f$RedZone And Raises > 1 And Not listCat2a Fold Force
+
+//
+// Freeroll madness very loose freeroll play \\
+// Example of using flag buttons:
+// Press F0 to enable f$FreerollHammer at any time or F1 to disable
+// If you don't press F1 it will play if the title contains the word free
+// You can comment out the line below for FreerollHammer if you never want to use this loose freeroll style
+
+
+//\\ Main Play \\//
+When f$FinalTableSet Return f$FinalTablePlay Force
+When f$FreerollHammer And log$FreerollHammer RaiseMax Force
+When nplayersseated = 2 And log$HU Return f$Trish_HeadsUp Force
+When f$RedZone And log$RedZone Return f$RedZonePlay Force
+When f$OrangeZone And log$OrangeZone Return f$OrangeZonePlay Force
+When f$YellowZone And log$YellowZone Return f$YellowZonePlay Force
+When f$GreenZone And log$GreenZone Return f$GreenZonePlay Force
+//
+When f$OpponentsExcludingSitOuts <= (1 + CallsSinceLastRaise) And AmountToCall < 1 Call Force
+//
+
+##f$flop##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Flop
+//////////////////////////////////////////////////////////////////////////////////////
+
+// Main post flop play is handled by a tweaked Gecko version
+// Check out the Gecko Tweaks section
+//
+// Flop overrides can be added here
+// OverRides are a list of conditions you want to be
+// carried out before the Gecko Tweaks section is considered
+//
+//^^ Including this as an example of using memory symbols ^^\\
+When me_re_slowplaypre = 1 And log$SlowPlayPush RaiseMax Force
+// Example -- Raise sitouts
+When Calls = 0 and Raises = 0 And OpponentsLeftSittingOut Raise Force
+// Example -- Call nuts
+When prwin+(prtie*0.50) > 0.92 And log$SlowPlay Call Force
+// Example -- Short Stack Aggression
+When Raises = 0 And prwin+(prtie*0.50) < 0.92 And (HaveBestOverPairOrBetter Or (HaveTopPair And HaveSecondBestKickerOrBetter)) And Not StraightPossibleOnFlop And Not FlushPossible
+	When (PotSize * 3) >= StackSize And log$SS_Flop_Play RaiseMax Force
+	When ((StackSize < 10) Or f$TheBiggestActiveOpponentsStack <= 8) And log$SS_Flop_Play RaiseMax Force
+// No When Others here leave it open unless you add more code below
+
+
+//
+// To edit the main post flop play please use the functions
+// in the Gecko Tweaks section below
+//
+// Please do not modify the original Gecko logic
+
+
+##f$turn##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Turn
+//////////////////////////////////////////////////////////////////////////////////////
+
+// Main post flop play is handled by a tweaked Gecko version
+// Check out the Gecko Tweaks section
+//
+// Turn overrides can be added here
+// OverRides are a list of conditions you want to be
+// carried out before the Gecko Tweaks section is considered
+//
+// Example -- Raise sitouts
+When Calls = 0 and Raises = 0 And OpponentsLeftSittingOut Raise Force
+// Example -- Call nuts
+When prwin+(prtie*0.50) > 0.94 And log$SlowPlay Call Force
+
+
+//	
+// To edit the main post flop play please use the functions
+// in the Gecko Tweaks section below
+//
+// Please do not modify the original Gecko logic
+
+
+##f$river##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										River
+//////////////////////////////////////////////////////////////////////////////////////
+
+// Main post flop play is handled by a tweaked Gecko version
+// Check out the Gecko Tweaks section
+//
+// River overrides can be added here
+// OverRides are a list of conditions you want to be
+// carried out before the Gecko Tweaks section is considered
+//
+// Example -- Raise sitouts
+When Calls = 0 and Raises = 0 And OpponentsLeftSittingOut Raise Force
+
+
+//	
+// To edit the main post flop play please use the functions
+// in the Gecko Tweaks section below
+//
+// Please do not modify the original Gecko logic
+
+
+##f$Trish_HeadsUp##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Heads Up
+//////////////////////////////////////////////////////////////////////////////////////
+// A basic HU
+//
+//  Introducing a sliding exponential ShortStack Strategy
+When f$HandRank2Way <= (2652*f$SS_Blind_HU_Log) RaiseMax Force
+
+When InSmallBlind
+   When BotsLastAction = Raise And f$Stack_12P And listHUCat1 RaiseMax Force
+   When BotsLastAction = Raise And f$Stack_12P And listHUCat5 Call Force
+   When f$FirstAction And f$Stack_12P And listHUCat8 RaiseBy 3 Force
+   When f$Stack_8_12 And listHUCat8 RaiseMax Force
+
+When InBigBlind
+   When BotsLastAction = Raise And f$Stack_12P And listHUCat1 RaiseMax Force
+   When BotsLastAction = Raise And f$Stack_12P And listHUCat4 Call Force
+   When f$FirstAction And f$Stack_12P And Raises = 0 And listHUCat6 RaiseBy 3 Force
+   When f$Stack_8_12 And Raises = 0 And listHUCat7 RaiseMax Force 
+
+When InBigBlind And f$FirstAction And Raises = 1
+   When f$Stack_12P And AmountToCall > 3 And listHUCat5 RaiseMax Force
+   When f$Stack_12P And AmountToCall <= 3 And listHUCat5 RaiseBy (4 * AmountToCall) Force
+   When f$Stack_12P And AmountToCall <= 3 And listHUCat7 Call Force
+   When f$Stack_4_12 And listHUCat6 RaiseMax Force
+   When f$Stack_2_4 And listHUCat7 RaiseMax Force
+   
+When Others
+	When Others Fold Force
+	
+
+##f$RedZonePlay##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Red Zone ShortStack
+//////////////////////////////////////////////////////////////////////////////////////
+
+// I use a list based solution here ^BUT^
+// a simple sliding exponential ShortStack Strategy as in HU could be used instead
+
+//^^ Including this as an example of using memory symbols ^^\\
+When Not f$FirstAction  And me_re_slowplaypre = 1  And log$SlowPlayPrePush RaiseMax Force
+When f$SlowPlayPremiumsSet !=1 And log$SlowPlayPre Return f$SlowPlayPremiums Force
+////////////////////////////////////////////////////////////\\
+
+When listCat2 RaiseMax Force
+When Not f$FirstAction And currentbet > bblind RaiseMax Force
+
+// If ShortStack and < 10bb we now use ICM push or fold...
+// Example of using Weighted Prwin with ICM
+When f$ICM_BootCamp_Push RaiseMax Force
+When f$ICM_BootCamp_Call RaiseMax Force
+//
+When f$FirstAction And f$HandRank2Way < (2652*f$Trish_SS_Log) RaiseMax Force
+
+// \\ Shortstack Repush \\ //
+
+// Not in a blind \\
+When Raises <= 1 And f$FirstAction And Not InTheBlinds
+	// Vs EP 
+	When LastRaiserPosition >= 7 And listRPnotblindEP13 RaiseMax Force
+	When LastRaiserPosition >= 7 And StackSize <= 8 And listRPnotblindEP8 RaiseMax Force
+	// Vs MP 
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And listRPnotblindMP13 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 9 And listRPnotblindMP9 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 6 And listRPnotblindMP6 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4  And StackSize <= 5 And listRPnotblindMP5 RaiseMax Force
+	// Vs CO 
+	When LastRaiserPosition = 3 And BetSize <= 3 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.15) RaiseMax Force
+	When LastRaiserPosition <= 3 And listRPnotblindCO13 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 11 And listRPnotblindCO11 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 9 And listRPnotblindCO9 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 7 And listRPnotblindCO7 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 6 And listRPnotblindCO6 RaiseMax Force
+
+// In small blind \\
+When Raises <= 1 And f$FirstAction And InSmallBlind
+	// Vs EP 
+	When LastRaiserPosition >= 7 And listRPsbEP13 RaiseMax Force
+	When LastRaiserPosition >= 7 And StackSize <= 8 And listRPsbEP9 RaiseMax Force
+	// Vs MP 
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And listRPsbMP13 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 7 And listRPsbMP7 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 6 And listRPsbMP6 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 4 And listRPsbMP4 RaiseMax Force
+	// Vs CO 
+	When LastRaiserPosition = 3 And CallsSinceLastRaise = 0 And BetSize <= 3 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.22) RaiseMax Force
+	When LastRaiserPosition = 3 And listRPsbCO13 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 11 And listRPsbCO11 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 8 And listRPsbCO8 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 5 And listRPsbCO5 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 4 And listRPsbCO4 RaiseMax Force
+	// Vs BU 
+	When LastRaiserPosition <= 2 And BetSize <= 3.5 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.28) RaiseMax Force
+	When LastRaiserPosition <= 2 And listRPsbBU13 RaiseMax Force
+	When LastRaiserPosition <= 2 And StackSize <= 10 And listRPsbBU10 RaiseMax Force
+	When LastRaiserPosition <= 2 And StackSize <= 8 And listRPsbBU8 RaiseMax Force
+	When LastRaiserPosition <= 2 And StackSize <= 6 And listRPsbBU6 RaiseMax Force
+
+// In Big blind \\
+When Raises <= 1 And f$FirstAction And InBigBlind
+	// Vs EP 
+	When LastRaiserPosition >= 7 And listRPbbEP13 RaiseMax Force
+	When LastRaiserPosition >= 7 And StackSize <= 10 And listRPbbEP10 RaiseMax Force
+	// Vs MP 
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And listRPbbMP13 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 8 And listRPbbMP8 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 7 And listRPbbMP7 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 6 And listRPbbMP6 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 5 And listRPbbMP5 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 4 And listRPbbMP4 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 3 And listRPbbMP3 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 2 And listRPbbMP2 RaiseMax Force
+	// Vs CO 
+	When LastRaiserPosition = 3 And CallsSinceLastRaise = 0 And BetSize <= 3 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.22) RaiseMax Force
+	When LastRaiserPosition = 3 And listRPbbCO13 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 10 And listRPbbCO10 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 8 And listRPbbCO8 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 6 And listRPbbCO6 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 5 And listRPbbCO5 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 4 And listRPbbCO4 RaiseMax Force
+	// Vs BU 
+	When LastRaiserPosition <= 2 And CallsSinceLastRaise = 0 And BetSize <= 3.5 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.28) RaiseMax Force
+	When LastRaiserPosition = 2 And listRPsbBU13 RaiseMax Force
+	When LastRaiserPosition = 2 And StackSize <= 10 And listRPbbBU10 RaiseMax Force
+	When LastRaiserPosition = 2 And StackSize <= 8 And listRPbbBU8 RaiseMax Force
+	When LastRaiserPosition = 2 And StackSize <= 6 And listRPbbBU6 RaiseMax Force
+	// Vs SB 
+	When LastRaiserPosition <= 1 And BetSize <= 3.5 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.36) RaiseMax Force
+	When LastRaiserPosition <= 1 And listRPbbSB13 RaiseMax Force
+	When LastRaiserPosition <= 1 And StackSize <= 10 And listRPbbSB10 RaiseMax Force
+	When LastRaiserPosition <= 1 And StackSize <= 8 And listRPbbSB8 RaiseMax Force
+	When LastRaiserPosition <= 1 And StackSize <= 7 And listRPbbSB7 RaiseMax Force
+
+When Others
+	When Others Fold Force
+
+
+##f$OrangeZonePlay##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Orange Zone
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+// The Orange Zone is push or fold but not as drastic as the Red Zone
+// Ideally you want to be first in and never call raises
+// When we play vs open limped hands we push, but you can change that below
+//
+//No Second Actions needed as we just open push or fold
+//
+
+When listCat2a RaiseMax Force
+When Not f$FirstAction And currentbet > bblind RaiseMax Force
+
+// Calling all-ins with premium hands
+// An over cautious example you need to change this...
+When f$OpponentSignificantAllin And f$FirstAction
+	When listCat1 And (CallsSinceLastRaise > 0 Or Raises > 1) RaiseMax Force
+	When listCat2 And Raises <= 1 RaiseMax Force
+	// Get out of the multi-way all in unless very short stacked 
+	When (CallsSinceLastRaise > 1 Or Raises > 1) Fold Force
+	When listCat5 And StackSize <= 14 RaiseMax Force
+	When StackSize > 12 Fold Force
+When Others
+
+When f$FirstAction
+// Basic 3Bet \\ You should improve this
+   When f$BootCamp3Bet != 0 And log$Orange_3Bet Return f$BootCamp3Bet Force
+   When f$HandRank2Way < (2652*f$Trish_SS_Log) RaiseMax Force
+
+When Others
+	When Others Fold Force
+	
+
+
+##f$YellowZonePlay##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Yellow Zone
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//The Yellow zone is similar to the Green zone but more aggressive
+// Ideally we should raise more and call speculatively less ^^BUT^^
+// I am just writing this quickly as a get you going starter
+
+// Second Actions
+// Very basic starter you need to work on this...
+When Not f$FirstAction And listCat2 RaiseMax Force
+When BotsLastAction = Raise And listCat3 RaisePot Force
+
+// A short stack is attempting a re-steal
+When BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 6 RaiseMax Force
+When BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 8 And f$HandRank2Way < (2652*0.180) RaiseMax Force
+When BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 12.5 And f$HandRank2Way < (2652*0.155) RaiseMax Force
+
+
+When BotsLastAction = Raise And f$HandRank_Playability_General < (2652*0.09) And AmountToCall <= 15% StackSize Call Force
+When BotsLastAction = Raise And AmountToCall <= 6% StackSize Call Force
+When BotsLastAction = Raise And listCat4 And AmountToCall <= 50% StackSize And Opponents <= (1 + CallsSinceLastRaise) Call Force
+When (BotsLastAction = Raise Or BotsLastAction = Call) And AmountToCall <= 2.5 Call Force
+When BotsLastAction = Raise Fold Force
+
+// Calling all-ins with premium hands
+// An over cautious example you need to change this...
+When f$OpponentSignificantAllin And f$FirstAction
+	When listCat1 And (CallsSinceLastRaise > 0 Or Raises > 1) RaiseMax Force
+	When listCat2 And Raises <= 1 RaisePot Force
+	// Get out of the multi-way all in unless very short stacked 
+	When (CallsSinceLastRaise > 1 Or Raises > 1) Fold Force
+	When listCat5 And AmountToCall <= 5 RaisePot Force
+	When listCat5 And AmountToCall < (StackSize * 0.125) Call Force
+	When StackSize > 12 Fold Force
+When Others
+
+When f$FirstAction
+// Basic 3Bet \\ You should improve this
+   When f$BootCamp3Bet != 0 And log$Yellow_3Bet Return f$BootCamp3Bet Force
+ 
+// Opening and raising limpers again over simple
+// You can replace handrank with lists as you wish
+// Or change the percentages for more tight or loose
+// 0.125 is 12.5% -- 0.330 is 33% 
+
+When f$FirstAction and Raises = 0 && f$ShortStacksPlaying > 0 
+	When InEarlyPosition1 And f$HandRank2Way < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank2Way < (2652 * 0.125) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank2Way < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank2Way < (2652 * 0.180) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank2Way < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank2Way < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank2Way < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank2Way < (2652 * 0.180) RaiseTo (2.5 + Calls) Force
+When f$FirstAction And Raises = 0 And Calls = 0
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo 3 Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.105) RaiseTo 3 Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.110) RaiseTo 3 Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo 3 Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo 3 Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo 2.5 Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.230) RaiseTo 2.5 Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.360) Raise Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.330) RaiseTo 2.5 Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo 3 Force	
+	
+When f$FirstAction And  Raises = 0
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+When Others
+
+// Calling and limping if we have not raised
+// Improved from last version but still needs work
+
+When f$FirstAction And AmountToCall > 2
+	// Fold hands you don't want to play multiway raised
+	//	It is covered above but just in case you delete that
+	//	change the list for your own style
+	When Raises > 1 And Not listCat2 Fold Force
+	// Fold hands you don't want to play in large pots
+	//	change the lists and BetSize for your own style
+	when BetSize > 8 And Not listCat2 Fold Force
+	When BetSize > 5 And Not listCallTight Fold Force
+ 
+When f$FirstAction And InSmallBlind 
+	// Call standard raises 
+	//	Change the list and BetSize for your own style
+	When BetSize < 4.5 And Calls > 1 And listCallSB Call Force
+	When BetSize < 4.5 And (Calls > 0 Or Raises = 1) And listCallSBA Call Force
+	// Hands you would open limp
+	When (Calls + Raises = 0) And listLimpStd Call Force
+
+When f$FirstAction And InLatePosition 
+	// Call standard raises 
+	//	Change the lists and BetSize for your own style	
+	When BetSize < 4.5 And FirstRaiserPosition >= 5 And listCallMedium Call Force
+	When BetSize < 4.5 And FirstRaiserPosition < 5 And (Calls > 0 Or Raises = 1) And listCallLoose Call Force
+	// Hands you would open limp, *Repetition* BUT
+	// A different list could be used here than in above SB
+	When (Calls + Raises = 0) And listLimpStd Call Force
+	
+// When f$FirstAction And InMiddlePosition
+	// 	A block for middle positions could be added here if you like
+	
+When f$FirstAction And (InEarlyPosition Or InMiddlePosition)
+	// Call standard raises 
+	//	Change the lists and BetSize for your own style	
+	When BetSize < 4.5 And (Calls > 0 Or Raises = 1) And listCallMedium Call Force
+	// Hands you would open limp, *Repetition* BUT
+	// A different list could be used here than in above SB or late positions
+	When (Calls + Raises = 0) And listLimpMid Call Force
+	
+When f$FirstAction And InBigBlind And AmountToCall > 0
+	// AmountToCall not needed in above line but it short-cuts 
+	//	reading the next 3 lines for unopened pots	
+	When BetSize < 4.5 And listCallMedium Call Force
+	When BetSize < 2.4 And listCallBBA Call Force
+	When BetSize < 1.4 And listCallBB Call Force
+When Others
+
+When Others Fold Force
+
+
+##f$GreenZonePlay##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Green Zone
+//////////////////////////////////////////////////////////////////////////////////////
+
+// In the Green zone we can play any way we like we can be tight or loose 
+// This is just a get you going example
+
+// Second Actions
+// Very basic you need to work on this...
+When Not f$FirstAction And listCat2 RaisePot Force
+// A short stack is attempting a re-steal
+When BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 8 RaiseMax Force
+When BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 12.5 And f$HandRank2Way < (2652*0.125) RaiseMax Force
+When BotsLastAction = Raise And listCat3 RaisePot Force
+When BotsLastAction = Raise And f$HandRank_Playability_General < (2652*0.09) And AmountToCall <= 15% StackSize Call Force
+When BotsLastAction = Raise And listCat4 And AmountToCall <= 50% StackSize And Opponents <= (1 + CallsSinceLastRaise) Call Force
+When (BotsLastAction = Raise Or BotsLastAction = Call) And AmountToCall <= 2.5 Call Force
+When BotsLastAction = Raise Fold Force
+
+// Calling all-ins with premium hands
+// An over cautious example you need to change this...
+When f$OpponentSignificantAllin And f$FirstAction
+	When listCat1 And Raises > 1 RaiseMax Force
+	When listCat2 And Raises <= 1 RaisePot Force
+	// Get out of the multi-way all in unless very short stacked 
+	When (CallsSinceLastRaise > 1 Or Raises > 1) Fold Force
+	When listCat5 And AmountToCall <= 5 RaisePot Force
+	When listCat5 And AmountToCall < (StackSize * 0.125) Call Force
+	When StackSize > 12 Fold Force
+When Others
+
+When f$FirstAction
+// Basic 3Bet \\ You should improve this
+   When f$BootCamp3Bet != 0 And log$Green_3Bet Return f$BootCamp3Bet Force
+ 
+// Opening and raising limpers again over simple
+// You can replace handrank with lists as you wish
+// Or change the percentages for more tight or loose
+// 0.125 is 12.5% -- 0.330 is 33% 
+
+When f$FirstAction and Raises = 0 && f$ShortStacksPlaying > 0 
+	When InEarlyPosition1 And f$HandRank2Way < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank2Way < (2652 * 0.125) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank2Way < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank2Way < (2652 * 0.155) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank2Way < (2652 * 0.155) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank2Way < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank2Way < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank2Way < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+When f$FirstAction And Raises = 0 And Calls = 0
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo 3 Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.105) RaiseTo 3 Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.108) RaiseTo 3 Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.110) RaiseTo 3 Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo 3 Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo 2.5 Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.230) RaiseTo 2.5 Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.330) Raise Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.330) RaiseTo 2.5 Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.180) RaiseTo 3 Force	
+	
+When f$FirstAction And  Raises = 0 And Calls = 1
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+	
+When f$FirstAction And  Raises = 0
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.180) RaiseTo (2.5 + Calls) Force
+When Others
+
+// Calling and limping if we have not raised
+// Improved from last version but still needs work
+
+When f$FirstAction And AmountToCall > 2
+	// Fold hands you don't want to play multiway raised
+	//	It is covered above but just in case you delete that
+	//	change the list for your own style
+	When Raises > 1 And Not listCat2 Fold Force
+	// Fold hands you don't want to play in large pots
+	//	change the lists and BetSize for your own style
+	when BetSize > 8 And Not listCat2 Fold Force
+	When BetSize > 5 And Not listCallTight Fold Force
+ 
+When f$FirstAction And InSmallBlind 
+	// Call standard raises 
+	//	Change the list and BetSize for your own style
+	When BetSize < 4.5 And Calls > 1 And listCallSB Call Force
+	When BetSize < 4.5 And (Calls > 0 Or Raises = 1) And listCallSBA Call Force
+	// Hands you would open limp
+	When (Calls + Raises = 0) And listLimpLoose Call Force
+
+When f$FirstAction And (InLatePosition Or InMiddlePosition3)
+	// Call standard raises 
+	//	Change the lists and BetSize for your own style	
+	When BetSize < 4.5 And FirstRaiserPosition >= 6 And listCallMedium Call Force
+	When BetSize < 4.5 And FirstRaiserPosition < 6 And (Calls > 0 Or Raises = 1) And listCallLoose Call Force
+	When BetSize < 4.5 And FirstRaiserPosition < 6 And (Calls + Raises > 1) And CallsSinceLastRaise = 0 And listCallVeryLoose Call Force
+	When BetSize < 4.5 And Raises = 0 And Calls > 2 And listCallVeryLoose Call Force
+	// Hands you would open limp, *Repetition* BUT
+	// A different list could be used here than in above SB
+	When (Calls + Raises = 0) And listLimpLoose Call Force
+	
+// When f$FirstAction And InMiddlePosition
+	// 	A block for middle positions could be added here if you like
+	
+When f$FirstAction And (InEarlyPosition Or InMiddlePosition)
+	// Call standard raises 
+	//	Change the lists and BetSize for your own style	
+	When BetSize < 4.5 And (Calls > 0 Or Raises = 1) And listCallMedium Call Force
+	// Hands you would open limp, *Repetition* BUT
+	// A different list could be used here than in above SB or late positions
+	When (Calls + Raises = 0) And listLimpMid Call Force
+	
+When f$FirstAction And InBigBlind And AmountToCall > 0
+	// AmountToCall not needed in above line but it short-cuts 
+	//	reading the next 3 lines for unopened pots	
+	When BetSize < 4.5 And listCallMedium Call Force
+	When BetSize < 2.4 And listCallBBA Call Force
+	When BetSize < 1.4 And listCallBB Call Force
+When Others
+
+When Others Fold Force
+//////////////////////////////////////////////////
+
+##f$SlowPlayPremiums##
+//^^ Including this as an example of using memory symbols ^^\\
+When (hand$AA Or hand$KK) And StackSize <= 11
+	When BetSize > 2 And Opponents > (1 + CallsSinceLastRaise) Return false Force
+	when (StackSize - AmountToCall) < 5 Return false Force
+	When Raises > 1 Return false Force
+	When Raises = 1 And CallsSinceLastRaise > 1 Return false Force
+	When Raises = 1 And CallsSinceLastRaise = 1 And Calls > (CallsSinceLastRaise + 1) Return false Force
+	When Raises = 1 Or (InButton Or InCutOff) Call Force
+	When Others Raise Force
+
+##f$SlowPlayPremiumsSet##	
+When f$SlowPlayPremiums != 0 Return me_st_slowplaypre_1 Force
+When Others Return 1 Force
+	 
+##f$ini_function_on_handreset##
+me_st_slowplaypre_0
++ me_st_raisesbeforeuspf_0
++ me_st_greenzoneset_0
++ me_st_yellowzoneset_0
++ me_st_orangezoneset_0
+
+##f$ini_function_on_my_turn##
+betround = 1 And me_st_raisesbeforeuspf_f$RaisesBeforeFirstActionPreflopCalc
+
+##f$RaisesBeforeFirstActionPreFlop##
+// Included as an example of memory symbols
+me_re_raisesbeforeuspf
+
+##f$RaisesBeforeFirstActionPreflopCalc##
+When betround = 1 And BotsLastAction = None And (Raises + Bets) >= 1 Return (Raises + Bets) FORCE
+When Others Return me_re_raisesbeforeuspf Force
+
+
+##f$prefold##
+// Adding this function to stop Gecko's as it doesn't suit this preflop
+// Add conditions for when you want to prefold
+// EXAMPLE
+When Random < 10 Return false Force
+When IsPostflop RETURN false Force
+When (call < 0.01) Return false Force
+When (InUTG Or InEarlyPosition2) Return false Force
+When InEarlyPosition3 And Random < 45 Return false Force
+When nplayersdealt <= 3 Return false Force
+When Calls = 0 And Raises = 0 And balance_bigblindchair <= (bblind*2) Return false Force
+When (BigBlindSittingOut Or StackSize <= 4) Return false Force
+When StackSize > 12 And listbad Return true Force
+When listverybad Return true Force
+
+##f$TheBiggestActiveOpponentsChips##
+balance_bigstackchair + currentbet_bigstackchair
+
+##f$TheBiggestActiveOpponentsStack##
+f$TheBiggestActiveOpponentsChips / bblind
+
+##f$EffectiveActiveStackInBigBlinds##
+balance + currentbet < f$TheBiggestActiveOpponentsChips ? (balance + currentbet) / bblind :
+f$TheBiggestActiveOpponentsStack
+
+##f$reducewinchance_when_have_twopair##
+// This is used in combination with f$threat 
+// It reduces our f$prwin when we have two pair and one is a board pair
+// Modified from original Gecko to disable it if a board pair is lower than 
+// 	our two pair, as in this case the board pair does not contribute to our hand
+When TwoPairOnBoard Return false Force
+When nrankedcommon > 2 Return false Force // Trips or quads on board
+When nplayersround_flop < 3 Return false Force // Hand went HU Preflop
+When Not PairOnBoard Return false Force
+When trankcommon < rankloplayer Return false Force // Board pair is lower than both our pairs
+When istwopair AND trankcommon > 7 Return 0.400  Force // Board pair must be 88 or better
+// 
+// I am including this for the time being, it may be improved later in Gecko itself
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=184&t=21070&start=540#p166612
+
+##f$BestBetsize##
+// A tweak to Gecko's original to push rather than standard raise
+// if we are effectively short stacked
+// Consider changing 10 here perhaps 12?
+When f$EffectiveActiveStackInBigBlinds <= 10 RaiseMax force
+WHEN IsPreflop RETURN f$BetsizePreflop FORCE
+WHEN HandIsHeadsup
+   WHEN IsFlop  RETURN f$BetsizeFlopHeadsup  FORCE
+   WHEN IsTurn  RETURN f$BetsizeTurnHeadsup  FORCE
+   WHEN IsRiver RETURN f$BetsizeRiverHeadsup FORCE
+WHEN Others
+   WHEN IsFlop  RETURN f$BetsizeFlopMultiway  FORCE
+   WHEN IsTurn  RETURN f$BetsizeTurnMultiway  FORCE
+   WHEN IsRiver RETURN f$BetsizeRiverMultiway FORCE
+   
+##f$BetsizeFlopHeadsup##
+WHEN (AmountToCall <= 1)
+   WHEN (nbetsround_preflop <= 6)  RaiseBy 66% FORCE
+   WHEN Others  RaiseBy 55% FORCE
+WHEN NOT didbetsize
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (2 * BetSize) FORCE
+WHEN Others
+   WHEN (nbetsround_preflop <= 1) RaiseBy (2 * BetSize) FORCE
+   WHEN f$ptype_raise_contibet_very_high RaiseBy (2 * BetSize) FORCE
+   // Formerly RaiseMax.
+   WHEN Others RaisePot FORCE
+           
+##f$BetsizeTurnHeadsup##
+WHEN (AmountToCall <= 0)
+   WHEN (PotSize <= 35) RaiseBy 66% FORCE
+   WHEN Others RaisePot FORCE
+WHEN (AmountToCall <= 2)
+   WHEN (PotSize <= 25) RaisePot FORCE
+   WHEN Others RaiseBy 66% FORCE
+WHEN Others
+   // Formerly RaiseMax.
+   WHEN f$betline RaisePot FORCE
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
+
+##f$BetsizeRiverHeadsup##
+WHEN (AmountToCall <= 0)
+   WHEN (PotSize <= 10) RaiseBy 66% FORCE
+   // Huge pot, don't blow money away.
+   // Make betsize dependent on prwin.
+   // Block-bet with not so strong hands
+   WHEN (f$prwin<=0.8) RaiseBy 25% FORCE
+   WHEN Others RaiseBy 60% FORCE   
+WHEN (AmountToCall <= 1.5) RaisePot FORCE
+WHEN Others
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (3 * BetSize) FORCE
+
+##f$BetsizeFlopMultiway##
+// Gecko had here 60% / 62%,
+// which is pointless due to rounding
+WHEN (AmountToCall <= 1) RaiseBy 60% FORCE
+WHEN [ NOT didbetsize ] 
+   WHEN (AmountToCall <= 33% PotSize) RaiseBy 66% FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
+WHEN Others
+   WHEN (nbetsround_preflop<=1) RaiseBy (4 * BetSize) FORCE
+   // Preflop raised, flop reraised.
+   // Lots of action, large pot.
+   // Formerly RaiseMax.
+   WHEN Others RaisePot FORCE
+
+##f$BetsizeTurnMultiway##
+WHEN (AmountToCall <= 1)
+   WHEN (PotSize <= 10) RaiseBy 66% FORCE
+   WHEN Others RaiseBy 60% FORCE
+WHEN Others
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
+
+##f$BetsizeRiverMultiway##
+WHEN AmountToCall <= 1
+   WHEN (PotSize <= 10) RaisePot FORCE
+   WHEN Others RaiseBy 60% FORCE
+WHEN Others
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
+
+
+##f$Stack_0_2##  
+// Stack Sizes \\
+// EffectiveMaxStacksizeOfActiveOpponents wont work for these, if an opponent is all-in 
+	// say with 14BB and you have 12BB it will return 0 as it does not include current bets 
+	// added a user function f$EffectiveActiveStackInBigBlinds
+When f$EffectiveActiveStackInBigBlinds < 2 Return true Force
+
+##f$Stack_0_4##
+When (f$EffectiveActiveStackInBigBlinds <= 4) RETURN true Force
+
+##f$Stack_0_5##
+When f$EffectiveActiveStackInBigBlinds < 5 Return true Force
+
+##f$Stack_0_8##
+When (f$EffectiveActiveStackInBigBlinds <= 8) RETURN true Force
+
+##f$Stack_0_12##
+When (f$EffectiveActiveStackInBigBlinds <= 12) RETURN true Force
+
+##f$Stack_2_4##
+When (f$EffectiveActiveStackInBigBlinds > 4) RETURN false Force
+When (f$EffectiveActiveStackInBigBlinds <= 2) RETURN false Force
+When Others RETURN true Force
+
+##f$Stack_2_8##
+When (f$EffectiveActiveStackInBigBlinds > 8) RETURN false Force
+When (f$EffectiveActiveStackInBigBlinds <= 2) RETURN false Force
+When Others RETURN true Force
+
+##f$Stack_4_12##
+When (f$EffectiveActiveStackInBigBlinds > 12) RETURN false Force
+When (f$EffectiveActiveStackInBigBlinds <= 4) RETURN false Force
+When Others RETURN true Force
+
+##f$Stack_5_12##
+When (f$EffectiveActiveStackInBigBlinds >= 5 And f$EffectiveActiveStackInBigBlinds < 12) Return true Force
+
+##f$Stack_8_12##
+When (f$EffectiveActiveStackInBigBlinds > 12) RETURN false Force
+When (f$EffectiveActiveStackInBigBlinds <= 8) RETURN false Force
+When Others RETURN true Force
+
+##f$Stack_12P##
+When f$EffectiveActiveStackInBigBlinds >= 12 Return true Force
+
+##f$Stack_14_P##
+When (f$EffectiveActiveStackInBigBlinds >= 14) RETURN true Force
+
+##f$OpponentSignificantAllin##
+When OpponentIsAllin
+	When InBigBlind And AmountToCall >= 2 Return true Force
+	When InSmallBlind And AmountToCall >= 2.5 Return true Force
+	When AmountToCall >= 3 Return true Force
+
+##f$FirstAction##
+When BotsLastAction = None Return true Force 
+
+##f$prwin_mustplay##
+// Weighted Prwin the numbers are handrank169
+// Absolute premium-hands, that will never be folded by your opponent
+betround != 1 ? 0 :
+StackSize > 10 ? 0 :
+3
+
+##f$prwin_topclip##
+// Weighted Prwin the numbers are handrank169
+// The top of your opponents range, which will be played with certainty
+betround != 1 ? 0 :
+StackSize > 10 ? 0 :
+4
+
+##f$prwin_willplay##
+// Weighted Prwin the numbers are handrank169
+// The bottom of your opponents range, which will be played with certainty
+betround != 1 ? 0 :
+StackSize > 10 ? 0 :
+46
+
+##f$prwin_wontplay##
+// Weighted Prwin the numbers are handrank169
+// Hands rated lower will never be played by your opponent
+betround != 1 ? 0 :
+StackSize > 10 ? 0 :
+Raises > 0 ? 53 :
+BotsLastAction = Raise ? 56 :
+116
+
+##f$ICM_ProbCalledCalc##
+// ICM Starts here
+// Over Simple \\ Similar to the Manual example
+f$EffectiveActiveStackInBigBlinds > 18 ? 0.90 :
+f$EffectiveActiveStackInBigBlinds > 15 ? 0.85 :
+f$EffectiveActiveStackInBigBlinds > 10 ? 0.80 :
+f$EffectiveActiveStackInBigBlinds > 8 ? 0.70 :
+f$EffectiveActiveStackInBigBlinds > 6 ? 0.60 :
+0.65
+
+##f$ICM_ProbCalled##
+f$OpponentsExcludingSitOuts = 9 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 8 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 7 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 6 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 5 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 4 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 3 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 2 ? 1 - (f$ICM_ProbCalledCalc*f$ICM_ProbCalledCalc) :
+f$OpponentsExcludingSitOuts = 1 ? 1 - f$ICM_ProbCalledCalc :
+1
+
+##f$ICM_CalledAndLose##
+((1 * f$ICM_ProbCalled) * (1 - (prwin + (prtie*0.50)))) * icm_allilose1
+
+##f$ICM_CalledAndWin##
+((1 * f$ICM_ProbCalled) * (prwin + (prtie*0.50))) * icm_alliwin1
+
+##f$ICM_NotCalled##
+1 * (1-f$ICM_ProbCalled) * icm_alliwin0
+
+
+##f$ICM_BootCamp_Push##
+f$FinalTableSet And StackSize > 8 ? 0 :
+StackSize > 10 ? 0 : // Only if we are less than 10bb \\ Effective and higher handled in main short stack script
+(Raises + Calls) > 0 ? 0 : // Only if we open push \\ limped pots handled with our main short stack script
+StackSize > 5 And f$HandRank2Way > (2652*0.72) ? 0 : // Sets a cap at 72% of hands 
+f$HandRank2Way > (2652*0.76) ? 0 : // Sets a higher cap at 76% of hands if very short
+(f$ICM_CalledAndLose + f$ICM_CalledAndWin + f$ICM_NotCalled) > icm_fold ? 1 :
+0
+
+##f$ICM_CallWeWin##
+(prwin + (prtie*0.50)) * icm_callwin
+
+##f$ICM_CallWeLose##
+(1 - (prwin + (prtie*0.50))) * icm_calllose
+
+##f$ICM_BootCamp_Call##
+f$FinalTableSet And StackSize > 8 ? 0 :
+StackSize > 10 ? 0 : // Only if we are less than 10bb \\ Effective and higher handled in main short stack script
+f$OpponentsExcludingSitOuts > 1 And StackSize >= 3 And f$HandRank2Way > (2652*0.167) ? 0 : 
+StackSize > 4 And f$HandRank2Way > (2652*0.230) ? 0 : // Sets a cap at 23% of hands 
+f$HandRank2Way > (2652*0.300) ? 0 : // Sets a higher cap at 30% of hands if very short
+StackSize > 4 And Raises > 1 ? 0 : // Avoid multi raised unless very short
+StackSize > 4 And CallsSinceLastRaise > 0 ? 0 : // Avoid multi all-in unless very short
+Raises = 0 ? 0 : // Only if there is a raise
+(f$ICM_CallWeWin + f$ICM_CallWeLose) > icm_fold ? 1 :
+0
+
+##f$Mzone##
+balance / (bblind + sblind + (ante*nplayersseated))
+
+//##f$EffectiveMzone##
+// Standard Harrington // Comment out whichever you prefer
+// 
+// Based on table size // TM should be specific for game type \\
+// (balance / ((bblind + sblind) + (ante*nplayersseated))) * (nplayersseated/nchairs)
+
+##f$EffectiveMzone##
+// My version // Comment out whichever you prefer 
+//
+((f$EffectiveActiveStackInBigBlinds * bblind) / (bblind + sblind + (ante*nplayersseated))) * (nplayersseated/nchairs)
+
+##f$GreenZone##
+me_re_greenzoneset = 1 ? 1 :
+f$EffectiveMzone >= 18 And me_st_greenzoneset_1 >= 0 ? 1 :
+0
+
+##f$YellowZone##
+f$GreenZone ? 0 :
+me_re_yellowzoneset = 1 ? 1 :
+f$EffectiveMzone < 18 And f$EffectiveMzone >= 10 And me_st_yellowzoneset_1 >= 0 ? 1 :
+0
+
+##f$OrangeZone##
+f$GreenZone Or f$YellowZone ? 0 :
+me_re_orangezoneset = 1 ? 1 :
+f$EffectiveMzone < 10 And f$EffectiveMzone >= 6 And me_st_orangezoneset_1 >= 0 ? 1 :
+0
+
+##f$RedZone##
+f$GreenZone Or f$YellowZone Or f$OrangeZone ? 0 :
+f$EffectiveMzone < 6 
+
+
+##f$SS_Blind_HU_Start##
+///////////////////////////////////////////////////////////////////
+// Provides a mild exponential increase as the stack diminishes  //
+// Using log natural (ln) (e) 2.718281828459 but any base can be used //
+///////////////////////////////////////////////////////////////////
+InSmallBlind ? 39 :
+InBigBlind ? 33 :
+33
+
+##f$SS_Blind_HU_Exponent##
+(ln (75 / f$SS_Blind_HU_Start) / 6)*(8-f$EffectiveActiveStackInBigBlinds)
+
+##f$SS_Blind_HU_Log##
+f$EffectiveActiveStackInBigBlinds > 8 ? 0 :
+f$SS_Blind_HU_Start*(2.718281828459**(f$SS_Blind_HU_Exponent)) < f$SS_Blind_HU_Start ? (f$SS_Blind_HU_Start/100) :
+f$SS_Blind_HU_Start*(2.718281828459**(f$SS_Blind_HU_Exponent)) > 75 ? (0.75) :
+f$SS_Blind_HU_Start*(2.718281828459**(f$SS_Blind_HU_Exponent))/100
+
+##f$3BetSizeAdjust##
+When betposition < betpositionrais RaiseTo ((4 * BetSize)+ Calls) FORCE //  OOP
+When betposition > betpositionrais RaiseTo ((3 * BetSize) + Calls) FORCE // In Position
+
+##f$3BetSize##
+// Push if post flop play not viable
+When f$EffectiveMzone < 10 RaiseMax Force
+When StackSize < (f$3BetSizeAdjust * 3.05) RaiseMax FORCE
+When f$EffectiveActiveStackInBigBlinds < ((f$3BetSizeAdjust-BetSize) * 3.05) RaiseMax FORCE
+// Positional 3Bet
+When Others RaiseTo f$3BetSizeAdjust FORCE
+
+##f$BootCamp3Bet##
+// Basic 3Bet \\ You could improve this
+	// Hints to improve
+	// Consider; calls before the raise, calls since, 
+	// if you are BB and closing action
+	// Your position, how many left to act
+	// More advanced consider; stack size of raiser is he committed? 
+	// Consider Other stacks
+When (hand$AA Or hand$KK Or hand$QQ Or hand$AKsuited) RaisePot Force
+When Raises = 0 Return false Force
+When Not f$FirstAction Return false Force 
+When Raises > 1 And Not listCat2 Return false Force
+
+// Fold hands you wont play in large pots -- Modify for your style
+// Beginner hint:
+// Important if you modify don't use Fold Force in here use Return false Force
+When BetSize > 5 And f$HandRange3Bet > (2652*0.098) Return false Force
+When BetSize > 8 And f$HandRange3Bet > (2652*0.084) Return false Force
+// Squeeze
+When CallsSinceLastRaise > 0 And f$HandRange3Bet < (2652*0.10) Return f$3BetSize Force
+When CallsSinceLastRaise > 0 Return false Force
+
+// Calls before raise
+When Calls > 0 And f$HandRange3Bet > (2652*0.180) Return false Force
+
+//
+When LastRaiserPosition = 9 And f$HandRange3Bet < (2652*0.060) Return f$3BetSize Force
+When LastRaiserPosition = 8 And f$HandRange3Bet < (2652*0.060) Return f$3BetSize Force
+When LastRaiserPosition = 7 And f$HandRange3Bet < (2652*0.077) Return f$3BetSize Force
+When LastRaiserPosition = 6 And f$HandRange3Bet < (2652*0.083) Return f$3BetSize Force
+When LastRaiserPosition = 5 And f$HandRange3Bet < (2652*0.097) Return f$3BetSize Force
+When LastRaiserPosition = 4 And f$HandRange3Bet < (2652*0.120) Return f$3BetSize Force
+When LastRaiserPosition = 3 And f$HandRange3Bet < (2652*0.160) Return f$3BetSize Force
+When LastRaiserPosition = 2 And f$HandRange3Bet < (2652*0.196) Return f$3BetSize Force
+When LastRaiserPosition = 1 And f$HandRange3Bet < (2652*0.280) Return f$3BetSize Force
+
+##f$IsFreeRoll##
+When (title$Freebuy Or title$FreeBuy Or title$freebuy Or title$FREEBUY Or title$freez Or title$Freez Or title$FREEZ) Return false Force
+When (title$Free Or title$free Or title$FREE) Return true Force
+
+
+##f$FreerollHammer##
+When (f$IsFreeRoll Or f0) And Not f1
+	When f$HandRank2Way < (2652*0.070) Return true Force
+	When f$EffectiveMzone <= 10 And f$HandRank2Way < (2652*0.103) Return true Force
+	When Raises = 0 And balance < balanceatstartofsession*1.5 And f$HandRank2Way < (2652*0.195) Return true Force
+	When Raises = 0 And f$EffectiveMzone <= 8 And f$HandRank2Way < (2652*0.23) Return true Force
+	When Not (InEarlyPosition Or InMiddlePosition1 Or InMiddlePosition2) And Raises = 0 And f$EffectiveMzone <= 10 And f$HandRank2Way < (2652*0.20) Return true Force
+	When Raises = 0 And f$EffectiveMzone <= 10 And f$HandRank2Way < (2652*0.17) Return true Force
+	When f$EffectiveMzone <= 6 And f$HandRank2Way < (2652*0.22) Return true Force
+	When f$EffectiveMzone <= 4 And f$HandRank2Way < (2652*0.287) Return true Force
+	
+##f$FinalTableSet##
+When mtt_players_remaining > 10 Return false Force
+When StackSize < (MinOpponentStackSize * 0.70) And f$RedZone Return false Force
+When nplayersseated <= 2 Return false Force
+When mtt_players_remaining > 0 And mtt_players_remaining <= nchairs Return true Force
+When isfinaltable Return true Force
+// If your table map does not recognise the final table you can press f2
+// to force final table play
+When f2 Return true Force
+//
+// You can add more conditions here as you wish
+
+##f$FinalTablePlay##
+//////////////////////////////////////////////////////////////////////////////////////
+// 										Final Table
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// FinalTablePlay 
+// Not as loose or aggressive as normal play
+// It is fairly basic please modify to suit your own needs...
+//
+// Second Actions
+// Very basic starter you need to work on this...
+When Not f$FirstAction And listCat2 RaiseMax Force
+When BotsLastAction = Raise And listCat3 RaisePot Force
+
+// A short stack is attempting a re-steal
+When (StackSize-AmountToCall) >= 14 And BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 6 RaiseMax Force
+When (StackSize-AmountToCall) >= 14 And BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 8 And f$HandRank2Way < (2652*0.180) RaiseMax Force
+When (StackSize-AmountToCall) >= 14 And BotsLastAction = Raise And f$OpponentsExcludingSitOuts <= 1 And (AmountToCall + StackSize_raischair) <= 12.5 And f$HandRank2Way < (2652*0.155) RaiseMax Force
+
+When BotsLastAction = Raise And f$HandRank_Playability_General < (2652*0.09) And AmountToCall <= 15% StackSize Call Force
+When BotsLastAction = Raise And AmountToCall <= 6% StackSize Call Force
+When BotsLastAction = Raise And listCat4 And AmountToCall <= 50% StackSize And Opponents <= (1 + CallsSinceLastRaise) Call Force
+When (BotsLastAction = Raise Or BotsLastAction = Call) And AmountToCall <= 2.5 Call Force
+When BotsLastAction = Raise Fold Force
+
+// Calling all-ins with premium hands
+// An over cautious example you need to change this...
+When f$OpponentSignificantAllin And f$FirstAction
+	When listCat1 And (CallsSinceLastRaise > 0 Or Raises > 1) RaiseMax Force
+	When listCat2 And Raises <= 1 RaisePot Force
+	// Get out of the multi-way all in unless very short stacked 
+	When (CallsSinceLastRaise > 1 Or Raises > 1) Fold Force
+	When listCat5 And AmountToCall <= 5 RaisePot Force
+	When listCat5 And AmountToCall < (StackSize * 0.125) Call Force
+	When StackSize > 12 Fold Force
+
+When f$FirstAction
+	When f$ICM_BootCamp_Push RaiseMax Force
+	When f$ICM_BootCamp_Call RaiseMax Force
+	When StackSize <= 14 And f$HandRank2Way < (2652*f$Trish_SS_Log) RaiseMax Force
+
+	
+// \\ Shortstack Repush \\ //
+
+// Not in a blind \\
+When Raises <= 1 And f$FirstAction And Not InTheBlinds And StackSize <= 14
+	// Vs EP 
+	When LastRaiserPosition >= 7 And listRPnotblindEP13 RaiseMax Force
+	When LastRaiserPosition >= 7 And StackSize <= 8 And listRPnotblindEP8 RaiseMax Force
+	// Vs MP 
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And listRPnotblindMP13 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 9 And listRPnotblindMP9 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 6 And listRPnotblindMP6 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4  And StackSize <= 5 And listRPnotblindMP5 RaiseMax Force
+	// Vs CO 
+	When LastRaiserPosition = 3 And BetSize <= 3 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.15) RaiseMax Force
+	When LastRaiserPosition <= 3 And listRPnotblindCO13 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 11 And listRPnotblindCO11 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 9 And listRPnotblindCO9 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 7 And listRPnotblindCO7 RaiseMax Force
+	When LastRaiserPosition <= 3 And StackSize <= 6 And listRPnotblindCO6 RaiseMax Force
+
+// In small blind \\
+When Raises <= 1 And f$FirstAction And InSmallBlind And StackSize <= 14
+	// Vs EP 
+	When LastRaiserPosition >= 7 And listRPsbEP13 RaiseMax Force
+	When LastRaiserPosition >= 7 And StackSize <= 8 And listRPsbEP9 RaiseMax Force
+	// Vs MP 
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And listRPsbMP13 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 7 And listRPsbMP7 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 6 And listRPsbMP6 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 4 And listRPsbMP4 RaiseMax Force
+	// Vs CO 
+	When LastRaiserPosition = 3 And CallsSinceLastRaise = 0 And BetSize <= 3 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.22) RaiseMax Force
+	When LastRaiserPosition = 3 And listRPsbCO13 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 11 And listRPsbCO11 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 8 And listRPsbCO8 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 5 And listRPsbCO5 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 4 And listRPsbCO4 RaiseMax Force
+	// Vs BU 
+	When LastRaiserPosition <= 2 And BetSize <= 3.5 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.28) RaiseMax Force
+	When LastRaiserPosition <= 2 And listRPsbBU13 RaiseMax Force
+	When LastRaiserPosition <= 2 And StackSize <= 10 And listRPsbBU10 RaiseMax Force
+	When LastRaiserPosition <= 2 And StackSize <= 8 And listRPsbBU8 RaiseMax Force
+	When LastRaiserPosition <= 2 And StackSize <= 6 And listRPsbBU6 RaiseMax Force
+
+// In Big blind \\
+When Raises <= 1 And f$FirstAction And InBigBlind And StackSize <= 14
+	// Vs EP 
+	When LastRaiserPosition >= 7 And listRPbbEP13 RaiseMax Force
+	When LastRaiserPosition >= 7 And StackSize <= 10 And listRPbbEP10 RaiseMax Force
+	// Vs MP 
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And listRPbbMP13 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 8 And listRPbbMP8 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 7 And listRPbbMP7 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 6 And listRPbbMP6 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 5 And listRPbbMP5 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 4 And listRPbbMP4 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 3 And listRPbbMP3 RaiseMax Force
+	When LastRaiserPosition < 7 And LastRaiserPosition >= 4 And StackSize <= 2 And listRPbbMP2 RaiseMax Force
+	// Vs CO 
+	When LastRaiserPosition = 3 And CallsSinceLastRaise = 0 And BetSize <= 3 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.22) RaiseMax Force
+	When LastRaiserPosition = 3 And listRPbbCO13 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 10 And listRPbbCO10 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 8 And listRPbbCO8 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 6 And listRPbbCO6 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 5 And listRPbbCO5 RaiseMax Force
+	When LastRaiserPosition = 3 And StackSize <= 4 And listRPbbCO4 RaiseMax Force
+	// Vs BU 
+	When LastRaiserPosition <= 2 And CallsSinceLastRaise = 0 And BetSize <= 3.5 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.28) RaiseMax Force
+	When LastRaiserPosition = 2 And listRPsbBU13 RaiseMax Force
+	When LastRaiserPosition = 2 And StackSize <= 10 And listRPbbBU10 RaiseMax Force
+	When LastRaiserPosition = 2 And StackSize <= 8 And listRPbbBU8 RaiseMax Force
+	When LastRaiserPosition = 2 And StackSize <= 6 And listRPbbBU6 RaiseMax Force
+	// Vs SB 
+	When LastRaiserPosition <= 1 And BetSize <= 3.5 And currentbet_raischair < (balance_raischair * 0.333) And f$HandRank2Way < (2652*0.36) RaiseMax Force
+	When LastRaiserPosition <= 1 And listRPbbSB13 RaiseMax Force
+	When LastRaiserPosition <= 1 And StackSize <= 10 And listRPbbSB10 RaiseMax Force
+	When LastRaiserPosition <= 1 And StackSize <= 8 And listRPbbSB8 RaiseMax Force
+	When LastRaiserPosition <= 1 And StackSize <= 7 And listRPbbSB7 RaiseMax Force
+	
+When f$FirstAction
+	// Basic 3Bet \\ You should improve this
+	When f$BootCamp3Bet != 0 And log$FinalTable_3Bet Return f$BootCamp3Bet Force
+	When StackSize <= 14 And log$ShortStack_Fold Fold Force
+ 
+// Opening and raising limpers again over simple
+// You can replace handrank with lists as you wish
+// Or change the percentages for more tight or loose
+// 0.125 is 12.5% -- 0.330 is 33% 
+
+When f$FirstAction and Raises = 0 && f$ShortStacksPlaying > 0 
+	When InEarlyPosition1 And f$HandRank2Way < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank2Way < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank2Way < (2652 * 0.125) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank2Way < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank2Way < (2652 * 0.180) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank2Way < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank2Way < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank2Way < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank2Way < (2652 * 0.180) RaiseTo (2.5 + Calls) Force
+	
+When f$FirstAction And Raises = 0 And Calls = 0
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo 3 Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.105) RaiseTo 3 Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.110) RaiseTo 3 Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.125) RaiseTo 3 Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo 3 Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo 2.5 Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.260) RaiseTo 2.5 Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.360) Raise Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.360) RaiseTo 3 Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo 3 Force	
+	
+When f$FirstAction And  Raises = 0
+	When InEarlyPosition1 And f$HandRank_Playability_General < (2652 * 0.090) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition2 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InEarlyPosition3 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition1 And f$HandRank_Playability_General < (2652 * 0.100) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition2 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InMiddlePosition3 And f$HandRank_Playability_General < (2652 * 0.145) RaiseTo (2.5 + Calls) Force
+	When InCutOff And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InButton And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2 + Calls) Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.200) And Calls > 0 RaiseTo (2.5 + Calls) Force
+	When InSmallBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo 3 Force
+	When InBigBlind And FirstCallerPosition > 3 And f$HandRank_Playability_General < (2652 * 0.155) RaiseTo (2.5 + Calls) Force
+	When InBigBlind And f$HandRank_Playability_General < (2652 * 0.200) RaiseTo (2.5 + Calls) Force
+When Others
+
+// Calling and limping if we have not raised
+// Improved from last version but still needs work
+
+When f$FirstAction And AmountToCall > 2
+	// Fold hands you don't want to play multiway raised
+	//	It is covered above but just in case you delete that
+	//	change the list for your own style
+	When Raises > 1 And Not listCat2 Fold Force
+	// Fold hands you don't want to play in large pots
+	//	change the lists and BetSize for your own style
+	when BetSize > 8 And Not listCat2 Fold Force
+	When BetSize > 5 And Not listCallTight Fold Force
+ 
+When f$FirstAction And InSmallBlind 
+	// Call standard raises 
+	//	Change the list and BetSize for your own style
+	When BetSize < 3.5 And Calls > 1 And listCallSBFT Call Force
+	When BetSize < 3.5 And (Calls > 0 Or Raises = 1) And listCallSBFT Call Force
+	// Hands you would open limp, uncomment the next line if you wish to limp in
+	// When (Calls + Raises = 0) And listLimpStd Call Force
+
+When f$FirstAction And InLatePosition 
+	// Call standard raises 
+	//	Change the lists and BetSize for your own style	
+	When BetSize < 3.5 And FirstRaiserPosition >= 5 And listCallMedium Call Force
+	When BetSize < 3.5 And FirstRaiserPosition < 5 And (Calls > 0 Or Raises = 1) And listCallLoose Call Force
+	// Hands you would open limp, comment out the next line if you don't like limping in
+	When (Calls + Raises = 0) And listLimpStd Call Force
+	
+// When f$FirstAction And InMiddlePosition
+	// 	A block for middle positions could be added here if you like
+	
+When f$FirstAction And (InEarlyPosition Or InMiddlePosition)
+	// Call standard raises 
+	//	Change the lists and BetSize for your own style	
+	When BetSize < 3.5 And (Calls > 0 Or Raises = 1) And listCallMedium Call Force
+	// Hands you would open limp, uncomment the next line if you wish to limp in
+	// When (Calls + Raises = 0) And listLimpMid Call Force
+	
+When f$FirstAction And InBigBlind And AmountToCall > 0
+	// AmountToCall not needed in above line but it short-cuts 
+	//	reading the next 3 lines for unopened pots	
+	When BetSize < 3.5 And listCallMedium Call Force
+	When BetSize < 2.4 And listCallBBA Call Force
+	When BetSize < 1.4 And listCallBB Call Force
+When Others
+
+When Others Fold Force
+
+##f$ShortStacksPlaying##
+((opponentsplayingbits & opponentsactivebits & 0b0000000001) > 0 And (balance0 + currentbet0) >= (bblind*3) And (balance0 + currentbet0) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0000000010) > 0 And (balance1 + currentbet1) >= (bblind*3) And (balance1 + currentbet1) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0000000100) > 0 And (balance2 + currentbet2) >= (bblind*3) And (balance2 + currentbet2) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0000001000) > 0 And (balance3 + currentbet3) >= (bblind*3) And (balance3 + currentbet3) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0000010000) > 0 And (balance4 + currentbet4) >= (bblind*3) And (balance4 + currentbet4) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0000100000) > 0 And (balance5 + currentbet5) >= (bblind*3) And (balance5 + currentbet5) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0001000000) > 0 And (balance6 + currentbet6) >= (bblind*3) And (balance6 + currentbet6) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0010000000) > 0 And (balance7 + currentbet7) >= (bblind*3) And (balance7 + currentbet7) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b0100000000) > 0 And (balance8 + currentbet8) >= (bblind*3) And (balance8 + currentbet8) <= (bblind*12) ? 1 : 0 ) +
+((opponentsplayingbits & opponentsactivebits & 0b1000000000) > 0 And (balance9 + currentbet9) >= (bblind*3) And (balance9 + currentbet9) <= (bblind*12) ? 1 : 0 ) +
+0
+
+
+##f$flop_raise_initiative##
+//////////////////////////////////////////////////////////////
+/////////////////////////////////////       // Gecko Tweaks \\
+//////////////////////////////////////////////////////////////
+// Notes:
+// Changing the hands we play in functions like the ones below
+// is as simple as changing the f$prwin percentage EG
+// f$prwin > 0.38 to f$prwin > 0.32 more loose, or f$prwin > 0.42 more tight
+//
+// If you prefer OPPL hand strength symbols change f$prwin > 0.32 EG
+// f$PlayersExcludingSitOuts<=2  ? f$prwin > 0.32 : To
+// f$PlayersExcludingSitOuts<=2 And (HavePair Or HaveFlushDraw Or HaveStraightDraw Or Have OverPair Or HaveBestOverPairOrBetter) ? 1 :
+//
+// Or mix and match for more precision
+// f$actionpostflop_free_to_play ? {
+	// HaveOverPair Or HaveTopPair And f$prwin > 0.45 ? 1 :
+	// HaveFlushDraw And nsuitedcommon < 3 ? 1 : 
+	// HaveFlushDraw And f$PlayersExcludingSitOuts = 2 And srankhiplayer > 11 ? 1 :
+	// HaveFlushDraw And srankhiplayer = 14 ? 1 :
+	// HaveStraightDraw And nsuitedcommon < 2 ? 1 :
+	//f$draws >= 2 ? 1 :
+	// And so on.....
+//
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+//
+//
+//////////////////////////////////////////////////////////////
+//			Raising -- Flop We Are The Aggressor  -- Raising
+//////////////////////////////////////////////////////////////	
+//
+//////////////////////
+// In first position
+//////////////////////
+ Position = First  ? {
+	// Hands we will c-bet
+    f$actionpostflop_free_to_play  ? {
+		//***** C-Bet any overpair above 99 *****\\
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		//***** C-Bet any top pair above 99 *****\\ ??
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		//
+         f$PlayersExcludingSitOuts<=2  ? f$prwin > 0.32 :
+         f$PlayersExcludingSitOuts==3  ? f$prwin > 0.38 :
+         f$PlayersExcludingSitOuts>=4  ? f$prwin>0.45 : 0 } :
+	// Raise Vs donk min bet 
+    f$actionpostflop_opponent_min_bets  ? {
+         f$PlayersExcludingSitOuts<=2  ? f$prwin>0.45 :
+         f$PlayersExcludingSitOuts==3  ? f$prwin>0.68 :
+         f$PlayersExcludingSitOuts>=4  ? f$prwin>0.70 : 0 } :
+	// Raise Vs other donk bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.840 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.860 :
+	// Raise if our C-Bet is re-raised
+    f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.72 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.78 : 0 } : 0 } :
+    f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.76 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.78 : 0 } : 0 } :
+    f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.77 : 0 } :
+    f$actionpostflop_medium_investment  ? f$prwin>.85 :
+    f$actionpostflop_large_investment ? f$prwin>.85 : 0 } :
+//////////////////////
+// In middle position
+//////////////////////
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ? {
+	 // Hands we will c-bet
+		//***** C-Bet any overpair above 99 *****\\
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		//***** C-Bet any top pair above 99 *****\\ ??
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		//
+         f$PlayersExcludingSitOuts==2  ? f$prwin > 0.32 :
+         f$PlayersExcludingSitOuts==3  ? {
+             f$draws>1 AND HaveFlushDraw  ? 1 :
+             f$prwin>0.65             ? 1 : 0 } :
+         f$PlayersExcludingSitOuts>=4  ? f$prwin>0.58 : 0 } :
+	// Raise Vs donk min bet
+     f$actionpostflop_opponent_min_bets  ? {
+         f$PlayersExcludingSitOuts==3  ? f$prwin>0.65 :
+         f$PlayersExcludingSitOuts>=4  ? f$prwin>0.65 : 0 } :
+	// Raise Vs other donk bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.840 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.860 :
+	 // Raise if our C-Bet is re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.78 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.78 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.80 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin>.85 :
+     f$actionpostflop_large_investment ? f$prwin>.85 : 0 } :
+//////////////////////
+// In Last position
+//////////////////////
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ? {
+	 // Hands we will c-bet
+	 	//***** C-Bet any overpair above 99 *****\\
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		//***** C-Bet any top pair above 99 *****\\ ??
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		//
+         f$PlayersExcludingSitOuts<=2  ? f$prwin > 0.32 :
+         f$PlayersExcludingSitOuts==3  ? f$prwin > 0.38 :
+         f$PlayersExcludingSitOuts>=4  ? f$prwin>0.65 : 0 } :
+	// Raise Vs donk min bet
+     f$actionpostflop_opponent_min_bets  ? {
+         f$PlayersExcludingSitOuts<=2  ? f$prwin>0.30 :
+         f$PlayersExcludingSitOuts==3  ? f$prwin>0.65 :
+         f$PlayersExcludingSitOuts>=4  ? f$prwin>0.70 : 0 } :
+	// Raise Vs other donk bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.840 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.860 :
+	 // Raise if our C-Bet is re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.83 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.79 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.77 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.83 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.79 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.77 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.83 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.78:
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.78 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin>.85 :
+     f$actionpostflop_large_investment ? f$prwin>.85 : 0 } :
+0
+
+
+##f$flop_call_initiative##
+//////////////////////////////////////////////////////////////
+//			Calling -- Flop We Are The Aggressor  -- Calling
+//////////////////////////////////////////////////////////////	
+//
+//////////////////////
+// In first position
+//////////////////////
+ Position = First  ? {
+	// Call Vs donk bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.32 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.75 :
+	 // Call when C-Bet is Re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.75 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.72 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.70 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.84 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+//////////////////////
+// In Middle position
+//////////////////////
+ Position = Middle  ? {
+	// Call Vs donk bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.32 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.70 :
+	 // Call when C-Bet is Re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.75 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.72 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+//////////////////////
+// In Last position
+//////////////////////
+ Position = Last  ? {
+	// Call Vs donk bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.32 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.70 :
+	 // Call when C-Bet is Re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.75 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.72 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.70 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.78 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.79 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+0
+
+
+##f$flop_raise_noinitiative##
+//////////////////////////////////////////////////////////////
+//			Raising -- Flop Villain Has Initiative  -- Raising
+//////////////////////////////////////////////////////////////
+//
+//////////////////////
+// In first position
+//////////////////////
+ Position = First  ? {
+	// Donk bets here
+     f$actionpostflop_free_to_play AND f$PlayersExcludingSitOuts==2  ? {
+         f$draws>=2                    ? 1 :
+		 // Check Raise also Bluffs to fold to aggression
+         f$prwin>0.40 AND f$prwin<0.60  ? 1 : 0 } :
+	// Raise min bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.50 : 
+	 // Raise other bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.840 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.860 :
+	 // Raise if opponent re-raises
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.80 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.77 : 0 } : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.78 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.77 : 0 } : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.78 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.77 : 0 } : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin>.80 :
+     f$actionpostflop_large_investment ? f$prwin>.80 : 0 } :
+//////////////////////
+// In middle position
+//////////////////////
+ Position = Middle  ? {
+	// Donk bets
+     f$actionpostflop_free_to_play  ? f$prwin>.72 :
+	 // Raise min bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.76 :
+	 // Raise other bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.840 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.860 :
+	 // Raise if opponent re-raises
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.78 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.78 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.78 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin>.80 :
+     f$actionpostflop_large_investment ? f$prwin>.80 : 0 } :
+//////////////////////
+// In last position
+//////////////////////
+ Position = Last  ? {
+	// Donk bets when last to act
+     f$actionpostflop_free_to_play  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		//
+        f$PlayersExcludingSitOuts==2  ? {
+            f$draws>1    ? 1 :
+            f$prwin>.50  ? 1 : 0 } :
+        f$PlayersExcludingSitOuts>=3  ? f$prwin>.60 : 0 } :
+	// Raise min bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.67 :
+	  // Raise other bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.840 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.860 :
+	  // Raise if opponent re-raises
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.80 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.80 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.83 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.82 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin>.85 :
+     f$actionpostflop_large_investment ? f$prwin>.85 : 0 } :
+0
+
+
+##f$flop_call_noinitiative##
+//////////////////////////////////////////////////////////////
+//			Calling -- Flop Villain Has Initiative  -- Calling
+//////////////////////////////////////////////////////////////
+//
+//////////////////////
+// In first position
+//////////////////////
+ Position = First  ? {
+	// Call C-Bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.32 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.75 :
+	 // Call if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+//////////////////////
+// In middle position
+//////////////////////
+ Position = Middle  ? {
+	// Call C-Bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.32 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.75 :
+	 // Call if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+//////////////////////
+// In last position
+//////////////////////
+ Position = Last  ? {
+	// Call C-Bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.32 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.75 :
+	 // Call if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+0
+
+
+##f$flop_raise_noaction##
+//////////////////////////////////////////////////////////////
+//			Raising -- Flop Nobody Has Initiative  -- Raising
+//////////////////////////////////////////////////////////////
+//
+//////////////////////
+// In first position
+//////////////////////
+ Position = First  ? {
+	// Bet first in
+	f$actionpostflop_free_to_play  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		f$prwin>.55 } :
+	 // Raise min bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.60 :
+	 // Raise other bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.860 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.92 :
+	 // Raise if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.72 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.84 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.76 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.84 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.82 : 0 } :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+//////////////////////
+// In middle position
+//////////////////////
+ Position = Middle  ? {
+	// Bet first in
+	f$actionpostflop_free_to_play  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		f$prwin>.55 } :
+	 // Raise min bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.60 :
+	 // Raise other bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.860 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.920 :
+	 // Raise if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.80 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.72 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.80 : 0 } : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.84 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_very_high      ? {
+             f$PlayersExcludingSitOuts==2  ? f$prwin2>.76 : 
+             f$PlayersExcludingSitOuts>=3  ? f$prwin2>.80 : 0 } : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.84 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.82 : 0 } :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+//////////////////////
+// In last position
+//////////////////////
+ Position = Last  ? {
+	// Bet first in
+	f$actionpostflop_free_to_play  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 9 ? 1 : 
+		f$prwin>.55 } :
+	 // Raise min bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.60 :
+	 // Raise other bets
+     f$actionpostflop_opponent_bets_medium  ? {
+		ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		HaveTopPair And rankhicommon > 10 ? 1 : 
+        nplayersplaying==2 ? f$prwin > 0.82 AND f$prwin < 0.950 : // Slow play great hands
+        nplayersplaying>=3 ? f$prwin > 0.82 : 0 } :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin > 0.860 :
+     f$actionpostflop_opponent_overbets  ? f$prwin > 0.920 :
+	 // Raise if reraised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.82 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.80 : 0 } :
+
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.84 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.82 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.85 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.84 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.82 : 0 } :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+
+##f$flop_call_noaction##
+//////////////////////////////////////////////////////////////
+//			Calling -- Flop Nobody Has Initiative  -- Calling
+//////////////////////////////////////////////////////////////
+//
+//////////////////////
+// In first position
+//////////////////////
+ Position = First  ? {
+	// Call bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.60 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.70 :
+	 // Call if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+//////////////////////
+// In middle position
+//////////////////////
+ Position = Middle  ? {
+	// Call bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.44 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.60 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.70 :
+	 // Call if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+//////////////////////
+// In last position
+//////////////////////
+ Position = Last  ? {
+	// Call Bets
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.60 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.65 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.80 :
+	 // Call if re-raised
+     f$actionpostflop_opponent_min_reraises  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_normal  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_opponent_reraises_huge  ? {
+         f$ptype_raise_contibet_very_low  ? f$prwin2>.85 :
+         f$ptype_raise_contibet_low      ? f$prwin2>.82 :
+         f$ptype_raise_contibet_normal      ? f$prwin2>.80 :
+         f$ptype_raise_contibet_high  ? f$prwin2>.77 :
+         f$ptype_raise_contibet_very_high      ? f$prwin2>.74 : 0 } :
+     f$actionpostflop_medium_investment  ? f$prwin1>.82 :
+     f$actionpostflop_large_investment ? f$prwin1>.86 : 0 } :
+0
+
+	
+##f$turn_raise_initiative##
+//////////////////////////////////////////////////////////////
+//			Raising -- Turn We Are The aggressor  -- Raising
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar.
+//
+ Position = First  ? {
+     f$actionpostflop_free_to_play  ? {
+		nsuitedcommon < 4 And nstraightfill > 1 And ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		nsuitedcommon < 4 And nstraightfill > 1 And HaveTopPair And rankhicommon > 9 ? 1 : 
+        f$PlayersExcludingSitOuts==2 AND nplayersround_flop==2  ? {
+             didcallround_preflop AND nbetsround_preflop>1 AND nbetsround_preflop<=5  ? f$prwin>0.28 : // donkbet and 2nd barrel turn
+             f$AggressionFactor_Turn2<=3.00  ? {
+                 f$draws>1    ? 1 :
+                 f$prwin>.70 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard)  ? 1 : 0 } :
+             f$AggressionFactor_Turn2>3.00 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard)  ? f$prwin>.70 AND f$prwin<.80 : 0 } : // only barrel value oop
+         f$PlayersExcludingSitOuts>=2 AND nplayersround_flop>=3 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard)  ? f$prwin>.74 : 0 } :
+		 
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 1 And nsuitedcommon < 4 And HaveTopPair ? 1 :
+	 f$actionpostflop_opponent_bets_medium  ? f$prwin > 0.850 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 : // check push allin
+     f$actionpostflop_opponent_overbets  ? f$prwin>.90 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.85 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.90 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Middle  ? {
+	f$actionpostflop_free_to_play And nsuitedcommon < 3 And nstraightfill > 2 And  ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+	f$actionpostflop_free_to_play And nsuitedcommon < 3 And nstraightfill > 2 And  HaveTopPair And rankhicommon > 9 ? 1 : 
+     f$actionpostflop_free_to_play  ? f$prwin>.72 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 1 And nsuitedcommon < 4 And HaveTopPair ? 1 :
+	f$actionpostflop_opponent_bets_medium  ? f$prwin > 0.850 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ? {
+		nsuitedcommon < 4 And nstraightfill > 1 And ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		nsuitedcommon < 3 And nstraightfill > 2 And HaveTopPair And rankhicommon > 9 ? 1 : 
+        f$PlayersExcludingSitOuts==2 AND nplayersround_flop==2  ? {
+            f$prwin<0.72 AND NOT (ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) AND ranklocommon<10 AND nbetsround_preflop<7 AND nbetsround_flop<15 AND NOT PairOnBoard  ? 1 :
+            f$prwin>=0.78  ? 1 : 0 } :
+         f$PlayersExcludingSitOuts>=2 AND nplayersround_flop>=3 AND ranklocommon<10 AND NOT (ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard)  ? f$prwin>0.65 : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 1 And nsuitedcommon < 4 And HaveTopPair ? 1 :
+	f$actionpostflop_opponent_bets_medium  ? f$prwin > 0.850 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.85 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+
+##f$turn_call_initiative##
+//////////////////////////////////////////////////////////////
+//			Calling -- Turn We Are The aggressor  -- Calling
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ Position = First  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.75 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.77 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.82 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.80 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.80 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.85 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.75 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.77 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.85 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+0
+
+
+##f$turn_raise_noinitiative##
+//////////////////////////////////////////////////////////////
+//		Raising -- Turn Villain has initiative  -- Raising
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ Position = First  ? {
+     f$PlayersExcludingSitOuts==2  ? {
+         f$actionpostflop_free_to_play  ? f$prwin>.88 : // check raise
+         f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+		 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 2 And nsuitedcommon < 3 And HaveTopPair ? 1 :
+         f$actionpostflop_opponent_bets_medium  ? f$prwin>.85 :
+         f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+         f$actionpostflop_opponent_overbets  ? f$prwin>.95 :
+         f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+         f$actionpostflop_opponent_reraises_normal  ? f$prwin>.97 :
+         f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+         f$actionpostflop_medium_investment  ? f$nuts      :
+         f$actionpostflop_large_investment ? f$nuts      : 0 } :
+     f$PlayersExcludingSitOuts>=3  ? {
+         f$actionpostflop_free_to_play  ? f$prwin>.75 AND f$prwin<.92 :
+         f$actionpostflop_opponent_min_bets  ? f$prwin>.96 :
+         f$actionpostflop_opponent_bets_medium  ? f$prwin>.96 :
+         f$actionpostflop_opponent_bets_pot  ? f$prwin>.96 :
+         f$actionpostflop_opponent_overbets  ? f$prwin>.96 :
+         f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+         f$actionpostflop_opponent_reraises_normal  ? f$prwin>.97 :
+         f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+         f$actionpostflop_medium_investment  ? f$nuts      :
+         f$actionpostflop_large_investment ? f$nuts      : 0 } : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.80 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 2 And nsuitedcommon < 3 And HaveTopPair ? 1 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.86 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.96 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.97 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.80 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 1 And nsuitedcommon < 4 And HaveTopPair ? 1 :
+	 f$actionpostflop_opponent_bets_medium  ? f$prwin > 0.850 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.96 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.98 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.98 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.98 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+	
+##f$turn_call_noinitiative##
+//////////////////////////////////////////////////////////////
+//		Calling -- Turn Villain has initiative  -- Calling
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ Position = First  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.90 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.82 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.88 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.55 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.90 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.80 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.90 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.70 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.85 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.90 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+0
+
+
+##f$turn_raise_noaction##
+//////////////////////////////////////////////////////////////
+//		Raising -- Turn Nobody has initiative  -- Raising
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+ Position = First  ? {
+    f$actionpostflop_free_to_play  ? {
+	 	nsuitedcommon < 3 And nstraightfill > 2 And ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		nsuitedcommon < 4 And nstraightfill > 1 And HaveTopPair And rankhicommon > 9 ? 1 : 
+         f$PlayersExcludingSitOuts==2  ? {
+             f$draws>1    ? 1 :
+             f$prwin>.64  ? 1 : 0 } :
+         f$PlayersExcludingSitOuts>=3  ? f$prwin>.64 : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.98 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.98 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.85 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.85 : 
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.95 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ? {
+		nsuitedcommon < 3 And nstraightfill > 2 And ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		nsuitedcommon < 4 And nstraightfill > 1 And HaveTopPair And rankhicommon > 9 ? 1 : 
+        f$draws>1    ? 1 :
+        f$prwin>.62  ? 1 : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 1 And nsuitedcommon < 4 And HaveTopPair ? 1 :
+	 f$actionpostflop_opponent_bets_medium  ? f$prwin > 0.850 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.90 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.92 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+    f$actionpostflop_free_to_play  ? {
+		nsuitedcommon < 3 And nstraightfill > 2 And ispair And rankhiplayer > rankhicommon And rankhiplayer > 9 ? 1 :
+		nsuitedcommon < 3 And nstraightfill > 2 And HaveTopPair And rankhicommon > 9 ? 1 : 
+        nplayersround_flop==2  ? f$prwin>.32 :
+        nplayersround_flop>=3  ? {
+            f$draws>1    ? 1 :
+            f$prwin>.60  ? 1 : 0 } : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.74 :
+	 f$actionpostflop_opponent_bets_medium And nstraightfillcommon > 1 And nsuitedcommon < 4 And HaveTopPair ? 1 :
+	 f$actionpostflop_opponent_bets_medium  ? f$prwin > 0.850 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.85 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.90 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.95 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+
+##f$turn_call_noaction##
+//////////////////////////////////////////////////////////////
+//		Calling -- Turn Nobody has initiative  -- Calling
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ Position = First  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.75 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.78 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.78 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.85 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.75 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.78 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.80 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.85 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_opponent_min_bets  ? f$prwin1>.50 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin1>.75 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin1>.78 :
+     f$actionpostflop_opponent_overbets  ? f$prwin1>.95 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin1>.82 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin1>.86 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin1>.95 :
+     f$actionpostflop_medium_investment  ? f$prwin1>.95 :
+     f$actionpostflop_large_investment ? f$prwin1>.97 : 0 } :
+0
+
+
+##f$river_raise_initiative##
+//////////////////////////////////////////////////////////////
+//		Raising -- River We Are The Aggressor  -- Raising
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ Position = First  ? {
+     f$actionpostflop_free_to_play  ? {
+       f$PlayersExcludingSitOuts==2  ? f$prwin>.75 :
+       f$PlayersExcludingSitOuts>=3  ? f$prwin>.80 : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.98 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.98 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.95 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.80 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.86 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.90 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.96 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.95 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ? {
+         f$PlayersExcludingSitOuts==2 AND nbetsround_flop==0  ? f$prwin>0.70 :
+         f$PlayersExcludingSitOuts>=3 AND nbetsround_flop==0  ? f$prwin>0.75 :
+         f$prwin>.80  ? 1 : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.86 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.90 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.96 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.98 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.98 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.98 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+
+##f$river_call_initiative##
+//////////////////////////////////////////////////////////////
+//		Calling -- River We Are The Aggressor  -- Calling
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ f$actionpostflop_opponent_min_bets ? f$prwin1>.45 :
+ f$actionpostflop_opponent_min_bets And rankhiplayer = 14 ? 1 :
+ f$actionpostflop_opponent_min_bets And HavePair ? 1 :
+ f$actionpostflop_opponent_bets_medium  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.65 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.70 : 0 } :
+ f$actionpostflop_opponent_bets_pot  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.80 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.75 : 0 } :
+ f$actionpostflop_opponent_overbets  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.90 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.95 : 0 } :
+ f$actionpostflop_opponent_min_reraises   ? f$prwin1>.78 :
+ f$actionpostflop_opponent_reraises_normal   ? f$prwin1>.82 :
+ f$actionpostflop_opponent_reraises_huge   ? f$prwin1>.95 :
+ f$actionpostflop_medium_investment   ? f$prwin1>.95 :
+ f$actionpostflop_large_investment  ? f$prwin1>.97 :
+0
+
+
+##f$river_raise_noinitiative##
+//////////////////////////////////////////////////////////////
+//		Raising -- River Villain has initiative  -- Raising
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ Position = First  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.80 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.90 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.90 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.90 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.97 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.80 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.86 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.96 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.97 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.80 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.80 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.90 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.96 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.98 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.98 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.98 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+
+##f$river_call_noinitiative##
+//////////////////////////////////////////////////////////////
+//		Calling -- River Villain has initiative  -- Calling
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ f$actionpostflop_opponent_min_bets  ? f$prwin1>.38 :
+ f$actionpostflop_opponent_min_bets And rankhiplayer = 14 ? 1 :
+ f$actionpostflop_opponent_min_bets And HavePair ? 1 :
+ f$actionpostflop_opponent_bets_medium  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.65 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.70 : 0 } :
+ f$actionpostflop_opponent_bets_pot  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.80 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.75 : 0 } :
+ f$actionpostflop_opponent_overbets  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.90 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.95 : 0 } :
+ f$actionpostflop_opponent_min_reraises   ? f$prwin1>.78 :
+ f$actionpostflop_opponent_reraises_normal   ? f$prwin1>.82 :
+ f$actionpostflop_opponent_reraises_huge   ? f$prwin1>.95 :
+ f$actionpostflop_medium_investment   ? f$prwin1>.95 :
+ f$actionpostflop_large_investment  ? f$prwin1>.97 :
+0
+
+
+##f$river_raise_noaction##
+//////////////////////////////////////////////////////////////
+//		Raising -- River Nobody has initiative  -- Raising
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+// Toevoegen NBETSround_preflop \\ Trish I removed this for tournaments
+ Position = First  ? {
+     f$actionpostflop_free_to_play ? f$prwin>.64 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.98 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.98 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.98 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.95 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 : 
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ? f$prwin>.64 :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.80 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.80 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.82 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.86 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.95 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ? {
+          nplayersround_flop==2  ? f$prwin>.50 :
+          nplayersround_flop>=3  ? f$prwin>.55 : 0 } :
+     f$actionpostflop_opponent_min_bets  ? f$prwin>.74 :
+     f$actionpostflop_opponent_bets_medium  ? f$prwin>.78 :
+     f$actionpostflop_opponent_bets_pot  ? f$prwin>.80 :
+     f$actionpostflop_opponent_overbets  ? f$prwin>.86 :
+     f$actionpostflop_opponent_min_reraises  ? f$prwin>.95 :
+     f$actionpostflop_opponent_reraises_normal  ? f$prwin>.96 :
+     f$actionpostflop_opponent_reraises_huge  ? f$prwin>.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+
+##f$river_call_noaction##
+//////////////////////////////////////////////////////////////
+//		Calling -- River Nobody has initiative  -- Calling
+//////////////////////////////////////////////////////////////
+// Lots of comments and helpful information is included in the flop section
+// I wont include as much for turn or river as if you understand the
+// structure for the flop those are very similar
+//
+ f$actionpostflop_opponent_min_bets ? f$prwin1>.42 :
+ f$actionpostflop_opponent_min_bets And rankhiplayer = 14 ? 1 :
+ f$actionpostflop_opponent_min_bets And HavePair ? 1 :
+ f$actionpostflop_opponent_bets_medium  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.65 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.70 : 0 } :
+ f$actionpostflop_opponent_bets_pot  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.80 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.75 : 0 } :
+ f$actionpostflop_opponent_overbets  ? {
+     f$PlayersExcludingSitOuts==2  ? f$prwin>.90 :
+     f$PlayersExcludingSitOuts>=3  ? f$prwin>.95 : 0 } :
+ f$actionpostflop_opponent_min_reraises   ? f$prwin1>.78 :
+ f$actionpostflop_opponent_reraises_normal   ? f$prwin1>.82 :
+ f$actionpostflop_opponent_reraises_huge   ? f$prwin1>.95 :
+ f$actionpostflop_medium_investment   ? f$prwin1>.95 :
+ f$actionpostflop_large_investment  ? f$prwin1>.97 :
+0
+
+##f$flop_call_wegotraised##
+ Position = First  ? {
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.60 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.78 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.78 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.85 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.90 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_medium_investment  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_large_investment ?  f$prwin1 > 0.96 : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.60 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.77 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.79 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.85 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.90 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_medium_investment  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_large_investment ?  f$prwin1 > 0.96 : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.60 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.78 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.80 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.85 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.90 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_medium_investment  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_large_investment ?  f$prwin1 > 0.96 : 0 } :
+0
+
+##f$flop_raise_wegotraised##
+ Position = First  ? {
+     f$PlayersExcludingSitOuts==2  ? {
+     f$actionpostflop_free_to_play  ?  f$prwin1 > 0.80 :
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.80 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.85 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.85 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.97 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.98 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+     f$PlayersExcludingSitOuts>=3  ? {
+     f$actionpostflop_free_to_play  ?  f$prwin1 > 0.80 :
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.85 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.95 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.97 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.98 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } : 0 } :
+ Position = Middle  ? {
+     f$actionpostflop_free_to_play  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.90 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+ Position = Last  ? {
+     f$actionpostflop_free_to_play  ?  f$prwin1 > 0.82 :
+     f$actionpostflop_opponent_min_bets  ?  f$prwin1 > 0.90 :
+     f$actionpostflop_opponent_bets_medium  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_bets_pot  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_overbets  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_min_reraises  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_reraises_normal  ?  f$prwin1 > 0.96 :
+     f$actionpostflop_opponent_reraises_huge  ?  f$prwin1 > 0.97 :
+     f$actionpostflop_medium_investment  ? f$nuts      :
+     f$actionpostflop_large_investment ? f$nuts      : 0 } :
+0
+
+##f$flop_call##
+WHEN f$Odds_and_Outs      RETURN true FORCE
+WHEN f$Initiative_Hero    RETURN f$flop_call_initiative FORCE
+WHEN f$Initiative_Villain RETURN f$flop_call_noinitiative FORCE
+WHEN f$Initiative_Nobody  RETURN f$flop_call_noaction FORCE
+WHEN f$Initiative_GotRaised Return f$flop_call_wegotraised FORCE
+
+##f$turn_call##
+WHEN f$Odds_and_Outs        RETURN true FORCE
+WHEN f$Initiative_Hero      RETURN f$turn_call_initiative FORCE
+WHEN f$Initiative_Villain   RETURN f$turn_call_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$turn_call_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$turn_call_wegotraised FORCE
+
+##f$river_call##
+WHEN f$Initiative_Hero      RETURN f$river_call_initiative FORCE
+WHEN f$Initiative_Villain   RETURN f$river_call_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$river_call_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$river_call_wegotraised FORCE
+
+##f$flop_raise##
+WHEN f$Initiative_Hero    RETURN f$flop_raise_initiative FORCE
+WHEN f$Initiative_Villain RETURN f$flop_raise_noinitiative FORCE
+WHEN f$Initiative_Nobody  RETURN f$flop_raise_noaction FORCE
+WHEN f$Initiative_GotRaised Return f$flop_raise_wegotraised FORCE
+
+##f$turn_raise##
+WHEN f$Initiative_Hero      RETURN f$turn_raise_initiative FORCE
+WHEN f$Initiative_Villain   RETURN f$turn_raise_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$turn_raise_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$turn_raise_wegotraised FORCE
+
+##f$river_raise##
+WHEN f$Initiative_Hero      RETURN f$river_raise_initiative FORCE
+WHEN f$Initiative_Villain   RETURN f$river_raise_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$river_raise_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
+
+##f$Initiative_Hero##
+// Can't have initiative preflop: either we did not yet act or somebody raised
+WHEN IsPreflop RETURN false FORCE
+When f$Initiative_GotRaised Return false Force
+//WHEN didcallround_previousround RETURN false FORCE
+WHEN didbetsizeround_previousround OR didraisround_previousround RETURN true FORCE
+
+##f$Initiative_Nobody##
+NOT f$Initiative_Hero AND NOT f$Initiative_Villain And Not f$Initiative_GotRaised
+
+##f$Initiative_Villain##
+f$Initiative_GotRaised ? 0 :
+IsPreflop && ncallbets > 1 ? 1 :
+IsFlop && (didcallround_previousround && nbetsround_preflop > 1) ? 1 :
+(betround > 2) && didcallround_previousround && (nbetsround_previousround > 0) ? 1 :
+0
+
+##f$Initiative_GotRaised_Calc##
+lastraised_previousround < 0 ? 0 :
+BotsActionsOnThisRoundIncludingChecks > 0 ? 0 :
+(!didbetsizeround_previousround && !didraisround_previousround) ? 0 :
+!didcallround_previousround ? 0 :
+prevaction = 1 ? 1 :
+0
+
+##f$Initiative_GotRaised##
+me_re_initiativegotraised = 1 ? 1 :
+f$Initiative_GotRaised_Calc And me_st_initiativegotraised_1 >= 0 ? 1 :
+0
+
+##f$ini_function_on_new_round##
+me_st_initiativegotraised_0
+
+##f$allin_on_betsize_balance_ratio##
+// Not present in Geckos original bot for OpenHoldem 2.x,
+// His code suggests that he wanted it to be 0.66,
+// but as Gecko used raise-by-semantics and we use raise-to
+// about 0.50 looks like a more appropriate value,
+// firther improving it to 40% OOP,
+// Fail-safe for mis-scraped stacks
+WHEN (StackSize <= 0) RETURN 0.00 FORCE
+// Push if short stacked in tournaments for any significant bet size
+When f$EffectiveActiveStackInBigBlinds <= 10 Return 0.020 Force
+WHEN NOT HandIsHeadsup RETURN f$positional_allin_on_betsize_balance_ratio FORCE
+// Sole opponent already allin or mis-scraped opponents stack
+WHEN (StackSize_headsupchair <= 0) RETURN f$positional_allin_on_betsize_balance_ratio FORCE
+// Opponents stack larger than ours: normal behaviour
+WHEN (StackSize_headsupchair >= StackSize) RETURN f$positional_allin_on_betsize_balance_ratio FORCE
+// Single opponent with smaller stack.
+// Go more lightly allin if our bet is more than 50% of his stack.
+WHEN Others RETURN (f$positional_allin_on_betsize_balance_ratio * (StackSize_headsupchair / StackSize)) FORCE
+
+##f$Trish_SS_Start##
+Raises = 0 And f$FinalTableSet And StackSize >= 8 ? {
+	InEarlyPosition1 ? 11 :
+	InEarlyPosition2 ? 11 :
+	InEarlyPosition3 ? 11 :
+	InMiddlePosition1 ? 12 :
+	InMiddlePosition2 ? 13.7 :
+	InMiddlePosition3 ? 16.7 :
+	InCutOff ? 23.4 :
+	InButton ? 23.4 :
+	InSmallBlind ? 23.4 :
+	InBigBlind ? 23.4 :
+	23.4 } : 	
+
+Raises + Calls = 0 And StackSize <= 20 ? {
+	InEarlyPosition1 ? 11 :
+	InEarlyPosition2 ? 11 :
+	InEarlyPosition3 ? 11 :
+	InMiddlePosition1 ? 10.4 :
+	InMiddlePosition2 ? 13.7 :
+	InMiddlePosition3 ? 16.7 :
+	InCutOff ? 30 :
+	InButton ? 34 :
+	InSmallBlind ? 45.2 :
+	30 } : 
+Raises + Calls = 0 ? {
+	InEarlyPosition1 ? 11 :
+	InEarlyPosition2 ? 11 :
+	InEarlyPosition3 ? 11 :
+	InMiddlePosition1 ? 12 :
+	InMiddlePosition2 ? 13.7 :
+	InMiddlePosition3 ? 16.7 :
+	InCutOff ? 23.4 :
+	InButton ? 28.1 :
+	InSmallBlind ? 28.1 :
+	23.4 } : 
+Raises = 0 And (StackSize <= 14 Or f$RedZone) ? {
+	InEarlyPosition1 ? 11 :
+	InEarlyPosition2 ? 11 :
+	InEarlyPosition3 ? 11 :
+	InMiddlePosition1 ? 12 :
+	InMiddlePosition2 ? 13.7 :
+	InMiddlePosition3 ? 16.7 :
+	InCutOff ? 23.4 :
+	InButton ? 23.4 :
+	InSmallBlind ? 23.4 :
+	InBigBlind ? 23.4 :
+	23.4 } : 
+Raises = 0 And Calls <= 1 ? {
+	InEarlyPosition1 ? 11 :
+	InEarlyPosition2 ? 11 :
+	InEarlyPosition3 ? 11 :
+	InMiddlePosition1 ? 12 :
+	InMiddlePosition2 ? 13.7 :
+	InMiddlePosition3 ? 16.7 :
+	InCutOff ? 19.5 :
+	InButton ? 19.5 :
+	InSmallBlind ? 19.4 :
+	InBigBlind ? 19.4 :
+	23.4 } : 	
+Raises = 0 ? {
+	InEarlyPosition1 ? 11 :
+	InEarlyPosition2 ? 11 :
+	InEarlyPosition3 ? 11 :
+	InMiddlePosition1 ? 12 :
+	InMiddlePosition2 ? 13.7 :
+	InMiddlePosition3 ? 16.7 :
+	InCutOff ? 16.4 :
+	InButton ? 16.4 :
+	InSmallBlind ? 16.4 :
+	InBigBlind ? 16.4 :
+	16.4 } : 	
+16.7
+##f$Trish_SS_Stop##
+Raises = 0 And f$FinalTableSet And StackSize >= 8 ? {
+	InEarlyPosition1 ? 29 :
+	InEarlyPosition2 ? 29 :
+	InEarlyPosition3 ? 29 :
+	InMiddlePosition1 ? 40 :
+	InMiddlePosition2 ? 40 :
+	InMiddlePosition3 ? 40 :
+	InCutOff ? 40 :
+	InButton ? 40 :
+	InSmallBlind ? 40 :
+	40 } : 
+
+Raises = 0 ? {
+	InEarlyPosition1 ? 29 :
+	InEarlyPosition2 ? 29 :
+	InEarlyPosition3 ? 29 :
+	InMiddlePosition1 ? 40 :
+	InMiddlePosition2 ? 40 :
+	InMiddlePosition3 ? 40 :
+	InCutOff ? 50 :
+	InButton ? 56 :
+	InSmallBlind ? 66 :
+	75 } : 
+40
+##f$Trish_SS_Exponent##
+(ln (f$Trish_SS_Stop / f$Trish_SS_Start) / 11)*(15 - StackSize)
+
+##f$Trish_SS_Log##
+Raises > 0 ? 0 :
+StackSize > 15 ? (f$Trish_SS_Start/100) :
+StackSize <= 3 ? 0.75 :
+StackSize <= 2 ? 1 :
+f$Trish_SS_Start*(2.718281828459**(f$Trish_SS_Exponent)) < f$Trish_SS_Start ? (f$Trish_SS_Start/100) :
+f$Trish_SS_Start*(2.718281828459**(f$Trish_SS_Exponent)) > f$Trish_SS_Stop ? (f$Trish_SS_Stop/100) :
+f$Trish_SS_Start*(2.718281828459**(f$Trish_SS_Exponent))/100
+	
+///////////////////////////////////////////////////////////////////
+
+##f$ProbabilityOpponentHasHigherPockets##
+// This is approximate but close enough
+Not ispair ? 45 :
+rankhiplayer >= 10 ? (f$OpponentsExcludingSitOuts * (14-rankhiplayer)) / 2 :
+(nopponentsseated * (14-rankhiplayer)) / 2 
+
+##f$PlayersExcludingSitOuts##
+BitCount (playersactivebits & playersplayingbits)
+
+##f$OpponentsExcludingSitOuts##
+BitCount (opponentsactivebits & opponentsplayingbits)
+
+##f$delay##
+// Rendom delay of 0..3000 milli-seconds
+title$DD And title$Poker ? 0 :
+Random * 30
+
+##f$check##
+1
+
+##f$icm_prize1##
+Not f$FinalTableSet ? 1 :
+f$WinnerTakesAll ? 1 :
+nplayersseated = 2 ? 1 :
+nplayersseated = 3 ? 0.60 :
+nplayersseated = 4 ? 0.50 :
+nplayersseated = 5 ? 0.48 :
+nplayersseated = 6 ? 0.46 :
+nplayersseated = 7 ? 0.43 :
+nplayersseated = 8 ? 0.42  :
+0.42
+
+##f$icm_prize2##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0.40 :
+nplayersseated = 4 ? 0.30 :
+nplayersseated = 5 ? 0.28 :
+nplayersseated = 6 ? 0.24 :
+nplayersseated = 7 ? 0.25 :
+nplayersseated = 8 ? 0.24 :
+0.23
+
+##f$icm_prize3##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0 :
+nplayersseated = 4 ? 0.20 :
+nplayersseated = 5 ? 0.15 :
+nplayersseated = 6 ? 0.16 :
+nplayersseated = 7 ? 0.15 :
+nplayersseated = 8 ? 0.14  :
+0.14
+
+##f$icm_prize4##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0 :
+nplayersseated = 4 ? 0 :
+nplayersseated = 5 ? 0.09 :
+nplayersseated = 6 ? 0.08 :
+nplayersseated = 7 ? 0.08 :
+nplayersseated = 8 ? 0.09  :
+0.09
+
+##f$icm_prize5##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0 :
+nplayersseated = 4 ? 0 :
+nplayersseated = 5 ? 0 :
+nplayersseated = 6 ? 0.06 :
+nplayersseated = 7 ? 0.05 :
+nplayersseated = 8 ? 0.06  :
+0.06
+
+##f$icm_prize6##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0 :
+nplayersseated = 4 ? 0 :
+nplayersseated = 5 ? 0 :
+nplayersseated = 6 ? 0 :
+nplayersseated = 7 ? 0.04 :
+nplayersseated = 8 ? 0.03  :
+0.03
+
+##f$icm_prize7##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0 :
+nplayersseated = 4 ? 0 :
+nplayersseated = 5 ? 0 :
+nplayersseated = 6 ? 0 :
+nplayersseated = 7 ? 0 :
+nplayersseated = 8 ? 0.02  :
+0.02
+
+##f$icm_prize8##
+Not f$FinalTableSet ? 0 :
+f$WinnerTakesAll ? 0 :
+nplayersseated = 2 ? 0 :
+nplayersseated = 3 ? 0 :
+nplayersseated = 4 ? 0 :
+nplayersseated = 5 ? 0 :
+nplayersseated = 6 ? 0 :
+nplayersseated = 7 ? 0 :
+nplayersseated = 8 ? 0  :
+0.01
+
+##f$WinnerTakesAll##
+title$Satellite Or title$SATELLITE Or title$satellite Or title$Ticket Or title$ticket Or title$TICKET 
+
+##f$ptype_raise_contibet_very_low##
+// Default if PT4 is not being used
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN true FORCE
+WHEN pt_flop_raise_cbet_raischair < 0.06 RETURN true FORCE
+
+##f$ptype_raise_contibet_normal##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
+WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
+WHEN f$ptype_raise_contibet_low RETURN false FORCE
+WHEN pt_flop_raise_cbet_raischair < 0.18 RETURN true FORCE
+
+##f$debug##
+
+##listCat1##
+AA KK
+
+##listCat2##
+AA KK QQ JJ
+AKs
+AKo
+
+##listCat2a##
+AA KK QQ
+AKs
+
+##listCat3##
+AA KK QQ JJ TT 99
+AKs AQs 
+AKo AQo
+
+##listCat4##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs
+KQs
+AKo AQo
+
+##listCat5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs
+KQs KJs
+AKo AQo AJo ATo 
+KQo 
+
+##listCat6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listCat7##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listCat8##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 97s 
+87s 86s 
+76s 75s
+65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K8o
+QJo QTo 
+JTo T9o 98o 87o 76o 
+
+// HU Lists
+##listHUCat1##
+AA KK
+
+##listHUCat2##
+AA KK QQ JJ
+AKs
+AKo
+
+##listHUCat3##
+AA KK QQ JJ TT 99
+AKs AQs 
+AKo AQo
+
+##listHUCat4##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs
+KQs
+AKo AQo
+
+##listHUCat5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs
+KQs KJs
+AKo AQo AJo ATo 
+KQo 
+
+##listHUCat6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listHUCat7##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listHUCat8##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 97s 
+87s 86s 
+76s 75s
+65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K8o
+QJo QTo 
+JTo T9o 98o 87o 76o 
+
+///////////////////// Lists Push
+///// EP Push
+##listep14bb##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+KQs KJs KTs
+QJs QTs
+JTs
+AKo AQo AJo
+
+##listep12bb##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+KQs KJs KTs
+QJs QTs
+JTs
+AKo AQo AJo
+
+##listep10bb##
+AA KK QQ JJ TT 99 88 77 66 55 44
+AKs AQs AJs ATs A9s A8s
+KQs KJs KTs
+QJs QTs
+JTs T9s
+AKo AQo AJo ATo
+KQo
+
+##listep8bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s
+KQs KJs KTs K9s
+QJs QTs Q9s
+JTs T9s
+AKo AQo AJo ATo
+KQo KJo
+
+##listep6bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s
+QJs QTs Q9s
+JTs T9s 98s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo QJo
+
+##listep5bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s
+QJs QTs Q9s Q8s
+JTs J9s J8s T9s 98s 87s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o
+KQo KJo KTo QJo QTo JTo
+
+//////////////////////////////////////////// HJ Push
+##listhj14bb##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+KQs KJs KTs
+QJs QTs
+JTs
+AKo AQo AJo ATo
+KQo
+
+##listhj12bb##
+AA KK QQ JJ TT 99 88 77 66 55 44
+AKs AQs AJs ATs A9s A8s A7s
+KQs KJs KTs K9s
+QJs QTs
+JTs
+T9s
+AKo AQo AJo ATo
+KQo
+
+##listhj10bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs QTs Q9s
+JTs J9s
+T9s T8s 98s
+AKo AQo AJo ATo A9o A8o
+KQo KJo QJo
+
+##listhj8bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s
+QJs QTs Q9s
+JTs J9s
+T9s T8s 98s 87s
+AKo AQo AJo ATo A9o A8o A7o
+KQo KJo KTo QJo
+
+##listhj6bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s
+QJs QTs Q9s
+JTs J9s J8s
+T9s T8s 98s 87s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o
+KQo KJo KTo QJo QTo JTo
+
+##listhj5bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s
+JTs J9s J8s J7s
+T9s T8s T7s 98s 97s 87s 76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K8o K7o QJo QTo Q9o JTo J9o T9o
+
+////////////////////////////////////////////////////// CO Push
+##listco14bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs QTs Q9s
+JTs J9s
+T9s 98s
+AKo AQo AJo ATo A9o A8o A7o
+KQo KJo KTo
+
+##listco12bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs QTs Q9s
+JTs J9s
+T9s T8s
+98s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o
+KQo KJo KTo
+QJo
+
+##listco10bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s
+QJs QTs Q9s Q8s
+JTs J9s J8s
+T9s T8s
+98s 97s 87s 76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo JTo
+
+##listco8bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s
+QJs QTs Q9s Q8s
+JTs J9s J8s
+T9s T8s
+98s 97s 87s 76s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o
+QJo QTo JTo
+
+##listco6bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s
+JTs J9s J8s J7s
+T9s T8s T7s
+98s 97s 87s 76s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K8o K7o K6o
+QJo QTo Q9o JTo J9o T9o
+
+##listco5bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s
+T9s T8s T7s T6s
+98s 97s 96s 87s 86s 76s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K8o K7o K6o K5o K4o
+QJo QTo Q9o Q8o Q7o JTo J9o J8o T9o T8o 98o
+
+////////////////////////////////////////////////////////// BU Push
+##listbu14bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s
+QJs QTs Q9s Q8s
+JTs J9s J8s
+T9s T8s
+98s 97s 87s 76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo
+JTo
+
+##listbu12bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s
+QJs QTs Q9s Q8s
+JTs J9s J8s
+T9s T8s T7s
+98s 97s 87s 76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o
+QJo QTo
+JTo
+
+##listbu10bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s
+JTs J9s J8s
+T9s T8s T7s
+98s 97s 87s 86s 76s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o
+QJo QTo Q9o
+JTo J9o T9o
+
+##listbu8bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s
+JTs J9s J8s J7s
+T9s T8s T7s
+98s 97s 87s 86s 76s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o
+QJo QTo Q9o
+JTo J9o T9o
+
+##listbu6bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s j5s
+T9s T8s T7s T6s
+98s 97s 96s 87s 86s 76s 75s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o K2o
+QJo QTo Q9o Q8o Q7o
+JTo J9o J8o T9o
+
+##listbu5bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s J5s J4s J3s
+T9s T8s T7s T6s
+98s 97s 96s 87s 86s 76s 75s 65s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o K2o
+QJo QTo Q9o Q8o Q7o Q6o Q5o
+JTo J9o J8o J7o T9o T8o 98o
+
+/////////////////////////////////////////////// SB Push
+##listsb14bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s
+JTs J9s J8s J7s
+T9s T8s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o
+QJo QTo Q9o Q8o Q7o
+JTo J9o
+
+##listsb12bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s
+JTs J9s J8s J7s
+T9s T8s 98s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o
+QJo QTo Q9o Q8o Q7o Q6o
+JTo J9o J8o
+
+##listsb10bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s J5s
+T9s T8s 98s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o K2o
+QJo QTo Q9o Q8o Q7o Q6o Q5o
+JTo J9o J8o
+T9o T8o
+
+##listsb8bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s J5s J4s
+T9s T8s T7s 
+98s 97s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o K2o
+QJo QTo Q9o Q8o Q7o Q6o Q5o Q4o
+JTo J9o J8o J7o
+T9o T8o
+
+##listsb6bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s J5s J4s J3s J2s
+T9s T8s T7s T6s
+98s 97s 96s 87s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o K2o
+QJo QTo Q9o Q8o Q7o Q6o Q5o Q4o Q3o Q2o
+JTo J9o J8o J7o J6o 
+T9o T8o T7o
+98o
+
+##listsb5bb##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s
+JTs J9s J8s J7s J6s J5s J4s J3s J2s
+T9s T8s T7s T6s T5s T4s T3s
+98s 97s 96s 95s
+87s 86s 76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o K9o K8o K7o K6o K5o K4o K3o K2o
+QJo QTo Q9o Q8o Q7o Q6o Q5o Q4o Q3o Q2o
+JTo J9o J8o J7o J6o J5o J4o J3o
+T9o T8o T7o T6o
+98o 97o
+
+//////////////////////////////////////////////////////////// Re Push // Squeeze Lists
+
+// Not in a blind
+##listRPnotblindEP13##
+AA KK QQ JJ
+AKs
+AKo
+
+##listRPnotblindEP8##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPnotblindMP13##
+AA KK QQ JJ
+AKs
+AKo
+
+##listRPnotblindMP9##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPnotblindMP6##
+AA KK QQ JJ TT 99
+AKs AQs Ajs ATs
+AKo AQo
+
+##listRPnotblindMP5##
+AA KK QQ JJ TT 99 88 77
+AKs AQs Ajs ATs
+AKo AQo AJo
+
+##listRPnotblindCO13##
+AA KK QQ JJ
+AKs
+AKo
+
+##listRPnotblindCO11##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPnotblindCO9##
+AA KK QQ JJ TT 99
+AKs AQs AJs ATs
+AKo AQo
+
+##listRPnotblindCO7##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+AKo AQo AJo
+
+##listRPnotblindCO6##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+// In the  SB
+##listRPsbEP13##
+AA KK QQ JJ
+AKs
+AKo
+
+##listRPsbEP9##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPsbMP13##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPsbMP7##
+AA KK QQ JJ TT 99 88 77 
+AKs AQs AJs ATs
+AKo AQo
+
+##listRPsbMP6##
+AA KK QQ JJ TT 99 88 77 
+AKs AQs AJs ATs
+AKo AQo AJo
+
+##listRPsbMP4##
+AA KK QQ JJ TT 99 88 77 
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPsbCO13##
+AA KK QQ JJ TT 99
+AKs AQs AJs ATs
+AKo AQo
+
+##listRPsbCO11##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+AKo AQo AJo
+
+##listRPsbCO8##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPsbCO5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPsbCO4##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+AKo AQo AJo ATo A9o A8o A7o
+KQs KJs
+KQo
+
+##listRPsbBU13##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+AKo AQo AJo
+
+##listRPsbBU10##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPsbBU8##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPsbBU6##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+AKo AQo AJo ATo A9o A8o A7o
+KQs KJs
+KQo
+
+// In the  BB
+##listRPbbEP13##
+AA KK QQ JJ
+AKs
+AKo
+
+##listRPbbEP10##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPbbMP13##
+AA KK QQ JJ TT 99
+AKs AQs
+AKo AQo
+
+##listRPbbMP8##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+AKo AQo
+
+##listRPbbMP7##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+AKo AQo AJo
+
+##listRPbbMP6##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPbbMP5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPbbMP4##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s
+KQs KJs
+AKo AQo AJo ATo
+KQo
+
+##listRPbbMP3##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo A9o A8o A7o
+KQo KJo KTo
+
+##listRPbbMP2##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+
+##listRPbbCO13##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs
+AKo AQo AJo
+
+##listRPbbCO10##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPbbCO8##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPbbCO6##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+AKo AQo AJo ATo A9o A8o A7o
+
+##listRPbbCO5##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo
+
+##listRPbbCO4##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+
+##listRPbbBU13##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPbbBU10##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s
+AKo AQo AJo ATo
+
+##listRPbbBU8##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+KQs KJs
+AKo AQo AJo ATo A9o A8o A7o
+KQo 
+
+##listRPbbBU6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+
+##listRPbbSB13##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+KQs KJs
+AKo AQo AJo ATo A9o A8o A7o
+KQo 
+
+##listRPbbSB10##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+KQs KJs KTs K9s
+AKo AQo AJo ATo A9o A8o A7o
+KQo KJo KTo
+
+##listRPbbSB8##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+
+##listRPbbSB7##
+AA KK QQ JJ TT 99 88 77 66 55 44 33
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+
+// Calling and limping lists
+##listCallSB##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo K9o K8o
+QJo QTo 
+JTo
+
+##listCallSBA##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s
+87s
+76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo T9o
+
+##listCallSBFT##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s
+QJs QTs Q9s
+JTs J9s  
+T9s 98s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o
+KQo KJo KTo
+QJo QTo 
+JTo 
+
+##listCallLoose##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listCallVeryLoose##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9S
+QJs QTs Q9s
+JTs J9s
+T9s T8s 
+98s 87s 76s 65s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo
+QJo QTo 
+JTo
+T9o
+
+##listCallMedium##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s
+KQs KJs KTs
+QJs QTs
+JTs T9s
+AKo AQo AJo ATo A9o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listCallTight##
+AA KK QQ JJ TT 99
+AKs AQs AJs ATs
+KQs KJs KTs
+QJs QTs 
+JTs
+AKo AQo
+
+##listLimpEarly##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listLimpMid##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo A9o A8o
+KQo KJo
+QJo QTo
+JTo
+
+##listLimpStd##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s
+QJs QTs Q9s
+JTs J9s
+T9s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo
+QJo QTo
+JTo 
+
+##listLimpLoose##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s
+QJs QTs Q9s Q8s
+JTs J9s J8s
+T9s T8s 
+98s 87s 76s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo
+QJo QTo
+JTo
+T9o
+
+##listCallBB##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s
+QJs QTs Q9s 
+JTs J9s  
+T9s 
+98s
+87s
+76s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo T9o
+
+##listCallBBA##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+KQs KJs KTs K9s
+QJs QTs Q9s 
+JTs J9s  
+T9s 
+98s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+////////////////////////////////////  Lists 3bet
+##list3BetVsEP1##
+// 5.9%
+AA KK QQ JJ TT
+AKs AQs AJs
+AKo AQo AJo 
+
+##list3BetVsEp2##
+// 5.9%
+AA KK QQ JJ TT
+AKs AQs AJs
+AKo AQo AJo 
+
+##list3BetVsEP3##
+// 7.4%
+AA KK QQ JJ TT
+AKs AQs AJs ATs
+KQs
+AKo AQo AJo ATo
+
+##list3BetVsMP1##
+// 8%
+AA KK QQ JJ TT
+AKs AQs AJs ATs A9s
+KQs KJs
+AKo AQo AJo ATo
+
+##list3BetVsMP2##
+// 9.5%
+AA KK QQ JJ TT
+AKs AQs AJs ATs A9s A8s
+KQs KJs KTs
+AKo AQo AJo ATo
+KQo
+
+##list3BetVsMP3##
+// 11.5%
+AA KK QQ JJ TT 99
+AKs AQs AJs ATs A9s A8s
+KQs KJs KTs K9s
+QJs
+AKo AQo AJo ATo
+KQo KJo
+
+##list3BetVsCO##
+// 15.7%
+AA KK QQ JJ TT 99
+AKs AQs AJs ATs A9s A8s A7s A6s A5s
+KQs KJs KTs K9s
+QJs QTs
+JTs
+AKo AQo AJo ATo A9o
+KQo KJo KTo
+QJo
+
+##list3BetVsBU##
+// 19%
+AA KK QQ JJ TT 99 88 77 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s
+KQs KJs KTs K9s
+QJs QTs
+JTs
+T9s
+AKo AQo AJo ATo A9o A8o
+KQo KJo KTo
+QJo
+JTo
+
+##list3BetVsSB##
+// 27%
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s
+KQs KJs KTs K9s K8s
+QJs QTs Q9s Q8s
+JTs J9s J8s
+T9s
+98s
+87s
+AKo AQo AJo ATo A9o A8o A7o A6o
+KQo KJo KTo K9o
+QJo QTo Q9o
+JTo J9o
+
+##listbad##
+J2s
+T5s T4s T3s T2s 
+95s 94s 93s 92s 
+85s 84s 83s 82s 
+74s 73s 72s 
+64s 63s 62s 
+53s 52s 
+42s
+Q4o Q3o Q2o 
+J6o J5o J4o J3o J2o 
+T7o T6o T5o T4o T3o T2o 
+97o 96o 95o 94o 93o 92o 
+86o 85o 84o 83o 82o 
+75o 74o 73o 72o 
+64o 63o 62o 
+54o 53o 52o 
+43o 42o 
+32o 
+
+##listverybad##
+T4s T3s T2s 
+94s 93s 92s 
+84s 83s 82s 
+74s 73s 72s 
+63s 62s 
+52s 
+J3o J2o 
+T6o T5o T4o T3o T2o 
+96o 95o 94o 93o 92o 
+86o 85o 84o 83o 82o 
+75o 74o 73o 72o 
+65o 64o 63o 62o 
+53o 52o 
+43o 42o 
+32o 
+
+##f$HandRank2Way##
+//////////////////////////////////////////////////////////////
+/////////////////////////////////////         // Hand Ranks \\
+//////////////////////////////////////////////////////////////
+//
+// Introducing personalised hand ranking
+//
+hand$AA ? 12 :
+hand$KK ? 24 :
+hand$QQ ? 36 :
+hand$JJ ? 48 :
+hand$TT ? 60 :
+hand$99 ? 72 :
+hand$88 ? 84 :
+hand$AKsuited ? 92 :
+hand$77 ? 104 :
+hand$AQsuited ? 112 :
+hand$AK ? 136 :
+hand$AJsuited ? 144 :
+hand$AQ ? 168 :
+hand$ATsuited ? 176 :
+hand$66 ? 188 :
+hand$AJ ? 212 :
+hand$KQsuited ? 220 :
+hand$AT ? 244 :
+hand$A9suited ? 252 :
+hand$KJsuited ? 260 :
+hand$A8suited ? 268 :
+hand$KTsuited ? 276 :
+hand$KQ ? 300 :
+hand$55 ? 312 :
+hand$A7suited ? 320 :
+hand$A9 ? 344 :
+hand$KJ ? 368 :
+hand$QJsuited ? 376 :
+hand$K9suited ? 384 :
+hand$KT ? 408 :
+hand$A8 ? 432 :
+hand$A6suited ? 440 :
+hand$QTsuited ? 448 :
+hand$A5suited ? 456 :
+hand$A4suited ? 464 :
+hand$A7 ? 488 :
+hand$QJ ? 512 :
+hand$K8suited ? 520 :
+hand$A3suited ? 528 :
+hand$K9 ? 552 :
+hand$44 ? 564 :
+hand$Q9suited ? 572 :
+hand$JTsuited ? 580 :
+hand$QT ? 604 :
+hand$A6 ? 628 :
+hand$K7suited ? 636 :
+hand$A5 ? 660  :
+hand$A2suited ? 668 :
+hand$K6suited ? 676 :
+hand$A4 ? 700 :
+hand$K8 ? 724 :
+hand$Q8suited ? 732 :
+hand$J9suited ? 740 :
+hand$A3 ? 764 :
+hand$K5suited ? 772 :
+hand$Q9 ? 796 :
+hand$JT ? 820 :
+hand$K7 ? 844 :
+hand$A2 ? 868 :
+hand$K4suited ? 876 :
+hand$33 ? 888 :
+hand$Q7suited ? 896 :
+hand$K6 ? 920 :
+hand$T9suited ? 928 :
+hand$J8suited ? 936 :
+hand$K3suited ? 944 :
+hand$Q8 ? 968 :
+hand$Q6suited ? 976 :
+hand$J9 ? 1000 :
+hand$K5 ? 1024 :
+hand$K2suited ? 1032 :
+hand$Q5suited ? 1040 :
+hand$T8suited ? 1048 :
+hand$J7suited ? 1056 :
+hand$K4 ? 1080 :
+hand$Q7 ? 1104 :
+hand$T9 ? 1128 :
+hand$Q4suited ? 1136 :
+hand$J8 ? 1160  :
+hand$K3 ? 1184 :
+hand$22 ? 1196  :
+hand$Q6 ? 1220 :
+hand$Q3suited ? 1228 :
+hand$98suited ? 1236 :
+hand$T7suited ? 1244 :
+hand$J6 ? 1252 :
+hand$K2 ? 1276 :
+hand$Q2suited ? 1284 :
+hand$Q5 ? 1308 :
+hand$J5 ? 1316 :
+hand$T8 ? 1340 :
+hand$J7 ? 1364 :
+hand$Q4 ? 1388 :
+hand$97suited ? 1396 :
+hand$J4suited ? 1404 :
+hand$T6suited ? 1412 :
+hand$J3suited ? 1420 :
+hand$Q3 ? 1444 :
+hand$98 ? 1468 :
+hand$T7 ? 1492 :
+hand$J6 ? 1516 :
+hand$87suited ? 1524 :
+hand$J2suited ? 1532 :
+hand$96 ? 1540 :
+hand$Q2 ? 1564 :
+hand$J5 ? 1588 :
+hand$T5suited ? 1596 :
+hand$T4suited ? 1604 :
+hand$97 ? 1628 :
+hand$J4 ? 1652 :
+hand$T6 ? 1676 :
+hand$86suited ? 1684 :
+hand$95suited ? 1692 :
+hand$T3suited ? 1700 :
+hand$J3 ? 1724 :
+hand$76suited ? 1732 :
+hand$87 ? 1756 :
+hand$T2suited ? 1764 :
+hand$96 ? 1788 :
+hand$J2 ? 1812 :
+hand$85suited ? 1820 :
+hand$T5 ? 1844 :
+hand$94suited ? 1852 :
+hand$T4 ? 1876 :
+hand$75suited ? 1884 :
+hand$93suited ? 1892 :
+hand$86 ? 1916 :
+hand$65suited ? 1924 :
+hand$95 ? 1948 :
+hand$T3 ? 1972 :
+hand$84suited ? 1980 :
+hand$92suited ? 1988 :
+hand$76 ? 2012 :
+hand$T2 ? 2036 :
+hand$74suited ? 2044 :
+hand$85 ? 2068 :
+hand$54suited ? 2076 :
+hand$64suited ? 2084 :
+hand$83suited ? 2092 :
+hand$94 ? 2116 :
+hand$75 ? 2140 :
+hand$82suited ? 2148 :
+hand$93 ? 2172 :
+hand$73suited ? 2180 :
+hand$65 ? 2204 :
+hand$53suited ? 2212 :
+hand$63suited ? 2220 :
+hand$84 ? 2244 :
+hand$92 ? 2268 :
+hand$43suited ? 2276 :
+hand$74 ? 2300 :
+hand$72suited ? 2308 :
+hand$54 ? 2332 :
+hand$64 ? 2356 :
+hand$52suited ? 2364 :
+hand$62suited ? 2372 :
+hand$83 ? 2396 :
+hand$82 ? 2420 :
+hand$42suited ? 2428 :
+hand$73 ? 2452 :
+hand$53 ? 2476 :
+hand$63 ? 2500 :
+hand$32suited ? 2508 :
+hand$43 ? 2532 :
+hand$72 ? 2556 :
+hand$52 ? 2580 :
+hand$62 ? 2604 :
+hand$42 ? 2628 :
+hand$32 ? 2652 :
+2652
+
+##f$HandRank_Playability_General##
+hand$AA ? 12 :
+hand$KK ? 24 :
+hand$QQ ? 36 :
+hand$JJ ? 48 :
+hand$TT ? 60 :
+hand$99 ? 72 :
+hand$AKsuited ? 80 :
+hand$88 ? 92 :
+hand$AQsuited ? 100 :
+hand$AK ? 124 :
+hand$AJsuited ? 132 :
+hand$77 ? 144 :
+hand$KQsuited ? 152 :
+hand$ATsuited ? 160 :
+hand$AQ ? 184 :
+hand$KJsuited ? 192 :
+hand$AJ ? 216 :
+hand$KTsuited ? 224 :
+hand$KQ ? 248 :
+hand$A9suited ? 256 :
+hand$QJsuited ? 264 :
+hand$AT ? 288 :
+hand$66 ? 300 :
+hand$A8suited ? 308 :
+hand$KJ ? 332 :
+hand$QTsuited ? 340 :
+hand$K9suited ? 348 :
+hand$JTsuited ? 356 :
+hand$A7suited ? 364 :
+hand$KT ? 388 :
+hand$QJ ? 412 :
+hand$A9 ? 436 :
+hand$55 ? 448 :
+hand$A5suited ? 456 :
+hand$A6suited ? 464 :
+hand$Q9suited ? 472 :
+hand$QT ? 496 :
+hand$A8 ? 520 :
+hand$K8suited ? 528 :
+hand$A4suited ? 536 :
+hand$J9suited ? 544 :
+hand$K9 ? 568 :
+hand$A3suited ? 576 :
+hand$JT ? 600 :
+hand$K7suited ? 608 :
+hand$A7 ? 632 :
+hand$T9suited ? 640 :
+hand$Q8suited ? 648 :
+hand$A2suited ? 656 :
+hand$K6suited ? 664 :
+hand$44 ? 676 :
+hand$Q9 ? 700 :
+hand$A5 ? 724 :
+hand$A6 ? 748 :
+hand$J8suited ? 756  :
+hand$K5suited ? 764 :
+hand$K8 ? 788 :
+hand$T8suited ? 796 :
+hand$A4 ? 820 :
+hand$J9 ? 844 :
+hand$Q7suited ? 852 :
+hand$K4suited ? 860 :
+hand$98suited ? 868 :
+hand$A3 ? 892 :
+hand$K7 ? 916 :
+hand$T9 ? 940 :
+hand$Q6suited ? 948 :
+hand$K3suited ? 956 :
+hand$J7 ? 964 :
+hand$Q8 ? 988 :
+hand$A2 ? 1012 :
+hand$33 ? 1024 :
+hand$K6 ? 1048 :
+hand$Q5suited ? 1056 :
+hand$K2suited ? 1064 :
+hand$T7suited ? 1072 :
+hand$J8 ? 1096 :
+hand$97suited ? 1104 :
+hand$87suited ? 1112 :
+hand$Q4suited ? 1120 :
+hand$K5 ? 1144 :
+hand$T8 ? 1168 :
+hand$J6suited ? 1176 :
+hand$Q3suited ? 1184 :
+hand$Q7 ? 1208 :
+hand$98 ? 1232 :
+hand$K4 ? 1256 :
+hand$T6suited ? 1264 :
+hand$J5suited ? 1272 :
+hand$Q2suited ? 1280 :
+hand$96suited ? 1288 :
+hand$Q6 ? 1312 :
+hand$76suited ? 1320 :
+hand$86suited ? 1328 :
+hand$J7 ? 1352 :
+hand$22 ? 1364 :
+hand$K3 ? 1388 :
+hand$J4suited ? 1396 :
+hand$T7 ? 1420 :
+hand$Q5 ? 1444 :
+hand$J3suited ? 1452 :
+hand$K2 ? 1476 :
+hand$T5suited ? 1484 :
+hand$97 ? 1508 :
+hand$87 ? 1532 :
+hand$65suited ? 1540 :
+hand$J2suited ? 1548 :
+hand$95suited ? 1556 :
+hand$75suited ? 1564 :
+hand$Q4 ? 1588 :
+hand$T4suited ? 1596 :
+hand$85suited ? 1604 :
+hand$J6 ? 1628 :
+hand$T3suited ? 1636 :
+hand$Q3 ? 1660 :
+hand$54suited ? 1668 :
+hand$T6 ? 1692 :
+hand$J5 ? 1716 :
+hand$T2suited ? 1724 :
+hand$96 ? 1748 :
+hand$64suited ? 1756 :
+hand$86 ? 1780 :
+hand$76 ? 1804 :
+hand$Q2 ? 1828 :
+hand$94suited ? 1836 :
+hand$74suited ? 1844 :
+hand$84suited ? 1852 :
+hand$J4 ? 1876 :
+hand$93suited ? 1884 :
+hand$53suited ? 1892 :
+hand$J3 ? 1916 :
+hand$92suited ? 1924 :
+hand$T5 ? 1948 :
+hand$63suited ? 1956 :
+hand$65 ? 1980 :
+hand$73suited ? 1988 :
+hand$43suited ? 1996 :
+hand$95 ? 2020 :
+hand$75 ? 2044 :
+hand$83suited ? 2052 :
+hand$J2 ? 2076 :
+hand$85 ? 2100 :
+hand$T4 ? 2124 :
+hand$82suited ? 2132 :
+hand$52suited ? 2140 :
+hand$T3 ? 2164 :
+hand$54 ? 2188 :
+hand$62suited ? 2196 :
+hand$42suited ? 2204 :
+hand$64 ? 2228 :
+hand$72suited ? 2236 :
+hand$T2 ? 2264 :
+hand$74 ? 2288 :
+hand$94 ? 2312 :
+hand$84 ? 2336 :
+hand$32suited ? 2344 :
+hand$93 ? 2368 :
+hand$53 ? 2392 :
+hand$92 ? 2416 :
+hand$63 ? 2440 :
+hand$43 ? 2464 :
+hand$73 ? 2488 :
+hand$83 ? 2512 :
+hand$82 ? 2536 :
+hand$52 ? 2560 :
+hand$62 ? 2584 :
+hand$42 ? 2608 :
+hand$72 ? 2632 :
+hand$32 ? 2656 :
+2652
+
+##f$HandRange3Bet##
+((balance_raischair + currentbet_raischair)/bblind) <= 17 ? {
+hand$AA ? 12 :
+hand$KK ? 24 :
+hand$QQ ? 36 :
+hand$JJ ? 48 :
+hand$TT ? 60 :
+hand$99 ? 72 :
+hand$88 ? 84 :
+hand$AKsuited ? 92 :
+hand$77 ? 104 :
+hand$AQsuited ? 112 :
+hand$AK ? 136 :
+hand$AJsuited ? 144 :
+hand$AQ ? 168 :
+hand$ATsuited ? 176 :
+hand$66 ? 188 :
+hand$AJ ? 212 :
+hand$KQsuited ? 220 :
+hand$AT ? 244 :
+hand$A9suited ? 252 :
+hand$KJsuited ? 260 :
+hand$A8suited ? 268 :
+hand$KTsuited ? 276 :
+hand$KQ ? 300 :
+hand$55 ? 312 :
+hand$A7suited ? 320 :
+hand$A9 ? 344 :
+hand$KJ ? 368 :
+hand$QJsuited ? 376 :
+hand$K9suited ? 384 :
+hand$KT ? 408 :
+hand$A8 ? 432 :
+hand$A6suited ? 440 :
+hand$QTsuited ? 448 :
+hand$A5suited ? 456 :
+hand$A4suited ? 464 :
+hand$A7 ? 488 :
+hand$QJ ? 512 :
+hand$K8suited ? 520 :
+hand$A3suited ? 528 :
+hand$K9 ? 552 :
+hand$44 ? 564 :
+hand$Q9suited ? 572 :
+hand$JTsuited ? 580 :
+hand$QT ? 604 :
+hand$A6 ? 628 :
+hand$K7suited ? 636 :
+hand$A5 ? 660  :
+hand$A2suited ? 668 :
+hand$K6suited ? 676 :
+hand$A4 ? 700 :
+hand$K8 ? 724 :
+hand$Q8suited ? 732 :
+hand$J9suited ? 740 :
+hand$A3 ? 764 :
+hand$K5suited ? 772 :
+hand$Q9 ? 796 :
+hand$JT ? 820 :
+hand$K7 ? 844 :
+hand$A2 ? 868 :
+hand$K4suited ? 876 :
+hand$33 ? 888 :
+hand$Q7suited ? 896 :
+hand$K6 ? 920 :
+hand$T9suited ? 928 :
+hand$J8suited ? 936 :
+hand$K3suited ? 944 :
+hand$Q8 ? 968 :
+hand$Q6suited ? 976 :
+hand$J9 ? 1000 :
+hand$K5 ? 1024 :
+hand$K2suited ? 1032 :
+hand$Q5suited ? 1040 :
+hand$T8suited ? 1048 :
+hand$J7suited ? 1056 :
+hand$K4 ? 1080 :
+hand$Q7 ? 1104 :
+hand$T9 ? 1128 :
+hand$Q4suited ? 1136 :
+hand$J8 ? 1160  :
+hand$K3 ? 1184 :
+hand$22 ? 1196  :
+hand$Q6 ? 1220 :
+hand$Q3suited ? 1228 :
+hand$98suited ? 1236 :
+hand$T7suited ? 1244 :
+hand$J6 ? 1252 :
+hand$K2 ? 1276 :
+hand$Q2suited ? 1284 :
+hand$Q5 ? 1308 :
+hand$J5 ? 1316 :
+hand$T8 ? 1340 :
+hand$J7 ? 1364 :
+hand$Q4 ? 1388 :
+hand$97suited ? 1396 :
+hand$J4suited ? 1404 :
+hand$T6suited ? 1412 :
+hand$J3suited ? 1420 :
+hand$Q3 ? 1444 :
+hand$98 ? 1468 :
+hand$T7 ? 1492 :
+hand$J6 ? 1516 :
+hand$87suited ? 1524 :
+hand$J2suited ? 1532 :
+hand$96 ? 1540 :
+hand$Q2 ? 1564 :
+hand$J5 ? 1588 :
+hand$T5suited ? 1596 :
+hand$T4suited ? 1604 :
+hand$97 ? 1628 :
+hand$J4 ? 1652 :
+hand$T6 ? 1676 :
+hand$86suited ? 1684 :
+hand$95suited ? 1692 :
+hand$T3suited ? 1700 :
+hand$J3 ? 1724 :
+hand$76suited ? 1732 :
+hand$87 ? 1756 :
+hand$T2suited ? 1764 :
+hand$96 ? 1788 :
+hand$J2 ? 1812 :
+hand$85suited ? 1820 :
+hand$T5 ? 1844 :
+hand$94suited ? 1852 :
+hand$T4 ? 1876 :
+hand$75suited ? 1884 :
+hand$93suited ? 1892 :
+hand$86 ? 1916 :
+hand$65suited ? 1924 :
+hand$95 ? 1948 :
+hand$T3 ? 1972 :
+hand$84suited ? 1980 :
+hand$92suited ? 1988 :
+hand$76 ? 2012 :
+hand$T2 ? 2036 :
+hand$74suited ? 2044 :
+hand$85 ? 2068 :
+hand$54suited ? 2076 :
+hand$64suited ? 2084 :
+hand$83suited ? 2092 :
+hand$94 ? 2116 :
+hand$75 ? 2140 :
+hand$82suited ? 2148 :
+hand$93 ? 2172 :
+hand$73suited ? 2180 :
+hand$65 ? 2204 :
+hand$53suited ? 2212 :
+hand$63suited ? 2220 :
+hand$84 ? 2244 :
+hand$92 ? 2268 :
+hand$43suited ? 2276 :
+hand$74 ? 2300 :
+hand$72suited ? 2308 :
+hand$54 ? 2332 :
+hand$64 ? 2356 :
+hand$52suited ? 2364 :
+hand$62suited ? 2372 :
+hand$83 ? 2396 :
+hand$82 ? 2420 :
+hand$42suited ? 2428 :
+hand$73 ? 2452 :
+hand$53 ? 2476 :
+hand$63 ? 2500 :
+hand$32suited ? 2508 :
+hand$43 ? 2532 :
+hand$72 ? 2556 :
+hand$52 ? 2580 :
+hand$62 ? 2604 :
+hand$42 ? 2628 :
+hand$32 ? 2652 :
+2652 } :
+
+hand$AA ? 12 :
+hand$KK ? 24 :
+hand$QQ ? 36 :
+hand$JJ ? 48 :
+hand$TT ? 60 :
+hand$99 ? 72 :
+hand$AKsuited ? 80 :
+hand$88 ? 92 :
+hand$AQsuited ? 100 :
+hand$AK ? 124 :
+hand$AJsuited ? 132 :
+hand$77 ? 144 :
+hand$KQsuited ? 152 :
+hand$ATsuited ? 160 :
+hand$AQ ? 184 :
+hand$KJsuited ? 192 :
+hand$AJ ? 216 :
+hand$KTsuited ? 224 :
+hand$KQ ? 248 :
+hand$A9suited ? 256 :
+hand$QJsuited ? 264 :
+hand$AT ? 288 :
+hand$66 ? 300 :
+hand$A8suited ? 308 :
+hand$KJ ? 332 :
+hand$QTsuited ? 340 :
+hand$K9suited ? 348 :
+hand$JTsuited ? 356 :
+hand$A7suited ? 364 :
+hand$KT ? 388 :
+hand$QJ ? 412 :
+hand$A9 ? 436 :
+hand$55 ? 448 :
+hand$A5suited ? 456 :
+hand$A6suited ? 464 :
+hand$Q9suited ? 472 :
+hand$QT ? 496 :
+hand$A8 ? 520 :
+hand$K8suited ? 528 :
+hand$A4suited ? 536 :
+hand$J9suited ? 544 :
+hand$K9 ? 568 :
+hand$A3suited ? 576 :
+hand$JT ? 600 :
+hand$K7suited ? 608 :
+hand$A7 ? 632 :
+hand$T9suited ? 640 :
+hand$Q8suited ? 648 :
+hand$A2suited ? 656 :
+hand$K6suited ? 664 :
+hand$44 ? 676 :
+hand$Q9 ? 700 :
+hand$A5 ? 724 :
+hand$A6 ? 748 :
+hand$J8suited ? 756  :
+hand$K5suited ? 764 :
+hand$K8 ? 788 :
+hand$T8suited ? 796 :
+hand$A4 ? 820 :
+hand$J9 ? 844 :
+hand$Q7suited ? 852 :
+hand$K4suited ? 860 :
+hand$98suited ? 868 :
+hand$A3 ? 892 :
+hand$K7 ? 916 :
+hand$T9 ? 940 :
+hand$Q6suited ? 948 :
+hand$K3suited ? 956 :
+hand$J7 ? 964 :
+hand$Q8 ? 988 :
+hand$A2 ? 1012 :
+hand$33 ? 1024 :
+hand$K6 ? 1048 :
+hand$Q5suited ? 1056 :
+hand$K2suited ? 1064 :
+hand$T7suited ? 1072 :
+hand$J8 ? 1096 :
+hand$97suited ? 1104 :
+hand$87suited ? 1112 :
+hand$Q4suited ? 1120 :
+hand$K5 ? 1144 :
+hand$T8 ? 1168 :
+hand$J6suited ? 1176 :
+hand$Q3suited ? 1184 :
+hand$Q7 ? 1208 :
+hand$98 ? 1232 :
+hand$K4 ? 1256 :
+hand$T6suited ? 1264 :
+hand$J5suited ? 1272 :
+hand$Q2suited ? 1280 :
+hand$96suited ? 1288 :
+hand$Q6 ? 1312 :
+hand$76suited ? 1320 :
+hand$86suited ? 1328 :
+hand$J7 ? 1352 :
+hand$22 ? 1364 :
+hand$K3 ? 1388 :
+hand$J4suited ? 1396 :
+hand$T7 ? 1420 :
+hand$Q5 ? 1444 :
+hand$J3suited ? 1452 :
+hand$K2 ? 1476 :
+hand$T5suited ? 1484 :
+hand$97 ? 1508 :
+hand$87 ? 1532 :
+hand$65suited ? 1540 :
+hand$J2suited ? 1548 :
+hand$95suited ? 1556 :
+hand$75suited ? 1564 :
+hand$Q4 ? 1588 :
+hand$T4suited ? 1596 :
+hand$85suited ? 1604 :
+hand$J6 ? 1628 :
+hand$T3suited ? 1636 :
+hand$Q3 ? 1660 :
+hand$54suited ? 1668 :
+hand$T6 ? 1692 :
+hand$J5 ? 1716 :
+hand$T2suited ? 1724 :
+hand$96 ? 1748 :
+hand$64suited ? 1756 :
+hand$86 ? 1780 :
+hand$76 ? 1804 :
+hand$Q2 ? 1828 :
+hand$94suited ? 1836 :
+hand$74suited ? 1844 :
+hand$84suited ? 1852 :
+hand$J4 ? 1876 :
+hand$93suited ? 1884 :
+hand$53suited ? 1892 :
+hand$J3 ? 1916 :
+hand$92suited ? 1924 :
+hand$T5 ? 1948 :
+hand$63suited ? 1956 :
+hand$65 ? 1980 :
+hand$73suited ? 1988 :
+hand$43suited ? 1996 :
+hand$95 ? 2020 :
+hand$75 ? 2044 :
+hand$83suited ? 2052 :
+hand$J2 ? 2076 :
+hand$85 ? 2100 :
+hand$T4 ? 2124 :
+hand$82suited ? 2132 :
+hand$52suited ? 2140 :
+hand$T3 ? 2164 :
+hand$54 ? 2188 :
+hand$62suited ? 2196 :
+hand$42suited ? 2204 :
+hand$64 ? 2228 :
+hand$72suited ? 2236 :
+hand$T2 ? 2264 :
+hand$74 ? 2288 :
+hand$94 ? 2312 :
+hand$84 ? 2336 :
+hand$32suited ? 2344 :
+hand$93 ? 2368 :
+hand$53 ? 2392 :
+hand$92 ? 2416 :
+hand$63 ? 2440 :
+hand$43 ? 2464 :
+hand$73 ? 2488 :
+hand$83 ? 2512 :
+hand$82 ? 2536 :
+hand$52 ? 2560 :
+hand$62 ? 2584 :
+hand$42 ? 2608 :
+hand$72 ? 2632 :
+hand$32 ? 2656 :
+2652
