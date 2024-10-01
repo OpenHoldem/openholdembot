@@ -21,6 +21,7 @@
 #include "CAutoconnector.h"
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
+#include "CAutoOcr.h"
 
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -55,599 +56,6 @@ CScraper *p_scraper = NULL;
 	ReleaseDC(p_autoconnector->attached_hwnd(), hdc); \
   --_leaking_GDI_objects;
 
-// Declare DNN-Recognizer
-//TextRecognitionModel recognizer;
-TessBaseAPI api;
-
-////  Automatic Text Detection and Recognition functions  ///////////
-
-void CScraper::detectMotion(void) {
-	/*
-	//Subtract consecutive frames
-	cv::Mat matN = cv::imread("frame1.bmp");
-	cv::Mat matM = cv::imread("frame2.bmp");
-	cv::Mat matDiff2 = abs(matM - matN);
-	Mat matDiff;
-	cvtColor(matDiff2, matDiff, COLOR_BGR2GRAY);
-	//imshow("test", matDiff);
-	//waitKey();
-
-	//Set region of interest (subframe)
-	int x(0), y(0), width(57), height(67);
-	cv::Rect myRegionOfInterest(x, y, width, height);
-
-	//Define motion
-	double Threshold = 0.1;
-	double nze = cv::countNonZero(matDiff(myRegionOfInterest));
-	double motionFactor = nze / (width*height*1); //C=255 for uchar, C=1 for binary, etc.
-	if (motionFactor>Threshold)
-	cout << "Motion detected at specific ROI";
-	*/
-}
-
-void CScraper::detectBlobs(void) {
-	/*
-	imshow("AutoOcr view", img_resized);
-	imshow("AutoOcr view 2", img_resized2);
-	waitKey();
-
-	// Set up the detector with default parameters.
-	Ptr<SimpleBlobDetector> detector;
-	detector = SimpleBlobDetector::create();
-
-	// Detect blobs.
-	vector<KeyPoint> keypoints;
-	detector->detect(img_resized, keypoints);
-
-	// Draw detected blobs as red circles.
-	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
-	Mat im_with_keypoints, im_with_keypoints2;
-	drawKeypoints(img_resized, keypoints, im_with_keypoints, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-
-	detector->detect(img_resized2, keypoints);
-	drawKeypoints(img_resized2, keypoints, im_with_keypoints2, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-	// Show blobs
-	imshow("AutoOcr view", im_with_keypoints);
-	imshow("AutoOcr view 2", im_with_keypoints2);
-	waitKey();
-	*/
-}
-
-void CScraper::fourPointsTransform(const Mat& frame, const Point2f vertices[], Mat& result)
-{
-	const Size outputSize = Size(100, 32);
-	Point2f targetVertices[4] = {
-		Point(0, outputSize.height - 1),
-		Point(0, 0), Point(outputSize.width - 1, 0),
-		Point(outputSize.width - 1, outputSize.height - 1)
-	};
-	Mat rotationMatrix = getPerspectiveTransform(vertices, targetVertices);
-	warpPerspective(frame, result, rotationMatrix, outputSize);
-}
-
-void CScraper::textDetectAndRecognize(void) {
-	float confThreshold = 0.5;
-	float nmsThreshold = 0.4;
-	int width = 320;
-	int height = 320;
-	int imreadRGB = 0;
-	String detModelPath = "frozen_east_text_detection.pb";
-	String recModelPath = "CRNN_VGG_BiLSTM_CTC.onnx";
-	String vocPath = "alphabet_94.txt";
-	// Load networks.
-	CV_Assert(!detModelPath.empty() && !recModelPath.empty());
-	TextDetectionModel_EAST detector(detModelPath);
-	detector.setConfidenceThreshold(confThreshold)
-		.setNMSThreshold(nmsThreshold);
-	TextRecognitionModel recognizer(recModelPath);
-	// Load vocabulary
-	CV_Assert(!vocPath.empty());
-	ifstream vocFile;
-	//vocFile.open(samples::findFile(vocPath));
-	CV_Assert(vocFile.is_open());
-	String vocLine;
-	vector<String> vocabulary;
-	while (getline(vocFile, vocLine)) {
-		vocabulary.push_back(vocLine);
-	}
-	recognizer.setVocabulary(vocabulary);
-	recognizer.setDecodeType("CTC-greedy");
-	// Parameters for Recognition
-	double recScale = 1.0 / 127.5;
-	Scalar recMean = Scalar(127.5, 127.5, 127.5);
-	Size recInputSize = Size(100, 32);
-	recognizer.setInputParams(recScale, recInputSize, recMean);
-	// Parameters for Detection
-	double detScale = 1.0;
-	Size detInputSize = Size(width, height);
-	Scalar detMean = Scalar(123.68, 116.78, 103.94);
-	bool swapRB = true;
-	detector.setInputParams(detScale, detInputSize, detMean, swapRB);
-	// Detection
-	//Mat frame = img_resized.clone();
-	//Mat frame = imread("frame000001.bmp");
-	Mat frame;
-	vector< vector<Point> > detResults;
-	detector.detect(frame, detResults);
-	Mat frame2 = frame.clone();
-	if (detResults.size() > 0) {
-		// Text Recognition
-		Mat recInput;
-		if (!imreadRGB) {
-			cvtColor(frame, recInput, cv::COLOR_BGR2GRAY);
-		}
-		else {
-			recInput = frame;
-		}
-		vector< vector<Point> > contours;
-		for (uint i = 0; i < detResults.size(); i++)
-		{
-			const auto& quadrangle = detResults[i];
-			CV_CheckEQ(quadrangle.size(), (size_t)4, "");
-			contours.emplace_back(quadrangle);
-			vector<Point2f> quadrangle_2f;
-			for (int j = 0; j < 4; j++)
-				quadrangle_2f.emplace_back(quadrangle[j]);
-			Mat cropped;
-			fourPointsTransform(recInput, &quadrangle_2f[0], cropped);
-			std::string recognitionResult = recognizer.recognize(cropped);
-			cout << i << ": '" << recognitionResult << "'" << endl;
-			putText(frame2, recognitionResult, quadrangle[3], FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0, 0, 255), 2);
-		}
-		polylines(frame2, contours, true, Scalar(255, 255, 255), 1);
-	}
-	imshow("Output", frame2);
-	waitKey();
-}
-
-Mat CScraper::binarize_array_opencv(Mat image, int threshold) {
-	// Binarize image from gray channel with 76 as threshold
-	Mat img;
-	cvtColor(image, img, COLOR_BGR2RGB);
-	cvtColor(img, img, COLOR_BGR2GRAY);
-	Mat thresh;
-	cv::threshold(img, thresh, threshold, 255, THRESH_BINARY_INV);
-	return thresh;
-}
-
-void CScraper::detectText(void) {
-	// Load model weights
-	TextDetectionModel_DB model("DB_TD500_resnet18.onnx");
-	// Post-processing parameters
-	float binThresh = 0.1;
-	float polyThresh = 0.1;
-	uint maxCandidates = 20000;
-	double unclipRatio = 2.5;
-	model.setBinaryThreshold(binThresh)
-		.setPolygonThreshold(polyThresh)
-		.setMaxCandidates(maxCandidates)
-		.setUnclipRatio(unclipRatio)
-		;
-	//Mat input = imread("frame000001.bmp");
-	Mat input;
-	/*
-	cvtColor(input, input, COLOR_BGR2GRAY);
-	input.convertTo(input, -1, 2, 0);	// changing contrast
-	imshow("Contrasted", input);
-	waitKey();
-	*/
-	// Normalization parameters
-	double scale = 1.0 / 255.0;
-	Scalar mean = Scalar(122.67891434, 116.66876762, 104.00698793);
-	// The input shape
-	Size inputSize = Size(1280, 736);
-	model.setInputParams(scale, inputSize, mean);
-	vector<vector<Point>> detResults;
-	vector<RotatedRect> rectDetResults;
-	//model.detect(input, detResults);
-	model.detectTextRectangles(input, rectDetResults);
-	// Visualization
-	//polylines(input, detResults, true, Scalar(255, 255, 255), 1);
-	for (size_t i = 0; i < rectDetResults.size(); i++)
-		rectangle(input, rectDetResults[i].boundingRect(), Scalar(255, 0, 0), 1);
-	imshow("Text Detection", input);
-	waitKey();
-}
-
-Mat CScraper::prepareImage(Mat img_orig, Mat* img_cropped, RMapCI region, bool binarize, int threshold) {
-	// Prepare image for OCR
-	//  !!  Do not change those settings and values !!   //
-	//  Or display on OCR view control will be distorded //
-	//imshow("Output", img_orig);
-	//waitKey();
-	Mat img_resized;
-	int basewidth, hsize;
-	float wpercent;
-	if (img_orig.cols > img_orig.rows * 1.25) {
-		basewidth = MAT_WIDTH;
-		wpercent = (basewidth / static_cast<float>(img_orig.cols));
-		hsize = static_cast<int>(static_cast<float>(img_orig.rows) * wpercent);
-	}
-	else {
-		hsize = MAT_HEIGHT;
-		wpercent = (hsize / static_cast<float>(img_orig.rows));
-		basewidth = static_cast<int>(static_cast<float>(img_orig.cols) * wpercent);
-	}
-	cvtColor(img_orig, img_resized, COLOR_BGR2GRAY);
-	resize(img_resized, img_resized, Size(basewidth, hsize), INTER_LANCZOS4);
-	resize(img_orig, *img_cropped, Size(basewidth, hsize), INTER_LANCZOS4);
-
-	if (binarize) {
-		img_resized = binarize_array_opencv(img_resized, threshold);
-	}
-	Mat img_bounded = img_resized.clone();
-
-	// Cropping management ///////////////////////////
-	if (region->second.use_cropping == true) {
-		// downsample and use it for processing
-		//pyrDown(*img_cropped, *img_cropped);
-		int crop_size = region->second.crop_size;
-		if (crop_size < 2)
-			return *img_cropped;
-		Mat gray;
-		cvtColor(*img_cropped, gray, COLOR_BGR2GRAY);
-		// morphological gradient
-		Mat grad;
-		Mat morphKernel = getStructuringElement(MORPH_ELLIPSE, Size(crop_size, crop_size));
-		morphologyEx(gray, grad, MORPH_GRADIENT, morphKernel);
-		// binarize
-		Mat bw;
-		cv::threshold(grad, bw, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
-		// connect horizontally oriented regions
-		Mat connected;
-		morphKernel = getStructuringElement(MORPH_RECT, Size(1, 1));
-		morphologyEx(bw, connected, MORPH_CLOSE, morphKernel);
-		// find contours
-		Mat mask = Mat::zeros(bw.size(), CV_8UC1);
-		vector<vector<Point>> contours;
-		vector<Vec4i> hierarchy;
-		findContours(connected, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE, Point(0, 0));
-		// filter contours
-		vector<Rect> boundRect, boundRect2;
-		img_bounded.convertTo(img_bounded, CV_8UC3);
-		cvtColor(img_bounded, img_bounded, COLOR_GRAY2BGR);
-		int m_crColor = region->second.box_color;
-		for (size_t idx = 0; idx < contours.size(); idx++)
-		{
-			Rect rect = boundingRect(contours[idx]);
-			if (contours[idx].size() > 50) {
-				boundRect.push_back(rect);
-				rectangle(*img_cropped, rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
-				rectangle(img_bounded, rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
-			}
-		}
-
-		vector<double> boxArea, boxDist;
-		double wCenter = img_cropped->cols / 2;
-		double hCenter = img_cropped->rows / 2;
-		Point pCenter(wCenter, wCenter);
-		Rect bestRect;
-		////  Find best box match for recognition
-		// First find biggest box(es)
-		for (size_t i = 0; i < boundRect.size(); i++) {
-			boxArea.push_back(boundRect[i].width * boundRect[i].height);
-		}
-		// Select the element with the maximum value
-		auto ita = max_element(boxArea.begin(), boxArea.end());
-		int maxArea = *ita;
-		vector<int> maxIndex;
-		for (size_t i = 0; i < boxArea.size(); i++) {
-			if (boxArea[i] * 1.2 > maxArea) {
-				maxIndex.push_back(i);
-			}
-		}
-		for (size_t i = 0; i < maxIndex.size(); i++) {
-			int j = maxIndex[i];
-			boundRect[j].x = boundRect[j].x + 2;
-			boundRect[j].width = boundRect[j].width - 4;
-			boundRect[j].y = boundRect[j].y + 2;
-			boundRect[j].height = boundRect[j].height - 4;
-			bestRect = boundRect[j];
-			boundRect2.push_back(bestRect);
-		}
-		// Second find nearest big box from region center
-		if (boundRect2.size() > 1) {
-			for (size_t i = 0; i < boundRect2.size(); i++) {
-				double wcenter = boundRect2[i].x + boundRect2[i].width / 2;
-				double hcenter = boundRect2[i].y + boundRect2[i].height / 2;
-				Point pcenter(wcenter, hcenter);
-				double dist = abs(norm(pCenter - pcenter));
-				boxDist.push_back(dist);
-			}
-			// Select the element with the minimum value
-			auto itd = min_element(boxDist.begin(), boxDist.end());
-			int minDist = *itd;
-			for (size_t i = 0; i < boxDist.size(); i++) {
-				if (boxDist[i] == minDist) {
-					boundRect2[i].x = boundRect2[i].x + 2;
-					boundRect2[i].width = boundRect2[i].width - 4;
-					boundRect2[i].y = boundRect2[i].y + 2;
-					boundRect2[i].height = boundRect2[i].height - 4;
-					bestRect = boundRect2[i];
-					break;
-				}
-			}
-		}
-		// Draw best box
-		rectangle(img_bounded, bestRect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 2);
-
-		//if (!img_bounded.empty())
-		//	imshow("Output 1", img_bounded);
-		//waitKey();
-
-		*img_cropped = img_resized(bestRect);
-
-		// Add border to bestRect ROI + resize it to fit 30-33px height for capital letter
-		// for optimal 0% error rate on Tesseract recognition: https://groups.google.com/g/tesseract-ocr/c/Wdh_JJwnw94/m/24JHDYQbBQAJ
-		const int border = 25; // 10
-		//const int borderType = BORDER_CONSTANT | BORDER_ISOLATED;
-		const Scalar value(255, 255, 255);
-		const Mat roi(img_cropped->rows + 2 * border, img_cropped->cols + 2 * border, CV_8UC1, value);
-		img_cropped->copyTo(roi(Rect(border, border, img_cropped->cols, img_cropped->rows)));
-		*img_cropped = roi;
-		int height = 70; // 29 with 10 border
-		float pct = (height / static_cast<float>(img_cropped->rows));
-		int width = static_cast<int>(static_cast<float>(img_cropped->cols) * pct);
-		resize(*img_cropped, *img_cropped, Size(width, height), INTER_LANCZOS4);
-
-		//if (!img_cropped->empty())
-		//	imshow("Output 2", *img_cropped);
-		//waitKey();
-		return img_bounded;
-	}
-	///////////////////////////////////////////
-
-	if (binarize) {
-		img_resized = binarize_array_opencv(img_resized, threshold);
-	}
-
-	*img_cropped = img_resized;
-	return img_resized;
-}
-
-CString CScraper::process_ocr(Mat img_orig, RMapCI region, bool fast) {
-	/*
-	CString sel_region = region->second.name;
-	if (sel_region.Find("handnumber") != -1 || sel_region.Find("limits") != -1 || sel_region.Find("stack") != -1 || sel_region.Find("mtt") != -1 || sel_region.Find("prize") != -1 ||
-		sel_region.Find("c0pot") != -1 || sel_region.Find("bet", 2) != -1 || sel_region.Find("balance") != -1 || sel_region.Find("chip") != -1 ||
-		sel_region.Find("ante") != -1 || sel_region.Find("smallblind") != -1 || sel_region.Find("bigblind") != -1 || sel_region.Find("bigbet") != -1)
-
-		api.SetVariable("tessedit_char_whitelist", "0123456789.,$¢");
-	*/
-	//else
-	//	api.SetVariable("tessedit_char_blacklist", "®©℗ⓒ™!%&*+/;=?@²^æÆÇçÉéèêëïîíìÄÅàáâäåúùûüôöòñÑÿÖÜ€$¢£¥₧ƒ~ªº¿⌐¬½¼¡«»\"'`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■");
-
-	/*
-	PIX* pix = pixCreate(img_orig.cols, img_orig.rows, 8);
-	for (int i = 0; i<img_orig.rows; i++)
-		for (int j = 0; j<img_orig.cols; j++)
-			pixSetPixel(pix, j, i, (l_uint32)img_orig.at<uchar>(i, j));
-	api.SetImage(pix);
-	*/
-
-	api.SetImage(img_orig.data, img_orig.cols, img_orig.rows, img_orig.channels(), img_orig.step);
-	//imshow("AutoOcr view", img_orig);
-	//waitKey();
-	//int ret = api.Recognize(0);
-	CString result = trim(api.GetUTF8Text()).c_str();
-	
-	const char* blacklist = "®©℗ⓒ™!%&*+;=?@²^æÆÇçÉéèêëïîíìÄÅàáâäåúùûüôöòñÑÿÖÜ€£¥₧ƒ~ªº¿⌐¬½¼¡«»\"`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■";
-	for (size_t i = 0; i < strlen(blacklist); i++)
-		if (result.Find(blacklist[i]) != -1)
-			result.Replace(blacklist[i], '\0');
-	
-	return result;
-}
-
-CString CScraper::get_ocr_result(Mat img_orig, RMapCI region, bool fast) {
-	// Return string value from image. "" when OCR failed
-	Mat img_resized, img_resized2;
-	Mat* img_cropped = new Mat();
-	Mat* img_cropped2 = new Mat();
-
-	if (force_auto_ocr) {
-		img_resized = prepareImage(img_orig, img_cropped, region, true);
-		img_resized2 = prepareImage(img_orig, img_cropped2, region, true, 125);
-	}
-
-	if (region->second.transform == "A0") {
-		img_resized = prepareImage(img_orig, img_cropped, region, true);
-		img_resized2 = prepareImage(img_orig, img_cropped2, region, true, region->second.threshold);
-	}
-	if (region->second.transform == "A1") {
-		img_resized = prepareImage(img_orig, img_cropped, region, true, region->second.threshold);
-		img_resized2 = prepareImage(img_orig, img_cropped2, region, true);
-	}
-
-	if (region->second.use_cropping == false) {
-		img_resized.convertTo(img_resized, CV_8UC3);
-		cvtColor(img_resized, img_resized, COLOR_GRAY2BGR);
-		img_resized2.convertTo(img_resized2, CV_8UC3);
-		cvtColor(img_resized2, img_resized2, COLOR_GRAY2BGR);
-	}
-
-	vector<CString> lst;
-	CString ocr_result = process_ocr(*img_cropped, region);
-	CString ocr_result2 = process_ocr(*img_cropped2, region);
-
-	if (ocr_result != "")
-		lst.push_back(ocr_result);
-	if (ocr_result2 != "")
-		lst.push_back(ocr_result2);
-
-
-	// Display OCR recognition result
-	try {
-		if (!lst.empty()) {
-			return lst.back();
-		}
-		else {
-			return "";
-		}
-	}
-	catch (invalid_argument) {
-		if (fast) {
-			return "";
-		}
-		// , img_min, img_mod, img_med, img_sharp]
-		vector<Mat> images = { img_orig, img_resized };
-		int i = 0;
-		while (i < 2) {
-			size_t j = 0;
-			while (j < images.size()) {
-				CString ocr_str = process_ocr(images[j], region);
-				if (ocr_str != "")
-					lst.push_back(ocr_str);
-				j += 1;
-			}
-			i += 1;
-		}
-	}
-#pragma warning(push)
-#pragma warning(disable:4101)
-	for (const auto& element : lst) {
-		try {
-			return element;
-		}
-		catch (const invalid_argument& e) {
-			continue;
-			// log.warning(f"Not recognized: {element}")
-		}
-	}
-#pragma warning(pop)
-
-	return "";
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-
-
-
-////  Automatic Template Detection functions  ////////////////////////////
-
-Mat CScraper::loadTemplate(std::string name) {
-	// Load template
-	FileStorage fs;
-	Mat mat;
-	try
-	{
-		fs.open("Templates.xml", FileStorage::READ);
-	}
-	catch (cv::Exception& e)
-	{
-		CString err_msg = "Failed to open Template file.\nIt seems that your Templates.xml file is invalid or corrupted.\nOCR engine returned error:\n" + (CString)e.what();
-		MessageBox(NULL, err_msg, "AutoOcr error", MB_OK);
-		return mat;
-	}
-	//read(fs, "Input", Matrix);
-	fs[name] >> mat;
-	fs.release();
-
-	//imshow("Template", mat);
-	//waitKey();
-	return mat;
-}
-
-void CScraper::deleteTemplate(std::string name) {
-	// Delete template
-	FileStorage fs;
-	fstream tplFile("Templates.xml");
-	string content((istreambuf_iterator<char>(tplFile)),
-		(istreambuf_iterator<char>()));
-	unsigned first, last;
-
-	if (content.find(" <!-- resumed -->\n\n") != -1) {
-		first = content.find(" <!-- resumed -->\n\n");
-		last = first + 19;
-		content.replace(first, last - first, "");
-	}
-	first = content.find("<" + name);
-	last = content.find("</" + name + ">\n") + name.length() + 4;
-	content.replace(first, last - first, "");
-	tplFile.close();
-	tplFile.open("Templates.xml", ios::out | ios::trunc);
-	tplFile << content;
-	tplFile.close();
-	fs.release();
-}
-
-void CScraper::createTemplate(Mat input, string name) {
-	// Create template
-	FileStorage fs;
-	FileNode node;
-
-	try
-	{
-		fs.open("Templates.xml", FileStorage::READ);
-		node = fs[name]; // Read string sequence - Get node
-	}
-	catch (cv::Exception& e)
-	{
-		CString err_msg = "Failed to open Template file.\nIt seems that your Templates.xml file is invalid or corrupted.\nOCR engine returned error:\n" + (CString)e.what();
-		MessageBox(NULL, err_msg, "AutoOcr error", MB_OK);
-		return;
-	}
-
-	if (!node.isNone())
-		deleteTemplate(name);
-
-	fs.release();
-	fs.open("Templates.xml", FileStorage::APPEND);
-	fs << name << input;
-	fs.release();
-}
-RECT CScraper::detectTemplate(Mat area, Mat tpl, int match_mode) {
-	//  Detect template	
-	RECT result;
-	Mat resultImg;
-	int result_cols = area.cols - area.cols + 1;
-	int result_rows = area.rows - area.rows + 1;
-	resultImg.create(result_rows, result_cols, CV_32FC1);
-	// Do the Matching and Normalize
-	matchTemplate(area, tpl, resultImg, match_mode);
-	//normalize(resultImg, resultImg, 0, 1, NORM_MINMAX, -1, Mat());
-
-	/// Localizing the best match with minMaxLoc
-	double matchVal, minVal, maxVal;
-	Point minLoc, maxLoc, matchLoc;
-
-	minMaxLoc(resultImg, &minVal, &maxVal, &minLoc, &maxLoc);
-
-	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-	if (match_mode == TM_SQDIFF || match_mode == TM_SQDIFF_NORMED)
-	{
-		matchLoc = minLoc;
-		matchVal = minVal;
-	}
-	else
-	{
-		matchLoc = maxLoc;
-		matchVal = maxVal;
-	}
-
-	// Exact match found
-	if (-0.08 <= matchVal && matchVal <= 0.08 || 0.92 <= matchVal && matchVal <= 1.08) {  // 0.08% tolerance
-		result = RECT{ matchLoc.x, matchLoc.y , matchLoc.x + tpl.cols, matchLoc.y + tpl.rows };
-
-		// Show me what you got
-		//rectangle(area, matchLoc, Point(matchLoc.x + tpl.cols, matchLoc.y + tpl.rows), Scalar(0, 255, 0), 2, 8, 0);
-		//rectangle(resultImg, matchLoc, Point(matchLoc.x + tpl.cols, matchLoc.y + tpl.rows), Scalar(0, 255, 0), 2, 8, 0);
-
-		//imshow("Result view", area);
-		//imshow("Result transform view", resultImg);
-		//waitKey();
-	}
-	else
-		// No match found
-		result = RECT{ 0 };
-
-	return result;
-}
-//////////////////////////////////////////////////////////////////////////
-
 
 
 CScraper::CScraper(void) {
@@ -655,42 +63,6 @@ CScraper::CScraper(void) {
   _leaking_GDI_objects = 0;
   total_region_counter = 0;
   identical_region_counter = 0;
-
-  force_auto_ocr = false;
-
-  // New automatic OCR based on tesseract-ocr
-  // Load Tesseract text recognition network
-  if (api.Init("tessdata", "eng") == -1) {		// OEM_LSTM_ONLY
-	  MessageBox(NULL, "Failed to load tessdata files.\nMake sure tessdata folder is present and/or datas are not corrupted.", "AutoOcr error", MB_OK);
-	  return;
-  }
-  //api.SetPageSegMode(PSM_SINGLE_LINE);
-  //api.SetVariable("user_defined_dpi", "300");
-
-  // OpenCV DNN text recognition
-  /*
-  String recModelPath = "crnn_cs.onnx";
-  CV_Assert(!recModelPath.empty());
-  recognizer = readNet(recModelPath);
-  // Load vocabulary
-  String vocPath = "alphabet_94.txt";
-  CV_Assert(!vocPath.empty());
-  ifstream vocFile;
-  vocFile.open(samples::findFile(vocPath));
-  CV_Assert(vocFile.is_open());
-  String vocLine;
-  vector<String> vocabulary;
-  while (getline(vocFile, vocLine)) {
-	  vocabulary.push_back(vocLine);
-  }
-  recognizer.setVocabulary(vocabulary);
-  recognizer.setDecodeType("CTC-greedy");
-  // Parameters for Recognition
-  double recScale = 1.0 / 127.5;
-  Scalar recMean = Scalar(127.5, 127.5, 127.5);
-  Size recInputSize = Size(100, 32);
-  recognizer.setInputParams(recScale, recInputSize, recMean);
-  */
 }
 
 CScraper::~CScraper(void) {
@@ -705,9 +77,6 @@ CScraper::~CScraper(void) {
     total_region_counter);
   write_log(true, "[CScraper] Identical regions scraped %i\n",
     identical_region_counter);
-
-  // Unload network
-  api.End();	   
 }
 
 bool CScraper::ProcessRegion(RMapCI r_iter) {
@@ -721,16 +90,16 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	__HDC_HEADER
 	// Get "current" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-	if (r_iter->second.transform[0] == 'A') {
+	/*if (r_iter->second.transform[0] == 'A') {
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 7,
 			r_iter->second.bottom - r_iter->second.top + 7,
 			hdc, r_iter->second.left - 3, r_iter->second.top - 3, SRCCOPY);
 	}
-	else {
+	else {*/
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
 									r_iter->second.bottom - r_iter->second.top + 1, 
 									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
-	}
+	//}
 	SelectObject(hdcCompatible, old_bitmap);
 	//SaveHBITMAPToFile(r_iter->second.cur_bmp, "output.bmp");
 
@@ -738,16 +107,16 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp)) {
     // Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
-		if (r_iter->second.transform[0] == 'A') {
+		/*if (r_iter->second.transform[0] == 'A') {
 			BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 7,
 				r_iter->second.bottom - r_iter->second.top + 7,
 				hdc, r_iter->second.left - 3, r_iter->second.top - 3, SRCCOPY);
 		}
-		else {
+		else {*/
 			BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1,
 				r_iter->second.bottom - r_iter->second.top + 1,
 				hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
-		}
+		//}
 		SelectObject(hdcCompatible, old_bitmap);  
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
@@ -756,55 +125,6 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	return false;
 }
 
-CString CScraper::RecognizeText(Mat input) {
-	float confThreshold = 0.5;
-	float nmsThreshold = 0.4;
-	int width = 736;
-	int height = 736;
-	int imreadRGB = 1;
-	String detModelPath = "DB_TD500_resnet50.onnx";
-	String recModelPath = "crnn_cs.onnx";
-	String vocPath = "alphabet_94.txt";
-	// Load networks.
-	CV_Assert(!detModelPath.empty() && !recModelPath.empty());
-	//TextDetectionModel_DB detector(detModelPath);
-	//detector.setConfidenceThreshold(confThreshold)
-	//	.setNMSThreshold(nmsThreshold);
-	TextRecognitionModel recognizer(recModelPath);
-	// Load vocabulary
-	CV_Assert(!vocPath.empty());
-	ifstream vocFile;
-	vocFile.open(samples::findFile(vocPath));
-	CV_Assert(vocFile.is_open());
-	String vocLine;
-	vector<String> vocabulary;
-	while (getline(vocFile, vocLine)) {
-		vocabulary.push_back(vocLine);
-	}
-	recognizer.setVocabulary(vocabulary);
-	recognizer.setDecodeType("CTC-greedy");
-	// Parameters for Recognition
-	double recScale = 1.0 / 127.5;
-	Scalar recMean = Scalar(127.5, 127.5, 127.5);
-	Size recInputSize = Size(100, 32);
-	recognizer.setInputParams(recScale, recInputSize, recMean);
-	// Text Recognition
-	Mat recInput;
-	if (!imreadRGB) {
-		cvtColor(input, recInput, cv::COLOR_BGR2GRAY);
-	}
-	else
-		recInput = input;
-	cvtColor(input, recInput, cv::COLOR_BGR2RGB);
-
-	//resize(recInput, recInput, Size(recInput.cols*1.5, recInput.rows*1.5), INTER_LANCZOS4);
-	//imshow("Output", recInput);
-	//waitKey();
-	//recInput = imread("5228_8.png", IMREAD_COLOR);
-	//input.convertTo(input, CV_8UC4);
-	CString recognitionResult = recognizer.recognize(recInput).c_str();
-	return recognitionResult;
-}
 bool CScraper::EvaluateRegion(CString name, CString *result) {
   __HDC_HEADER
   write_log(Preferences()->debug_scraper(),
@@ -823,25 +143,15 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
         "[CScraper] Region %s NOT identical\n", name);
     }
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-		if (r_iter->second.transform[0] == 'A'  || force_auto_ocr) {
-			int w = r_iter->second.right - r_iter->second.left + 7;
-			int h = r_iter->second.bottom - r_iter->second.top + 7;
+		if (r_iter->second.transform[0] == 'A') {
+			int w = r_iter->second.right - r_iter->second.left + 1;
+			int h = r_iter->second.bottom - r_iter->second.top + 1;
 			Mat input(h, w, CV_8UC4);
 			BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
 			GetDIBits(hdc, r_iter->second.cur_bmp, 0, h, input.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
 			//imshow("Output", input);
 			//waitKey();
-			*result = get_ocr_result(input, r_iter).GetString();
-			// OpenCV DNN text recognition
-			/*
-			bool imreadRGB = false;
-			if (!imreadRGB) {
-				cvtColor(input, input, cv::COLOR_BGR2GRAY);
-			}
-			//imshow("Output", input);
-			//waitKey();
-			*result = RecognizeText(input);
-			*/
+			*result = p_auto_ocr->get_ocr_result(input, r_iter).GetString();
 		}
 		else
 			trans.DoTransform(r_iter, hdcCompatible, result);
@@ -873,14 +183,79 @@ void CScraper::EvaluateTrueFalseRegion(bool *result, const CString name) {
 	}
 }
 
+void CScraper::ScrapeButtons(CString area_name, CString needed_buttons) {
+	RECT button_region;
+	CString result;
+	RMapCI		r_iter = p_tablemap->r$()->end();
+
+	r_iter = p_tablemap->r$()->find(area_name);
+	if (r_iter != p_tablemap->r$()->end()) {
+		int r_width = r_iter->second.right - r_iter->second.left;
+		int r_height = r_iter->second.bottom - r_iter->second.top;
+		if (r_width > 0 && r_height > 0) {
+			// Action buttons
+			if (needed_buttons == "action") {
+				for (int i = 0; i < k_max_action_buttons; i++) {
+					result = p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, k_action_button_name[i], &button_region);
+					if (result == "true") {
+						p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
+						p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(k_action_button_name[i]);
+					}
+					if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
+						// Ugly WinHoldem convention
+						// When using ManualMode, grab i5state for PT network
+						p_tablemap->set_network(result);
+					}
+				}
+				// Handle of All-in button special cases
+				// https://www.maxinmontreal.com/forums/viewtopic.php?p=186236#p186236
+				if (p_casino_interface->_technical_autoplayer_buttons[2].IsClickable()) {
+					// if (no check and call button) then "allin" is call
+					if (!p_casino_interface->_technical_autoplayer_buttons[5].IsClickable() &&
+						!p_casino_interface->_technical_autoplayer_buttons[6].IsClickable())
+						p_casino_interface->_technical_autoplayer_buttons[2].SetLabel("call");
+					// if (call button and no raise button) then "allin" is raise
+					else if (p_casino_interface->_technical_autoplayer_buttons[5].IsClickable() &&
+						!p_casino_interface->_technical_autoplayer_buttons[3].IsClickable() &&
+						!p_casino_interface->_technical_autoplayer_buttons[4].IsClickable())
+						p_casino_interface->_technical_autoplayer_buttons[2].SetLabel("raise");
+				}
+			}
+			// betpot buttons
+			if (needed_buttons == "betpot") {
+				for (int i = 0; i < k_max_betpot_buttons; i++) {
+					result = p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, k_betpot_button_name[i], &button_region);
+					if (result == "true") {
+						p_casino_interface->_technical_betpot_buttons[i].SetState(result);
+						//p_casino_interface->_technical_betpot_buttons[i].SetLabel(k_betpot_button_name[i]);
+					}
+				}
+			}
+			// Interface buttons (i86)
+			if (needed_buttons == "spam") {
+				for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
+					// i86X-buttons
+					CString button_name;
+					button_name.Format("spam%d", i);
+					result = p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, button_name, &button_region);
+					if (result == "true") {
+						p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
+						//p_casino_interface->_technical_i86X_spam_buttons[i].SetLabel(button_name);
+					}
+				}
+			}
+		}
+	}
+}
+
 void CScraper::ScrapeInterfaceButtons() {
 	CString result;
 	// i86X-buttons
 	CString button_name;
-	for (int i=0; i<k_max_number_of_i86X_buttons; i++) {
+	for (int i = 0; i<k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dstate", i);
-		if (EvaluateRegion(button_name, &result))	{
-      p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
+		if (EvaluateRegion(button_name, &result)) {
+			p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
 		}
 	}
 }
@@ -888,29 +263,29 @@ void CScraper::ScrapeInterfaceButtons() {
 void CScraper::ScrapeActionButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_number_of_buttons; ++i)	{
-		button_name.Format("i%cstate", HexadecimalChar(i)); 
+	for (int i = 0; i<k_max_number_of_buttons; ++i) {
+		button_name.Format("i%cstate", HexadecimalChar(i));
 		if (EvaluateRegion(button_name, &result)) {
-      p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
+			p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
 		}
-    if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
-      // Ugly WinHoldem convention
-      // When using ManualMode, grab i5state for PT network
-      p_tablemap->set_network(result);
-    }
+		if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
+			// Ugly WinHoldem convention
+			// When using ManualMode, grab i5state for PT network
+			p_tablemap->set_network(result);
+		}
 	}
 }
 
 void CScraper::ScrapeActionButtonLabels() {
 	CString label;
 	CString result;
-  // Every button needs a label
-  // No longer using any WinHoldem defaults
-	for (int i=0; i<k_max_number_of_buttons; ++i)	{
-    p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
+	// Every button needs a label
+	// No longer using any WinHoldem defaults
+	for (int i = 0; i<k_max_number_of_buttons; ++i) {
+		p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
 		label.Format("i%clabel", HexadecimalChar(i));
-		if (EvaluateRegion(label, &result))	{
-      p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
+		if (EvaluateRegion(label, &result)) {
+			p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
 		}
 	}
 }
@@ -918,10 +293,10 @@ void CScraper::ScrapeActionButtonLabels() {
 void CScraper::ScrapeBetpotButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_betpot_buttons; i++) {
-    button_name.Format("%sstate", k_betpot_button_name[i]);
-		if (EvaluateRegion(button_name, &result))	{
-      p_casino_interface->_technical_betpot_buttons[i].SetState(result);
+	for (int i = 0; i<k_max_betpot_buttons; i++) {
+		button_name.Format("%sstate", k_betpot_button_name[i]);
+		if (EvaluateRegion(button_name, &result)) {
+			p_casino_interface->_technical_betpot_buttons[i].SetState(result);
 		}
 	}
 }
@@ -1237,43 +612,57 @@ int CScraper::ScrapeCard(CString name) {
 }
 
 void CScraper::ScrapePlayerCards(int chair) {
-	CString card_name;
+	CString card_name, area_name;
 	int card = CARD_UNDEFINED;
-  int number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerHoldEm;
-  if (p_tablemap->SupportsOmaha()) {
-    number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerOmaha;
-  }
-  CString s_chair = to_string(chair).c_str();
-  RMapCI		r_iter = p_tablemap->r$()->find("area_player_cards" + s_chair);
-  if (r_iter != p_tablemap->r$()->end()) {
-	  vector<CString> result = GetDetectTemplatesResult(r_iter->second.name);
-	  int i = 0;
-	  for (auto & element : result) {
-		  int card = CardString2CardNumber(element);
-		  p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
-		  i++;
-	  }
-  }
-  else {
-	  for (int i = 0; i < number_of_cards_to_be_scraped; i++) {
-		  card_name.Format("p%dcardface%d", chair, i);
-		  if ((i > 0)
-			  && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
-			  // Stop scraping if we find missing cards or cardbacks
-		  }
-		  else {
-			  card = ScrapeCard(card_name);
-		  }
-		  p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
-	  }
-  }
-  p_table_state->Player(chair)->CheckPlayerCardsForConsistency();
+	int number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerHoldEm;
+	if (p_tablemap->SupportsOmaha()) {
+		number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerOmaha;
+	}
+	area_name.Format("area_cards_player%c", HexadecimalChar(chair));
+	RMapCI		r_iter = p_tablemap->r$()->find(area_name);
+	RMapCI		r_iter2 = p_tablemap->r$()->find("area_cards_common");
+	vector<CString> result;
+	if (r_iter != p_tablemap->r$()->end()) {
+		int r_width = r_iter->second.right - r_iter->second.left;
+		int r_height = r_iter->second.bottom - r_iter->second.top;
+		if (r_width > 0 && r_height > 0)
+			result = p_auto_ocr->GetDetectTemplatesResult(r_iter->second.name);
+		int i = 0;
+		for (auto & element : result) {
+			int card = CardString2CardNumber(element);
+			p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
+			i++;
+		}
+	}
+	else {
+		for (int i = 0; i < number_of_cards_to_be_scraped; i++) {
+			card_name.Format("p%dcardface%d", chair, i);
+			if ((i > 0)
+				&& ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
+				// Stop scraping if we find missing cards or cardbacks
+			}
+			else {
+				card = ScrapeCard(card_name);
+			}
+			p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
+		}
+	}
+	p_table_state->Player(chair)->CheckPlayerCardsForConsistency();
 }
 
 void CScraper::ScrapeCommonCards() {
-	RMapCI		r_iter = p_tablemap->r$()->find("area_common_cards");
+	RMapCI		r_iter = p_tablemap->r$()->find("area_cards_common");
+	vector<CString> result;
 	if (r_iter != p_tablemap->r$()->end()) {
-		vector<CString> result = GetDetectTemplatesResult(r_iter->second.name);
+		int r_width = r_iter->second.right - r_iter->second.left;
+		int r_height = r_iter->second.bottom - r_iter->second.top;
+		if (r_width > 0 && r_height > 0)
+			result = p_auto_ocr->GetDetectTemplatesResult(r_iter->second.name);
+		// Clear common cards first
+		for (int i = 0; i < kNumberOfCommunityCards; i++) {
+			p_table_state->CommonCards(i)->ClearValue();
+		}
+		// Populate common cards after, if there is some.
 		int i = 0;
 		for (auto & element : result) {
 			int card = CardString2CardNumber(element);
@@ -1289,155 +678,6 @@ void CScraper::ScrapeCommonCards() {
 			p_table_state->CommonCards(i)->SetValue(card);
 		}
 	}
-}
-
-vector<CString> CScraper::GetDetectTemplatesResult(CString area_name) {
-	//  Detect template
-	HDC					hdc = GetDC(p_autoconnector->attached_hwnd());
-	HDC					hdcScreen, hdcCompat, hdc_bitmap_orig, hdc_bitmap_transform_ocr;
-	CString				text, selected_transform, separation;
-	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform_ocr;
-	RMapCI				r_iter = p_tablemap->r$()->find(area_name.GetString());
-	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
-
-	// Exit because the area doesn't exist
-	if (r_iter == p_tablemap->r$()->end())
-		return{ "" };
-
-
-	// Bitblt the attached windows bitmap into a HDC
-	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-	hdcCompat = CreateCompatibleDC(hdcScreen);
-	RECT rect;
-	GetClientRect(p_autoconnector->attached_hwnd(), &rect);
-	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
-	HBITMAP	old_bitmap = (HBITMAP)SelectObject(hdcCompat, attached_bitmap);
-	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
-
-	hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
-	old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, attached_bitmap);
-	//SaveHBITMAPToFile(attached_bitmap, "output.bmp");
-
-	// Get bitmap size
-	int w = r_iter->second.right - r_iter->second.left + 1;
-	int h = r_iter->second.bottom - r_iter->second.top + 1;
-
-	hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
-	bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
-	old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
-
-	BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
-		hdc,
-		r_iter->second.left - 1, r_iter->second.top - 1,
-		SRCCOPY);
-
-	Mat area_mat(h, w, CV_8UC4);
-	BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
-	GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-	//SaveHBITMAPToFile(bitmap_transform_ocr, "output.bmp");
-
-	//imshow("Area Image", area_mat);
-	//waitKey();
-
-	int					x, y, width, height, match_mode;
-	HBITMAP				bitmap_image, old_bitmap_image;
-	BYTE				*pBits, alpha, red, green, blue;
-	RECT roi, zero = RECT{ 0 };
-	vector<pair<int, CString>> listROI;
-
-	// Get search templates in area
-	for (sel_template = p_tablemap->tpl$()->begin(); sel_template != p_tablemap->tpl$()->end(); sel_template++) {
-		if (area_name == "area_common_cards" && sel_template->second.name.Find("card_common_") == -1)
-			continue;
-		if (area_name.Find("area_player_cards") != -1 && sel_template->second.name.Find("card_player_") == -1)
-			continue;
-		// Get template size
-		width = sel_template->second.width;
-		height = sel_template->second.height;
-		match_mode = sel_template->second.match_mode;
-
-		// Copy saved template into a memory dc so we can get the bmi
-		hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-
-		// Create new memory DC and new bitmap
-		//hdc_image = CreateCompatibleDC(hdcScreen);
-		bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
-		old_bitmap_image = (HBITMAP)SelectObject(hdc_bitmap_orig, bitmap_image);
-
-		// Setup BITMAPINFO
-		BITMAPINFO	bmi;
-		ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
-		bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
-		bmi.bmiHeader.biWidth = width;
-		bmi.bmiHeader.biHeight = -height;
-		bmi.bmiHeader.biPlanes = 1;
-		bmi.bmiHeader.biBitCount = 32;
-		bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
-		bmi.bmiHeader.biSizeImage = width * height * 4;
-
-		// Copy saved image info into pBits array
-		pBits = new BYTE[bmi.bmiHeader.biSizeImage];
-		for (y = 0; y < (int)height; y++) {
-			for (x = 0; x < (int)width; x++) {
-				// image record is stored internally in ABGR format
-				alpha = (sel_template->second.pixel[y*width + x] >> 24) & 0xff;
-				red = (sel_template->second.pixel[y*width + x] >> 0) & 0xff;
-				green = (sel_template->second.pixel[y*width + x] >> 8) & 0xff;
-				blue = (sel_template->second.pixel[y*width + x] >> 16) & 0xff;
-
-				// SetDIBits format is BGRA
-				pBits[y*width * 4 + x * 4 + 0] = blue;
-				pBits[y*width * 4 + x * 4 + 1] = green;
-				pBits[y*width * 4 + x * 4 + 2] = red;
-				pBits[y*width * 4 + x * 4 + 3] = alpha;
-			}
-		}
-		::SetDIBits(hdc_bitmap_orig, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
-
-		Mat template_mat(height, width, CV_8UC4);
-		template_mat.data = pBits;
-		//imshow("Template Image", template_mat);
-		//waitKey();
-
-		roi = detectTemplate(area_mat, template_mat, match_mode);
-		if (!EqualRect(&roi, &zero)) {
-			if (area_name == "area_common_cards") {
-				CString value = sel_template->second.name;
-				value.Replace("card_common_", "");
-				pair<int, CString> matchPair(roi.left, value);
-				listROI.push_back(matchPair);
-			}
-			if (area_name.Find("area_player_cards") != -1) {
-				CString value = sel_template->second.name;
-				value.Replace("card_player_", "");
-				pair<int, CString> matchPair(roi.left, value);
-				listROI.push_back(matchPair);
-			}
-		}
-	}
-
-	// Order ROI array
-	sort(listROI.begin(), listROI.end());
-
-	// Display result
-	vector<CString> result;
-	for (auto & element : listROI) {
-		result.push_back(element.second);
-	}
-	//m_Result.SetWindowText(result);
-
-
-	// Clean up
-	SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
-	DeleteObject(bitmap_transform_ocr);
-	DeleteDC(hdc_bitmap_transform_ocr);
-
-	SelectObject(hdc_bitmap_orig, old_bitmap_orig);
-	DeleteDC(hdc_bitmap_orig);
-
-	DeleteDC(hdcScreen);
-
-	return result;
 }
 	
 // returns true if common cards are in the middle of an animation
@@ -1500,19 +740,6 @@ void CScraper::ScrapeName(int chair) {
 		p_table_state->Player(chair)->set_name(result);
     return;
 	}
-}
-
-CString CScraper::CheckEnteredBetsize() {
-	CString				result;
-	CString				s = "i3edit";
-
-	force_auto_ocr = true;
-	EvaluateRegion(s, &result);
-	force_auto_ocr = false;
-	if (result != "") {
-		return result.GetString();
-	}
-	return"";
 }
 
 CString CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
@@ -1786,16 +1013,16 @@ void CScraper::CreateBitmaps(void) {
 	{
 		int w = r_iter->second.right - r_iter->second.left + 1;
 		int h = r_iter->second.bottom - r_iter->second.top + 1;
-		if (r_iter->second.transform[0] != 'A') {
+		/*if (r_iter->second.transform[0] != 'A') {
 			r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
 			r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
 		}
-		else {
-			w = w + 6;
-			h = h + 6;
+		else {*/
+			//w = w + 6;
+			//h = h + 6;
 			r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
 			r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
-		}
+		//}
 	}
 
 	DeleteDC(hdcScreen);

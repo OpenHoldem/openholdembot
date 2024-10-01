@@ -254,6 +254,8 @@ bool CTablemap::ItemExists(CString name) {
   //if (iit !=_i$.end()) return true;
   RMapCI rit = _r$.find(name); 
   if (rit !=_r$.end()) return true;
+  TPLMapCI tplit = _tpl$.find(name);
+  if (tplit != _tpl$.end()) return true;
   return false;
 }
 

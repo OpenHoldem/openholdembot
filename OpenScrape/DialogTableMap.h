@@ -83,10 +83,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnTvnKeydownTablemapTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedUseDefault();
-	afx_msg void OnThresholdChange();
-	afx_msg void OnPdiffChange();
 	afx_msg void OnBnClickedUseCrop();
-	afx_msg void OnCropSizeChange();
 	afx_msg void OnBoxColorChange();
 	HTREEITEM GetRecordTypeNode(HTREEITEM item);
 	HTREEITEM GetTextSelItemAndRecordType(CString *sel_text, CString *type_text);
@@ -136,21 +133,14 @@ protected:
 	COLORREF			m_crColor;
 
 private:
-	void detectMotion(void);
-	void detectBlobs(void);
-	void fourPointsTransform(const Mat& frame, const Point2f vertices[], Mat& result);
-	void textDetectAndRecognize(void);
-	Mat loadTemplate(string name);
-	void deleteTemplate(string name);
-	void createTemplate(Mat input, string name);
 	RECT detectTemplate(Mat area, Mat tpl, int match_mode);
 	void DetectAndShowTemplate(string name);
+	CString GetDetectTemplateResult(CString area_name, CString tpl_name, RECT* rect_result);
 	CString GetDetectTemplatesResult(CString area_name);
 	CString get_ocr_result(Mat img_orig, CString transform, bool fast = false);
-	CString process_ocr(Mat img_orig, bool fast = false);
-	Mat prepareImage(Mat img_orig, Mat* img_cropped, bool binarize = true, int threshold = 76);
+	void process_ocr(Mat img_orig, bool fast = false, bool second_pass = false);
+	Mat prepareImage(Mat img_orig, bool binarize = true, int threshold = 100, bool second_pass = false);
 	Mat binarize_array_opencv(Mat image, int threshold);
-	void detectText(void);
 	CScrollHelper* m_scrollHelper;
 	int threshold, match_mode, box_color;
 	bool proceed_scroll = true;
@@ -187,8 +177,11 @@ public:
 	CStickyButton		m_DrawRect;
 	CComboBox			m_MatchMode;
 	CColorPickerCB		m_BoxColor;
-	int					region_grouping;
-	int crop_size;
+	vector<pair<Rect, CString>> ResultBoxes, ResultBoxes2;
+	CString ResultString, ResultString2;
+	Rect	bestRect, bestRect2;
+	int		region_grouping;
+	int		crop_size;
 
 	DECLARE_MESSAGE_MAP()
 };

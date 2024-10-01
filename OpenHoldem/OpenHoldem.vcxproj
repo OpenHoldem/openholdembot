@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IncludePath>..\ocr;..\ocr\leptonica;..\ocr\tesseract;..\ocr\opencv;..\ocr\opencv2;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -183,7 +183,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box;..\ocr;..\ocr\leptonica;..\ocr\tesseract;..\ocr\opencv;..\ocr\opencv2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -218,6 +218,7 @@
     <ClCompile Include="BetpotCalculations.cpp" />
     <ClCompile Include="CAllinSlider.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CAutoOcr.cpp" />
     <ClCompile Include="CAutoplayerButton.cpp" />
     <ClCompile Include="CBetsizeInputBox.cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
@@ -501,6 +502,7 @@
     <ClInclude Include="BetpotCalculations.h" />
     <ClInclude Include="CAllinSlider.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="CAutoOcr.h" />
     <ClInclude Include="CAutoplayerButton.h" />
     <ClInclude Include="CBetsizeInputBox.h" />
     <ClInclude Include="CBlindGuesser.h" />

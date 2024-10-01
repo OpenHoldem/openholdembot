@@ -120,10 +120,11 @@ CString ListOfRegions() {
   list += RangeOfSymbols("u%idealer", 0, 9);
   list += RangeOfSymbols("u%iname", 0, 9);
   list += RangeOfSymbols("u%iseated", 0, 9);
-  list += "area_action_button ";
-  list += "area_hopper_button ";
-  list += "area_common_cards ";
-  list += RangeOfSymbols("area_player_cards%i", 0, 9);
+//  list += "area_buttons_action ";
+//  list += "area_buttons_betpot ";
+  list += RangeOfSymbols("area_buttons_zone%i", 0, 9);
+  list += "area_cards_common ";
+  list += RangeOfSymbols("area_cards_player%i", 0, 9);
   list += "betpot_2_1button ";
   list += "betpot_1_1button ";
   list += "betpot_3_4button ";
@@ -158,6 +159,28 @@ CString ListOfRegions() {
 
 CString ListOfTemplates() {
 	CString list;
+	list += "button_betpot_2_1 ";
+	list += "button_betpot_1_1 ";
+	list += "button_betpot_3_4 ";
+	list += "button_betpot_2_3 ";
+	list += "button_betpot_1_2 ";
+	list += "button_betpot_1_3 ";
+	list += "button_betpot_1_4 ";
+	list += "button_action_editbet ";	// i3
+	list += "button_action_fold ";
+	list += "button_action_allin ";
+	list += "button_action_bet ";
+	list += "button_action_raise ";
+	list += "button_action_call ";
+	list += "button_action_check ";
+	list += "button_action_sitin ";
+	list += "button_action_sitout ";
+	list += "button_action_leave ";
+	list += "button_action_rematch ";
+	list += "button_action_prefold ";
+	list += "button_action_autopost ";
+//	list += "button_action_undefined ";
+	list += RangeOfSymbols("button_spam%i", 0, 9);		// i86X
 	list += "card_common_ac ";
 	list += "card_common_ad ";
 	list += "card_common_as ";
@@ -300,5 +323,6 @@ void BuildVectorsOfScraperSymbols() {
   CString templates = ListOfTemplates();
   list_of_sizes = SplitStringToStringVector(sizes, kSpace);
   list_of_regions = SplitStringToStringVector(regions, kSpace);
+  list_of_symbols = SplitStringToStringVector(symbols, kSpace);
   list_of_templates = SplitStringToStringVector(templates, kSpace);
 }

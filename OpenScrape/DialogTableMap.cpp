@@ -17,6 +17,11 @@
 #include "stdafx.h"
 #include <assert.h>
 #include <math.h>
+//#include <regex>
+//#include <sstream>
+//#include "HTMLparser.h"
+//#include "xmlmemory.h"
+//#include "parser.h"
 
 #include "DialogTableMap.h"
 #include "ListOfSymbols.h"
@@ -35,6 +40,8 @@
 #include "DialogEditGrHashPoints.h"
 
 #include "..\CTablemap\CTablemap.h"
+#include "..\OpenHoldem\NumericalFunctions.h"
+
 
 const char * fontsList = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789.,_-$";
 	
@@ -88,7 +95,8 @@ const char* tplMatchModes[kNumberOfMatchModes] = {   //  Auto OCR Pdiff template
 
 // Declare DNN-Recognizer
 //TextRecognitionModel recognizer;
-TessBaseAPI api;
+TessBaseAPI* api = new TessBaseAPI();
+TessBaseAPI* api2 = new TessBaseAPI();
 
 
 // CDlgTableMap dialog
@@ -151,7 +159,10 @@ CDlgTableMap::~CDlgTableMap()
 	delete m_scrollHelper;
 
 	// Unload network
-	api.End();
+	api->End();
+	api2->End();
+	delete api;
+	delete api2;
 }
 
 void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
@@ -224,7 +235,7 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_USE_CROP, m_UseCrop);
 	DDX_Control(pDX, IDC_CROP_SIZE, m_CropSize);
 	DDX_Text(pDX, IDC_CROP_SIZE, crop_size);
-	DDV_MinMaxInt(pDX, crop_size, 2, 100);
+	DDV_MinMaxInt(pDX, crop_size, 1, 100);
 	DDX_Control(pDX, IDC_CROP_SPIN, m_CropSpin);
 	DDX_Control(pDX, IDC_BOX_COLOR, m_BoxColor);
 	DDX_ColorPickerCB(pDX, IDC_BOX_COLOR, m_crColor);
@@ -510,12 +521,16 @@ BOOL CDlgTableMap::OnInitDialog()
 
 	// New automatic OCR based on tesseract-ocr
 	// Load Tesseract text recognition network
-	if (api.Init("tessdata", "eng") == -1) {		// OEM_LSTM_ONLY
+	if (api->Init("tessdata", "eng") == -1) {		// OEM_LSTM_ONLY
 		MessageBox("Failed to load tessdata files.\nMake sure tessdata folder is present and/or datas are not corrupted.", "AutoOcr error", MB_OK);
 		return FALSE;
 	}
-	//api.SetPageSegMode(PSM_SINGLE_LINE);
-	//api.SetVariable("user_defined_dpi", "300");
+	if (api2->Init("tessdata", "eng") == -1) {		// OEM_LSTM_ONLY
+		MessageBox("Failed to load tessdata files.\nMake sure tessdata folder is present and/or datas are not corrupted.", "AutoOcr error", MB_OK);
+		return FALSE;
+	}
+	//api->SetPageSegMode(PSM_SINGLE_LINE);
+	//api->SetVariable("user_defined_dpi", "300");
 
 	// OpenCV DNN text recognition
 	/*
@@ -932,7 +947,7 @@ void CDlgTableMap::draw_template_bitmap(void)
 		SRCCOPY);
 
 	// Clean up
-	delete[]pBits;
+	delete []pBits;
 
 	SelectObject(hdcControl, old_bitmap_control);
 	DeleteObject(bitmap_control);
@@ -1305,7 +1320,7 @@ void CDlgTableMap::update_ocr_display(void)
 			m_MatchMode.EnableWindow(true);
 	}
 
-	if (m_UseCrop.GetCheck() == true) {
+	if (m_UseCrop.GetCheck()) {
 		m_CropSize.EnableWindow(true);
 		m_CropSpin.EnableWindow(true);
 		m_BoxColor.EnableWindow(true);
@@ -1710,196 +1725,22 @@ void CDlgTableMap::disable_ocr_and_clear_all(void)
 
 
 ////  Automatic Text Detection and Recognition functions  ///////////
-
-void CDlgTableMap::detectMotion(void) {
-	/*
-	//Subtract consecutive frames
-	cv::Mat matN = cv::imread("frame1.bmp");
-	cv::Mat matM = cv::imread("frame2.bmp");
-	cv::Mat matDiff2 = abs(matM - matN);
-	Mat matDiff;
-	cvtColor(matDiff2, matDiff, COLOR_BGR2GRAY);
-	//imshow("test", matDiff);
-	//waitKey();
-
-	//Set region of interest (subframe)
-	int x(0), y(0), width(57), height(67);
-	cv::Rect myRegionOfInterest(x, y, width, height);
-
-	//Define motion
-	double Threshold = 0.1;
-	double nze = cv::countNonZero(matDiff(myRegionOfInterest));
-	double motionFactor = nze / (width*height*1); //C=255 for uchar, C=1 for binary, etc.
-	if (motionFactor>Threshold)
-	cout << "Motion detected at specific ROI";
-	*/
-}
-
-void CDlgTableMap::detectBlobs(void) {
-	/*
-	imshow("AutoOcr view", img_resized);
-	imshow("AutoOcr view 2", img_resized2);
-	waitKey();
-
-	// Set up the detector with default parameters.
-	Ptr<SimpleBlobDetector> detector;
-	detector = SimpleBlobDetector::create();
-
-	// Detect blobs.
-	vector<KeyPoint> keypoints;
-	detector->detect(img_resized, keypoints);
-
-	// Draw detected blobs as red circles.
-	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
-	Mat im_with_keypoints, im_with_keypoints2;
-	drawKeypoints(img_resized, keypoints, im_with_keypoints, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-
-	detector->detect(img_resized2, keypoints);
-	drawKeypoints(img_resized2, keypoints, im_with_keypoints2, Scalar(0, 0, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-	// Show blobs
-	imshow("AutoOcr view", im_with_keypoints);
-	imshow("AutoOcr view 2", im_with_keypoints2);
-	waitKey();
-	*/
-}
-
-void CDlgTableMap::fourPointsTransform(const Mat& frame, const Point2f vertices[], Mat& result)
-{
-	const Size outputSize = Size(100, 32);
-	Point2f targetVertices[4] = {
-		Point(0, outputSize.height - 1),
-		Point(0, 0), Point(outputSize.width - 1, 0),
-		Point(outputSize.width - 1, outputSize.height - 1)
-	};
-	Mat rotationMatrix = getPerspectiveTransform(vertices, targetVertices);
-	warpPerspective(frame, result, rotationMatrix, outputSize);
-}
-
-void CDlgTableMap::textDetectAndRecognize(void) {
-	float confThreshold = 0.5;
-	float nmsThreshold = 0.4;
-	int width = 320;
-	int height = 320;
-	int imreadRGB = 0;
-	String detModelPath = "frozen_east_text_detection.pb";
-	String recModelPath = "CRNN_VGG_BiLSTM_CTC.onnx";
-	String vocPath = "alphabet_94.txt";
-	// Load networks.
-	CV_Assert(!detModelPath.empty() && !recModelPath.empty());
-	TextDetectionModel_EAST detector(detModelPath);
-	detector.setConfidenceThreshold(confThreshold)
-	.setNMSThreshold(nmsThreshold);
-	TextRecognitionModel recognizer(recModelPath);
-	// Load vocabulary
-	CV_Assert(!vocPath.empty());
-	ifstream vocFile;
-	vocFile.open(samples::findFile(vocPath));
-	CV_Assert(vocFile.is_open());
-	String vocLine;
-	vector<String> vocabulary;
-	while (getline(vocFile, vocLine)) {
-	vocabulary.push_back(vocLine);
-	}
-	recognizer.setVocabulary(vocabulary);
-	recognizer.setDecodeType("CTC-greedy");
-	// Parameters for Recognition
-	double recScale = 1.0 / 127.5;
-	Scalar recMean = Scalar(127.5, 127.5, 127.5);
-	Size recInputSize = Size(100, 32);
-	recognizer.setInputParams(recScale, recInputSize, recMean);
-	// Parameters for Detection
-	double detScale = 1.0;
-	Size detInputSize = Size(width, height);
-	Scalar detMean = Scalar(123.68, 116.78, 103.94);
-	bool swapRB = true;
-	detector.setInputParams(detScale, detInputSize, detMean, swapRB);
-	// Detection
-	//Mat frame = img_resized.clone();
-	Mat frame = imread("frame000001.bmp");
-	vector< vector<Point> > detResults;
-	detector.detect(frame, detResults);
-	Mat frame2 = frame.clone();
-	if (detResults.size() > 0) {
-	// Text Recognition
-	Mat recInput;
-	if (!imreadRGB) {
-	cvtColor(frame, recInput, cv::COLOR_BGR2GRAY);
-	}
-	else {
-	recInput = frame;
-	}
-	vector< vector<Point> > contours;
-	for (uint i = 0; i < detResults.size(); i++)
-	{
-	const auto& quadrangle = detResults[i];
-	CV_CheckEQ(quadrangle.size(), (size_t)4, "");
-	contours.emplace_back(quadrangle);
-	vector<Point2f> quadrangle_2f;
-	for (int j = 0; j < 4; j++)
-	quadrangle_2f.emplace_back(quadrangle[j]);
-	Mat cropped;
-	fourPointsTransform(recInput, &quadrangle_2f[0], cropped);
-	string recognitionResult = recognizer.recognize(cropped);
-	cout << i << ": '" << recognitionResult << "'" << endl;
-	putText(frame2, recognitionResult, quadrangle[3], FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0, 0, 255), 2);
-	}
-	polylines(frame2, contours, true, Scalar(255, 255, 255), 1);
-	}
-	imshow("Output", frame2);
-	waitKey();
-}
-
 Mat CDlgTableMap::binarize_array_opencv(Mat image, int threshold) {
-	// Binarize image from gray channel with 76 as threshold
+	// Binarize image from gray channel with 100 as threshold
 	Mat img;
 	cvtColor(image, img, COLOR_BGR2RGB);
 	cvtColor(img, img, COLOR_BGR2GRAY);
-	Mat thresh;
-	cv::threshold(img, thresh, threshold, 255, THRESH_BINARY_INV);
-	return thresh;
+	Mat thresh, blur;
+	cv::threshold(img, thresh, threshold, 255, THRESH_BINARY_INV); // 100 threshold
+	float kernel_data[9] = { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
+	Mat kernel = Mat(1, 1, CV_32F, kernel_data);
+	cv::filter2D(thresh, blur, -1, kernel);
+	Mat ret;
+	cv::threshold(blur, ret, 250, 255, THRESH_BINARY); // 250 threshold
+	return ret;
 }
 
-void CDlgTableMap::detectText(void) {
-	// Load model weights
-	TextDetectionModel_DB model("DB_TD500_resnet18.onnx");
-	// Post-processing parameters
-	float binThresh = 0.1;
-	float polyThresh = 0.1;
-	uint maxCandidates = 20000;
-	double unclipRatio = 2.5;
-	model.setBinaryThreshold(binThresh)
-		.setPolygonThreshold(polyThresh)
-		.setMaxCandidates(maxCandidates)
-		.setUnclipRatio(unclipRatio)
-		;
-	Mat input = imread("frame000001.bmp");
-	/*
-	cvtColor(input, input, COLOR_BGR2GRAY);
-	input.convertTo(input, -1, 2, 0);	// changing contrast
-	imshow("Contrasted", input);
-	waitKey();
-	*/
-	// Normalization parameters
-	double scale = 1.0 / 255.0;
-	Scalar mean = Scalar(122.67891434, 116.66876762, 104.00698793);
-	// The input shape
-	Size inputSize = Size(1280, 736);
-	model.setInputParams(scale, inputSize, mean);
-	vector<vector<Point>> detResults;
-	vector<RotatedRect> rectDetResults;
-	//model.detect(input, detResults);
-	model.detectTextRectangles(input, rectDetResults);
-	// Visualization
-	//polylines(input, detResults, true, Scalar(255, 255, 255), 1);
-	for (int i = 0; i < rectDetResults.size(); i++)
-		rectangle(input, rectDetResults[i].boundingRect(), Scalar(255, 0, 0), 1);
-	imshow("Text Detection", input);
-	waitKey();
-}
-
-Mat CDlgTableMap::prepareImage(Mat img_orig, Mat* img_cropped, bool binarize, int threshold) {
+Mat CDlgTableMap::prepareImage(Mat img_orig, bool binarize, int threshold, bool second_pass) {
 	// Prepare image for OCR
 	//  !!  Do not change those settings and values !!   //
 	//  Or display on OCR view control will be distorded //
@@ -1918,86 +1759,95 @@ Mat CDlgTableMap::prepareImage(Mat img_orig, Mat* img_cropped, bool binarize, in
 	}
 	cvtColor(img_orig, img_resized, COLOR_BGR2GRAY);
 	resize(img_resized, img_resized, Size(basewidth, hsize), INTER_LANCZOS4);
-	resize(img_orig, *img_cropped, Size(basewidth, hsize), INTER_LANCZOS4);
 
 	if (binarize) {
 		img_resized = binarize_array_opencv(img_resized, threshold);
 	}
+
 	Mat img_bounded = img_resized.clone();
+	img_bounded.convertTo(img_bounded, CV_8UC3);
+	cvtColor(img_bounded, img_bounded, COLOR_GRAY2BGR);
+	m_crColor = m_BoxColor.GetSelectedColorValue();
+
+	/* Add border to bestRect ROI + resize it to fit 30-33px height for capital letter
+	// for optimal 0% error rate on Tesseract recognition: https://groups.google.com/g/tesseract-ocr/c/Wdh_JJwnw94/m/24JHDYQbBQAJ
+	const int border = 25; // 10
+	//const int borderType = BORDER_CONSTANT | BORDER_ISOLATED;
+	const Scalar value(255, 255, 255);
+	const Mat roi(img_resized.rows + 2 * border, img_resized.cols + 2 * border, CV_8UC1, value);
+	img_resized.copyTo(roi(Rect(border, border, img_resized.cols, img_resized.rows)));
+	img_resized = roi;
+	int height = 70; // 29 with 10 border
+	float pct = (height / static_cast<float>(img_resized.rows));
+	int width = static_cast<int>(static_cast<float>(img_resized.cols) * pct);
+	resize(img_resized, img_resized, Size(width, height), INTER_LANCZOS4);
+	*/
 
 	// Cropping management ///////////////////////////
 	if (m_UseCrop.GetCheck() == true) {
-		// downsample and use it for processing
-		//pyrDown(*img_cropped, *img_cropped);
 		CString txt;
 		m_CropSize.GetWindowText(txt);
-		crop_size = atoi(txt);
-		if (crop_size < 2)
-			return *img_cropped;
-		Mat gray;
-		cvtColor(*img_cropped, gray, COLOR_BGR2GRAY);
-		// morphological gradient
-		Mat grad;
-		Mat morphKernel = getStructuringElement(MORPH_ELLIPSE, Size(crop_size, crop_size));
-		morphologyEx(gray, grad, MORPH_GRADIENT, morphKernel);
-		// binarize
-		Mat bw;
-		cv::threshold(grad, bw, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
-		// connect horizontally oriented regions
-		Mat connected;
-		morphKernel = getStructuringElement(MORPH_RECT, Size(1, 1));
-		morphologyEx(bw, connected, MORPH_CLOSE, morphKernel);
-		// find contours
-		Mat mask = Mat::zeros(bw.size(), CV_8UC1);
-		vector<vector<Point>> contours;
-		vector<Vec4i> hierarchy;
-		findContours(connected, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE, Point(0, 0));
+		double cropSize = (double)atoi(txt)/100;
+		if (cropSize < 0.01)
+			return img_bounded;
+
+		process_ocr(img_resized, second_pass);
+		vector<pair<Rect, CString>> resBoxes;
+		if (second_pass)
+			resBoxes = ResultBoxes2;
+		else
+			resBoxes = ResultBoxes;
+
+		// Exit here if no box found (generally an empty region)
+		if (resBoxes.empty())
+			return img_bounded;
+
 		// filter contours
 		vector<Rect> boundRect, boundRect2;
-		img_bounded.convertTo(img_bounded, CV_8UC3);
-		cvtColor(img_bounded, img_bounded, COLOR_GRAY2BGR);
-		m_crColor = m_BoxColor.GetSelectedColorValue();
-		for (int idx = 0; idx < contours.size(); idx++)
+		for (size_t idx = 0; idx < resBoxes.size(); idx++)
 		{
-			Rect rect = boundingRect(contours[idx]);
-			if (contours[idx].size() > 50) {
+			Rect rect = resBoxes[idx].first;
+			if (rect.area() > 50) {
 				boundRect.push_back(rect);
-				rectangle(*img_cropped, rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
-				rectangle(img_bounded, rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
 			}
 		}
 
+		// Exit if no valid box found (generally an empty region)
+		if (boundRect.empty())
+			return img_bounded;
+
 		vector<double> boxArea, boxDist;
-		double wCenter = img_cropped->cols / 2;
-		double hCenter = img_cropped->rows / 2;
-		Point pCenter(wCenter, wCenter);
-		Rect bestRect;
-		////  Find best box match for recognition
+		double wCenter = img_bounded.cols / 2;
+		double hCenter = img_bounded.rows / 2;
+		Point pCenter(wCenter, hCenter);
+		Rect best_rect = Rect();
+		if (second_pass)
+			bestRect2 = Rect();
+		else
+			bestRect = Rect();
+		//  Find best box match for recognition
 		// First find biggest box(es)
-		for (int i = 0; i < boundRect.size(); i++) {
+		for (size_t i = 0; i < boundRect.size(); i++) {
 			boxArea.push_back(boundRect[i].width * boundRect[i].height);
 		}
 		// Select the element with the maximum value
 		auto ita = max_element(boxArea.begin(), boxArea.end());
 		int maxArea = *ita;
 		vector<int> maxIndex;
-		for (int i = 0; i < boxArea.size(); i++) {
-			if (boxArea[i]*1.2 > maxArea) {
+		for (size_t i = 0; i < boxArea.size(); i++) {
+			if (boxArea[i] >  maxArea*(1- cropSize)) {  // default to 40% diff factor for concurrent boxes
 				maxIndex.push_back(i);
 			}
 		}
-		for (int i = 0; i < maxIndex.size(); i++) {
+		for (size_t i = 0; i < maxIndex.size(); i++) {
 			int j = maxIndex[i];
-			boundRect[j].x = boundRect[j].x + 2;
-			boundRect[j].width = boundRect[j].width - 4;
-			boundRect[j].y = boundRect[j].y + 2;
-			boundRect[j].height = boundRect[j].height - 4;
-			bestRect = boundRect[j];
-			boundRect2.push_back(bestRect);
+			best_rect = boundRect[j];
+			rectangle(img_bounded, best_rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 1);
+			boundRect2.push_back(best_rect);
 		}
 		// Second find nearest big box from region center
 		if (boundRect2.size() > 1) {
-			for (int i = 0; i < boundRect2.size(); i++) {
+			for (size_t i = 0; i < boundRect2.size(); i++) {
 				double wcenter = boundRect2[i].x + boundRect2[i].width / 2;
 				double hcenter = boundRect2[i].y + boundRect2[i].height / 2;
 				Point pcenter(wcenter, hcenter);
@@ -2007,132 +1857,137 @@ Mat CDlgTableMap::prepareImage(Mat img_orig, Mat* img_cropped, bool binarize, in
 			// Select the element with the minimum value
 			auto itd = min_element(boxDist.begin(), boxDist.end());
 			int minDist = *itd;
-			for (int i = 0; i < boxDist.size(); i++) {
+			for (size_t i = 0; i < boxDist.size(); i++) {
 				if (boxDist[i] == minDist) {
-					boundRect2[i].x = boundRect2[i].x + 2;
-					boundRect2[i].width = boundRect2[i].width - 4;
-					boundRect2[i].y = boundRect2[i].y + 2;
-					boundRect2[i].height = boundRect2[i].height - 4;
-					bestRect = boundRect2[i];
+					best_rect = boundRect2[i];
 					break;
 				}
 			}
 		}
-		
+
+		// Set the corresponding global bestRect
+		if (second_pass)
+			bestRect2 = best_rect;
+		else
+			bestRect = best_rect;
+
 		// Draw best box
-		rectangle(img_bounded, bestRect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 2);
+		rectangle(img_bounded, best_rect, Scalar(GetBValue(m_crColor), GetGValue(m_crColor), GetRValue(m_crColor)), 2);
 
-		//if (!img_bounded.empty())
-		//	imshow("Output 1", img_bounded);
-		//waitKey();
-
-		*img_cropped = img_resized(bestRect);
-		
-		// Add border to bestRect ROI + resize it to fit 30-33px height for capital letter
-		// for optimal 0% error rate on Tesseract recognition: https://groups.google.com/g/tesseract-ocr/c/Wdh_JJwnw94/m/24JHDYQbBQAJ
-		const int border = 25; // 10
-		//const int borderType = BORDER_CONSTANT | BORDER_ISOLATED;
-		const Scalar value(255, 255, 255);
-		const Mat roi(img_cropped->rows + 2 * border, img_cropped->cols + 2 * border, CV_8UC1, value);
-		img_cropped->copyTo(roi(Rect(border, border, img_cropped->cols, img_cropped->rows)));
-		*img_cropped = roi;		
-		int height = 70; // 29 with 10 border
-		float pct = (height / static_cast<float>(img_cropped->rows));
-		int width = static_cast<int>(static_cast<float>(img_cropped->cols) * pct);
-		resize(*img_cropped, *img_cropped, Size(width, height), INTER_LANCZOS4);
-
-		//if (!img_cropped->empty())
-		//	imshow("Output 2", *img_cropped);
-		//waitKey();
 		return img_bounded;
 	}
-	///////////////////////////////////////////
+	//////////////////////////////////////////////////
 
-	if (binarize) {
-		img_resized = binarize_array_opencv(img_resized, threshold);
-	}
-
-	*img_cropped = img_resized;
-	return img_resized;
+	process_ocr(img_resized, second_pass);
+	return img_bounded;
 }
 
-CString CDlgTableMap::process_ocr(Mat img_orig, bool fast) {
-	if (!m_TableMapTree.GetSelectedItem())
-		return "";
-	/*
-	CString sel_region = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	if (sel_region.Find("handnumber") != -1 || sel_region.Find("limits") != -1 || sel_region.Find("stack") != -1 || sel_region.Find("mtt") != -1 || sel_region.Find("prize") != -1 ||
-		sel_region.Find("pot", 1) != -1 || sel_region.Find("bet", 1) != -1 || sel_region.Find("balance") != -1 || sel_region.Find("chip") != -1 ||
-		sel_region.Find("ante") != -1 || sel_region.Find("smallblind") != -1 || sel_region.Find("bigblind") != -1 || sel_region.Find("bigbet") != -1)
+void CDlgTableMap::process_ocr(Mat img_orig, bool fast, bool second_pass) {
+	if (!m_TableMapTree.GetSelectedItem()) 
+		return;
 
-		api.SetVariable("tessedit_char_whitelist", "0123456789.,$¢");
-	*/
-	//else
-	//	api.SetVariable("tessedit_char_blacklist", "®©℗ⓒ™!%&*+/;=?@²^æÆÇçÉéèêëïîíìÄÅàáâäåúùûüôöòñÑÿÖÜ€$¢£¥₧ƒ~ªº¿⌐¬½¼¡«»\"'`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■");
-	
-	/*
-	PIX* pix = pixCreate(img_orig.cols, img_orig.rows, 8);
-	for (int i = 0; i<img_orig.rows; i++)
-		for (int j = 0; j<img_orig.cols; j++)
-			pixSetPixel(pix, j, i, (l_uint32)img_orig.at<uchar>(i, j));
-	api.SetImage(pix);
-	*/
+	api->SetImage(img_orig.data, img_orig.cols, img_orig.rows, img_orig.channels(), img_orig.step);
+	api->Recognize(0);
 
-	api.SetImage(img_orig.data, img_orig.cols, img_orig.rows, img_orig.channels(), img_orig.step);
-	//imshow("AutoOcr view", img_orig);
-	//waitKey();
-	//int ret = api.Recognize(0);
-	CString result = trim(api.GetUTF8Text()).c_str();
-
-	const char* blacklist = "®©℗ⓒ™!%&*+;=?@²^æÆÇçÉéèêëïîíìÄÅàáâäåúùûüôöòñÑÿÖÜ€£¥₧ƒ~ªº¿⌐¬½¼¡«»\"`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■";
-	for (int i = 0; i < strlen(blacklist); i++)
-		if (result.Find(blacklist[i]) != -1)
-			result.Replace(blacklist[i], '\0');
-
-	return result;
+	if (m_UseCrop.GetCheck() == true) {
+		ResultIterator* ri = api->GetIterator();
+		PageIteratorLevel level = tesseract::RIL_WORD;
+		if (ri != 0) {
+			do {
+				CString word = ri->GetUTF8Text(level);
+				float conf = ri->Confidence(level);
+				int x1, y1, x2, y2;
+				ri->BoundingBox(level, &x1, &y1, &x2, &y2);
+				Mat img_cropped;
+				try {
+					img_cropped = img_orig({ x1, y1, x2 - x1, y2 - y1 });
+				}
+				catch (exception e) {
+					continue;
+				}
+				api2->SetImage(img_cropped.data, img_cropped.cols, img_cropped.rows, img_cropped.channels(), img_cropped.step);
+				api2->Recognize(0);
+				word = trim(api2->GetUTF8Text()).c_str();
+				pair<Rect, CString> matchPair({ x1, y1, x2 - x1, y2 - y1 }, word);
+				if (second_pass)
+					ResultBoxes2.push_back(matchPair);
+				else
+					ResultBoxes.push_back(matchPair);
+			} while (ri->Next(level));
+		}
+	}
+	else {
+		if (second_pass)
+			ResultString2 = trim(api->GetUTF8Text()).c_str();
+		else
+			ResultString = trim(api->GetUTF8Text()).c_str();
+	}
+	api->Clear();
+	api2->Clear();
 }
 
 CString CDlgTableMap::get_ocr_result(Mat img_orig, CString transform, bool fast) {
-	//destroyAllWindows();
 	// Return string value from image. "" when OCR failed
 	Mat img_resized, img_resized2;
-	Mat* img_cropped = new Mat();
-	Mat* img_cropped2 = new Mat();
+	ResultBoxes.clear(); ResultBoxes2.clear();
+	ResultString = ResultString2 = "";
 	
 	CString txt;
 	m_Threshold.GetWindowText(txt);
 	threshold = atoi(txt);
 	
 	if (transform == "AutoOcr0") {
-		img_resized = prepareImage(img_orig, img_cropped, true);
-		img_resized2 = prepareImage(img_orig, img_cropped2, true, threshold);
+		img_resized = prepareImage(img_orig, true);
+		img_resized2 = prepareImage(img_orig, true, threshold, true);
 	}
 	if (transform == "AutoOcr1") {
-		img_resized = prepareImage(img_orig, img_cropped, true, threshold);
-		img_resized2 = prepareImage(img_orig, img_cropped2, true);
+		img_resized = prepareImage(img_orig, true, threshold);
+		img_resized2 = prepareImage(img_orig, true, 76, true);
+	}
+	
+	vector<CString> result_list;
+	CString ocr_result, ocr_result2;
+	if (m_UseCrop.GetCheck() == true) {
+		for (auto & element : ResultBoxes) {
+			if (element.first == bestRect) {
+				ocr_result = element.second;
+				break;
+			}
+		}
+		for (auto & element : ResultBoxes2) {
+			if (element.first == bestRect2) {
+				ocr_result2 = element.second;
+				break;
+			}
+		}
+	}
+	else {
+		ocr_result = ResultString;
+		ocr_result2 = ResultString2;
 	}
 
-	if (m_UseCrop.GetCheck() == false) {
-		img_resized.convertTo(img_resized, CV_8UC3);
-		cvtColor(img_resized, img_resized, COLOR_GRAY2BGR);
-		img_resized2.convertTo(img_resized2, CV_8UC3);
-		cvtColor(img_resized2, img_resized2, COLOR_GRAY2BGR);
+	// Clean results from unwanted chars
+	const char* blacklist = "®©℗ⓒ™!%&*+;=?@²^æÆÇçÉéèêëïîíìÄÅÂÀàáâäåúùûüôöòñÑÿÖÜ€£¥₧ƒ~ªº¿⌐¬½¼¡«»/\"`#<{([])}>|│░▒▓┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■";
+	for (size_t i = 0; i < strlen(blacklist); i++) {
+		if (ocr_result.Find(blacklist[i]) != -1)
+			ocr_result.Replace(blacklist[i], '\0');
+		if (ocr_result2.Find(blacklist[i]) != -1)
+			ocr_result2.Replace(blacklist[i], '\0');
 	}
-
-	vector<CString> lst;
-	CString ocr_result = process_ocr(*img_cropped);
-	CString ocr_result2 = process_ocr(*img_cropped2);
+	
 
 	if (ocr_result != "")
-		lst.push_back(ocr_result);
+		result_list.push_back(ocr_result);
 	if (ocr_result2 != "")
-		lst.push_back(ocr_result2);
+		result_list.push_back(ocr_result2);
 
 
 	// Display OCR image on OCR view
 	CDC					*pDC;
 	HDC					hdcControl;
 
+	//m_MatFrame.Invalidate(true);
+	//m_MatFrame.RedrawWindow();
 	pDC = m_MatFrame.GetDC();
 	hdcControl = *pDC;
 	BITMAPINFOHEADER bih = { sizeof(bih), img_resized.cols, -img_resized.rows, 1, 24, BI_RGB };
@@ -2142,17 +1997,13 @@ CString CDlgTableMap::get_ocr_result(Mat img_orig, CString transform, bool fast)
 		pal[i].rgbReserved = 0;
 	}
 	BITMAPINFO bi = { bih, pal[1] };
-	if (lst.empty() || lst.back() == ocr_result) {
-		//imshow("AutoOcr view", img_resized);
-		//setWindowProperty("AutoOcr view", WND_PROP_TOPMOST, WINDOW_NORMAL);
+	if (result_list.empty() || result_list.back() == ocr_result) {
 		m_MatFrame.SetWindowPos(NULL, 0, 0, img_resized.cols, img_resized.rows, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 		SetDIBitsToDevice(hdcControl, 0, 0, img_resized.cols, img_resized.rows,
 									0, 0, 0, img_resized.rows, img_resized.data, &bi,
 									DIB_RGB_COLORS);
 	}
 	else {
-		//imshow("AutoOcr view", img_resized2);
-		//setWindowProperty("AutoOcr view", WND_PROP_TOPMOST, WINDOW_NORMAL);
 		m_MatFrame.SetWindowPos(NULL, 0, 0, img_resized2.cols, img_resized2.rows, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 		SetDIBitsToDevice(hdcControl, 0, 0, img_resized2.cols, img_resized2.rows,
 									0, 0, 0, img_resized2.rows, img_resized2.data, &bi,
@@ -2165,13 +2016,13 @@ CString CDlgTableMap::get_ocr_result(Mat img_orig, CString transform, bool fast)
 
 	// Display OCR recognition result
 	try {
-		if (!lst.empty()) {
-			return lst.back();
+		if (!result_list.empty()) {
+			return result_list.back();
 		}
 		else {
 			return "";
 		}
-	}
+	}	
 	catch (invalid_argument) {
 		if (fast) {
 			return "";
@@ -2180,17 +2031,26 @@ CString CDlgTableMap::get_ocr_result(Mat img_orig, CString transform, bool fast)
 		vector<Mat> images = { img_orig, img_resized };
 		int i = 0;
 		while (i < 2) {
-			int j = 0;
+			size_t j = 0;
 			while (j < images.size()) {
-				CString ocr_str = process_ocr(images[j]);
+				CString ocr_str;
+				process_ocr(images[j]);
+				for (auto & element : ResultBoxes) {
+					if (element.first == bestRect) {
+						ocr_str = element.second;
+						break;
+					}
+				}
 				if (ocr_str != "")
-					lst.push_back(ocr_str);
-				j += 1;
+					result_list.push_back(ocr_str);
+				j++;
 			}
-			i += 1;
+			i++;
 		}
 	}
-	for (const auto& element : lst) {
+#pragma warning(push)
+#pragma warning(disable:4101)
+	for (const auto& element : result_list) {
 		try {
 			return element;
 		}
@@ -2199,85 +2059,9 @@ CString CDlgTableMap::get_ocr_result(Mat img_orig, CString transform, bool fast)
 			// log.warning(f"Not recognized: {element}")
 		}
 	}
+#pragma warning(pop)
 
 	return "";
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-
-////  Automatic Template Detection functions  ////////////////////////////
-
-Mat CDlgTableMap::loadTemplate(string name) {
-	// Load template
-	FileStorage fs;
-	Mat mat;
-	try
-	{
-		fs.open("Templates.xml", FileStorage::READ);
-	}
-	catch (cv::Exception& e)
-	{
-		CString err_msg = "Failed to open Template file.\nIt seems that your Templates.xml file is invalid or corrupted.\nOCR engine returned error:\n" + (CString)e.what();
-		MessageBox(err_msg, "AutoOcr error", MB_OK);
-		return mat;
-	}
-	//read(fs, "Input", Matrix);
-	fs[name] >> mat;
-	fs.release();
-
-	//imshow("Template", mat);
-	//waitKey();
-	return mat;
-}
-
-void CDlgTableMap::deleteTemplate(string name) {
-	// Delete template
-	FileStorage fs;
-	fstream tplFile("Templates.xml");
-	string content((istreambuf_iterator<char>(tplFile)),
-		(istreambuf_iterator<char>()));
-	unsigned first, last;
-
-	if (content.find(" <!-- resumed -->\n\n") != -1) {
-		first = content.find(" <!-- resumed -->\n\n");
-		last = first + 19;
-		content.replace(first, last - first, "");
-	}
-	first = content.find("<" + name);
-	last = content.find("</" + name + ">\n") + name.length() + 4;
-	content.replace(first, last - first, "");
-	tplFile.close();
-	tplFile.open("Templates.xml", ios::out | ios::trunc);
-	tplFile << content;
-	tplFile.close();
-	fs.release();
-}
-
-void CDlgTableMap::createTemplate(Mat input, string name) {
-	// Create template
-	FileStorage fs;
-	FileNode node;
-
-	try
-	{
-		fs.open("Templates.xml", FileStorage::READ);
-		node = fs[name]; // Read string sequence - Get node
-	}
-	catch (cv::Exception& e)
-	{
-		CString err_msg = "Failed to open Template file.\nIt seems that your Templates.xml file is invalid or corrupted.\nOCR engine returned error:\n" + (CString)e.what();
-		MessageBox(err_msg, "AutoOcr error", MB_OK);
-		return;
-	}
-
-	if (!node.isNone())
-		deleteTemplate(name);
-	
-	fs.release();
-	fs.open("Templates.xml", FileStorage::APPEND);
-	fs << name << input;
-	fs.release();
 }
 
 void CDlgTableMap::DetectAndShowTemplate(string name) {
@@ -2287,7 +2071,6 @@ void CDlgTableMap::DetectAndShowTemplate(string name) {
 	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform_ocr;
 	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform_ocr;
 	RMapCI				r_iter = p_tablemap->r$()->end();
-	RMapCI				r_iter2 = p_tablemap->r$()->end();
 	Mat area_mat, template_mat;
 
 	// Go calc the result and display it
@@ -2297,80 +2080,223 @@ void CDlgTableMap::DetectAndShowTemplate(string name) {
 
 	hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);	
 
+	CString area_name;
+	bool template_found = false;
+	for (r_iter = p_tablemap->r$()->begin(); r_iter != p_tablemap->r$()->end(); r_iter++) {
+		bool search_template = false;
+		area_name = r_iter->second.name;
+		if (area_name == "area_cards_common" && name.find("card_common_") != -1)
+			search_template = true;
+		else if (area_name.Find("area_cards_player") != -1 && name.find("card_player_") != -1)
+			search_template = true;
+		else if (area_name.Find("area_buttons_zone") != -1)
+			search_template = true;
 
-	if (name.find("card_common_") != -1) {
-		r_iter = p_tablemap->r$()->find("area_common_cards");
-		if (r_iter == p_tablemap->r$()->end()) {
-			MessageBox("You must first define the corresponding search area!", "Error", MB_OK);
-			return;
+		if (search_template) {
+			old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
+
+			// Get bitmap size
+			int w = r_iter->second.right - r_iter->second.left + 1;
+			int h = r_iter->second.bottom - r_iter->second.top + 1;
+
+			hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
+			bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
+			old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+
+			BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
+				hdc_bitmap_orig,
+				r_iter->second.left - 1, r_iter->second.top - 1,
+				SRCCOPY);
+
+			area_mat = Mat(h, w, CV_8UC4);
+			BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+			GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+
+			int					x, y, width, height, zoom;
+			HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
+			BYTE				*pBits, alpha, red, green, blue;
+			TPLMapCI			sel_template = p_tablemap->tpl$()->end();
+
+			// Get selected template record
+			if (m_TableMapTree.GetSelectedItem())
+			{
+				sel_template = p_tablemap->tpl$()->find(name.c_str());
+			}
+			else
+			{
+				return;
+			}
+
+			// Get template size
+			width = sel_template->second.width;
+			height = sel_template->second.height;
+
+			// Create new memory DC and new bitmap
+			bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
+			old_bitmap_image = (HBITMAP)SelectObject(hdc_bitmap_orig, bitmap_image);
+
+			// Setup BITMAPINFO
+			BITMAPINFO	bmi;
+			ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
+			bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
+			bmi.bmiHeader.biWidth = width;
+			bmi.bmiHeader.biHeight = -height;
+			bmi.bmiHeader.biPlanes = 1;
+			bmi.bmiHeader.biBitCount = 32;
+			bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
+			bmi.bmiHeader.biSizeImage = width * height * 4;
+
+			// Copy saved image info into pBits array
+			pBits = new BYTE[bmi.bmiHeader.biSizeImage];
+			for (y = 0; y < (int)height; y++) {
+				for (x = 0; x < (int)width; x++) {
+					// image record is stored internally in ABGR format
+					alpha = (sel_template->second.pixel[y*width + x] >> 24) & 0xff;
+					red = (sel_template->second.pixel[y*width + x] >> 0) & 0xff;
+					green = (sel_template->second.pixel[y*width + x] >> 8) & 0xff;
+					blue = (sel_template->second.pixel[y*width + x] >> 16) & 0xff;
+
+					// SetDIBits format is BGRA
+					pBits[y*width * 4 + x * 4 + 0] = blue;
+					pBits[y*width * 4 + x * 4 + 1] = green;
+					pBits[y*width * 4 + x * 4 + 2] = red;
+					pBits[y*width * 4 + x * 4 + 3] = alpha;
+				}
+			}
+			::SetDIBits(hdc_bitmap_orig, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
+
+			template_mat = Mat(height, width, CV_8UC4);
+			template_mat.data = pBits;
+
+
+			// Display match result
+			Mat match_roi;
+			int match_method = m_MatchMode.GetCurSel();
+			// Do the Matching and Normalize
+			matchTemplate(area_mat, template_mat, match_roi, match_method);
+			//normalize(match_roi, match_roi, 0, 1, NORM_MINMAX, -1, Mat());
+
+			/// Localizing the best match with minMaxLoc
+			double matchVal, minVal, maxVal;
+			Point minLoc, maxLoc, matchLoc;
+
+			minMaxLoc(match_roi, &minVal, &maxVal, &minLoc, &maxLoc);
+
+			/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+			if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+			{
+				matchLoc = minLoc;
+				matchVal = minVal;
+			}
+			else
+			{
+				matchLoc = maxLoc;
+				matchVal = maxVal;
+			}
+
+			// Exact match
+			if (-0.02 <= matchVal && matchVal <= 0.02 || 0.98 <= matchVal && matchVal <= 1.02) {  // 0.02% tolerance
+				template_found = true;
+				// Show me what you got
+				rectangle(area_mat, matchLoc, Point(matchLoc.x + template_mat.cols, matchLoc.y + template_mat.rows), Scalar(0, 255, 0), 2, 8, 0);
+
+				imshow("Result view", area_mat);
+				//imshow("Result view", match_roi);
+				//waitKey();
+				break;
+			}	
+		// Clean up
+		delete []pBits;
+		SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
+		DeleteObject(bitmap_transform_ocr);
+		DeleteDC(hdc_bitmap_transform_ocr);
+
+		SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+		DeleteDC(hdc_bitmap_orig);
+
+		DeleteDC(hdcScreen);
 		}
-		r_iter2 = r_iter;
-	}
-	if (name.find("card_player_") != -1) {
-		r_iter2 = p_tablemap->r$()->find("area_player_cards");
-		if (r_iter2 == p_tablemap->r$()->end()) {
-			MessageBox("You must first define the corresponding search area!", "Error", MB_OK);
-			return;
-		}
-		r_iter = r_iter2;
 	}
 
-	if (r_iter != p_tablemap->r$()->end()) {
-		old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
+	// No match found
+	if (!template_found)
+		MessageBox("No match found.", "Info", MB_OK);
 
-		// Get bitmap size
-		int w = r_iter->second.right - r_iter->second.left + 1;
-		int h = r_iter->second.bottom - r_iter->second.top + 1;
 
-		hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
-		bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
-		old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+	// Clean up
+	SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
+	DeleteObject(bitmap_transform_ocr);
+	DeleteDC(hdc_bitmap_transform_ocr);
 
-		BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
-			hdc_bitmap_orig,
-			r_iter->second.left - 1, r_iter->second.top - 1,
-			SRCCOPY);
+	SelectObject(hdc_bitmap_orig, old_bitmap_orig);
+	DeleteDC(hdc_bitmap_orig);
 
-		area_mat = Mat(h, w, CV_8UC4);
-		BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
-		GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-	}
-	else {
-		BITMAP bm;
-		GetObject(pDoc->attached_bitmap, sizeof(BITMAP), &bm);
-		area_mat = Mat(bm.bmHeight, bm.bmWidth, CV_8UC4);
-		BITMAPINFOHEADER bi = { sizeof(bi), bm.bmWidth, -bm.bmHeight, 1, 32, BI_RGB };
-		GetDIBits(hdc_bitmap_orig, pDoc->attached_bitmap, 0, bm.bmHeight, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-		//imshow("Result view", area_mat);
-		//waitKey();
-	}
+	DeleteDC(hdcScreen);
 
-	int					x, y, width, height, zoom;
-	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
+}
+
+CString CDlgTableMap::GetDetectTemplateResult(CString area_name, CString tpl_name, RECT* rect_result) {
+	//  Detect template
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	HDC					hdc = ::GetDC(pDoc->attached_hwnd);
+	HDC					hdcScreen, hdcCompat, hdc_bitmap_orig, hdc_bitmap_transform_ocr;
+	CString				text, selected_transform, separation;
+	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform_ocr;
+	RMapCI				r_iter = p_tablemap->r$()->find(area_name.GetString());
+	TPLMapCI			sel_template = p_tablemap->tpl$()->find(tpl_name.GetString());
+
+	// Exit if the area or template doesn't exist
+	if (r_iter == p_tablemap->r$()->end() || sel_template == p_tablemap->tpl$()->end())
+		return "";
+
+	// Exit if template isn't created
+	if (!sel_template->second.created)
+		return "";
+
+	// Bitblt the attached windows bitmap into a HDC
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+	hdcCompat = CreateCompatibleDC(hdcScreen);
+	RECT rect;
+	::GetClientRect(pDoc->attached_hwnd, &rect);
+	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
+	HBITMAP	old_bitmap = (HBITMAP)SelectObject(hdcCompat, attached_bitmap);
+	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
+
+	hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
+	old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, attached_bitmap);
+	//SaveHBITMAPToFile(attached_bitmap, "output.bmp");
+
+	// Get bitmap size
+	int w = r_iter->second.right - r_iter->second.left + 1;
+	int h = r_iter->second.bottom - r_iter->second.top + 1;
+
+	hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
+	bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
+	old_bitmap_transform = (HBITMAP)SelectObject(hdc_bitmap_transform_ocr, bitmap_transform_ocr);
+
+	BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
+		hdc,
+		r_iter->second.left - 1, r_iter->second.top - 1,
+		SRCCOPY);
+
+	Mat area_mat(h, w, CV_8UC4);
+	BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+	GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+
+	int					x, y, width, height, match_mode;
+	HBITMAP				bitmap_image, old_bitmap_image;
 	BYTE				*pBits, alpha, red, green, blue;
-	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
-
-	// Get selected template record
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel_template = p_tablemap->tpl$()->find(name.c_str());
-	}
-	else
-	{
-		return;
-	}
+	RECT roi, zero_rect = RECT{ 0 };
+	vector<pair<int, CString>> listROI;
 
 	// Get template size
 	width = sel_template->second.width;
 	height = sel_template->second.height;
-
-	// Copy saved template into a memory dc so we can get the bmi
-	pDC = m_BitmapFrame.GetDC();
-	hdcControl = *pDC;
-	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+	match_mode = sel_template->second.match_mode;
+	if (width < 1 || height < 1 || match_mode < 0)
+		return "";
 
 	// Create new memory DC and new bitmap
-	//hdc_image = CreateCompatibleDC(hdcScreen);
 	bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
 	old_bitmap_image = (HBITMAP)SelectObject(hdc_bitmap_orig, bitmap_image);
 
@@ -2404,57 +2330,11 @@ void CDlgTableMap::DetectAndShowTemplate(string name) {
 	}
 	::SetDIBits(hdc_bitmap_orig, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
 
-	template_mat = Mat(height, width, CV_8UC4);
+	Mat template_mat(height, width, CV_8UC4);
 	template_mat.data = pBits;
-
-	/*
-	Mat input(h, w, CV_8UC4);
-	BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
-	GetDIBits(hdc_bitmap_transform, bitmap_transform, 0, h, input.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-	*/
-
-	//Mat input = loadTemplate(name);
-	Mat resultImg;
-	//int match_method = TM_SQDIFF;
-	int match_method = m_MatchMode.GetCurSel();
-	// Do the Matching and Normalize
-	matchTemplate(area_mat, template_mat, resultImg, match_method);
-	//normalize(resultImg, resultImg, 0, 1, NORM_MINMAX, -1, Mat());
-
-	/// Localizing the best match with minMaxLoc
-	double matchVal, minVal, maxVal; 
-	Point minLoc, maxLoc, matchLoc;
-
-	minMaxLoc(resultImg, &minVal, &maxVal, &minLoc, &maxLoc);
-
-	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
-	{
-		matchLoc = minLoc;
-		matchVal = minVal;
-	}
-	else
-	{
-		matchLoc = maxLoc;
-		matchVal = maxVal;
-	}
-
-	// Exact match
-	if (-0.08 <= matchVal && matchVal <= 0.08 || 0.92 <= matchVal && matchVal <= 1.08) {  // 0.08% tolerance
-		// Show me what you got
-		rectangle(area_mat, matchLoc, Point(matchLoc.x + template_mat.cols, matchLoc.y + template_mat.rows), Scalar(0, 255, 0), 2, 8, 0);
-		//rectangle(resultImg, matchLoc, Point(matchLoc.x + template_mat.cols, matchLoc.y + template_mat.rows), Scalar(0, 255, 0), 2, 8, 0);
-
-		imshow("Result view", area_mat);
-		//imshow("Result view", resultImg);
-		//waitKey();
-	}
-	else
-		// No match found
-		MessageBox("No match found.", "Info", MB_OK);
-
-
+	
 	// Clean up
+	delete []pBits;
 	SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
 	DeleteObject(bitmap_transform_ocr);
 	DeleteDC(hdc_bitmap_transform_ocr);
@@ -2463,6 +2343,18 @@ void CDlgTableMap::DetectAndShowTemplate(string name) {
 	DeleteDC(hdc_bitmap_orig);
 
 	DeleteDC(hdcScreen);
+
+
+	roi = detectTemplate(area_mat, template_mat, match_mode);
+	if (!EqualRect(&roi, &zero_rect)) {
+		if (area_name.Find("area_buttons_zone") != -1) {
+			*rect_result = roi;
+			return "true";
+		}
+	}
+
+	*rect_result = RECT{ 0 };
+	return "";
 }
 
 CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
@@ -2509,8 +2401,6 @@ CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
 	BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
 	GetDIBits(hdc_bitmap_transform_ocr, bitmap_transform_ocr, 0, h, area_mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
 
-	//imshow("Area Image", area_mat);
-	//waitKey();
 
 	int					x, y, width, height, match_mode;
 	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
@@ -2520,20 +2410,20 @@ CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
 
 	// Get search templates in area
 	for (sel_template = p_tablemap->tpl$()->begin(); sel_template != p_tablemap->tpl$()->end(); sel_template++) {
-		if (area_name == "area_common_cards" && sel_template->second.name.Find("card_common_") == -1)
+		if (!sel_template->second.created)
 			continue;
-		if (area_name.Find("area_player_cards") != -1 && sel_template->second.name.Find("card_player_") == -1)
+		if (area_name == "area_cards_common" && sel_template->second.name.Find("card_common_") == -1)
+			continue;
+		if (area_name.Find("area_cards_player") != -1 && sel_template->second.name.Find("card_player_") == -1)
 			continue;
 		// Get template size
 		width = sel_template->second.width;
 		height = sel_template->second.height;
 		match_mode = sel_template->second.match_mode;
-
-		// Copy saved template into a memory dc so we can get the bmi
-		hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+		if (width < 1 || height < 1 || match_mode < 0)
+			continue;
 
 		// Create new memory DC and new bitmap
-		//hdc_image = CreateCompatibleDC(hdcScreen);
 		bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
 		old_bitmap_image = (HBITMAP)SelectObject(hdc_bitmap_orig, bitmap_image);
 
@@ -2569,20 +2459,25 @@ CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
 
 		Mat template_mat(height, width, CV_8UC4);
 		template_mat.data = pBits;
-		//imshow("Template Image", template_mat);
-		//waitKey();
 
 		roi = detectTemplate(area_mat, template_mat, match_mode);
 		if (!EqualRect(&roi, &zero)) {
-			if (area_name == "area_common_cards") {
+			if (area_name == "area_cards_common") {
 				CString value = sel_template->second.name;
 				value.Replace("card_common_", "");
 				pair<int, CString> matchPair(roi.left, value);
 				listROI.push_back(matchPair);
 			}
-			if (area_name.Find("area_player_cards") != -1) {
+			if (area_name.Find("area_cards_player") != -1) {
 				CString value = sel_template->second.name;
 				value.Replace("card_player_", "");
+				pair<int, CString> matchPair(roi.left, value);
+				listROI.push_back(matchPair);
+			}
+			if (area_name.Find("area_buttons_zone") != -1) {
+				CString value = sel_template->second.name;
+				value.Replace("button_action_", "");
+				value.Replace("button_", "");
 				pair<int, CString> matchPair(roi.left, value);
 				listROI.push_back(matchPair);
 			}
@@ -2597,10 +2492,10 @@ CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
 	for (auto & element : listROI) {
 		result.Append(element.second + " ");
 	}
-	//m_Result.SetWindowText(result);
 
 
 	// Clean up
+	delete []pBits;
 	SelectObject(hdc_bitmap_transform_ocr, old_bitmap_transform);
 	DeleteObject(bitmap_transform_ocr);
 	DeleteDC(hdc_bitmap_transform_ocr);
@@ -2616,19 +2511,21 @@ CString CDlgTableMap::GetDetectTemplatesResult(CString area_name) {
 RECT CDlgTableMap::detectTemplate(Mat area, Mat tpl, int match_mode) {
 	//  Detect template	
 	RECT result;
-	Mat resultImg;
-	int result_cols = area.cols - area.cols + 1;
-	int result_rows = area.rows - area.rows + 1;
-	resultImg.create(result_rows, result_cols, CV_32FC1);
+	int result_cols = area.cols - tpl.cols + 1;
+	int result_rows = area.rows - tpl.rows + 1;
+	// Invalid template size > area size
+	if (result_cols < 1 || result_rows < 1)
+		return result = RECT{ 0 };
+	Mat match_roi = Mat(result_rows, result_cols, CV_32FC1);
 	// Do the Matching and Normalize
-	matchTemplate(area, tpl, resultImg, match_mode);
-	//normalize(resultImg, resultImg, 0, 1, NORM_MINMAX, -1, Mat());
+	matchTemplate(area, tpl, match_roi, match_mode);
+	//normalize(match_roi, match_roi, 0, 1, NORM_MINMAX, -1, Mat());
 
 	/// Localizing the best match with minMaxLoc
 	double matchVal, minVal, maxVal; 
 	Point minLoc, maxLoc, matchLoc;
 
-	minMaxLoc(resultImg, &minVal, &maxVal, &minLoc, &maxLoc);
+	minMaxLoc(match_roi, &minVal, &maxVal, &minLoc, &maxLoc);
 
 	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
 	if (match_mode == TM_SQDIFF || match_mode == TM_SQDIFF_NORMED)
@@ -2643,16 +2540,8 @@ RECT CDlgTableMap::detectTemplate(Mat area, Mat tpl, int match_mode) {
 	}
 
 	// Exact match found
-	if (-0.08 <= matchVal && matchVal <= 0.08 || 0.92 <= matchVal && matchVal <= 1.08) {  // 0.08% tolerance
+	if (-0.02 <= matchVal && matchVal <= 0.02 || 0.98 <= matchVal && matchVal <= 1.02) {  // 0.02% tolerance
 		result = RECT{ matchLoc.x, matchLoc.y , matchLoc.x + tpl.cols, matchLoc.y + tpl.rows };
-
-		// Show me what you got
-		//rectangle(area, matchLoc, Point(matchLoc.x + tpl.cols, matchLoc.y + tpl.rows), Scalar(0, 255, 0), 2, 8, 0);
-		//rectangle(resultImg, matchLoc, Point(matchLoc.x + tpl.cols, matchLoc.y + tpl.rows), Scalar(0, 255, 0), 2, 8, 0);
-
-		//imshow("Result view", area);
-		//imshow("Result transform view", resultImg);
-		//waitKey();
 	}
 	else
 		// No match found
@@ -2784,8 +2673,8 @@ void CDlgTableMap::update_ocr_r$_display(void) {
 		hdc_bitmap_orig = CreateCompatibleDC(hdcScreen);
 		old_bitmap_orig = (HBITMAP)SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
 
-		int w = sel_region->second.right - sel_region->second.left + 3;
-		int h = sel_region->second.bottom - sel_region->second.top + 3;
+		int w = sel_region->second.right - sel_region->second.left + 1;
+		int h = sel_region->second.bottom - sel_region->second.top + 1;
 
 		hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
 		bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
@@ -2793,7 +2682,7 @@ void CDlgTableMap::update_ocr_r$_display(void) {
 
 		BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
 			hdc_bitmap_orig,
-			sel_region->second.left - 1, sel_region->second.top - 1,
+			sel_region->second.left, sel_region->second.top,
 			SRCCOPY);
 
 		// result field
@@ -2828,11 +2717,11 @@ void CDlgTableMap::update_ocr_r$_display(void) {
 void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				text, selected_transform, separation;
+	CString				text = "", selected_transform, separation;
 	CDC					*pDC;
 	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform, hdc_bitmap_transform_ocr;
 	HBITMAP				old_bitmap_orig, old_bitmap_transform, bitmap_transform, bitmap_transform_ocr;
-	COLORREF			cr_avg;
+	COLORREF			cr_avg = 0;
 	CTransform			trans;
 	RMapI				sel_region = p_tablemap->set_r$()->end();
 	TPLMapCI			sel_template = p_tablemap->tpl$()->end();
@@ -2949,6 +2838,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		m_BoxColor.EnableWindow(true);
 	}
 	else {
+		m_UseCrop.SetCheck(false);
 		m_CropSize.EnableWindow(false);
 		m_CropSpin.EnableWindow(false);
 		m_BoxColor.EnableWindow(false);
@@ -3058,7 +2948,10 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	// Go calc the result and display it
 	if (sel_text.Find("area") != -1) {
 		// Templates detection in target area (ROI)
-		text = GetDetectTemplatesResult(sel_region->second.name);
+		int _width = sel_region->second.right - sel_region->second.left;
+		int _height = sel_region->second.bottom - sel_region->second.top;
+		if (_width > 0 && _height > 0)
+			text = GetDetectTemplatesResult(sel_region->second.name);
 	}
 	else {
 		pDC = m_BitmapFrame.GetDC();
@@ -3080,8 +2973,8 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 			sel_region->second.left, sel_region->second.top,
 			SRCCOPY);
 
-		w = w + 6;
-		h = h + 6;
+		//w = w + 6;
+		//h = h + 6;
 
 		hdc_bitmap_transform_ocr = CreateCompatibleDC(hdcScreen);
 		bitmap_transform_ocr = CreateCompatibleBitmap(hdcScreen, w, h);
@@ -3089,7 +2982,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 
 		BitBlt(hdc_bitmap_transform_ocr, 0, 0, w, h,
 			hdc_bitmap_orig,
-			sel_region->second.left - 3, sel_region->second.top - 3,
+			sel_region->second.left, sel_region->second.top,
 			SRCCOPY);
 
 		// result field
@@ -3598,9 +3491,9 @@ void CDlgTableMap::OnBnClickedNew() {
 				new_region.radius = 0;
 				new_region.transform = "N";
 				new_region.use_default = true;
-				new_region.threshold = -1;
+				new_region.threshold = 0;
 				new_region.use_cropping = false;
-				new_region.crop_size = -1;
+				new_region.crop_size = 0;
 				new_region.box_color = -1;
 
 				// Insert the new record in the existing array of z$ records
@@ -3700,19 +3593,21 @@ void CDlgTableMap::OnBnClickedNew() {
 				dlgtemplates.strings.Add(list_of_templates[i]);
 			}
 		}
-		// Show dialog if there are any strings left to add
+		/* Show dialog if there are any strings left to add
 		if (dlgtemplates.strings.GetSize() == 0)
 		{
 			MessageBox("All Template records are already present.");
 		}
 		else
-		{
+		{*/
 			if (dlgtemplates.DoModal() == IDOK && dlgtemplates.name != "")
 			{
-				if (dlgtemplates.name.Find("card_", 0) == -1) {
+				/*
+				if (dlgtemplates.name.Find("card_", 0) == -1 && dlgtemplates.name.Find("button_", 0) == -1) {
 					MessageBox("Template name is invalid.\nPlease choose one of the list.");
 					return;
 				}
+				*/
 				// Add new record to internal structure
 				STablemapTemplate new_template;
 				new_template.name = dlgtemplates.name;
@@ -3742,7 +3637,7 @@ void CDlgTableMap::OnBnClickedNew() {
 					Invalidate(false);
 				}
 			}
-		}
+		//}
 	}
 }
 
@@ -6049,16 +5944,6 @@ HTREEITEM CDlgTableMap::FindItem(CString s, HTREEITEM start)
 void CDlgTableMap::OnBnClickedUseDefault()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString	sel_text, type_text;
-	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
-	TPLMapI				sel_template = p_tablemap->set_tpl$()->end();
-
-	// Get iterator for selected template
-	sel_template = p_tablemap->set_tpl$()->find(sel_text.GetString());
-
-	if (sel_template != p_tablemap->tpl$()->end()) {
-		sel_template->second.match_mode = kDefaultMatchMode;
-	}
 
 	update_ocr_display();
 
@@ -6071,12 +5956,6 @@ void CDlgTableMap::OnBnClickedUseDefault()
 void CDlgTableMap::OnBnClickedUseCrop()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString	sel_text, type_text;
-	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
-	RMap::iterator r_iter = p_tablemap->set_r$()->find(sel_text.GetString());
-	
-	r_iter->second.crop_size = kDefaultCropSize;
-	r_iter->second.box_color = kDefaultBoxColor;
 
 	update_ocr_display();
 

@@ -19,7 +19,6 @@
 #define IDC_DRAWRECTCURSOR              143
 #define IDD_EDIT_GR_HASHPOINTS          145
 #define IDD_COPY_REGION                 146
-#define IDD_TEXTDETECT_SETTINGS         149
 #define IDB_BITMAP1                     152
 #define IDB_NUDGEWIDERBITMAP            152
 #define IDC_TABLEMAP_TREE               1000
@@ -116,14 +115,7 @@
 #define IDC_OCRLIST_PDIFF               1095
 #define IDC_OCREDIT_RECOTRESHOLD        1096
 #define IDC_THRESHOLD                   1096
-#define IDC_OCRCHECK_DEFAULT2           1097
-#define IDC_OCRLIST_MODEL               1098
-#define IDC_OCREDIT_BINTRESHOLD         1099
-#define IDC_OCREDIT_POLYTRESHOLD        1100
-#define IDC_OCREDIT_UNCLIPRATIO         1101
 #define IDC_RADIO_INBUILT               1102
-#define IDC_TEST_DETECTION              1105
-#define IDC_OCRLIST_BOXCOLOR            1106
 #define IDC_USE_CROP                    1106
 #define IDC_BOX_COLOR                   1107
 #define IDC_MATCH_MODE                  1109
