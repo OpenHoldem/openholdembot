@@ -340,29 +340,29 @@ void CScraper::ScrapeBetsAndBalances() {
 void CScraper::ScrapeSeated(int chair) {
 	CString seated;
 	CString result;
-  // Me must NOT set_seated(false) here,
-  // as that would reset all player data.
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
+	// Me must NOT set_seated(false) here,
+	// as that would reset all player data.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
+	// http://www.maxinmontreal.com/forums/viewtopic.php?p=191043
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
-		if (result != "")	{
-			if (p_string_match->IsStringSeated(result)) {
-				p_table_state->Player(chair)->set_seated(true);
-				return;
-			}
+		if ((result != "") && (p_string_match->IsStringSeated(result))) {
+			p_table_state->Player(chair)->set_seated(true);
+			return;
 		}
 	}
+
 	// try u region next uXseated,
 	// but only if we didn't get a positive result from the p region
 	seated.Format("u%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
-		if (result != "")	{
-			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
-      return;
+		if ((result != "") && (p_string_match->IsStringSeated(result))) {
+			p_table_state->Player(chair)->set_seated(true);
+			return;
 		}
 	}
-  // Failed. Not seated
-  p_table_state->Player(chair)->set_seated(false);
+	// Failed. Not seated
+	p_table_state->Player(chair)->set_seated(false);
 }
 
 void CScraper::ScrapeDealer() {
@@ -729,7 +729,7 @@ void CScraper::ScrapeName(int chair) {
 	CString Separator = _T("|~|");
 	CString Token, temp;
 	CString bregex = "(^[\"\\(\\)\\[\\]<>{}#*-]*?)";
-	CString eregex = "([c$£€\"\\(\\)\\[\\]<>{}#*-]*?)([0-9.,]*)([c$£€\"\\(\\)\\[\\]<>{}#*-]*?$)";
+	CString eregex = "([c$ï¿½ï¿½\"\\(\\)\\[\\]<>{}#*-]*?)([0-9.,]*)([c$ï¿½ï¿½\"\\(\\)\\[\\]<>{}#*-]*?$)";
 	int Position;
 
 	// Player name uXname
