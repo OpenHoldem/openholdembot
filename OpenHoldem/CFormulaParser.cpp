@@ -57,6 +57,7 @@ CFormulaParser::CFormulaParser() {
   _is_parsing_counter = 0;
   _is_parsing_read_only_function_library = false;
   _is_parsing_debug_tab = false;
+  _islist = false;
   _currently_parsed_function_or_list = NULL;
 }
 
@@ -266,6 +267,7 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
 }
 
 void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed) {
+	_islist = false;
   // ATTENTION!
   // This function contasins many returns.
   // Make sure to call LeaveParserCode() everywhere!
@@ -318,6 +320,7 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     CheckForExtraTokensAfterEndOfFunction();
   } else if (function_or_list_to_be_parsed->IsList()) {
     // ##listXYZ##
+	_islist = true;
     write_log(Preferences()->debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
     ParseListBody((COHScriptList*)function_or_list_to_be_parsed);
@@ -356,15 +359,9 @@ void CFormulaParser::ParseListBody(COHScriptList *list) {
 	int token_ID = _tokenizer.GetToken();
 	while (token_ID != kTokenEndOfFunction)	{
 		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
-			  || (token_ID == kTokenNumber)       // Low pairs 99..22
-			  || (token_ID == kTokenCards)) {     // Low unpaired cards like 65s, 92o	
+			|| (token_ID == kTokenNumber)       // Low pairs 99..22
+			|| (token_ID == kTokenCards)) {     // Low unpaired cards like 65s, 92o	
 			_token = _tokenizer.GetTokenString();
-			// More token-validation happens inside the setter
-			if (!list->Set(_token)) {
-        // Looked like a card on first sight, but is invalid.
-        // Avoid too many errors on bad lists
-        return;
-      }
 		}	else {
 			CParseErrors::UnexpectedToken("Unexpected token inside list.\n"
         "This does not look like valid hole-cards.\n",
@@ -376,6 +373,52 @@ void CFormulaParser::ParseListBody(COHScriptList *list) {
 			return;
 		}
 		token_ID = _tokenizer.GetToken();
+		if (token_ID == kTokenOperatorHandRangeGroup) {			// Handrange group operator
+			_token.Append(_tokenizer.GetTokenString());
+			token_ID = _tokenizer.GetToken();
+			if ((token_ID == kTokenIdentifier)
+				|| (token_ID == kTokenNumber)
+				|| (token_ID == kTokenCards))
+				_token.Append(_tokenizer.GetTokenString());
+			else {
+				CParseErrors::UnexpectedToken("Unexpected token inside list.\n"
+					"This does not look like valid handrange group.\n",
+					"Allowed are\n:"
+					"  QQ-99:78\n"
+					"  T7s-T3s:35\n"
+					"  T7o-T3o:22\n",
+					token_ID);
+				return;
+			}
+			token_ID = _tokenizer.GetToken();
+		}
+		if (token_ID == kTokenOperatorOpenEndedHandRange) {     // Open-ended Handrange operator
+			_token.Append(_tokenizer.GetTokenString());
+			token_ID = _tokenizer.GetToken();
+		}
+		if (token_ID == kTokenOperatorSetHandWeight) {			// Hand weight set operator
+			_token.Append(_tokenizer.GetTokenString());
+			token_ID = _tokenizer.GetToken();
+			if (token_ID == kTokenNumber)
+				_token.Append(_tokenizer.GetTokenString());
+			else {
+				CParseErrors::UnexpectedToken("Unexpected token inside list.\n"
+					"This does not look like valid weighted hole-cards.\n",
+					"Allowed are\n:"
+					"  AA:100\n"
+					"  T9s:60\n"
+					"  72o:0\n",
+					token_ID);
+				return;
+			}
+			token_ID = _tokenizer.GetToken();
+		}
+		// More token-validation happens inside the setter
+		if (!list->Set(_token)) {
+			// Looked like a card on first sight, but is invalid.
+			// Avoid too many errors on bad lists
+			return;
+		}
 	}
 }
 
@@ -748,7 +791,7 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       when_condition->_second_sibbling = action;
       // For future backpatching
       last_when_condition_was_open_ended = false;
-      token_ID = _tokenizer.LookAhead();
+	  token_ID = _tokenizer.LookAhead();
     } else if (token_ID == kTokenOperatorConditionalWhen) {
       // All work to do: in the next loop
       last_when_condition_was_open_ended = true;
@@ -778,9 +821,9 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       // ... and lookahead again
       token_ID = _tokenizer.LookAhead();
     } else {
-      ErrorMissingAction(token_ID);
-      break;
-    }
+		  ErrorMissingAction(token_ID);
+		  break;
+		}
   }
   return first_when_condition_of_sequence;
 }
@@ -796,14 +839,19 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
   }
 	CString identifier = _tokenizer.GetTokenString();
 	if ((identifier.Left(4).MakeLower() != "user") 
-      && (identifier.Left(3) != "me_")) { 
+      && (identifier.Left(3) != "me_")
+		&& (identifier.Left(8) != "prw1326_")
+		&& (identifier.Left(5) != "range")) {
 		CParseErrors::UnexpectedToken("Unexpected identifier.\n",
 		  "Valid options:\n"
 		  "   * user-variable (user_utg_limp_raised)\n"
 		  "   * memory-store-command (me_st_pi_3_141592653)\n"
 		  "   * memory-increment-command (me_inc_flopsseen)\n"
 		  "   * memory-add-command (me_add_outs_4)\n"
-		  "   * memory-sub-command (me_sub_outs_1_5)\n",
+		  "   * memory-sub-command (me_sub_outs_1_5)\n"
+		  "   * prw1326 set use command (prw1326_useme \"TRUE\")\n"
+		  "   * prw1326 set command (prw1326_cmd \"RECALC\")\n"
+		  "   * range set command (range0 \"AA:100 KK:94 AKs:88\")\n",
       token_ID);
 		return NULL;
 	}
@@ -842,11 +890,12 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
     action = ParseOpenPPLRaiseExpression();
     ExpectKeywordForce(token_ID);
     return action;
-	} else if (token_ID == kTokenActionUserVariableToBeSet) { 
+	} else if (token_ID == kTokenActionUserVariableToBeSet) {
     TPParseTreeTerminalNode user_variable = ParseOpenPPLUserVar();
     // Not expecting keyword Force here
     return user_variable;
-  } else {
+  }
+	else {
 		// Predefined action, like Check or Fold
     TPParseTreeTerminalNodeFixedAction fixed_action 
       = new CParseTreeTerminalNodeFixedAction(_tokenizer.LineRelative(),

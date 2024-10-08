@@ -15,6 +15,7 @@
 #include "CDebugTab.h"
 
 #include "CFormulaParser.h"
+#include "CEngineContainer.h"
 
 
 CDebugTab *p_debug_tab = NULL; 
@@ -50,11 +51,21 @@ CString CDebugTab::EvaluateAll() {
   CString all_results;
   CString current_line;
   for (int i=0; i<_number_of_expressions; ++i) {
-    CString result = _expressions[i]->EvaluateToString();
-    assert(_expression_texts[i] != "");
-    // Left side at least 12 digits for bitwise values like 0b1011100101
-    current_line.Format("%12s = %s\n", result,
-      _expression_texts[i]);
+	CString result;
+	if (p_engine_container->IsStringSymbol(_expression_texts[i])) {
+		result = _expressions[i]->EvaluateString();
+		assert(_expression_texts[i] != "");
+		// Left side is complete string value
+		current_line.Format("%s = %s\n", result,
+			_expression_texts[i]);
+	}
+	else {
+		result = _expressions[i]->EvaluateToString();
+		assert(_expression_texts[i] != "");
+		// Left side at least 12 digits for bitwise values like 0b1011100101
+		current_line.Format("%12s = %s\n", result,
+			_expression_texts[i]);
+	}
     all_results += current_line;
   }
   return all_results;

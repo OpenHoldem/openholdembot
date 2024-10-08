@@ -67,6 +67,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_allin_adjustment",
   "debug_handreset_detector",
   "debug_engine_container",
+  "debug_enhanced_prwin",
   "debug_dll_extension",
   "debug_scraper_preprocessor",
   "debug_openholdem",

@@ -37,6 +37,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEnginePrwin.h"
 #include "CTableState.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -229,6 +230,9 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	ExecuteBeep();
   assert(p_engine_container->symbol_engine_autoplayer()->isfinalanswer());
 	assert(p_engine_container->symbol_engine_autoplayer()->ismyturn());
+	// Log EnhancedPrwin HandRank info if enhanced prwin is used
+	if (p_iterator_thread->UseEnhancedPrWin() && Preferences()->debug_enhanced_prwin())
+		p_engine_container->symbol_engine_prwin()->LogHandRank();
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
