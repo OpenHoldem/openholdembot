@@ -101,7 +101,10 @@ void CTablemapCompletenessChecker::CheckSetOfItems(CString prefix,
   }
   if (!mandatory) return;
   for (int i=0; i<=last_index; ++i) {
-    CheckItem(prefix, i, postfix);
+	  CString s_chair = to_string(i).c_str();
+	  if (!p_tablemap->ItemExists("area_cards_player" + s_chair)) {
+		  CheckItem(prefix, i, postfix);
+	  }
   }
 }
 
@@ -139,7 +142,12 @@ void CTablemapCompletenessChecker::CheckCardFaces(CString prefix, int infix, CSt
   CString name;
   name.Format("%s%d%s", prefix, infix, postfix);
   CString rank_name = name + "rank";
-  if (p_tablemap->ItemExists(rank_name)) {
+  CString s_chair = to_string(infix).c_str();
+  if (p_tablemap->ItemExists("area_cards_common"))
+	  CheckItem("area_cards_common");
+  else if (p_tablemap->ItemExists("area_cards_player" + s_chair))
+	  CheckItem("area_cards_player" + s_chair);
+  else if (p_tablemap->ItemExists(rank_name)) {
     // If a rank exists then the suit also needs to get scraped
     CString suit_name = name + "suit";
     CheckItem(suit_name);
@@ -231,8 +239,8 @@ CheckSetOfItems("p", last_chair, "cardback", true);
 CheckSetOfItems("p", last_chair, "cardface0nocard", true);
 CheckSetOfItems("p", last_chair, "cardface1nocard", true);
 if (p_tablemap->SupportsOmaha()) {
-  CheckSetOfItems("p", last_chair, "cardface2nocard", true);
-  CheckSetOfItems("p", last_chair, "cardface3nocard", true);
+	CheckSetOfItems("p", last_chair, "cardface2nocard", true);
+	CheckSetOfItems("p", last_chair, "cardface3nocard", true);
 }
 // Check mandatory cards faces (or rank + suit) for every seat
 for (int i = 0; i < nchairs; ++i) {
@@ -249,22 +257,39 @@ for (int i = 0; i < kNumberOfCommunityCards; ++i) {
   CheckCardFaces("c0cardface", i, "");
 }
 int last_communitz_card = kNumberOfCommunityCards - 1;
-CheckSetOfItems("c0cardface", last_communitz_card, "nocard", true);
+if (!p_tablemap->ItemExists("area_cards_common"))
+	CheckSetOfItems("c0cardface", last_communitz_card, "nocard", true);
 CheckMainPot();
 // Action buttons
 int number_of_buttons_seen = 0;
-for (int i = 0; i < k_max_number_of_buttons; ++i) {
-  CString button;
-  button.Format("i%cbutton", HexadecimalChar(i));
-  if (p_tablemap->ItemExists(button)) {
-    ++number_of_buttons_seen;
-    CString button_state;
-    button_state.Format("i%cstate", HexadecimalChar(i));
-    CheckItem(button_state);
-    CString button_label;
-    button_label.Format("i%clabel", HexadecimalChar(i));
-    CheckItem(button_label);
-  }
+CString area_name;
+bool area_found = false;
+RMapCI		r_iter = p_tablemap->r$()->end();
+for (int i = 0; i < k_max_area_buttons_zone; i++) {
+	area_name.Format("area_buttons_zone%c", HexadecimalChar(i));
+	r_iter = p_tablemap->r$()->find(area_name);
+	if (r_iter != p_tablemap->r$()->end()) {
+		area_found = true;
+		for (int j = 0; j < k_max_action_buttons; j++) {
+			if (p_tablemap->ItemExists(k_action_button_name[j]))
+				++number_of_buttons_seen;
+		}
+	}
+}
+if (!area_found) {
+	for (int i = 0; i < k_max_number_of_buttons; ++i) {
+		CString button;
+		button.Format("i%cbutton", HexadecimalChar(i));
+		if (p_tablemap->ItemExists(button)) {
+			++number_of_buttons_seen;
+			CString button_state;
+			button_state.Format("i%cstate", HexadecimalChar(i));
+			CheckItem(button_state);
+			CString button_label;
+			button_label.Format("i%clabel", HexadecimalChar(i));
+			CheckItem(button_label);
+		}
+	}
 }
 if (number_of_buttons_seen < 3) {
   CString message;
@@ -282,12 +307,17 @@ if (IsNoLimitMap()) {
   CheckItem("betsizedeletionmethod");
   CheckItem("betsizeinterpretationmethod");
   CheckItem("betsizeconfirmationmethod");
-  CheckItem("i3edit");
   // i3edit ("betsizing") needs a betsizeconfirmation-button,
   // which might be something different than min-raise-button.
-  CheckItem("i3button");
-  CheckItem("i3state");
-  CheckItem("i3label");
+  if (!area_found) {
+	  CheckItem("i3edit");
+	  CheckItem("i3button");
+	  CheckItem("i3state");
+	  CheckItem("i3label");
+  }
+  else {
+	  CheckItem("editbet");
+  }
   // Slider now optional, as allinmethod (= 3) is gone.
   // CheckItem("i3slider");
   // CheckItem("i3handle");

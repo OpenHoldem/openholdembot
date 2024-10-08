@@ -17,6 +17,7 @@
 
 void BuildVectorsOfScraperSymbols();
 
-extern std::vector<CString> list_of_regions;
-extern std::vector<CString> list_of_sizes;
-extern std::vector<CString> list_of_symbols;
+extern vector<CString> list_of_regions;
+extern vector<CString> list_of_sizes;
+extern vector<CString> list_of_symbols;
+extern vector<CString> list_of_templates;

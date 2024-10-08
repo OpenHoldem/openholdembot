@@ -1,4 +1,4 @@
-//******************************************************************************
+﻿//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //    Source code:           https://github.com/OpenHoldem/openholdembot/
@@ -24,6 +24,7 @@ using namespace std;
 #include "CAutoconnector.h"
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
+#include "CAutoOcr.h"
 
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -58,6 +59,8 @@ CScraper *p_scraper = NULL;
 	ReleaseDC(p_autoconnector->attached_hwnd(), hdc); \
   --_leaking_GDI_objects;
 
+
+
 CScraper::CScraper(void) {
 	p_table_state->Reset();
   _leaking_GDI_objects = 0;
@@ -90,18 +93,33 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	__HDC_HEADER
 	// Get "current" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-	BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
-							    r_iter->second.bottom - r_iter->second.top + 1, 
-								hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
+	/*if (r_iter->second.transform[0] == 'A') {
+		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 7,
+			r_iter->second.bottom - r_iter->second.top + 7,
+			hdc, r_iter->second.left - 3, r_iter->second.top - 3, SRCCOPY);
+	}
+	else {*/
+		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
+									r_iter->second.bottom - r_iter->second.top + 1, 
+									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
+	//}
 	SelectObject(hdcCompatible, old_bitmap);
+	//SaveHBITMAPToFile(r_iter->second.cur_bmp, "output.bmp");
 
 	// If the bitmaps are different, then continue on
 	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp)) {
     // Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
-		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
-									r_iter->second.bottom - r_iter->second.top + 1, 
-									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
+		/*if (r_iter->second.transform[0] == 'A') {
+			BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 7,
+				r_iter->second.bottom - r_iter->second.top + 7,
+				hdc, r_iter->second.left - 3, r_iter->second.top - 3, SRCCOPY);
+		}
+		else {*/
+			BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1,
+				r_iter->second.bottom - r_iter->second.top + 1,
+				hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
+		//}
 		SelectObject(hdcCompatible, old_bitmap);  
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
@@ -128,7 +146,18 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
         "[CScraper] Region %s NOT identical\n", name);
     }
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-		trans.DoTransform(r_iter, hdcCompatible, result);
+		if (r_iter->second.transform[0] == 'A') {
+			int w = r_iter->second.right - r_iter->second.left + 1;
+			int h = r_iter->second.bottom - r_iter->second.top + 1;
+			Mat input(h, w, CV_8UC4);
+			BITMAPINFOHEADER bi = { sizeof(bi), w, -h, 1, 32, BI_RGB };
+			GetDIBits(hdc, r_iter->second.cur_bmp, 0, h, input.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+			//imshow("Output", input);
+			//waitKey();
+			*result = p_auto_ocr->get_ocr_result(input, r_iter).GetString();
+		}
+		else
+			trans.DoTransform(r_iter, hdcCompatible, result);
 		SelectObject(hdcCompatible, old_bitmap);
 		write_log(Preferences()->debug_scraper(), "[CScraper] EvaluateRegion(), [%s] -> [%s]\n", 
 			name, *result);
@@ -157,14 +186,79 @@ void CScraper::EvaluateTrueFalseRegion(bool *result, const CString name) {
 	}
 }
 
+void CScraper::ScrapeButtons(CString area_name, CString needed_buttons) {
+	RECT button_region;
+	CString result;
+	RMapCI		r_iter = p_tablemap->r$()->end();
+
+	r_iter = p_tablemap->r$()->find(area_name);
+	if (r_iter != p_tablemap->r$()->end()) {
+		int r_width = r_iter->second.right - r_iter->second.left;
+		int r_height = r_iter->second.bottom - r_iter->second.top;
+		if (r_width > 0 && r_height > 0) {
+			// Action buttons
+			if (needed_buttons == "action") {
+				for (int i = 0; i < k_max_action_buttons; i++) {
+					result = p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, k_action_button_name[i], &button_region);
+					if (result == "true") {
+						p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
+						p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(k_action_button_name[i]);
+					}
+					if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
+						// Ugly WinHoldem convention
+						// When using ManualMode, grab i5state for PT network
+						p_tablemap->set_network(result);
+					}
+				}
+				// Handle of All-in button special cases
+				// https://www.maxinmontreal.com/forums/viewtopic.php?p=186236#p186236
+				if (p_casino_interface->_technical_autoplayer_buttons[2].IsClickable()) {
+					// if (no check and call button) then "allin" is call
+					if (!p_casino_interface->_technical_autoplayer_buttons[5].IsClickable() &&
+						!p_casino_interface->_technical_autoplayer_buttons[6].IsClickable())
+						p_casino_interface->_technical_autoplayer_buttons[2].SetLabel("call");
+					// if (call button and no raise button) then "allin" is raise
+					else if (p_casino_interface->_technical_autoplayer_buttons[5].IsClickable() &&
+						!p_casino_interface->_technical_autoplayer_buttons[3].IsClickable() &&
+						!p_casino_interface->_technical_autoplayer_buttons[4].IsClickable())
+						p_casino_interface->_technical_autoplayer_buttons[2].SetLabel("raise");
+				}
+			}
+			// betpot buttons
+			if (needed_buttons == "betpot") {
+				for (int i = 0; i < k_max_betpot_buttons; i++) {
+					result = p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, k_betpot_button_name[i], &button_region);
+					if (result == "true") {
+						p_casino_interface->_technical_betpot_buttons[i].SetState(result);
+						//p_casino_interface->_technical_betpot_buttons[i].SetLabel(k_betpot_button_name[i]);
+					}
+				}
+			}
+			// Interface buttons (i86)
+			if (needed_buttons == "spam") {
+				for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
+					// i86X-buttons
+					CString button_name;
+					button_name.Format("spam%d", i);
+					result = p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, button_name, &button_region);
+					if (result == "true") {
+						p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
+						//p_casino_interface->_technical_i86X_spam_buttons[i].SetLabel(button_name);
+					}
+				}
+			}
+		}
+	}
+}
+
 void CScraper::ScrapeInterfaceButtons() {
 	CString result;
 	// i86X-buttons
 	CString button_name;
-	for (int i=0; i<k_max_number_of_i86X_buttons; i++) {
+	for (int i = 0; i<k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dstate", i);
-		if (EvaluateRegion(button_name, &result))	{
-      p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
+		if (EvaluateRegion(button_name, &result)) {
+			p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
 		}
 	}
 }
@@ -172,29 +266,29 @@ void CScraper::ScrapeInterfaceButtons() {
 void CScraper::ScrapeActionButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_number_of_buttons; ++i)	{
-		button_name.Format("i%cstate", HexadecimalChar(i)); 
+	for (int i = 0; i<k_max_number_of_buttons; ++i) {
+		button_name.Format("i%cstate", HexadecimalChar(i));
 		if (EvaluateRegion(button_name, &result)) {
-      p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
+			p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
 		}
-    if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
-      // Ugly WinHoldem convention
-      // When using ManualMode, grab i5state for PT network
-      p_tablemap->set_network(result);
-    }
+		if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
+			// Ugly WinHoldem convention
+			// When using ManualMode, grab i5state for PT network
+			p_tablemap->set_network(result);
+		}
 	}
 }
 
 void CScraper::ScrapeActionButtonLabels() {
 	CString label;
 	CString result;
-  // Every button needs a label
-  // No longer using any WinHoldem defaults
-	for (int i=0; i<k_max_number_of_buttons; ++i)	{
-    p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
+	// Every button needs a label
+	// No longer using any WinHoldem defaults
+	for (int i = 0; i<k_max_number_of_buttons; ++i) {
+		p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
 		label.Format("i%clabel", HexadecimalChar(i));
-		if (EvaluateRegion(label, &result))	{
-      p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
+		if (EvaluateRegion(label, &result)) {
+			p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
 		}
 	}
 }
@@ -202,10 +296,10 @@ void CScraper::ScrapeActionButtonLabels() {
 void CScraper::ScrapeBetpotButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_betpot_buttons; i++) {
-    button_name.Format("%sstate", k_betpot_button_name[i]);
-		if (EvaluateRegion(button_name, &result))	{
-      p_casino_interface->_technical_betpot_buttons[i].SetState(result);
+	for (int i = 0; i<k_max_betpot_buttons; i++) {
+		button_name.Format("%sstate", k_betpot_button_name[i]);
+		if (EvaluateRegion(button_name, &result)) {
+			p_casino_interface->_technical_betpot_buttons[i].SetState(result);
 		}
 	}
 }
@@ -521,31 +615,71 @@ int CScraper::ScrapeCard(CString name) {
 }
 
 void CScraper::ScrapePlayerCards(int chair) {
-	CString card_name;
+	CString card_name, area_name;
 	int card = CARD_UNDEFINED;
-  int number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerHoldEm;
-  if (p_tablemap->SupportsOmaha()) {
-    number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerOmaha;
-  }
-	for (int i=0; i<number_of_cards_to_be_scraped; i++) {
-		card_name.Format("p%dcardface%d", chair, i);
-		if ((i > 0) 
-      && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
-			// Stop scraping if we find missing cards or cardbacks
-		} else {
-			card = ScrapeCard(card_name);
-		}
-    p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
+	int number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerHoldEm;
+	if (p_tablemap->SupportsOmaha()) {
+		number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerOmaha;
 	}
-  p_table_state->Player(chair)->CheckPlayerCardsForConsistency();
+	area_name.Format("area_cards_player%c", HexadecimalChar(chair));
+	RMapCI		r_iter = p_tablemap->r$()->find(area_name);
+	RMapCI		r_iter2 = p_tablemap->r$()->find("area_cards_common");
+	vector<CString> result;
+	if (r_iter != p_tablemap->r$()->end()) {
+		int r_width = r_iter->second.right - r_iter->second.left;
+		int r_height = r_iter->second.bottom - r_iter->second.top;
+		if (r_width > 0 && r_height > 0)
+			result = p_auto_ocr->GetDetectTemplatesResult(r_iter->second.name);
+		int i = 0;
+		for (auto & element : result) {
+			int card = CardString2CardNumber(element);
+			p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
+			i++;
+		}
+	}
+	else {
+		for (int i = 0; i < number_of_cards_to_be_scraped; i++) {
+			card_name.Format("p%dcardface%d", chair, i);
+			if ((i > 0)
+				&& ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
+				// Stop scraping if we find missing cards or cardbacks
+			}
+			else {
+				card = ScrapeCard(card_name);
+			}
+			p_table_state->Player(chair)->hole_cards(i)->SetValue(card);
+		}
+	}
+	p_table_state->Player(chair)->CheckPlayerCardsForConsistency();
 }
 
 void CScraper::ScrapeCommonCards() {
-	CString card_name;
-	for (int i=0; i<kNumberOfCommunityCards; i++)	{
-		card_name.Format("c0cardface%d", i);
-		int card = ScrapeCard(card_name);
-    p_table_state->CommonCards(i)->SetValue(card);
+	RMapCI		r_iter = p_tablemap->r$()->find("area_cards_common");
+	vector<CString> result;
+	if (r_iter != p_tablemap->r$()->end()) {
+		int r_width = r_iter->second.right - r_iter->second.left;
+		int r_height = r_iter->second.bottom - r_iter->second.top;
+		if (r_width > 0 && r_height > 0)
+			result = p_auto_ocr->GetDetectTemplatesResult(r_iter->second.name);
+		// Clear common cards first
+		for (int i = 0; i < kNumberOfCommunityCards; i++) {
+			p_table_state->CommonCards(i)->ClearValue();
+		}
+		// Populate common cards after, if there is some.
+		int i = 0;
+		for (auto & element : result) {
+			int card = CardString2CardNumber(element);
+			p_table_state->CommonCards(i)->SetValue(card);
+			i++;
+		}
+	}
+	else {
+		CString card_name;
+		for (int i = 0; i < kNumberOfCommunityCards; i++) {
+			card_name.Format("c0cardface%d", i);
+			int card = ScrapeCard(card_name);
+			p_table_state->CommonCards(i)->SetValue(card);
+		}
 	}
 }
 	
@@ -824,6 +958,87 @@ void CScraper::ScrapeLimits() {
   p_title_evaluator->EvaluateScrapedGameInfo(); 
 }
 
+BOOL CScraper::SaveHBITMAPToFile(HBITMAP hBitmap, LPCTSTR lpszFileName)
+{
+	HDC hDC;
+	int iBits;
+	WORD wBitCount;
+	DWORD dwPaletteSize = 0, dwBmBitsSize = 0, dwDIBSize = 0, dwWritten = 0;
+	BITMAP Bitmap0;
+	BITMAPFILEHEADER bmfHdr;
+	BITMAPINFOHEADER bi;
+	LPBITMAPINFOHEADER lpbi;
+	HANDLE fh, hDib, hPal, hOldPal2 = NULL;
+	hDC = CreateDC(TEXT("DISPLAY"), NULL, NULL, NULL);
+	iBits = GetDeviceCaps(hDC, BITSPIXEL) * GetDeviceCaps(hDC, PLANES);
+	DeleteDC(hDC);
+	if (iBits <= 1)
+		wBitCount = 1;
+	else if (iBits <= 4)
+		wBitCount = 4;
+	else if (iBits <= 8)
+		wBitCount = 8;
+	else
+		wBitCount = 24;
+	GetObject(hBitmap, sizeof(Bitmap0), (LPSTR)&Bitmap0);
+	bi.biSize = sizeof(BITMAPINFOHEADER);
+	bi.biWidth = Bitmap0.bmWidth;
+	bi.biHeight = -Bitmap0.bmHeight;
+	bi.biPlanes = 1;
+	bi.biBitCount = wBitCount;
+	bi.biCompression = BI_RGB;
+	bi.biSizeImage = 0;
+	bi.biXPelsPerMeter = 0;
+	bi.biYPelsPerMeter = 0;
+	bi.biClrImportant = 0;
+	bi.biClrUsed = 256;
+	dwBmBitsSize = ((Bitmap0.bmWidth * wBitCount + 31) & ~31) / 8
+		* Bitmap0.bmHeight;
+	hDib = GlobalAlloc(GHND, dwBmBitsSize + dwPaletteSize + sizeof(BITMAPINFOHEADER));
+	lpbi = (LPBITMAPINFOHEADER)GlobalLock(hDib);
+	*lpbi = bi;
+
+	hPal = GetStockObject(DEFAULT_PALETTE);
+	if (hPal)
+	{
+		hDC = GetDC(NULL);
+		hOldPal2 = SelectPalette(hDC, (HPALETTE)hPal, FALSE);
+		RealizePalette(hDC);
+	}
+
+
+	GetDIBits(hDC, hBitmap, 0, (UINT)Bitmap0.bmHeight, (LPSTR)lpbi + sizeof(BITMAPINFOHEADER)
+		+ dwPaletteSize, (BITMAPINFO *)lpbi, DIB_RGB_COLORS);
+
+	if (hOldPal2)
+	{
+		SelectPalette(hDC, (HPALETTE)hOldPal2, TRUE);
+		RealizePalette(hDC);
+		ReleaseDC(NULL, hDC);
+	}
+
+	fh = CreateFile(lpszFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+
+	if (fh == INVALID_HANDLE_VALUE)
+		return FALSE;
+
+	bmfHdr.bfType = 0x4D42; // "BM"
+	dwDIBSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + dwPaletteSize + dwBmBitsSize;
+	bmfHdr.bfSize = dwDIBSize;
+	bmfHdr.bfReserved1 = 0;
+	bmfHdr.bfReserved2 = 0;
+	bmfHdr.bfOffBits = (DWORD)sizeof(BITMAPFILEHEADER) + (DWORD)sizeof(BITMAPINFOHEADER) + dwPaletteSize;
+
+	WriteFile(fh, (LPSTR)&bmfHdr, sizeof(BITMAPFILEHEADER), &dwWritten, NULL);
+
+	WriteFile(fh, (LPSTR)lpbi, dwDIBSize, &dwWritten, NULL);
+	GlobalUnlock(hDib);
+	GlobalFree(hDib);
+	CloseHandle(fh);
+	return TRUE;
+}
+
 void CScraper::CreateBitmaps(void) {
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 
@@ -838,8 +1053,16 @@ void CScraper::CreateBitmaps(void) {
 	{
 		int w = r_iter->second.right - r_iter->second.left + 1;
 		int h = r_iter->second.bottom - r_iter->second.top + 1;
-		r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
-		r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+		/*if (r_iter->second.transform[0] != 'A') {
+			r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+			r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+		}
+		else {*/
+			//w = w + 6;
+			//h = h + 6;
+			r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+			r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+		//}
 	}
 
 	DeleteDC(hdcScreen);

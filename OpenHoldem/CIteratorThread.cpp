@@ -732,7 +732,7 @@ int CIteratorThread::EnhancedDealingAlgorithm() {
 
 		bool random_weighted_hand_was_found = false;
 		while(!random_weighted_hand_was_found) {
-			int random_weight = RNG::Instance()->under(chairWeight);	//find random_weight which is between [0..chairWeight)
+			int random_weight = MT_RNG::Instance()->under(chairWeight);	//find random_weight which is between [0..chairWeight)
 			for (int eachPossibleHand=0; eachPossibleHand < _prw1326.chair[eachChair].limit; eachPossibleHand++) {	//find random weighted hand			
 				if (!deadHands[eachPossibleHand] && random_weight < _prw1326.chair[eachChair].weight[eachPossibleHand]) { //random hand found.
 					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].rankhi[eachPossibleHand] ) 

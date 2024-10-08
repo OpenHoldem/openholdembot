@@ -20,6 +20,13 @@
 #include "../CTablemap/CTablemap.h"
 #include "CSpaceOptimizedGlobalObject.h"
 
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <cctype>
 
 
 class CScraper : public CSpaceOptimizedGlobalObject {
@@ -44,6 +51,7 @@ class CScraper : public CSpaceOptimizedGlobalObject {
 	bool IsIdenticalScrape();
  protected:
 	void ScrapeDealer();
+	void ScrapeButtons(CString area_name, CString needed_buttons);
 	void ScrapeActionButtons();
 	void ScrapeActionButtonLabels();
 	void ScrapeInterfaceButtons();
@@ -56,17 +64,17 @@ class CScraper : public CSpaceOptimizedGlobalObject {
 	void ScrapeSeatedActive();
 	void ScrapeBetsAndBalances();
 	void ScrapeAllPlayerCards();
-  void ScrapeColourCodes();
-  void ScrapeMTTRegions();
+	void ScrapeColourCodes();
+	void ScrapeMTTRegions();
  private:
 	void ScrapeSeated(int chair);
 	void ScrapeActive(int chair);
  private:
 	int ScrapeCard(CString name);
-  int ScrapeCardback(CString base_name);
-  int ScrapeCardByRankAndSuit(CString base_name);
-  int ScrapeCardface(CString base_name);
-  int ScrapeNoCard(CString base_name);
+	int ScrapeCardback(CString base_name);
+	int ScrapeCardByRankAndSuit(CString base_name);
+	int ScrapeCardface(CString base_name);
+	int ScrapeNoCard(CString base_name);
  private:
 	int CardString2CardNumber(CString card);
  private:
@@ -80,8 +88,10 @@ class CScraper : public CSpaceOptimizedGlobalObject {
  private:
 	bool ProcessRegion(RMapCI r_iter);
 	bool IsExtendedNumberic(CString text);
- private:
+	BOOL SaveHBITMAPToFile(HBITMAP hBitmap, LPCTSTR lpszFileName);
+
   void ResetLimitInfo();
+	
  private:
 #define ENT CSLock lock(m_critsec);
   void delete_entire_window_cur() { ENT DeleteObject(_entire_window_cur);}
@@ -97,7 +107,7 @@ class CScraper : public CSpaceOptimizedGlobalObject {
   int identical_region_counter;
  private:
 	HBITMAP			_entire_window_last;
-  HBITMAP			_entire_window_cur;
+	HBITMAP			_entire_window_cur;
 };
 
 extern CScraper *p_scraper;

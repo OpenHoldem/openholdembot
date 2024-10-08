@@ -20,6 +20,7 @@
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
+#include "CAutoOcr.h"
 
 #include "SwagAdjustment.h"
 #include "CSymbolEngineHistory.h"
@@ -215,29 +216,51 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
 }
 
 bool CBetsizeInputBox::GetI3EditRegion() {
-	p_tablemap->GetTMRegion("i3edit", &_i3_edit_region);
-	if ((_i3_edit_region.bottom < 0)
-		|| (_i3_edit_region.left < 0)
-		|| (_i3_edit_region.right < 0)
-		|| (_i3_edit_region.top < 0)) {
-		return false;
-	}
-	return true;
+  CString	area_name;
+  bool area_found = false;
+  RMapCI	r_iter = p_tablemap->r$()->end();
+  RECT zero_rect = RECT{ 0 };
+
+  for (int i = 0; i < k_max_area_buttons_zone; i++) {
+	  area_name.Format("area_buttons_zone%c", HexadecimalChar(i));
+	  r_iter = p_tablemap->r$()->find(area_name);
+	  if (r_iter != p_tablemap->r$()->end()) {
+		  int r_width = r_iter->second.right - r_iter->second.left;
+		  int r_height = r_iter->second.bottom - r_iter->second.top;
+		  if (r_width > 0 && r_height > 0) {
+			  area_found = true;
+			  p_auto_ocr->GetDetectTemplateResult(r_iter->second.name, "editbet", &_i3_edit_region);
+			  if (!EqualRect(&_i3_edit_region, &zero_rect))
+				  return true;
+		  }
+	  }
+  }
+
+  if (!area_found) {
+	  p_tablemap->GetTMRegion("i3edit", &_i3_edit_region);
+	  if ((_i3_edit_region.bottom < 0)
+		  || (_i3_edit_region.left < 0)
+		  || (_i3_edit_region.right < 0)
+		  || (_i3_edit_region.top < 0)) {
+		  return false;
+	  }
+  }
+  return true;
 }
 
 bool CBetsizeInputBox::IsReadyToBeUsed() {
-	if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
-		if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
-			return false;
-		}
-	}
-	if (!p_tablemap->ItemExists("i3edit")) {
-		return false;
-	}
-	if (!GetI3EditRegion()) {
-		return false;
-	}
-	return true;
+  if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
+    if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
+      return false;
+    }
+  }
+  if (!p_tablemap->ItemExists("i3edit")) {
+    return false;
+  }
+  if (!GetI3EditRegion()) {
+    return false;
+  }
+  return true;
 }
 
 void CBetsizeInputBox::SelectText() {
