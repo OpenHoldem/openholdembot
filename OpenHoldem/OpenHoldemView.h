@@ -26,7 +26,7 @@ class COpenHoldemView : public CView {
 	COpenHoldemView();
 	DECLARE_DYNCREATE(COpenHoldemView)
 	DECLARE_MESSAGE_MAP()
-  afx_msg void OnTimer(UINT nIDEvent);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
  public:
 	COpenHoldemDoc* GetDocument() const;
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view

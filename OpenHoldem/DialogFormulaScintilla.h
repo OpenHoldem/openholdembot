@@ -140,7 +140,7 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg void OnEditSelectAll();
   void SortUdfTree();
   afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-  void OnTimer(UINT nIDEvent);
+  void OnTimer(UINT_PTR nIDEvent);
   void SaveSettingsToRegistry();
   void SetEquiDistantFont(CScintillaWnd *pWnd);
   void SetStyleColors(CScintillaWnd *pWnd);
