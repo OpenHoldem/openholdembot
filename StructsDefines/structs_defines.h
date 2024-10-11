@@ -59,6 +59,8 @@
 // Bitmap display
 #define BITMAP_WIDTH		344
 #define BITMAP_HEIGHT		164
+#define MAT_WIDTH			268
+#define MAT_HEIGHT			115
 
 // For scraper engine
 #define NOTHING_CHANGED		  0

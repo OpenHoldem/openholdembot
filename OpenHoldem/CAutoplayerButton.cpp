@@ -16,6 +16,7 @@
 
 #include "CCasinoHotkey.h"
 #include "CCasinoInterface.h"
+#include "CAutoOcr.h"
 
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"
@@ -58,9 +59,27 @@ bool CAutoplayerButton::Click() {
       write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
       return true;
     }
-    // Lookup the region
-    RECT button_region;
-    p_tablemap->GetTMRegion(_technical_name, &button_region);
+    // Lookup the region or template
+	RECT button_region, zero_rect = RECT{ 0 };
+	CString area_name;
+	bool area_found = false;
+	RMapCI	r_iter = p_tablemap->r$()->end();
+	for (int i = 0; i < k_max_area_buttons_zone; ++i) {
+		area_name.Format("area_buttons_zone%c", HexadecimalChar(i));
+		r_iter = p_tablemap->r$()->find(area_name);
+		if (r_iter != p_tablemap->r$()->end()) {
+			int r_width = r_iter->second.right - r_iter->second.left;
+			int r_height = r_iter->second.bottom - r_iter->second.top;
+			if (r_width > 0 && r_height > 0) {
+				area_found = true;
+				p_auto_ocr->GetDetectTemplateResult(area_name, _technical_name, &button_region);
+				if (!EqualRect(&button_region, &zero_rect))
+					break;
+			}
+		}
+	}
+	if (!area_found)
+		p_tablemap->GetTMRegion(_technical_name, &button_region);
     if (BUTTON_NOTHING == _click_method) {
       write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Doing nothing on this button [%s] [%s]\n", _label, _technical_name);
     } else if (BUTTON_DOUBLECLICK == _click_method) {
@@ -175,7 +194,7 @@ bool CAutoplayerButton::IsLabelPrefold() {
 }
 
 bool CAutoplayerButton::IsNameI86() {
-  return (_technical_name.Left(3).MakeLower() == "i86");
+  return (_technical_name.Left(3).MakeLower() == "i86" || _technical_name.Left(4).MakeLower() == "spam");
 }
 
 

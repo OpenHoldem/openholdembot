@@ -161,23 +161,23 @@ private:
   void operator=(const MTRand53&); // assignment operator not defined
 };
 
-class RNG
+class MT_RNG
 {
 private:	//singleton constructor
-	RNG(const RNG&);  //Prevents making a copy
-	void operator=(const RNG&); // assignment operator not defined
+	MT_RNG(const MT_RNG&);  //Prevents making a copy
+	void operator=(const MT_RNG&); // assignment operator not defined
 	//MTRand __rng;
 	MTRand_open __rng;			//the fastest with stddev ~=105 over 1000000 iterations, but still 5 times slower than c++ standard rand()
 	//MTRand_closed __rng;
 	//MTRand53 __rng;			//the slowest, but the best stddev ~=93 over 1000000 iterations
  
 protected:
-	RNG();       //Only a SysParms member can call this
+	MT_RNG();       //Only a SysParms member can call this
                      //Prevents a user from creating singleton objects
-	virtual ~RNG();  //Prevents just anyone from deleting the singleton
+	virtual ~MT_RNG();  //Prevents just anyone from deleting the singleton
  
 public: 	
-	static RNG* Instance();		//The "official" access point. RNG gets seeded once in the whole application lifetime.
+	static MT_RNG* Instance();		//The "official" access point. MT_RNG gets seeded once in the whole application lifetime.
 public:		
 	long under(int upperBound);		//get random number from interval [0; upperBound)
 };
