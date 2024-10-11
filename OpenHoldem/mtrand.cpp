@@ -54,32 +54,32 @@ void MTRand_int32::seed(const unsigned long* array, int size) { // init by array
 //Use anonymous namespace to force internal linkage for instance 
 namespace
 {
-    RNG* instance_RNG = 0;        //Address of the singleton 
+    MT_RNG* instance_RNG = 0;        //Address of the singleton 
 }
  
-RNG::RNG()
+MT_RNG::MT_RNG()
 {
 	__rng.seed(GetTickCount());
 }
 
-RNG::~RNG()
+MT_RNG::~MT_RNG()
 {
     delete instance_RNG;
     instance_RNG = 0;
 }
  
 //The "official" access point
-RNG* RNG::Instance()
+MT_RNG* MT_RNG::Instance()
 {
    //"Lazy" initialization. Singleton not created until it's needed
    if (!instance_RNG)
    {
-      instance_RNG = new RNG();
+      instance_RNG = new MT_RNG();
    }
    return instance_RNG;
 }
 
-long RNG::under(int upperBound)
+long MT_RNG::under(int upperBound)
 {
 	return __rng.under(upperBound);
 }

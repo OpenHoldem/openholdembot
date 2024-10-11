@@ -42,6 +42,8 @@
 #define MAX_ALLINDELAY		5000	
 #define MAX_SCRAPEDELAY		5000
 #define MIN_SCRAPEDELAY		100
+#define MAX_TOKENNUMBER		15
+#define MAX_TOKENSIZE		25
 
 // Chipstacks
 #define MAX_CHIPS_PER_STACK	20
@@ -59,6 +61,8 @@
 // Bitmap display
 #define BITMAP_WIDTH		344
 #define BITMAP_HEIGHT		164
+#define MAT_WIDTH			268
+#define MAT_HEIGHT			115
 
 // For scraper engine
 #define NOTHING_CHANGED		  0

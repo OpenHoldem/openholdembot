@@ -37,7 +37,10 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
-	CString SymbolsProvided();;
+	CString SymbolsProvided();
+	void SetPrw1326(CString prw1326_symbol, CString prw1326_command);
+	void UnSetLists();
+	void LogHandRank();
 public:
 	int nhands()		  { return (_nhandshi + _nhandslo + _nhandsti); }
 	int nhandshi()		{ return _nhandshi; }
@@ -51,6 +54,7 @@ private:
 	void CalculateNOpponents();
 	void CalculateNhands();
   bool StartOfPrWinComputationsNeeded();
+  int GetChair(CString chair);
 private:
 	int _nhandshi;
 	int _nhandslo;
@@ -60,6 +64,7 @@ private:
 private:
 	int _nopponents_for_prwin;
   bool _known_change_in_gamestate_since_last_prwin_calculation;
+  bool _prwin_recalc, _prwin_clearall;
 };
 
 #endif INC_CSYMBOLENGINEPRWIN_H

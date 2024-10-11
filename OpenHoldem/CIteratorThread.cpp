@@ -29,6 +29,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineRange.h"
 #include "CTableState.h"
 #include "CValidator.h"
 #include "inlines/eval.h"
@@ -140,7 +141,7 @@ void CIteratorThread::RestartPrWinComputations() {
   assert(IteratorThreadWorking() == false);
   InitIteratorLoop();
   ResetIteratorVars();
-	ResetGlobalVariables();
+	ResetGlobalVariables(); 
 }
 
 void CIteratorThread::AdjustPrwinVariablesIfNecessary() {
@@ -306,6 +307,15 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 
 	  if(UseEnhancedPrWin())
 	  {			
+			if (_prwin < 0 || _prtie < 0 || _prlos < 0) {
+				_prwin = kUndefined;
+				_prtie = kUndefined;
+				_prlos = kUndefined;
+				write_log(k_always_log_errors, "[PrWinThread] ERROR! PrWin could not compute any results because it is either impossible or impractical to complete.\n");
+				write_log(k_always_log_errors, "[PrWinThread] ERROR! PrWin computation failed because of card collision in ranges you set.\n");
+				write_log(k_always_log_errors, "[PrWinThread] Correct your ranges to remove those collisions.\n");
+				write_log(k_always_log_errors, "[PrWinThread] PrWin/Tie/Los have been set to Undefined value (-1).\n");
+			}
 			write_log(Preferences()->debug_prwin(), "EnhancedDealingAlgorithm elapsed time in millisec: %.3f Iterations: %d prwin: %.3f prtie: %.3f prlos: %.3f vanilla.limit: %i \n",
 				elapsedTime,_iterations_calculated, _prwin, _prtie, _prlos, _prw1326.vanilla_chair.limit );
 	  }
@@ -722,7 +732,7 @@ int CIteratorThread::EnhancedDealingAlgorithm() {
 
 		bool random_weighted_hand_was_found = false;
 		while(!random_weighted_hand_was_found) {
-			int random_weight = RNG::Instance()->under(chairWeight);	//find random_weight which is between [0..chairWeight)
+			int random_weight = MT_RNG::Instance()->under(chairWeight);	//find random_weight which is between [0..chairWeight)
 			for (int eachPossibleHand=0; eachPossibleHand < _prw1326.chair[eachChair].limit; eachPossibleHand++) {	//find random weighted hand			
 				if (!deadHands[eachPossibleHand] && random_weight < _prw1326.chair[eachChair].weight[eachPossibleHand]) { //random hand found.
 					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].rankhi[eachPossibleHand] ) 

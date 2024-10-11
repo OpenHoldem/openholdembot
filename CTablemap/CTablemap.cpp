@@ -188,6 +188,7 @@ void CTablemap::ClearTablemap() {
 	_z$.clear();
 	_s$.clear();
 	_r$.clear();
+	_tpl$.clear();
 	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++) {
 		_t$[i].clear();
   }
@@ -253,6 +254,8 @@ bool CTablemap::ItemExists(CString name) {
   //if (iit !=_i$.end()) return true;
   RMapCI rit = _r$.find(name); 
   if (rit !=_r$.end()) return true;
+  TPLMapCI tplit = _tpl$.find(name);
+  if (tplit != _tpl$.end()) return true;
   return false;
 }
 
@@ -268,10 +271,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 	write_log(Preferences()->debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
 #endif
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
-	CString		MaxFontGroup = "", MaxHashGroup = "";
 	int			  pos = 0, x = 0, y = 0;
-	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
-	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
 	// temp
 	STablemapSize      hold_size;
 	STablemapSymbol    hold_symbol;
@@ -280,6 +280,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 	STablemapHashPoint hold_hash_point;
 	STablemapHashValue hold_hash_value;
 	STablemapImage		 hold_image;
+	STablemapTemplate		 hold_template;
 	// Clean up the global.profile structure
 	ClearTablemap();
 	CSLock lock(m_critsec);
@@ -354,6 +355,17 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		{
 			continue;
 		}
+
+		hold_template.left = 0;
+		hold_template.top = 0;
+		hold_template.right = 0;
+		hold_template.bottom = 0;
+		hold_template.width = 0;
+		hold_template.height = 0;
+		hold_template.use_default = true;
+		hold_template.match_mode = -1;
+		hold_template.created = false;
+
 		// Handle z$ lines (sizes)
 		if (strLineType.Left(2) == "z$") 
 		{
@@ -503,17 +515,76 @@ int CTablemap::LoadTablemap(const CString _fname) {
 
 			// transform
 			hold_region.transform = strLine.Tokenize(" \t", pos);
-			if (hold_region.transform.GetLength()==0)
+			if (hold_region.transform.GetLength() == 0)
 			{
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
+
+			// pass OCR fields for old TM format
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				hold_region.use_default = true;
+				hold_region.threshold = -1;
+				hold_region.use_cropping = false;
+				hold_region.crop_size = -1;
+				hold_region.box_color = -1;
+
+				goto EndRegion;
+				//WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				//return ERR_SYNTAX;
+			}
+
+			// OCR image processing
+			hold_region.use_default = atol(token.GetString());
+
+			// threshold
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				//WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				//return ERR_SYNTAX;
+			}
+
+			hold_region.threshold = atol(token.GetString());
+
+			// use cropping
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				//WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				//return ERR_SYNTAX;
+			}
+
+			hold_region.use_cropping = atol(token.GetString());
+
+			// crop size
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				//WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				//return ERR_SYNTAX;
+			}
+
+			hold_region.crop_size = atol(token.GetString());
+
+			// box color
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				//WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				//return ERR_SYNTAX;
+			}
+
+			hold_region.box_color = atol(token.GetString());
 
 			// flags
 			//token = strLine.Tokenize(" \t", pos);
 			//if (token.GetLength()==0) { return ERR_SYNTAX; }
 			//hold_region.flags = atol(token.GetString());
 
+	EndRegion:
 			if (!r$_insert(hold_region))
 			{
 				RMapCI r_iter = _r$.find(hold_region.name);
@@ -533,7 +604,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		else if (strLineType.Left(2) == "t$" ||
 				 (strLineType.Left(1) == 't' &&
 				  strLineType[1] >= '0' &&
-				  CString(strLineType[1]) < MaxFontGroup &&
+				  atoi(strLineType.Mid(1, 1)) < k_max_number_of_font_groups_in_tablemap &&
 				  strLineType[2] == '$')) 
 		{
 
@@ -578,7 +649,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		// Handle p$ lines (hash points)
 		else if (strLineType.Left(1) == 'p' &&
 				 strLineType[1] >= '0' &&
-				 CString(strLineType[1]) < MaxHashGroup &&
+				 atoi(strLineType.Mid(1, 1)) < k_max_number_of_hash_groups_in_tablemap &&
 				 strLineType[2] == '$') 
 		{
 			// number
@@ -630,7 +701,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		// Handle h$ lines (hash values)
 		else if (strLineType.Left(1) == 'h' &&
 				 strLineType[1] >= '0' &&
-				 CString(strLineType[1]) < MaxHashGroup &&
+				 atoi(strLineType.Mid(1, 1)) < k_max_number_of_hash_groups_in_tablemap &&
 				 strLineType[2] == '$') 
 		{
 			// number
@@ -762,6 +833,109 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			// hold_image.image->~RGBAImage();
 		}
 
+		// Handle tpl$ lines (templates)
+		else if (strLineType.Left(4) == "tpl$")
+		{
+			// name
+			hold_template.name = strLineType.Mid(4);
+
+			// width
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				return ERR_SYNTAX;
+			}
+
+			hold_template.width = atol(token.GetString());
+
+			// height
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				return ERR_SYNTAX;
+			}
+
+			hold_template.height = atol(token.GetString());
+
+			// Check size of region
+			if (hold_template.width * hold_template.height > MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_REGION_SIZE);
+				return ERR_REGION_SIZE;
+			}
+
+			// use default
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				return ERR_SYNTAX;
+			}
+			hold_template.use_default = atol(token.GetString());
+
+			// match mode
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				return ERR_SYNTAX;
+			}
+			hold_template.match_mode = atol(token.GetString());
+
+			// created
+			token = strLine.Tokenize(" \t", pos);
+			if (token.GetLength() == 0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+				return ERR_SYNTAX;
+			}
+			hold_template.created = atol(token.GetString());
+
+			// Allocate space for "RGBAImage"
+			t = hold_template.name + ".ppm";
+			hold_template.image = new RGBAImage(hold_template.width, hold_template.height, t.GetString());
+
+			// read next "height" lines
+			for (y = 0; y < hold_template.height; y++)
+			{
+				linenum++;
+				if (!ar.ReadString(strLine))
+				{
+					WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
+					return ERR_SYNTAX;
+				}
+				// scan across "width" of line to get values
+				for (x = 0; x < hold_template.width; x++)
+				{
+					// unreverse bgra to abgr
+					hexval = strLine.Mid(x * 8 + 6, 2) + strLine.Mid(x * 8, 6);
+					hold_template.pixel[y*hold_template.width + x] = strtoul(hexval, 0, 16);
+					BYTE alpha = (hold_template.pixel[y*hold_template.width + x] >> 24) & 0xff;
+					BYTE blue = (hold_template.pixel[y*hold_template.width + x] >> 16) & 0xff;
+					BYTE green = (hold_template.pixel[y*hold_template.width + x] >> 8) & 0xff;
+					BYTE red = (hold_template.pixel[y*hold_template.width + x] >> 0) & 0xff;
+					hold_template.image->Set(red, green, blue, alpha, y*hold_template.width + x);
+				}
+			}
+
+			// Add the new tpl$ record to the internal array
+			if (!tpl$_insert(hold_template))
+			{
+				TPLMapCI tpl_iter = _tpl$.find(hold_template.name);
+				if (tpl_iter != _tpl$.end())
+				{
+					t.Format("'%s' skipped, as this template record already exists.\nYou have to fix that tablemap.", strLine);
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding template record");
+				}
+				else
+				{
+					MessageBox_Error_Warning(strLine, "ERROR adding template record");
+				}
+			}
+		}
+
 		// Unknown line type
 		else 
 		{
@@ -834,9 +1008,10 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	WriteSectionHeader(ar, "regions");
 	for (RMapCI r_iter=_r$.begin(); r_iter!=_r$.end(); r_iter++)
 	{
-		s.Format("r$%-18s %3d %3d %3d %3d %8x %4d %s\r\n", r_iter->second.name.GetString(),
+		s.Format("r$%-18s %3d %3d %3d %3d %8x %4d %s %d %3d %d %3d %d\r\n", r_iter->second.name.GetString(),
 			r_iter->second.left, r_iter->second.top, r_iter->second.right, r_iter->second.bottom,
-			r_iter->second.color, r_iter->second.radius, r_iter->second.transform);
+			r_iter->second.color, r_iter->second.radius, r_iter->second.transform, r_iter->second.use_default,
+			r_iter->second.threshold, r_iter->second.use_cropping, r_iter->second.crop_size, r_iter->second.box_color);
 		ar.WriteString(s);
 	}
 	ar.WriteString("\r\n");
@@ -900,6 +1075,32 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 				text.Format("%08x", i_iter->second.pixel[y*width + x]);
 				s.Append(text.Mid(2, 6));
 				s.Append(text.Mid(0,2));
+			}
+			s.Append("\r\n");
+			ar.WriteString(s);
+		}
+	}
+	ar.WriteString("\r\n");
+
+	// templates
+	WriteSectionHeader(ar, "templates");
+	for (TPLMapCI tpl_iter = _tpl$.begin(); tpl_iter != _tpl$.end(); tpl_iter++)
+	{
+		int width = tpl_iter->second.width;
+		int height = tpl_iter->second.height;
+
+		s.Format("tpl$%-16s  %3d %3d %d %d %d\r\n", 
+			tpl_iter->second.name, tpl_iter->second.width, tpl_iter->second.height,
+			tpl_iter->second.use_default, tpl_iter->second.match_mode, tpl_iter->second.created);
+		ar.WriteString(s);
+		for (int y = 0; y<height; y++)
+		{
+			s = "";
+			for (int x = 0; x<width; x++)
+			{
+				text.Format("%08x", tpl_iter->second.pixel[y*width + x]);
+				s.Append(text.Mid(2, 6));
+				s.Append(text.Mid(0, 2));
 			}
 			s.Append("\r\n");
 			ar.WriteString(s);

@@ -36,7 +36,7 @@
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 65;
+const int k_number_of_tournament_identifiers = 75;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -60,7 +60,9 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"gratuit ",			// french for "free"
   " gtd",
 	"guaranteed",
-  "hyper",
+  "hyper turbo",
+  "hyperturbo",
+  "hyper-turbo",
   " knockout",
   " k.o.",
   " level ",
@@ -83,6 +85,9 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"rebuy",
   "satellite",
   " semifinal",
+  "semi turbo",
+  "semiturbo",
+  "semi-turbo",
   " series",
 	"shootout ",
 	"sit and go",
@@ -104,23 +109,100 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"tour ",
   "tourney",
   "tournament",
+  "turbo",
   "triple-up",
   "triple up",
+  "ultra",
+  "ultra turbo",
+  "ultraturbo",
+  "ultra-turbo",
   "10K chips",
 };
 
-const int kNumberOfDONIdentifiers = 9;
+const int kNumberOfDONIdentifiers = 6;
 const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {	
 	"(beginner ds)",
   "double ",
 	"double-",
 	" nothing",
 	"-nothing",
-	"shootout ",
 	"ticket ",
-  // Triple-up: not really DON, but a liitle bit like DON.
-  "triple-up",
-  "triple up",
+};
+
+const int kNumberOfTRIPLEUPIdentifiers = 2;
+const char* kTRIPLEUPIdentifiers[kNumberOfTRIPLEUPIdentifiers] = {
+	"triple-up",
+	"triple up",
+};
+
+const int kNumberOfSHOOTOUTIdentifiers = 1;
+const char* kSHOOTOUTIdentifiers[kNumberOfSHOOTOUTIdentifiers] = {
+	"shootout ",
+};
+
+const int kNumberOfSPINIdentifiers = 3;
+const char* kSPINIdentifiers[kNumberOfSPINIdentifiers] = {
+	"spin",
+	"twister",
+	"expresso",			// french for "espresso"
+};
+
+const int kNumberOfFREEROLLIdentifiers = 3;
+const char* kFREEROLLIdentifiers[kNumberOfFREEROLLIdentifiers] = {
+	"free $",
+	"freeroll",
+	"gratuit ",			// french for "free"
+};
+
+const int kNumberOfKNOCKOUTIdentifiers = 2;
+const char* kKNOCKOUTIdentifiers[kNumberOfKNOCKOUTIdentifiers] = {
+	" knockout",
+	" k.o.",
+};
+
+const int kNumberOfREBUYIdentifiers = 2;
+const char* kREBUYIdentifiers[kNumberOfREBUYIdentifiers] = {
+	"r/a",            // rebuy and add-on 
+	"rebuy",
+};
+
+const int kNumberOfSATELITTEIdentifiers = 1;
+const char* kSATELITTEIdentifiers[kNumberOfSATELITTEIdentifiers] = {
+	"satellite",
+};
+
+const int kNumberOfTURBOIdentifiers = 1;
+const char* kTURBOIdentifiers[kNumberOfTURBOIdentifiers] = {
+	"turbo",
+};
+
+const int kNumberOfSEMITURBOIdentifiers = 3;
+const char* kSEMITURBOIdentifiers[kNumberOfSEMITURBOIdentifiers] = {
+	"semi turbo",
+	"semiturbo",
+	"semi-turbo",
+};
+
+const int kNumberOfSUPERTURBOIdentifiers = 4;
+const char* kSUPERTURBOIdentifiers[kNumberOfSUPERTURBOIdentifiers] = {
+	"sup turbo",
+	"super turbo",
+	"superturbo",
+	"super-turbo",
+};
+
+const int kNumberOfHYPERTURBOIdentifiers = 3;
+const char* kHYPERTURBOIdentifiers[kNumberOfHYPERTURBOIdentifiers] = {
+	"hyper turbo",
+	"hyperturbo",
+	"hyper-turbo",
+};
+
+const int kNumberOfULTRATURBOIdentifiers = 3;
+const char* kULTRATURBOIdentifiers[kNumberOfULTRATURBOIdentifiers] = {
+	"ultra turbo",
+	"ultraturbo",
+	"ultra-turbo",
 };
 
 const int kNumberOfMTTIdentifiers = 26;
@@ -145,7 +227,7 @@ const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
 	"qualificatif",		// french for "qualifier"
 	"qualification",
 	"qualifier",
-  "r/a",            // rebuz and add-on 
+  "r/a",            // rebuy and add-on 
 	"rebuy",
   "satellite",
   " semifinal",
@@ -401,6 +483,80 @@ bool CSymbolEngineIsTournament::IsDON() {
   return false;
 }
 
+bool CSymbolEngineIsTournament::IsTRIPLEUP() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kTRIPLEUPIdentifiers, kNumberOfTRIPLEUPIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsSHOOTOUT() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kSHOOTOUTIdentifiers, kNumberOfSHOOTOUTIdentifiers)) return true;
+	return false;
+}
+
+
+bool CSymbolEngineIsTournament::IsFREEROLL() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kFREEROLLIdentifiers, kNumberOfFREEROLLIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsKNOCKOUT() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kKNOCKOUTIdentifiers, kNumberOfKNOCKOUTIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsREBUY() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kREBUYIdentifiers, kNumberOfREBUYIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsSATELITTE() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kSATELITTEIdentifiers, kNumberOfSATELITTEIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsSPIN() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kSPINIdentifiers, kNumberOfSPINIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsTURBO() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kTURBOIdentifiers, kNumberOfTURBOIdentifiers) && !IsSEMITURBO() && !IsSUPERTURBO() && !IsHYPERTURBO() && !IsULTRATURBO()) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsSEMITURBO() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kSEMITURBOIdentifiers, kNumberOfSEMITURBOIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsSUPERTURBO() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kSUPERTURBOIdentifiers, kNumberOfSUPERTURBOIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsHYPERTURBO() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kHYPERTURBOIdentifiers, kNumberOfHYPERTURBOIdentifiers)) return true;
+	return false;
+}
+
+bool CSymbolEngineIsTournament::IsULTRATURBO() {
+	if (!istournament()) return false;
+	if (TitleStringContainsIdentifier(kULTRATURBOIdentifiers, kNumberOfULTRATURBOIdentifiers)) return true;
+	return false;
+}
+
+
 bool CSymbolEngineIsTournament::EvaluateSymbol(const CString name, double *result, bool log /* = false */) { 
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "is", 2)!=0)  {
@@ -427,10 +583,70 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const CString name, double *resul
 		// Valid symbol
 		return true;
 	}
+  if (memcmp(name, "istripleup", 10) == 0 && strlen(name) == 10) {
+	  *result = IsTRIPLEUP();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isshootout", 10) == 0 && strlen(name) == 10) {
+	  *result = IsSHOOTOUT();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isfreeroll", 10) == 0 && strlen(name) == 10) {
+	  *result = IsFREEROLL();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isknockout", 10) == 0 && strlen(name) == 10) {
+	  *result = IsKNOCKOUT();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isrebuy", 7) == 0 && strlen(name) == 7) {
+	  *result = IsREBUY();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "issatelitte", 11) == 0 && strlen(name) == 11) {
+	  *result = IsSATELITTE();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isspin", 6) == 0 && strlen(name) == 6) {
+	  *result = IsSPIN();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isturbo", 7) == 0 && strlen(name) == 7) {
+	  *result = IsTURBO();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "issemiturbo", 11) == 0 && strlen(name) == 11) {
+	  *result = IsSEMITURBO();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "issuperturbo", 12) == 0 && strlen(name) == 12) {
+	  *result = IsSUPERTURBO();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "ishyperturbo", 12) == 0 && strlen(name) == 12) {
+	  *result = IsHYPERTURBO();
+	  // Valid symbol
+	  return true;
+  }
+  if (memcmp(name, "isultraturbo", 12) == 0 && strlen(name) == 12) {
+	  *result = IsULTRATURBO();
+	  // Valid symbol
+	  return true;
+  }
   // Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEngineIsTournament::SymbolsProvided() {
-  return "istournament issng ismtt isdon ";
+  return "istournament issng ismtt isdon istripleup isshootout isfreeroll isknockout isrebuy issatelitte isspin isturbo issemiturbo issuperturbo ishyperturbo isultraturbo ";
 }

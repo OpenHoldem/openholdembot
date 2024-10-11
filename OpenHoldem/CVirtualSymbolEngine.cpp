@@ -53,6 +53,11 @@ bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bo
 	return false;
 }
 
+bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, CString *result, bool log /* = false */) {
+	// We don't provide any symbols
+	return false;
+}
+
 CString CVirtualSymbolEngine::SymbolsProvided() {
   // Default for symbol-engines that don't provide any symbols
   return "";

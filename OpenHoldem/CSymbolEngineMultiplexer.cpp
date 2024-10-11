@@ -73,6 +73,8 @@ CSymbolEngineMultiplexer::CSymbolEngineMultiplexer() {
 	// we assure correct ordering by checking if they are initialized.
 	//
 	// This engine does not use any other engines.
+	_no_postfix = false;
+	_valid_postfix = false;
 }
 
 CSymbolEngineMultiplexer::~CSymbolEngineMultiplexer() {
@@ -111,23 +113,25 @@ inline bool CSymbolEngineMultiplexer::FastExitOnLastCharacter(int last_character
 
 CString CSymbolEngineMultiplexer::MultiplexedSymbolName(CString name) {
   int underscore_position = 0;
+  _no_postfix = false;
   // Searching from the end, because a symbol might contain
   // multiple multiplexer postfixes at the end.
   underscore_position = name.ReverseFind('_');
   if (underscore_position < 0) {
     // No postfix found
+	_no_postfix = true;
     return name;
   }
   CString postfix = name.Mid(underscore_position + 1);
   write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] Postfix %s\n", postfix);
-  bool valid_postfix = false;
+  _valid_postfix = false;
   for (int i = 0; i < kNumberOfSupportedPostfixes; ++i) {
     if (postfix == kSupportedPostFixes[i]) {
-      valid_postfix = true;
+		_valid_postfix = true;
       break;
     }
   }
-  if (!valid_postfix) {
+  if (!_valid_postfix) {
     return name;
   }
   double evaluated_postfix = kUndefined;
@@ -158,26 +162,49 @@ CString CSymbolEngineMultiplexer::MultiplexedSymbolName(CString name) {
 }
 
 bool CSymbolEngineMultiplexer::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
-  // This function gets called a lot, 
-  // very early and therefore for nearly every symbol.
-  // Therefore we implement several fast exits.
-  // But no FAST_EXIT_ON_OPENPPL_SYMBOLS(name),
-  // because we also want to multiplex OpenPPL-symbols.
-  //
-  // Fast exit on last character
-  char last_character = RightCharacter(name);
-  if (FastExitOnLastCharacter(last_character)) {
-    return false;
-  }
-  CString multiplexed_symbol_name = MultiplexedSymbolName(name);
-  if (multiplexed_symbol_name == name) {
-    // Not a multiplexer-symbol
-    return false;
-  }
-  bool success = p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
-  write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %.2f\n",
-    name, multiplexed_symbol_name, *result);
-  return success;
+	// This function gets called a lot, 
+	// very early and therefore for nearly every symbol.
+	// Therefore we implement several fast exits.
+	// But no FAST_EXIT_ON_OPENPPL_SYMBOLS(name),
+	// because we also want to multiplex OpenPPL-symbols.
+	//
+	// Fast exit on last character
+	char last_character = RightCharacter(name);
+	if (FastExitOnLastCharacter(last_character)) {
+		return false;
+	}
+	CString multiplexed_symbol_name = MultiplexedSymbolName(name);
+	if (multiplexed_symbol_name == name) {
+		// Not a multiplexer-symbol
+		return false;
+	}
+	bool success = p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
+	write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %.2f\n",
+		name, multiplexed_symbol_name, *result);
+	return success;
+}
+
+bool CSymbolEngineMultiplexer::EvaluateSymbol(const CString name, CString *result, bool log /* = false */) {
+	// This function gets called a lot, 
+	// very early and therefore for nearly every symbol.
+	// Therefore we implement several fast exits.
+	// But no FAST_EXIT_ON_OPENPPL_SYMBOLS(name),
+	// because we also want to multiplex OpenPPL-symbols.
+	//
+	// Fast exit on last character
+	char last_character = RightCharacter(name);
+	if (FastExitOnLastCharacter(last_character)) {
+		return false;
+	}
+	CString multiplexed_symbol_name = MultiplexedSymbolName(name);
+	if (multiplexed_symbol_name == name) {
+		// Not a multiplexer-symbol
+		return false;
+	}
+	bool success = p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
+	write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %s\n",
+		name, multiplexed_symbol_name, *result);
+	return success;
 }
 
 CString CSymbolEngineMultiplexer::SymbolsProvided() {

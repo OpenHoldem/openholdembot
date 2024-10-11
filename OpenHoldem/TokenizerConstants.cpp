@@ -234,7 +234,7 @@ CString TokenString(int token) {
   case kTokenOperatorBitCount: return "BitCount";
 	case kTokenOperatorPercentage: return "percentage"; // because % can also mean modulo      
 	case kTokenOperatorConditionalIf: return "?";     
-  case kTokenOperatorConditionalElse: return ":";    
+  case kTokenOperatorConditionalElse: return ":";
 	case kTokenOperatorConditionalWhen: return "WHEN";
 	case kTokenBracketOpen_1: return "(";              			
 	case kTokenBracketOpen_2: return "[";              
@@ -272,6 +272,7 @@ CString TokenString(int token) {
   case kTokenActionRaiseByBigBlinds: return "RaiseByBigBlinds";
   case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
   case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
+  case kTokenOperatorSetHandWeight: return ":";
 	default:
 		assert(kThisMustNotHappen);
     CString error_message;
@@ -352,6 +353,7 @@ CString TokenVerboseExplained(int token) {
   case kTokenActionRaiseByBigBlinds: return "RaiseByBigBlinds";
   case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
   case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
+  case kTokenOperatorSetHandWeight: return "set handweight operator :";
   default:
     assert(kThisMustNotHappen);
     CString error_message;

@@ -70,6 +70,7 @@ class CSymbolEngineHistory: public CVirtualSymbolEngine {
 	int _nplayersround[kNumberOfBetrounds + 1];		
 	int _botslastaction[kNumberOfBetrounds + 1];		
 	double _nbetsround[kNumberOfBetrounds + 1];
+public:
 	// Autoplayer-actions for the 4 bet-rounds
 	// First dimension: betround; element 0 is unused again.
 	// Second dimension: only some actions are really used,

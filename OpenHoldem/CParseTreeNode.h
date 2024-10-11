@@ -34,6 +34,7 @@ class CParseTreeNode {
   virtual ~CParseTreeNode();
  public:
   virtual double Evaluate(bool log = false);
+  virtual CString EvaluateString(bool log = false);
   virtual CString EvaluateToString(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
  public:

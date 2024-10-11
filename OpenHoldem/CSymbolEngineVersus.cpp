@@ -20,6 +20,7 @@
 #include "CardFunctions.h"
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "inlines/eval.h"
 #include "CFunctionCollection.h"
 #include "CParseErrors.h"
@@ -344,6 +345,7 @@ bool CSymbolEngineVersus::GetCounts() {
 
 	// calc the stats
 	_vsprwin = (double) _nwin / ((double)  _nwin + (double) _ntie + (double) _nlos);
+	_vsprwin = pow(_vsprwin, p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying());
 	_vsprtie = (double) _ntie / ((double)  _nwin + (double) _ntie + (double) _nlos);
 	_vsprlos = (double) _nlos / ((double)  _nwin + (double) _ntie + (double) _nlos);
    

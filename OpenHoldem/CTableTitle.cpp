@@ -96,6 +96,7 @@ CString CTableTitle::PreprocessTitle(CString title) {
   RemoveSpacesInFrontOfCentMultipliers(&result);
   ReplaceCommasInNumbersByDots(&result);
   RemoveExtraDotsInNumbers(&result);
+  RemoveHtmlTagsAndContexts(&result);
   return result;
 }
 

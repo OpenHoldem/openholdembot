@@ -121,7 +121,7 @@ CString CWhiteInfoBox::InfoText() {
 	result.Append(s);
 
 	// ante
-	if (sym_ante != 0) {
+	if (sym_ante >= 0) {
 		s.Format("  Ante: %s\n", Number2CString(sym_ante));
 		result.Append(s);
 	}

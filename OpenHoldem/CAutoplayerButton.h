@@ -42,7 +42,7 @@ class CAutoplayerButton {
 
   bool IsButtonType(int autoplayer_function_code) { return _button_type == autoplayer_function_code; }
 
- protected:
+ public:
   // To be used by the scraper
   void SetClickable(bool clickable);
   // Same as above, but to be used with input like "true", "yes", "on", ...

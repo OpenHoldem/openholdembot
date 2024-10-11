@@ -28,24 +28,24 @@
 #include "CBlindLevels.h"
 
 class CBlindGuesser {
- public:
-  CBlindGuesser();
-  ~CBlindGuesser();
- public:
-  void Guess(double *sblind, double *bblind, double *bbet);
+public:
+	CBlindGuesser();
+	~CBlindGuesser();
+public:
+	void Guess(double *sblind, double *bblind, double *bbet, double *ante);
 private:
-  void GetFirstBlindDataFromScraper(double *sblind, double *bblind, double *bbet);
-  void GetFirstBlindDataFromBetsAtTheTable(double *sblind, double *bblind, double *bbet);
- private:
-  bool SBlindBBlindCombinationReasonable(double sblind, double bblind);
-  bool SBlindBBetCombinationReasonable(double sblind, double bbet);
-  bool BBlindBBetCombinationReasonable(double bblind, double bbet);
- private:
-  // Some beautiful number in the range of 40..50%
-  double ReasonableLookingHalfBlindValue(double known_value);
-  bool CompletePartiallyKnownBlinds(double *sblind, double *bblind, double *bbet);
- private:
-  CBlindLevels _blind_levels;
+	void GetFirstBlindDataFromScraper(double *sblind, double *bblind, double *bbet, double *ante);
+	void GetFirstBlindDataFromBetsAtTheTable(double *sblind, double *bblind, double *bbet, double *ante);
+private:
+	bool SBlindBBlindCombinationReasonable(double sblind, double bblind);
+	bool SBlindBBetCombinationReasonable(double sblind, double bbet);
+	bool BBlindBBetCombinationReasonable(double bblind, double bbet);
+private:
+	// Some beautiful number in the range of 40..50%
+	double ReasonableLookingHalfBlindValue(double known_value);
+	bool CompletePartiallyKnownBlinds(double *sblind, double *bblind, double *bbet);
+private:
+	CBlindLevels _blind_levels;
 };
 
 #endif INC_CBLINDGUESSER_H

@@ -204,12 +204,23 @@ void CFunctionCollection::VerifyExistence(CString name) {
     return;
   }
   // Second case: multiplexed function or OpenPPL-symbol
-  double dummy_result;
-  // !!!!! false result on unknown symbol
-  if (p_engine_container->EvaluateSymbol(name, &dummy_result)) {
-    write_log(Preferences()->debug_formula(),
-      "[CFunctionCollection] VerifyExistence: symbol exists in engine container\n");
-    return;
+  if (p_engine_container->IsStringSymbol(name)) {
+	  CString str_dummy_result;
+	  // !!!!! false result on unknown symbol
+	  if (p_engine_container->EvaluateSymbol(name, &str_dummy_result)) {
+		  write_log(Preferences()->debug_formula(),
+			  "[CFunctionCollection] VerifyExistence: symbol exists in engine container\n");
+		  return;
+	  }
+  }
+  else {
+	  double dummy_result;
+	  // !!!!! false result on unknown symbol
+	  if (p_engine_container->EvaluateSymbol(name, &dummy_result)) {
+		  write_log(Preferences()->debug_formula(),
+			  "[CFunctionCollection] VerifyExistence: symbol exists in engine container\n");
+		  return;
+	  }
   }
   // Error: function does not exist
   write_log(Preferences()->debug_formula(),

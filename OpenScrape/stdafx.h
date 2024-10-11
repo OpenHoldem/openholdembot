@@ -66,12 +66,32 @@
 #define VERSION_NUMBER			14.10
 #define VERSION_TEXT				"14.1.0"  // change version number in OpenScrape.rc also, when needed
 
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <cctype>
+#include <regex>
+
+#include <allheaders.h>
+#include <baseapi.h>
+#include <opencv.hpp>
+#include <imgproc\imgproc.hpp>
+//#include <core\types_c.h>
 #include "..\StructsDefines\structs_defines.h"
+
+using namespace std;
+using namespace cv;
+using namespace cv::dnn;
+using namespace tesseract;
 
 // Window constants for the improved GUI
 const int kBordersize     =   2;
-const int kSizeXForEditor = 600;
-const int kSizeYForEditor = 750;
+const int kSizeXForEditor = 630;
+const int kSizeYForEditor = 870;
 const int kYOffsetEditor  =  69;
+
 
 #endif //INC_STDAFX_H

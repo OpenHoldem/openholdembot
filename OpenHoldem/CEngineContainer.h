@@ -59,6 +59,7 @@ class CSymbolEngineUserchair;
 class CSymbolEngineUserDLL;
 class CSymbolEngineVariousDataLookup;
 class CSymbolEngineVersus;
+class CSymbolEngineRange;
 class CSymbolEngineICM;
 
 class CEngineContainer : public CSpaceOptimizedGlobalObject {
@@ -74,14 +75,20 @@ class CEngineContainer : public CSpaceOptimizedGlobalObject {
  public:
   void EvaluateAll();
   bool EvaluateSymbol(const CString name, double *result, bool log = false);
+  bool EvaluateSymbol(const CString name, CString *result, bool log = false);
   CString SymbolsProvided()       { BuildListOfSymbolsProvided(); return _list_of_symbols; }
  public:
   void CreateSymbolEngines();
+  bool IsStringSymbol(CString name);
+  bool IsPrw1326Symbol(CString name);
+  bool IsVariableSymbol(CString name);
  private:
   void BuildListOfSymbolsProvided();
  private:
   void CreateSpecialSymbolEngines();
   void AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);
+// For new string variable symbols (storing string values)
+  void AddStringSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);
   void DestroyAllSymbolEngines();
   void DestroyAllSpecialSymbolEngines();
  private:
@@ -94,6 +101,10 @@ class CEngineContainer : public CSpaceOptimizedGlobalObject {
   */
  private:
   CArray <CVirtualSymbolEngine*, CVirtualSymbolEngine*> _symbol_engines;
+// Introduction of new string variable symbols (storing & returning string values)
+// e.g. 'range0..9' symbols assigning weighted ranges to chair0..9 for prw1326
+// example: SET range0 "AA:100 AKs:94 AKo:88 ..." (handrank2652 format)
+  CArray <CVirtualSymbolEngine*, CVirtualSymbolEngine*> _string_symbol_engines;  
   bool _reset_on_connection_executed;
   CString _list_of_symbols;
 public:
@@ -185,6 +196,8 @@ public:
     { return p_symbol_engine_various_data_lookup; }
   CSymbolEngineVersus *symbol_engine_versus()
     { return p_symbol_engine_versus; }
+  CSymbolEngineRange *symbol_engine_range()
+	{ return p_symbol_engine_range; }
   CSymbolEngineICM *symbol_engine_icm()
     { return p_symbol_engine_icm; }
 private:
@@ -232,6 +245,7 @@ private:
   CSymbolEngineUserDLL *p_symbol_engine_user_DLL;
   CSymbolEngineVariousDataLookup *p_symbol_engine_various_data_lookup;
   CSymbolEngineVersus *p_symbol_engine_versus;
+  CSymbolEngineRange *p_symbol_engine_range;
   CSymbolEngineICM *p_symbol_engine_icm;
 };
 

@@ -39,6 +39,7 @@ class CVirtualSymbolEngine: public CSpaceOptimizedGlobalObject {
   void WarnIfSymbolIsHoldemOnly(CString name);
  public:
 	virtual bool EvaluateSymbol(const CString name, double *result, bool log = false);
+	virtual bool EvaluateSymbol(const CString name, CString *result, bool log = false);
 	// To build a list of identifiers for the editor
 	virtual CString SymbolsProvided();
 };

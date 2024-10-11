@@ -56,9 +56,10 @@ class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   CAutoplayerButton* BetsizeConfirmationButton();
  public:
   bool AllinOptionAvailable();
- protected:
+ public:
   // To be used by the scraper
   CAutoplayerButton _technical_autoplayer_buttons[k_max_number_of_buttons];
+  CAutoplayerButton _technical_action_buttons[k_max_action_buttons];
   CAutoplayerButton _technical_betpot_buttons[k_max_betpot_buttons];
   CAutoplayerButton _technical_i86X_spam_buttons[k_max_number_of_i86X_buttons];
   CAllinSlider _allin_slider;

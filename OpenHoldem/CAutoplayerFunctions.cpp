@@ -259,6 +259,9 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Check -> Fold
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_check, k_autoplayer_function_fold);
+  /* Fold -> Check
+  CalculateSingleOpenPPLBackupAction(
+	  k_autoplayer_function_fold, k_autoplayer_function_check);*/
 }
 
 bool CAutoplayerFunctions::IsPercentagePotsizeBet(double decision) {

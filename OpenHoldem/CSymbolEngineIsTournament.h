@@ -41,10 +41,22 @@ class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
 	bool AntesPresent();
 	bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
     const char *identifiers[], int number_of_identifiers);
- private:
+ public:
   bool IsMTT();
   bool IsSNG();
   bool IsDON();
+  bool IsTRIPLEUP();
+  bool IsSHOOTOUT();
+  bool IsFREEROLL();
+  bool IsKNOCKOUT();
+  bool IsREBUY();
+  bool IsSATELITTE();
+  bool IsSPIN();
+  bool IsTURBO();
+  bool IsSEMITURBO();
+  bool IsSUPERTURBO();
+  bool IsHYPERTURBO();
+  bool IsULTRATURBO();
  private:
 	// Internally we have an extra state, kUndefined (-1).  But that's
 	// not exposed in the API as it's used internally to avoid locking

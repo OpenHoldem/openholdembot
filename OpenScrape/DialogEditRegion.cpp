@@ -34,6 +34,7 @@ void CDlgEditRegion::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_NAME, m_Name);
+	DDX_Control(pDX, IDC_LABEL, m_Label);
 }
 
 
@@ -50,6 +51,7 @@ BOOL CDlgEditRegion::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	SetWindowText(titletext.GetString());
+	m_Label.SetWindowTextA(labeltext.GetString());
 
 	for (int i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i].GetString());
 	m_Name.SelectString(-1, name.GetString());

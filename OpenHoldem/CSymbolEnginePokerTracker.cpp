@@ -52,7 +52,14 @@ void CSymbolEnginePokerTracker::InitOnStartup() {
 
 void CSymbolEnginePokerTracker::UpdateOnConnection() {
 	ClearAllStats();
-	p_pokertracker_thread->StartThread();
+	if (!p_pokertracker_thread->_connected) {
+		p_pokertracker_thread->Connect();
+	}
+	else if (PQstatus(p_pokertracker_thread->_pgconn) != CONNECTION_OK) {
+		p_pokertracker_thread->Reconnect();
+	}
+//	p_pokertracker_thread->StartThread();	// Now we stop getting stats every hearthbeat as before but only on demand with our function pointer fpUpdateStat from PT DLL
+											// as it is very resource intensive and keeping both update stats on demand and on every heartbeat can cause OH freeze or a memory heap corruption
 }
 
 void CSymbolEnginePokerTracker::UpdateOnHandreset() {

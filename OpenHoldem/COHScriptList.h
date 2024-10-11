@@ -32,6 +32,22 @@ typedef bool THandListMatrix[k_number_of_ranks_per_deck][k_number_of_ranks_per_d
 // K                       A   
 // A                         I
 
+typedef int THandListWeightMatrix[k_number_of_ranks_per_deck][k_number_of_ranks_per_deck];
+//   2 3 4 5 6 7 8 9 T J Q K A
+// 2 P
+// 3   A
+// 4     I     SUITED  
+// 5       R
+// 6         S
+// 7           P
+// 8             A
+// 9               I
+// T                 R
+// J                   S 
+// Q    OFFSUITED        P
+// K                       A   
+// A                         I
+
 class COHScriptList: public COHScriptObject {
   friend class DialogHandList;
  public:
@@ -59,9 +75,9 @@ class COHScriptList: public COHScriptObject {
  public:
   virtual void Parse();
  public:
-  void Set(int first_rank, int second_rank, bool suited);
+  void Set(int first_rank, int second_rank, bool suited, int weight = 100);
   // For Hand list editor: higher card first: suited, otherwise offsuited
-  void Set(int first_rank, int second_rank);
+  void Set(int first_rank, int second_rank, int weight = 100);
   void Remove(int first_rank, int second_rank);
  public:
   int NHandsOnList();
@@ -74,6 +90,7 @@ class COHScriptList: public COHScriptObject {
   void ErrorOldStyleFormat(CString list_member);
  private:
   THandListMatrix _handlist_matrix;
+  THandListWeightMatrix _handlist_weight_matrix;
 };
 
 #endif INC_COHSCRIPTLIST_H

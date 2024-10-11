@@ -35,6 +35,9 @@ struct SPlayerData
 
 extern SPlayerData _player_data[kMaxNumberOfPlayers];
 
+double	UpdateStat(const int m_chair, const int stat);
+
+
 class CPokerTrackerThread : public CSpaceOptimizedGlobalObject
 {
 	friend class CSymbolEnginePokerTracker;
@@ -49,11 +52,14 @@ public:
 	CString				CreateConnectionString(const CString ip_address, 
 	const CString port, const CString username,
 	const CString password, const CString DB_name);
+	bool				CheckIfNameExistsInDB(int chair);
+	bool				_connected;
+	PGconn *		_pgconn;
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	static void			GetStatsForChair(LPVOID pParam, int chair, int sleepTime);
-	static UINT			PokertrackerThreadFunction(LPVOID pParam);
+	UINT			PokertrackerThreadFunction(LPVOID pParam);
+	void			GetStatsForChair(LPVOID pParam, int chair, int sleepTime);
 	static bool			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
 	void				SetStatGroups();
 	bool				AllConnectionDataSpecified();
@@ -61,9 +67,7 @@ private:
   void        Reconnect(void);
 	void				Disconnect();
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
-	bool				CheckIfNameExistsInDB(int chair);
 	bool				CheckIfNameHasChanged(int chair);
-	double			UpdateStat(const int m_chair, const int stat);
 	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
 	bool				FindName(const char *scraped_name, char *best_name);
@@ -79,8 +83,6 @@ private:
 	const char* GetPlayerScrapedName(int chair){return _player_data[chair].scraped_name;}
 
 	CString			_conn_str;
-	bool				_connected;
-	PGconn *		_pgconn;
 
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;

@@ -19,8 +19,8 @@ enum {
   kTokenEndOfFile = 0,
   kTokenEndOfFunction,
   // Operators
-  kTokenOperatorPlus,               // -
-  kTokenOperatorMinus,              // +
+  kTokenOperatorPlus,               // +
+  kTokenOperatorMinus,              // -
   kTokenOperatorMultiplication,     // *
   kTokenOperatorDivision,           // /
   kTokenOperatorUnaryMinus,         // -
@@ -56,6 +56,9 @@ enum {
   kTokenBracketClose_1,             // )
   kTokenBracketClose_2,             // ]
   kTokenBracketClose_3,             // }
+  kTokenOperatorSetHandWeight,		// :
+  kTokenOperatorOpenEndedHandRange, // +
+  kTokenOperatorHandRangeGroup,		// -
   // Numbers, Identifier, Cards
   kTokenIdentifier,
   kTokenNumber,

@@ -77,6 +77,7 @@ enum {
   k_prefs_debug_allin_adjustment,
   k_prefs_debug_handreset_detector,
   k_prefs_debug_engine_container,
+  k_prefs_debug_enhanced_prwin,
   k_prefs_debug_dll_extension,
   k_prefs_debug_scraper_preprocessor,
   k_prefs_debug_openholdem,
@@ -165,6 +166,7 @@ enum {
   k_prefs_rebuy_script,
   k_prefs_window_class_name,
   k_prefs_mutex_name,
+  k_prefs_unwanted_scrape,
   // leave this always at the last position
   k_prefs_last_CString_value,
 };
@@ -195,6 +197,7 @@ public:
   const bool use_auto_replay() { return prefs_numerical_values[k_prefs_use_auto_replay]; }
   // Scraper
   const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
+  LPCSTR unwanted_scrape() { return NonEmptyStringValueElseDefault(k_prefs_unwanted_scrape); }
   // Replay Frames
   const int replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
   const int replay_max_frames() { return prefs_numerical_values[k_prefs_replay_max_frames]; }
@@ -251,6 +254,7 @@ public:
   const bool  debug_allin_adjustment() { return prefs_numerical_values[k_prefs_debug_allin_adjustment]; }
   const bool  debug_handreset_detector() { return prefs_numerical_values[k_prefs_debug_handreset_detector]; }
   const bool  debug_engine_container() { return prefs_numerical_values[k_prefs_debug_engine_container]; }
+  const bool  debug_enhanced_prwin() { return prefs_numerical_values[k_prefs_debug_enhanced_prwin]; }
   const bool  debug_preferences() { return prefs_numerical_values[k_prefs_debug_preferences]; }
   const bool  debug_dll_extension() { return prefs_numerical_values[k_prefs_debug_dll_extension]; }
   const bool  debug_openholdem() { return prefs_numerical_values[k_prefs_debug_openholdem]; }

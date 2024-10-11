@@ -16,6 +16,7 @@
 
 #include "CCasinoInterface.h"
 #include "CAutoConnector.h"
+#include "CAutoOcr.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CAutoplayerTrace.h"
@@ -96,6 +97,9 @@ void InstantiateAllSingletons() {
   write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
+  write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CAutoOcr\n");
+  assert(!p_auto_ocr);
+  p_auto_ocr = new CAutoOcr;
   write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CLazyScraper\n");
   assert(!p_lazyscraper);
   p_lazyscraper = new CLazyScraper;
@@ -254,10 +258,12 @@ void DeleteAllSingletons() {
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting 14\n");
   DELETE_AND_CLEAR(p_scraper)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting 15\n");
-  DELETE_AND_CLEAR(p_title_evaluator)
+  DELETE_AND_CLEAR(p_auto_ocr)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting 16\n");
-  DELETE_AND_CLEAR(p_stableframescounter)
+  DELETE_AND_CLEAR(p_title_evaluator)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting 17\n");
+  DELETE_AND_CLEAR(p_stableframescounter)
+  write_log(Preferences()->debug_singletons(), "[Singletons] Deleting 18\n");
   DELETE_AND_CLEAR(p_sharedmem)
   write_log(Preferences()->debug_singletons(), "[Singletons] Deleting 19\n");
   DELETE_AND_CLEAR(p_autoplayer_functions)

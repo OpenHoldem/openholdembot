@@ -17,6 +17,7 @@
 #include "assert.h"
 #include "CardFunctions.h"
 #include "CDebugTab.h"
+#include "CEngineContainer.h"
 #include "CFormulaparser.h"
 #include "COHScriptObject.h"
 #include "CParseErrors.h"
@@ -276,13 +277,25 @@ StartOfScanForNextToken:
   // http://www.cplusplus.com/reference/cctype/isgraph
   // http://www.cplusplus.com/reference/cctype/isblank
   //
-  // White-space: skip
-  while (isspace(CURRENT_CHARACTER())) {
+  int comma_separator_count = 0;
+  // White-space: skip, Or White-space / ',' char: skip for lists
+  while (p_formula_parser->IsList() ? (isspace(CURRENT_CHARACTER()) || CURRENT_CHARACTER() == ',') : isspace(CURRENT_CHARACTER())) {
     // [\r][\n]Line break
     if ((CURRENT_CHARACTER() == '\n')
 	      || (CURRENT_CHARACTER() == '\r')) {
       line_relative++;
     }
+	if ((CURRENT_CHARACTER() == ',')) {
+		comma_separator_count++;
+	}
+	if (comma_separator_count > 1) {
+		// Do not advance the input pointer,
+		// as we don't accept anything
+		CParseErrors::Error("Multiple comma separators ',' in your Handlist.\n");
+		// Can't really continue parsing
+		// Treat it as end of function
+		return kTokenEndOfFunction;
+	}
     SkipNextCharacter();
   }
   // Set start of next token at position after space
@@ -298,6 +311,25 @@ StartOfScanForNextToken:
 	  }
 	  if (IsTokenOpenPPLKeyword()) {
 	    return _OpenPPL_token_ID;
+	  }
+	  if (_OpenPPL_token_ID = kTokenActionUserVariableToBeSet && (p_engine_container->IsVariableSymbol(GetTokenString())))
+	  {
+		  // White-space: skip
+		  while (isspace(CURRENT_CHARACTER())) {
+			  // [\r][\n]Line break
+			  if ((CURRENT_CHARACTER() == '\n')
+				  || (CURRENT_CHARACTER() == '\r')) {
+				  line_relative++;
+			  }
+			  SkipNextCharacter();
+		  }
+		  // Get variable to set
+		  if ((CURRENT_CHARACTER() == '"')) {
+			  while (NEXT_CHARACTER != '"') {
+				  _token_end_pointer++;
+			  }
+			  _token_end_pointer++; _token_end_pointer++;
+		  }
 	  }
 	  return kTokenIdentifier;
   }
@@ -343,9 +375,15 @@ NegativeNumber:
   // [+-*/<>=!?:%&|~^] OpenHoldem-style-Operators
 	else if (IsOperatorCharacter(CURRENT_CHARACTER())) {
 		switch (CURRENT_CHARACTER()) {
-		case '+': 
+		case '+':  // Might be operator plus or open-ended handrange
+			if (p_formula_parser->IsList()) {
+				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorOpenEndedHandRange);
+			}
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPlus)
-		case '-': 
+		case '-':   // Might be operator minus or handrange group
+			if (p_formula_parser->IsList()) {
+				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorHandRangeGroup);
+			}
 			if (IsBinaryMinus()) {
 				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorMinus)
 			}	else {
@@ -380,7 +418,11 @@ NegativeNumber:
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorNotEqual)
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorLogicalNot)
 		case '?': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorConditionalIf)
-		case ':': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorConditionalElse)
+		case ':': // Might be conditional else or set hand weight
+			if (p_formula_parser->IsList()) {
+				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorSetHandWeight);
+			}
+			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorConditionalElse)
 		case '%': // Might be modulo (OpenHoldem) or percentage (OpenPPL)
 			if (_inside_OpenPPL_function) {
 				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPercentage);

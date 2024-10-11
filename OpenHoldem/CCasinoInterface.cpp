@@ -53,19 +53,45 @@ CCasinoInterface::~CCasinoInterface() {
 }
 
 void CCasinoInterface::Reset() {
-  CString button_name;
-  for (int i = 0; i < k_max_number_of_buttons; ++i) {
-    button_name.Format("i%cbutton", HexadecimalChar(i)); 
-    _technical_autoplayer_buttons[i].Reset();
-    _technical_autoplayer_buttons[i].SetTechnicalName(button_name);
+  CString button_name, area_name;
+  bool area_found = false;
+  RMapCI  r_iter = p_tablemap->r$()->end();
+  for (int i = 0; i < k_max_area_buttons_zone; ++i) {
+	  area_name.Format("area_buttons_zone%c", HexadecimalChar(i));
+	  r_iter = p_tablemap->r$()->find(area_name);
+	  if (r_iter != p_tablemap->r$()->end()) {
+		  int r_width = r_iter->second.right - r_iter->second.left;
+		  int r_height = r_iter->second.bottom - r_iter->second.top;
+		  if (r_width > 0 && r_height > 0) {
+			area_found = true;
+			for (int j = 0; j < k_max_action_buttons; ++j) {
+				_technical_autoplayer_buttons[j].Reset();
+				_technical_autoplayer_buttons[j].SetTechnicalName(k_action_button_name[j]);
+			}
+			break;
+		  }
+	  }
+  }
+  if (!area_found) {
+	  for (int i = 0; i < k_max_number_of_buttons; ++i) {
+		  button_name.Format("i%cbutton", HexadecimalChar(i));
+		  _technical_autoplayer_buttons[i].Reset();
+		  _technical_autoplayer_buttons[i].SetTechnicalName(button_name);
+	  }
   }
   for (int i = 0; i < k_max_betpot_buttons; ++i) {
-    button_name.Format("%sbutton", k_betpot_button_name[i]);
+	if (area_found)
+		button_name.Format("%s", k_betpot_button_name[i]);
+	else
+		button_name.Format("%sbutton", k_betpot_button_name[i]);
     _technical_betpot_buttons[i].Reset();
     _technical_betpot_buttons[i].SetTechnicalName(button_name);
   }
   for (int i = 0; i < k_max_number_of_i86X_buttons; ++i) {
-    button_name.Format("i86%dbutton", i);
+	if (area_found)
+		button_name.Format("spam%d", i);
+	else
+		button_name.Format("i86%dbutton", i);
     _technical_i86X_spam_buttons[i].Reset();
     _technical_i86X_spam_buttons[i].SetTechnicalName(button_name);
   }
@@ -234,9 +260,9 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
     // if multiple buttons of the same type were present.
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=18915
     for (int i = 0; i < k_max_number_of_buttons; ++i) {
-      if (_technical_autoplayer_buttons[i].IsButtonType(autoplayer_function_code)
-        && _technical_autoplayer_buttons[i].IsClickable()) {
-        return &_technical_autoplayer_buttons[i];
+		if (_technical_autoplayer_buttons[i].IsButtonType(autoplayer_function_code)
+		&& _technical_autoplayer_buttons[i].IsClickable()) {
+			return &_technical_autoplayer_buttons[i];
       }
     }
     // Search again,
@@ -253,7 +279,7 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
 
 CAutoplayerButton* CCasinoInterface::BetsizeConfirmationButton() {
   // Last hard-coded default: i3-button
-  return &_technical_autoplayer_buttons[3];
+  return p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise);
 }
 
 bool CCasinoInterface::AllinOptionAvailable() {

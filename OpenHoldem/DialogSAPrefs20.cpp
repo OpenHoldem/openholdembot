@@ -53,7 +53,7 @@ const int kMaxButtonsInYDirection = 23;
 
 // List of button IS,
 // alphabetically sorted by button text
-const int kNumberOfCheckboxes = 53;
+const int kNumberOfCheckboxes = 54;
 const int kCheckboxIDs[kNumberOfCheckboxes] = {
   IDC_DEBUG_ALLIN_ADJUSTMENT,
   IDC_DEBUG_AST_PRIORITY_ORDERING,
@@ -66,6 +66,7 @@ const int kCheckboxIDs[kNumberOfCheckboxes] = {
   IDC_DEBUG_BOARD_EXPRESSIONS,
   IDC_DEBUG_DLL_EXTENSION,
   IDC_DEBUG_ENGINE_CONTAINER,
+  IDC_DEBUG_ENHANCED_PRWIN,
   IDC_DEBUG_FILENAMES,
   IDC_DEBUG_FORMULA,
   IDC_DEBUG_GUI,
@@ -187,6 +188,7 @@ BOOL CDlgSAPrefs20::OnInitDialog() {
   CheckDlgButton(IDC_DEBUG_ALLIN_ADJUSTMENT, Preferences()->debug_allin_adjustment() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_HANDRESET_DETECTOR, Preferences()->debug_handreset_detector() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ENGINE_CONTAINER, Preferences()->debug_engine_container() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_ENHANCED_PRWIN, Preferences()->debug_enhanced_prwin() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_HANDHISTORY, Preferences()->debug_handhistory() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_PREFERENCES, Preferences()->debug_preferences() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_DLL_EXTENSION, Preferences()->debug_dll_extension() ? MF_CHECKED : MF_UNCHECKED);
@@ -245,6 +247,7 @@ void CDlgSAPrefs20::OnOK() {
   Preferences()->SetValue(k_prefs_debug_allin_adjustment, IsDlgButtonChecked(IDC_DEBUG_ALLIN_ADJUSTMENT));
 	Preferences()->SetValue(k_prefs_debug_handreset_detector, IsDlgButtonChecked(IDC_DEBUG_HANDRESET_DETECTOR));
 	Preferences()->SetValue(k_prefs_debug_engine_container, IsDlgButtonChecked(IDC_DEBUG_ENGINE_CONTAINER));
+	Preferences()->SetValue(k_prefs_debug_enhanced_prwin, IsDlgButtonChecked(IDC_DEBUG_ENHANCED_PRWIN));
 	Preferences()->SetValue(k_prefs_debug_handhistory, IsDlgButtonChecked(IDC_DEBUG_HANDHISTORY));
 	Preferences()->SetValue(k_prefs_debug_preferences, IsDlgButtonChecked(IDC_DEBUG_PREFERENCES));
 	Preferences()->SetValue(k_prefs_debug_dll_extension, IsDlgButtonChecked(IDC_DEBUG_DLL_EXTENSION));
