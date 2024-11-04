@@ -340,6 +340,8 @@ void CScraper::ScrapeSlider() {
 		&& slider != p_tablemap->r$()->end()
 		&& p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
 		p_casino_interface->_bet_slider.ResetHandlePosition();
+		// Skipping now "true" evaluation of i3handle to support casinos that need first to click Bet or Raise button first
+		// before to slide the bet: https://www.maxinmontreal.com/forums/viewtopic.php?p=191837#p191837
 		handle_xy.x = handleCI->second.left;
 		handle_xy.y = handleCI->second.top;
 		p_casino_interface->_bet_slider.SetHandlePosition(handle_xy);
