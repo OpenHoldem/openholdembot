@@ -262,6 +262,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
 	  if (*sblind == 0) *sblind = *bblind / 2;
 	  if (*bblind == 0) *bblind = *sblind * 2;
 	  *ante = (p_table_state->Pot(0) - (*sblind + *bblind)) / p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt();
+      if (*ante < 0) *ante = 0;
   }
   write_log(Preferences()->debug_table_limits(), 
     "[CBlindGuesser] Data guessed from bets: %.2f / %.2f / %.2ff / %.2f\n",
