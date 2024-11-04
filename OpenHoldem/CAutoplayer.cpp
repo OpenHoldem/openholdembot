@@ -503,6 +503,8 @@ AutoPlayerCleanupAndFinalization:
 
 bool CAutoplayer::DoBetsize() { 
   double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
+  double betsize_for_allin = p_table_state->User()->_bet.GetValue()
+	  + p_table_state->User()->_balance.GetValue();
 	if (betsize > 0) 	{
     if (!_already_executing_allin_adjustment) {
       // We have to prevent a potential endless loop here>
@@ -515,7 +517,11 @@ bool CAutoplayer::DoBetsize() {
         return success;
       }
     }
-		int success = p_casino_interface->EnterBetsize(betsize);
+		// Try the slider
+		int success = p_casino_interface->UseSliderForBetsize(betsize, betsize_for_allin);
+		if (!success) {
+			success = p_casino_interface->EnterBetsize(betsize);
+		}
 		if (success) {
       write_log(Preferences()->debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
         betsize);

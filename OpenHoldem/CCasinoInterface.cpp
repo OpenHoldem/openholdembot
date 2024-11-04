@@ -227,7 +227,11 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 }
 
 bool CCasinoInterface::UseSliderForAllin() {
-  return _allin_slider.SlideAllin();
+  return _bet_slider.SlideAllin();
+}
+
+bool CCasinoInterface::UseSliderForBetsize(double betsize, double betsize_for_allin) {
+    return _bet_slider.SlideBetsize(betsize, betsize_for_allin);
 }
 
 bool CCasinoInterface::IsMyTurn() {
@@ -289,7 +293,7 @@ bool CCasinoInterface::AllinOptionAvailable() {
   if (BetsizeConfirmationButton()->IsClickable()) {
     return true;
   }
-  if (_allin_slider.SlideAllinPossible()) {
+  if (_bet_slider.SlideIsPossible()) {
     return true;
   }
   return false;

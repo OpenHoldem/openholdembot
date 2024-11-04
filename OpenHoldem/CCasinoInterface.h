@@ -14,7 +14,7 @@
 #ifndef INC_CCASINOINTERFACE_H
 #define INC_CCASINOINTERFACE_H
 
-#include "CAllinSlider.h"
+#include "CBetSlider.h"
 #include "CAutoplayerButton.h"
 #include "CBetsizeInputBox.h"
 #include "CCasinoHotkey.h"
@@ -22,7 +22,7 @@
 
 
 class CCasinoInterface: public CSpaceOptimizedGlobalObject {
-  friend class CAllinSlider;
+  friend class CBetSlider;
   friend class CAutoplayer;
   friend class CScraper;
   friend class CSymbolEngineAutoplayer;
@@ -36,6 +36,7 @@ class CCasinoInterface: public CSpaceOptimizedGlobalObject {
 	bool EnterBetsize(double total_betsize_in_dollars);
   bool EnterBetsizeForAllin();
 	bool UseSliderForAllin();
+	bool UseSliderForBetsize(double betsize, double betsize_for_allin);
 	bool CloseWindow();
 	bool EnterChatMessage(CString &message);
 	int  NumberOfVisibleAutoplayerButtons();
@@ -62,7 +63,7 @@ class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   CAutoplayerButton _technical_action_buttons[k_max_action_buttons];
   CAutoplayerButton _technical_betpot_buttons[k_max_betpot_buttons];
   CAutoplayerButton _technical_i86X_spam_buttons[k_max_number_of_i86X_buttons];
-  CAllinSlider _allin_slider;
+  CBetSlider _bet_slider;
  protected:
   // To be used by the slider to confirm the betsize
   CBetsizeInputBox  _betsize_input_box;

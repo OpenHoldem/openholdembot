@@ -15,7 +15,7 @@
 #define INC_CBETSIZEINPUTBOX_H
 
 class CBetsizeInputBox {
-  friend class CAllinSlider;
+  friend class CBetSlider;
  public:
   CBetsizeInputBox();
   ~CBetsizeInputBox();

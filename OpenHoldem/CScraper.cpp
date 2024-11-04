@@ -437,7 +437,7 @@ void CScraper::ScrapeSlider() {
       && p_casino_interface->BetsizeConfirmationButton()->IsClickable())	{
 		int j = slider->second.right - handleCI->second.left;
 		text = "";
-    p_casino_interface->_allin_slider.ResetHandlePosition();
+    p_casino_interface->_bet_slider.ResetHandlePosition();
 		for (int k=0; k<=j; ++k) {
 			handleI = p_tablemap->set_r$()->find("i3handle");
 			handleI->second.left  += k;
@@ -449,7 +449,7 @@ void CScraper::ScrapeSlider() {
 				handleCI = p_tablemap->r$()->find("i3handle");
 				handle_xy.x = handleCI->second.left + k;
 				handle_xy.y = handleCI->second.top;
-        p_casino_interface->_allin_slider.SetHandlePosition(handle_xy);
+        p_casino_interface->_bet_slider.SetHandlePosition(handle_xy);
 				write_log(Preferences()->debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
         __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 				return;
