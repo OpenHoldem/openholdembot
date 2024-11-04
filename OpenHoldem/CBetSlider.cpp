@@ -18,6 +18,7 @@
 #include "CAutoplayerTrace.h"
 #include "CBetsizeInputBox.h"
 #include "CCasinoInterface.h"
+#include "CScraper.h"
 
 #include "../CTablemap/CTablemap.h"
 #include "OpenHoldem.h"
@@ -62,8 +63,8 @@ bool CBetSlider::SlideAllin() {
       drag_region.bottom = drag_region.top;
   }
   else {
-      drag_region.top = _position.y + (_i3_slider.bottom - _i3_slider.top);
-      drag_region.bottom = _position.y + ((_i3_handle.bottom - _i3_handle.top) / 2);
+      drag_region.bottom = _position.y + (_i3_slider.bottom - _i3_slider.top);
+      drag_region.top = _position.y + ((_i3_handle.bottom - _i3_handle.top) / 2);
       drag_region.right = drag_region.left;
   }
 
@@ -104,8 +105,8 @@ bool CBetSlider::SlideBetsize(double betsize, double betsize_for_allin) {
         drag_region.bottom = drag_region.top;
     }
     else {
-        drag_region.top = _position.y + (_i3_slider.bottom - _i3_slider.top) * slide_size_ratio;
-        drag_region.bottom = _position.y + ((_i3_handle.bottom - _i3_handle.top) / 2);
+        drag_region.bottom = _position.y + (_i3_slider.bottom - _i3_slider.top) * slide_size_ratio;
+        drag_region.top = _position.y + ((_i3_handle.bottom - _i3_handle.top) / 2);
         drag_region.right = drag_region.left;
     }
 
@@ -144,19 +145,22 @@ bool CBetSlider::GetSliderRegions() {
 
 bool CBetSlider::SlideIsPossible() {
   // Required: betsize-confirmation-button, slider and handle
+    if (!p_tablemap->ItemExists("i3slider")) {
+        return false;
+    }
+    if (!p_tablemap->ItemExists("i3handle")) {
+        return false;
+    }
   if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
-    if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
+      CString text;
+      p_scraper->EvaluateRegion("i3handle", &text);
+    if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable() || (text != "handle" && text != "true")) {
         p_casino_interface->BetsizeConfirmationButton()->Click();
-        Sleep(900);
-        if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable())
+        Sleep(Preferences()->swag_delay_3());
+        p_scraper->EvaluateRegion("i3handle", &text);
+        if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable() || (text != "handle" && text != "true"))
             return false;
     }
-  }
-  if (!p_tablemap->ItemExists("i3slider")) {
-    return false;
-  }
-  if (!p_tablemap->ItemExists("i3handle")) {
-    return false;
   }
   if (!GetSliderRegions()) {
     return false;

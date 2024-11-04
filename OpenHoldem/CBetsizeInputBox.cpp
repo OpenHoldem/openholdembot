@@ -21,6 +21,7 @@
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CAutoOcr.h"
+#include "CScraper.h"
 
 #include "SwagAdjustment.h"
 #include "CSymbolEngineHistory.h"
@@ -249,16 +250,22 @@ bool CBetsizeInputBox::GetI3EditRegion() {
 }
 
 bool CBetsizeInputBox::IsReadyToBeUsed() {
-  if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
-      if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
-          p_casino_interface->BetsizeConfirmationButton()->Click();
-          Sleep(900);
-          if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable())
-              return false;
-      }
-  }
   if (!p_tablemap->ItemExists("i3edit")) {
     return false;
+  }
+  if (!p_tablemap->ItemExists("i3state")) {
+	  return false;
+  }
+  if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
+	  CString text;
+	  p_scraper->EvaluateRegion("i3state", &text);
+	  if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable() || (text != "on" && text != "yes" && text != "checked" && text != "true" && text != "lit")) {
+		  p_casino_interface->BetsizeConfirmationButton()->Click();
+		  Sleep(Preferences()->swag_delay_3());
+		  p_scraper->EvaluateRegion("i3state", &text);
+		  if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable() || (text != "on" && text != "yes" && text != "checked" && text != "true" && text != "lit"))
+			  return false;
+	  }
   }
   if (!GetI3EditRegion()) {
     return false;
