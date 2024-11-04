@@ -147,9 +147,12 @@ bool CBetsizeInputBox::GetI3EditRegion() {
 
 bool CBetsizeInputBox::IsReadyToBeUsed() {
   if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
-    if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
-      return false;
-    }
+      if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
+          p_casino_interface->BetsizeConfirmationButton()->Click();
+          Sleep(900);
+          if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable())
+              return false;
+      }
   }
   if (!p_tablemap->ItemExists("i3edit")) {
     return false;
@@ -176,7 +179,7 @@ void CBetsizeInputBox::SelectText() {
   } else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG) {
    write_log(Preferences()->debug_autoplayer(), "[CBetsizeInputBox] Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n",
       _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
-    (theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), _i3_edit_region);
+    (theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), _i3_edit_region, true);
   } else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING) {
     // Nothing to do
   } else {

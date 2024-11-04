@@ -210,7 +210,7 @@
   <ItemGroup>
     <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
-    <ClCompile Include="CAllinSlider.cpp" />
+    <ClCompile Include="CBetSlider.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CAutoplayerButton.cpp" />
     <ClCompile Include="CBetsizeInputBox.cpp" />
@@ -493,7 +493,7 @@
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
-    <ClInclude Include="CAllinSlider.h" />
+    <ClInclude Include="CBetSlider.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CAutoplayerButton.h" />
     <ClInclude Include="CBetsizeInputBox.h" />

@@ -11,23 +11,24 @@
 //
 //******************************************************************************
 
-#ifndef INC_CALLINSLIDER_H
-#define INC_CALLINSLIDER_H
+#ifndef INC_CBETSLIDER_H
+#define INC_CBETSLIDER_H
 
-class CAllinSlider {
+class CBetSlider {
  public:
-  CAllinSlider();
-  ~CAllinSlider();
+  CBetSlider();
+  ~CBetSlider();
  public:
   void SetHandlePosition(const POINT position);
   void ResetHandlePosition();
   bool SlideAllin();
+  bool SlideBetsize(double betsize, double betsize_for_allin);
   bool GetSliderRegions();
-  bool SlideAllinPossible();
+  bool SlideIsPossible();
  private:
   POINT _position; //?????
   RECT _i3_slider;
   RECT _i3_handle;
 };
 
-#endif INC_CALLINSLIDER_H
+#endif INC_CBETSLIDER_H
