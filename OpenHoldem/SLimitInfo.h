@@ -35,7 +35,15 @@ class CLimitInfo {
 	double	bblind();
 	double	bbet();
  public:
-  double	ante()           { return _ante.GetValue(); }
+	 double	ante() {
+		 if (_ante.GetValue() > kUndefinedZero) {
+			 return _ante.GetValue();
+		 }
+		 else {
+			 // Info not available for antes
+		 }
+		 return kUndefinedZero;
+	 }
 	int		  limit()          { return _limit; }
   CString	handnumber()     { return _handnumber; }
   double  buyin()         { return _buyin.GetValue(); }
