@@ -33,9 +33,9 @@ CBlindGuesser::~CBlindGuesser() {
 }
 
 // All parameters are out-parameters only
-void CBlindGuesser::Guess(double *sblind, double *bblind, double *bbet) {
+void CBlindGuesser::Guess(double *sblind, double *bblind, double *bbet, double *ante) {
   // No debug-messages needed here. Subroutines log enough.
-  GetFirstBlindDataFromScraper(sblind, bblind, bbet);
+  GetFirstBlindDataFromScraper(sblind, bblind, bbet, ante);
   // Take what we have and check the blinds on the list of known levels
   // (either complete or partial match)
   if (_blind_levels.BestMatchingBlindLevel(sblind, bblind, bbet)) {
@@ -47,7 +47,7 @@ void CBlindGuesser::Guess(double *sblind, double *bblind, double *bbet) {
   // Missing input.
   // We have to guess everything from the table
   // And then again try to verify/complete the data.
-  GetFirstBlindDataFromBetsAtTheTable(sblind, bblind, bbet);
+  GetFirstBlindDataFromBetsAtTheTable(sblind, bblind, bbet, ante);
   if (_blind_levels.BestMatchingBlindLevel(sblind, bblind, bbet)) {
     return;
   }
@@ -160,11 +160,13 @@ double CBlindGuesser::ReasonableLookingHalfBlindValue(double known_value) {
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60
 void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   double *bblind,
-  double *bbet) {
+  double *bbet,
+  double *ante) {
   // Everything is unknown, init to zero
   *sblind = kUndefinedZero;
   *bblind = kUndefinedZero;
   *bbet = kUndefinedZero;
+  //*ante = kUndefinedZero;
   // Search first two bets...
   double first_bet_after_dealer = 0.0;
   double second_bet_after_dealer = 0.0;
@@ -256,9 +258,14 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
     // Assume the first bet is "normal" and therefore small-blind
     *sblind = first_bet_after_dealer;
   }
+  if (p_engine_container->symbol_engine_istournament() && p_table_state->AntesVisible() && *ante <= 0) {
+	  if (*sblind == 0) *sblind = *bblind / 2;
+	  if (*bblind == 0) *bblind = *sblind * 2;
+	  *ante = round(*bblind * 0.125);  // Approximating ante guess to 12.5% of big blind
+  }
   write_log(Preferences()->debug_table_limits(), 
-    "[CBlindGuesser] Data guessed from bets: %.2f / %.2f / %.2f\n",
-    *sblind, *bblind, *bbet);
+    "[CBlindGuesser] Data guessed from bets: %.2f / %.2f / %.2ff / %.2f\n",
+    *sblind, *bblind, *bbet, *ante);
   write_log(Preferences()->debug_table_limits(), 
     "[CBlindGuesser] Data needs to be completed\n");
   // Still to do (by the caller):
@@ -267,12 +274,14 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
 
 void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind, 
                                                  double *bblind, 
-                                                 double *bbet) {
+                                                 double *bbet,
+												 double *ante) {
   // Get values from the scraper (ttlimits / c0limits)
   *sblind = p_table_state->_s_limit_info.sblind();
   *bblind = p_table_state->_s_limit_info.bblind();
   *bbet   = p_table_state->_s_limit_info.bbet();
+  *ante	  = p_table_state->_s_limit_info.ante();
   write_log(Preferences()->debug_table_limits(), 
-    "[CBlindGuesser] Data from scraper (ttlimits, c0limits): %.2f / %.2f / %.2f\n",
-    *sblind, *bblind, *bbet);
+    "[CBlindGuesser] Data from scraper (ttlimits, c0limits): %.2f / %.2f / %.2ff / %.2f\n",
+    *sblind, *bblind, *bbet, *ante);
 }
