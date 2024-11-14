@@ -103,41 +103,70 @@ MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton 
 	return (int) true;
 }
 
-MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect) {
+MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizontal_drag) {
 	INPUT			input[3];
 	POINT			pt;
 	double		fx, fy;
 
-	double fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
+	double fScreenWidth = ::GetSystemMetrics(SM_CXSCREEN) - 1;
+	double fScreenHeight = ::GetSystemMetrics(SM_CYSCREEN) - 1;
 
-	// Set up the input structure
-	// left click, drag to right, un-left click
-	pt.x = rect.left;
-	pt.y = rect.top + (rect.bottom - rect.top)/2;
-	ClientToScreen(hwnd, &pt);
-	fx = pt.x*(65535.0f/fScreenWidth);
-	fy = pt.y*(65535.0f/fScreenHeight);
+	if (is_horizontal_drag) {
+		// Set up the input structure
+		// left click, drag to right, un-left click
+		pt.x = rect.left;
+		pt.y = rect.top + (rect.bottom - rect.top) / 2;
+		ClientToScreen(hwnd, &pt);
+		fx = pt.x * (65535.0f / fScreenWidth);
+		fy = pt.y * (65535.0f / fScreenHeight);
 
-	ZeroMemory(&input[0],sizeof(INPUT));
-	input[0].type = INPUT_MOUSE;
-	input[0].mi.dx = (LONG) fx;
-	input[0].mi.dy = (LONG) fy;
-	input[0].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+		ZeroMemory(&input[0], sizeof(INPUT));
+		input[0].type = INPUT_MOUSE;
+		input[0].mi.dx = (LONG)fx;
+		input[0].mi.dy = (LONG)fy;
+		input[0].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
 
-	pt.x = rect.right;
-	pt.y = rect.top + (rect.bottom - rect.top)/2;
-	ClientToScreen(hwnd, &pt);
-	fx = pt.x*(65535.0f/fScreenWidth);
-	fy = pt.y*(65535.0f/fScreenHeight);
+		pt.x = rect.right;
+		pt.y = rect.top + (rect.bottom - rect.top) / 2;
+		ClientToScreen(hwnd, &pt);
+		fx = pt.x * (65535.0f / fScreenWidth);
+		fy = pt.y * (65535.0f / fScreenHeight);
 
-	ZeroMemory(&input[1],sizeof(INPUT));
-	input[1].type = INPUT_MOUSE;
-	input[1].mi.dx = (LONG) fx;
-	input[1].mi.dy = (LONG) fy;
-	input[1].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+		ZeroMemory(&input[1], sizeof(INPUT));
+		input[1].type = INPUT_MOUSE;
+		input[1].mi.dx = (LONG)fx;
+		input[1].mi.dy = (LONG)fy;
+		input[1].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+	}
+	else {
+		// Set up the input structure
+		// left click, drag to up, un-left click
+		pt.x = rect.left + (rect.right - rect.left) / 2;
+		pt.y = rect.bottom;
+		ClientToScreen(hwnd, &pt);
+		fx = pt.x * (65535.0f / fScreenWidth);
+		fy = pt.y * (65535.0f / fScreenHeight);
 
-	ZeroMemory(&input[2],sizeof(INPUT));
+		ZeroMemory(&input[0], sizeof(INPUT));
+		input[0].type = INPUT_MOUSE;
+		input[0].mi.dx = (LONG)fx;
+		input[0].mi.dy = (LONG)fy;
+		input[0].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+
+		pt.x = rect.left + (rect.right - rect.left) / 2;
+		pt.y = rect.top;
+		ClientToScreen(hwnd, &pt);
+		fx = pt.x * (65535.0f / fScreenWidth);
+		fy = pt.y * (65535.0f / fScreenHeight);
+
+		ZeroMemory(&input[1], sizeof(INPUT));
+		input[1].type = INPUT_MOUSE;
+		input[1].mi.dx = (LONG)fx;
+		input[1].mi.dy = (LONG)fy;
+		input[1].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+	}
+
+	ZeroMemory(&input[2], sizeof(INPUT));
 	input[2].type = INPUT_MOUSE;
 	input[2].mi.dwFlags = MOUSEEVENTF_LEFTUP;
 
@@ -147,7 +176,7 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect) {
 	SetActiveWindow(hwnd);
 	// Send input
 	SendInput(3, input, sizeof(INPUT));
-	return (int) true;
+	return (int)true;
 }
 
 MOUSEDLL_API void ProcessMessage(const char *message, const void *param)

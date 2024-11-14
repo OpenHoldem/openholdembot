@@ -27,8 +27,8 @@ enum MouseButton { MouseLeft, MouseMiddle, MouseRight };
 typedef int(*mouse_click_t)(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks);
 MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks);
 							
-typedef int(*mouse_clickdrag_t)(const HWND hwnd, const RECT rect);
-MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect);
+typedef int(*mouse_clickdrag_t)(const HWND hwnd, const RECT rect, bool is_horizontal_drag);
+MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizontal_drag);
 
 typedef void (*mouse_process_message_t)(const char *message, const void *param);
 MOUSEDLL_API void ProcessMessage(const char *message, const void *param);

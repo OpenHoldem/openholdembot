@@ -15,7 +15,7 @@
 #define INC_CBETSIZEINPUTBOX_H
 
 class CBetsizeInputBox {
-  friend class CAllinSlider;
+  friend class CBetSlider;
  public:
   CBetsizeInputBox();
   ~CBetsizeInputBox();
@@ -26,7 +26,7 @@ class CBetsizeInputBox {
   bool IsReadyToBeUsed();
  protected:
   // To be used by the allin-slider
-  void Confirm();
+  bool Confirm();
  private:
   bool GetI3EditRegion();
  private:
