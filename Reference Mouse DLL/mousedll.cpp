@@ -108,8 +108,8 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizo
 	POINT			pt;
 	double		fx, fy;
 
-	double fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
+	double fScreenWidth = ::GetSystemMetrics(SM_CXSCREEN) - 1;
+	double fScreenHeight = ::GetSystemMetrics(SM_CYSCREEN) - 1;
 
 	if (is_horizontal_drag) {
 		// Set up the input structure
@@ -141,7 +141,7 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizo
 	else {
 		// Set up the input structure
 		// left click, drag to up, un-left click
-		pt.x = rect.left + (rect.left - rect.right) / 2;
+		pt.x = rect.left + (rect.right - rect.left) / 2;
 		pt.y = rect.bottom;
 		ClientToScreen(hwnd, &pt);
 		fx = pt.x * (65535.0f / fScreenWidth);
@@ -153,7 +153,7 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizo
 		input[0].mi.dy = (LONG)fy;
 		input[0].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
 
-		pt.x = rect.left + (rect.left - rect.right) / 2;
+		pt.x = rect.left + (rect.right - rect.left) / 2;
 		pt.y = rect.top;
 		ClientToScreen(hwnd, &pt);
 		fx = pt.x * (65535.0f / fScreenWidth);
@@ -166,7 +166,7 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizo
 		input[1].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
 	}
 
-	ZeroMemory(&input[2],sizeof(INPUT));
+	ZeroMemory(&input[2], sizeof(INPUT));
 	input[2].type = INPUT_MOUSE;
 	input[2].mi.dwFlags = MOUSEEVENTF_LEFTUP;
 
@@ -176,7 +176,7 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, bool is_horizo
 	SetActiveWindow(hwnd);
 	// Send input
 	SendInput(3, input, sizeof(INPUT));
-	return (int) true;
+	return (int)true;
 }
 
 MOUSEDLL_API void ProcessMessage(const char *message, const void *param)

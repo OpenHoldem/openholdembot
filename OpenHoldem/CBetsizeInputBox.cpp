@@ -315,7 +315,21 @@ void CBetsizeInputBox::Clear() {
 	}
 }
 
-void CBetsizeInputBox::Confirm() {
+bool CBetsizeInputBox::Confirm() {
+	if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET
+		&& p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
+		write_log(Preferences()->debug_autoplayer(), "[CBetsizeInputBox] Bet Confirmation: Using raise button\n");
+		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) {
+			p_casino_interface->ClickButtonSequence(k_autoplayer_function_raise,
+				k_autoplayer_function_raise,
+				k_double_click_delay);
+		}
+		else {
+			p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->Click();
+		}
+		return true;
+	}
+	return false;
 }
 
 bool CBetsizeInputBox::VerifyEnteredBetsize() {
