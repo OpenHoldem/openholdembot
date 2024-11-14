@@ -261,8 +261,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   if (p_engine_container->symbol_engine_istournament() && (!p_table_state->AntesVisible()) && p_table_state->Pot(0) > (*sblind + *bblind) && p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() > 0) {
 	  if (*sblind == 0) *sblind = *bblind / 2;
 	  if (*bblind == 0) *bblind = *sblind * 2;
-	  *ante = (p_table_state->Pot(0) - (*sblind + *bblind)) / p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt();
-      if (*ante < 0) *ante = 0;
+	  *ante = round(*bblind * 0.125);  // Approximating ante guess to 12.5% of big blind
   }
   write_log(Preferences()->debug_table_limits(), 
     "[CBlindGuesser] Data guessed from bets: %.2f / %.2f / %.2ff / %.2f\n",
