@@ -166,7 +166,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   *sblind = kUndefinedZero;
   *bblind = kUndefinedZero;
   *bbet = kUndefinedZero;
-  *ante = kUndefinedZero;
+  //*ante = kUndefinedZero;
   // Search first two bets...
   double first_bet_after_dealer = 0.0;
   double second_bet_after_dealer = 0.0;
@@ -258,7 +258,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
     // Assume the first bet is "normal" and therefore small-blind
     *sblind = first_bet_after_dealer;
   }
-  if (p_engine_container->symbol_engine_istournament() && (!p_table_state->AntesVisible()) && p_table_state->Pot(0) > (*sblind + *bblind) && p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() > 0) {
+  if (p_engine_container->symbol_engine_istournament() && p_table_state->AntesVisible() && *ante <= 0) {
 	  if (*sblind == 0) *sblind = *bblind / 2;
 	  if (*bblind == 0) *bblind = *sblind * 2;
 	  *ante = round(*bblind * 0.125);  // Approximating ante guess to 12.5% of big blind
