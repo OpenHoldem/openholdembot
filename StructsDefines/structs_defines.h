@@ -42,6 +42,8 @@
 #define MAX_ALLINDELAY		5000	
 #define MAX_SCRAPEDELAY		5000
 #define MIN_SCRAPEDELAY		100
+#define MAX_TOKENNUMBER		15
+#define MAX_TOKENSIZE		25
 
 // Chipstacks
 #define MAX_CHIPS_PER_STACK	20
