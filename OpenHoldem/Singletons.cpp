@@ -32,6 +32,7 @@
 #include "COcclusioncheck.h"
 #include "COpenHoldemTitle.h"
 #include "CParserSymbolTable.h"
+#include "CFpdbThread.h"
 #include "CPokerTrackerThread.h"
 #include "CPopupHandler.h"
 
@@ -117,6 +118,9 @@ void InstantiateAllSingletons() {
   write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CAutoplayer\n");
   assert(!p_autoplayer);
   p_autoplayer = new CAutoplayer();
+  write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CFpdbThread\n");
+  assert(!p_fpdb_thread);
+  p_fpdb_thread = new CFpdbThread;
   write_log(Preferences()->debug_singletons(), "[Singletons] Going to create CPokerTrackerThread\n");
   assert(!p_pokertracker_thread);
   p_pokertracker_thread = new CPokerTrackerThread;
@@ -178,6 +182,11 @@ void StopThreads() {
 		write_log(Preferences()->debug_singletons(), "[Singletons] Deleting iterator-thread\n");
 		delete p_iterator_thread;
 		p_iterator_thread = NULL;
+	}
+	if (p_fpdb_thread) {
+		write_log(Preferences()->debug_singletons(), "[Singletons] Deleting Fpdb-thread\n");
+		p_fpdb_thread->~CFpdbThread();
+		p_fpdb_thread = NULL;
 	}
 	if (p_pokertracker_thread) { 
 		write_log(Preferences()->debug_singletons(), "[Singletons] Deleting PokerTracker-thread\n");

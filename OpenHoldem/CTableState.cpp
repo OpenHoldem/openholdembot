@@ -57,7 +57,7 @@ CPlayer *CTableState::User() {
 }
 
 CPlayer *CTableState::Player(int chair) {
-  AssertRange(chair, 0, kLastChair);
+  AssertRange(chair, 0, kMaxNumberOfPlayers);
   return &_players[chair];
 }
 

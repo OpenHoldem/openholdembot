@@ -51,6 +51,7 @@ enum {
   k_prefs_debug_prwin,
   k_prefs_debug_icm,
   k_prefs_debug_occlusionchecker,
+  k_prefs_debug_fpdb,
   k_prefs_debug_pokertracker,
   k_prefs_debug_rebuy,
   k_prefs_debug_replayframes,
@@ -225,6 +226,7 @@ public:
   const bool	debug_prwin() { return prefs_numerical_values[k_prefs_debug_prwin]; }
   const bool	debug_icm() { return prefs_numerical_values[k_prefs_debug_icm]; }
   const bool	debug_occlusionchecker() { return prefs_numerical_values[k_prefs_debug_occlusionchecker]; }
+  const bool	debug_fpdb() { return prefs_numerical_values[k_prefs_debug_fpdb]; }
   const bool	debug_pokertracker() { return prefs_numerical_values[k_prefs_debug_pokertracker]; }
   const bool	debug_rebuy() { return prefs_numerical_values[k_prefs_debug_rebuy]; }
   const bool	debug_replayframes() { return prefs_numerical_values[k_prefs_debug_replayframes]; }

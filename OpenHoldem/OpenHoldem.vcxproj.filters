@@ -198,6 +198,11 @@
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
     <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
+    <ClCompile Include="CFpdbLookUp.cpp" />
+    <ClCompile Include="CFpdbThread.cpp" />
+    <ClCompile Include="CSymbolEngineFpdb.cpp" />
+    <ClCompile Include="SQLiteWrapper.cpp" />
+    <ClCompile Include="SQLiteTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
@@ -429,6 +434,11 @@
     <ClInclude Include="COHScriptObject.h" />
     <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
+    <ClInclude Include="CFpdbLookUp.h" />
+    <ClInclude Include="CFpdbThread.h" />
+    <ClInclude Include="CSymbolEngineFpdb.h" />
+    <ClInclude Include="..\sqlite3\sqlite3.h" />
+    <ClInclude Include="SQLiteWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />

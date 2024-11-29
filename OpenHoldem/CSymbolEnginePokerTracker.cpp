@@ -105,11 +105,11 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 	write_log(Preferences()->debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound) {
-		_player_data[chair].found = false;
-		memset(_player_data[chair].pt_name, 0, kMaxLengthOfPlayername);
-		memset(_player_data[chair].scraped_name, 0, kMaxLengthOfPlayername);
+		_pt_player_data[chair].found = false;
+		memset(_pt_player_data[chair].pt_name, 0, kMaxLengthOfPlayername);
+		memset(_pt_player_data[chair].scraped_name, 0, kMaxLengthOfPlayername);
 	}
-	_player_data[chair].skipped_updates = k_advanced_stat_update_every;
+	_pt_player_data[chair].skipped_updates = k_pt_advanced_stat_update_every;
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
