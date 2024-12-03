@@ -15,11 +15,15 @@
 //
 
 #include "stdafx.h"
+#include <regex>
+using namespace std;
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs4.h"
 
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "..\DLLs\Globals_DLL\globals.h"
+#include "..\DLLs\Preferences_DLL\Preferences.h"
 
 // CDlgSAPrefs4 dialog
 
@@ -39,6 +43,7 @@ void CDlgSAPrefs4::DoDataExchange(CDataExchange* pDX)
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SCRAPEDELAY, m_ScrapeDelay);
 	DDX_Control(pDX, IDC_SCRAPEDELAY_SPIN, m_ScrapeDelay_Spin);
+	DDX_Control(pDX, IDC_UNWANTEDSCRAPE, m_UnwantedScrape);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs4, CSAPrefsSubDlg)
@@ -48,15 +53,27 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs4 message handlers
 BOOL CDlgSAPrefs4::OnInitDialog()
 {
-	CString		text = "";
+	CString		delaytext = "";
+	CString Separator = _T("|~|");
+	int Position = 0;
+	CString Token = "null";
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	text.Format("%d", Preferences()->scrape_delay());
-	m_ScrapeDelay.SetWindowText(text);
+	delaytext.Format("%d", Preferences()->scrape_delay());
+	m_ScrapeDelay.SetWindowText(delaytext);
 	m_ScrapeDelay_Spin.SetRange(100, 5000);
 	m_ScrapeDelay_Spin.SetPos(Preferences()->scrape_delay());
 	m_ScrapeDelay_Spin.SetBuddy(&m_ScrapeDelay);
+
+	while (!Token.IsEmpty())
+	{
+		// Get next token.
+		Token = CString(Preferences()->unwanted_scrape()).Tokenize(Separator, Position);
+		if (!Token.IsEmpty()) {
+			m_UnwantedScrape.AddItem(Token);
+		}
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -64,15 +81,43 @@ BOOL CDlgSAPrefs4::OnInitDialog()
 
 void CDlgSAPrefs4::OnOK()
 {
-	CString			text = "";
+	CString		delaytext = "", unwantedtext = "";
+	CString		Separator = _T("|~|");
+	string		msgTokenNumberLimit = "You have reached the " + to_string(MAX_TOKENNUMBER) + " maximum accepted entries.";
+	string		msgTokenSizeLimit = "Entries must not exceed limit of " + to_string(MAX_TOKENSIZE) + " characters.";
+	CString		msgInvalidRegexExp = "Invalid Regex expression(s) in your entries.";
 
-	m_ScrapeDelay.GetWindowText(text);
-	if (strtoul(text.GetString(), 0, 10)<MIN_SCRAPEDELAY || strtoul(text.GetString(), 0, 10)>MAX_SCRAPEDELAY) {
+
+	m_ScrapeDelay.GetWindowText(delaytext);
+	if (strtoul(delaytext.GetString(), 0, 10)<MIN_SCRAPEDELAY || strtoul(delaytext.GetString(), 0, 10)>MAX_SCRAPEDELAY) {
 		MessageBox_Interactive("Invalid Scrape Delay", "ERROR", MB_OK);
 		return;
 	}
-	Preferences()->SetValue(k_prefs_scrape_delay, strtoul(text.GetString(), 0, 10));
+	Preferences()->SetValue(k_prefs_scrape_delay, strtoul(delaytext.GetString(), 0, 10));
 
+	int count = m_UnwantedScrape.GetCount();
+	if (count > MAX_TOKENNUMBER) {
+		MessageBox_Interactive(msgTokenNumberLimit.c_str(), "Error", MB_OK);
+		return;
+	}
+	for (int i = 0; i < count; i++) {
+		if (m_UnwantedScrape.GetItemText(i).GetLength() > MAX_TOKENSIZE) {
+			MessageBox_Interactive(msgTokenSizeLimit.c_str(), "Error", MB_OK);
+			return;
+		}
+		if (m_UnwantedScrape.GetItemText(i).Find("\\(" || "\\)" || "\\[" || "\\]" || "\\{" || "\\}")) {
+			try {
+				regex(m_UnwantedScrape.GetItemText(i));
+			}
+			catch (exception e) {
+				MessageBox_Interactive(msgInvalidRegexExp, "Error", MB_OK);
+				return;
+			}
+		}
+		unwantedtext.Append(m_UnwantedScrape.GetItemText(i) + Separator);
+	}	
+	Preferences()->SetValue(k_prefs_unwanted_scrape, unwantedtext);
+	
 	CSAPrefsSubDlg::OnOK();
 }
 

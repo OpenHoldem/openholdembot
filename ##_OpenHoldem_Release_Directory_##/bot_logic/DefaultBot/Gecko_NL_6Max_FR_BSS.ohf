@@ -294,7 +294,7 @@ OR (f$wheeldraw AND NOT PairOnBoard)) ? 1 : 0
 
 ##f$wheeldraw##
 // !!! Does not consider all wheels
-(rankbits>>9==0b111100)                                 // AKQJ
+(rankbits>>10==0b11110)                                 // AKQJ
 OR (rankbits & 0b0000000000011110)==0b0000000000011110  // 432A
 
 ##f$safeboard##
@@ -1796,20 +1796,26 @@ false
 listGecko01
 
 ##f$Chart_OneLimper##
-   [ InSmallBlind AND listGecko06 ]  // 30%
-OR [ InBigBlind AND listGecko01 ]  // 13%
+    [ InEarlyPosition2 AND listGecko01 ]  // 13%
+OR [ InEarlyPosition3 AND listGecko01 ]  // 13%
+OR [ InMiddlePosition1 AND listGecko01 ]  // 13%
 OR [ InMiddlePosition2 AND listGecko01 ]  // 13%
 OR [ InMiddlePosition3 AND listGecko03 ]  // 16%
 OR [ InCutOff AND listGecko04 ]  // 23%
 OR [ InButton AND listGecko06 ]  // 30%
+OR [ InSmallBlind AND listGecko06 ]  // 30%
+OR [ InBigBlind AND listGecko01 ]  // 13%
 
 ##f$Chart_TwoLimpers##
-   (InMiddlePosition2       AND listGecko01)
-OR (InMiddlePosition3       AND listGecko01)
-OR (InCutOff     AND listGecko01)
-OR (InButton     AND listGecko02)
-OR (InSmallBlind AND listGecko01)
-OR (InBigBlind   AND listGecko01)
+   [ InEarlyPosition2 AND listGecko01 ]  // 13%
+OR [ InEarlyPosition3 AND listGecko01 ]  // 13%
+OR [ InMiddlePosition1 AND listGecko01 ]  // 13%
+OR [ InMiddlePosition2 AND listGecko01 ]  // 13%
+OR [ InMiddlePosition3 AND listGecko03 ]  // 16%
+OR [InCutOff     AND listGecko01]
+OR [InButton     AND listGecko02]
+OR [InSmallBlind AND listGecko01]
+OR [InBigBlind   AND listGecko01]
 
 ##f$Chart_CallRaise##
    (InSmallBlind AND listGecko09)

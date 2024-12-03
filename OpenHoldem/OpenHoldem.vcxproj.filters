@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
-    <ClCompile Include="CAllinSlider.cpp" />
+    <ClCompile Include="CBetSlider.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CAutoplayerButton.cpp" />
     <ClCompile Include="CBetsizeInputBox.cpp" />
@@ -198,11 +198,12 @@
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
     <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
+    <ClCompile Include="CSymbolEngineRange.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
-    <ClInclude Include="CAllinSlider.h" />
+    <ClInclude Include="CBetSlider.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CAutoplayerButton.h" />
     <ClInclude Include="CBetsizeInputBox.h" />
@@ -429,6 +430,7 @@
     <ClInclude Include="COHScriptObject.h" />
     <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
+    <ClInclude Include="CSymbolEngineRange.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />

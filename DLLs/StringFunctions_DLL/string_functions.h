@@ -33,6 +33,7 @@ STRING_FUNCTIONS_API CString Number2CString(double number, int default_precision
 // like currentbet0..currentbet9, separated by spaces
 STRING_FUNCTIONS_API CString RangeOfSymbols(CString format_string, int first, int last);
 STRING_FUNCTIONS_API void RemoveExtraDotsInNumbers(CString *s);
+STRING_FUNCTIONS_API void RemoveHtmlTagsAndContexts(CString* s);
 STRING_FUNCTIONS_API void RemoveLeftWhiteSpace(CString *s);
 STRING_FUNCTIONS_API void RemoveMultipleWhiteSpaces(CString *s);
 STRING_FUNCTIONS_API void RemoveOHReplayFrameNumber(CString *s);

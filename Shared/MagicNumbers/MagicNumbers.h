@@ -116,6 +116,8 @@ static const int MAX_SESSION_IDS = 25;
 const int k_max_number_of_buttons = 36;      // Indexed as 0..9, A..Z
 const int k_max_number_of_i86X_buttons = 10;
 const int k_max_betpot_buttons = 7;				   // 2/1, 1/1, 3/4, 2/3, 1/2, 1/3, 1/4
+const int k_max_action_buttons = 14;	// betsize (i3), fold, allin, bet, raise, call, check, sitin, sitout, leave, rematch, prefold, autopost, undefined
+const int k_max_area_buttons_zone = 10;
 const int k_min_buttons_needed_for_my_turn = 2;
 const int k_my_turn_bits_fold_call_raise = 0x07;
 
@@ -139,7 +141,7 @@ const int k_double_click_delay = 100; // ms
 
 // Tablemap constants
 #define RGB_MASK	0x00FFFFFF
-const int k_max_number_of_font_groups_in_tablemap = 8;
+const int k_max_number_of_font_groups_in_tablemap = 10;
 const int k_max_number_of_hash_groups_in_tablemap = 4;
 const int k_max_number_of_titletexts = 10;
 const int k_max_number_of_tablepoints = 10;
@@ -270,6 +272,7 @@ enum StandardFunctionConstants {
 };
 
 const int k_max_length_betpot_button_name = 17;
+const int k_max_length_action_button_name = 17;
 
 static const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button_name] = {
 	"betpot_2_1",
@@ -279,6 +282,23 @@ static const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot
 	"betpot_1_2",
 	"betpot_1_3",
 	"betpot_1_4"
+};
+
+static const char k_action_button_name[k_max_action_buttons][k_max_length_action_button_name] = {
+	"betsize",
+	"fold",
+	"allin",
+	"bet",
+	"raise",
+	"call",
+	"check",
+	"sitin",
+	"sitout",
+	"leave",
+	"rematch",
+	"prefold",
+	"autopost",
+	"undefined"
 };
 
 //  Standard function names
@@ -580,6 +600,14 @@ const int  kMaxLogSymbolsForWhiteBox = 1;
 
 // For string handling
 const int kOneCharacterExtraForTerminatingNull = 1;
+
+// OCR constant
+const int kDefaultInbuiltThreshold = 65;		// Set Inbuilt OCR default Pdiff threshold to 65% of available pixels for image matching
+const int kDefaultAutoOcrThreshold = 125;		// Default threshold for OCV OCR image binarization processing
+const int kDefaultMatchMode = 0;  // TM_SQDIFF
+const int kDefaultCropSize = 40;
+const int kDefaultBoxColor = 3;
+const int kYOffsetScroll = 40;
 
 // Function to access the name of the action constants.
 // As fold is negative we can no longer use the constants 

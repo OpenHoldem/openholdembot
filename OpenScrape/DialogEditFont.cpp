@@ -88,6 +88,12 @@ BOOL CDlgEditFont::OnInitDialog()
 	m_Type.AddString("Type 1");
 	m_Type.AddString("Type 2");
 	m_Type.AddString("Type 3");
+	m_Type.AddString("Type 4");
+	m_Type.AddString("Type 5");
+	m_Type.AddString("Type 6");
+	m_Type.AddString("Type 7");
+	m_Type.AddString("Type 8");
+	m_Type.AddString("Type 9");
 	text.Format("Type %d", group);
 	m_Type.SelectString(-1, text.GetString());
 	m_Type.SetWindowPos(NULL, 0, 0, 75, 300, SWP_NOMOVE | SWP_NOZORDER);

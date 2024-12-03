@@ -64,6 +64,174 @@
 //
 //*****************************************************************************
 
+
+##EarlyStage##
+When NOT PreBubble Return false Force
+When Not f$Stack_12P Return false FORCE
+// Was 5 changed to 3 Trish compatibility for most casinos today even non turbo
+	// StartingBigBlindSize excellent for SnG & MTTSnG, but people tweeking this for MTTs
+	// should consider late reg, and re-entry game types
+WHEN (BigBlindSize <= (3 * StartingBigBlindSize)) RETURN true FORCE
+
+##MiddleStage##
+When NOT PreBubble Return false Force
+WHEN EarlyStage RETURN false FORCE
+WHEN LateStage RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##LateStage##
+When NOT PreBubble Return false Force
+When EarlyStage Return false Force
+When BigBlindSize >= 160 And (TableMzone < 12 OR EffectiveMzone < 10) Return true FORCE
+// @Trish check this temporary inclusion
+When BigBlindSize >= 100 And Not f$Stack_12P Return true FORCE
+When EffectiveMzone <= 10*f$Mfactor Return true FORCE
+
+##BubbleStage##
+When IsBubble Return true Force
+
+##ITMStage##
+When InTheMoney Return true Force
+
+##HUStage##
+When TableIsHeadsup Return true Force
+
+
+##ShortStackStage##
+When MTTGameStage = 4  And EffectiveMzone < 14*f$Mfactor Return true FORCE  // MTT Red Zone ShortStackStage
+When HUStage  And EffectiveMzone < 20*f$Mfactor Return true FORCE
+When ITMStage  And EffectiveMzone < 14*f$Mfactor Return true FORCE
+When BubbleStage  And EffectiveMzone < 12*f$Mfactor Return true FORCE
+When LateStage  And EffectiveMzone < 16*f$Mfactor Return true FORCE
+When MiddleStage  And EffectiveMzone < 14*f$Mfactor Return true FORCE
+When EarlyStage And EffectiveMzone < (StartingStackSize * 0.40)*f$Mfactor Return true FORCE
+When isspin And Not ismtt And StartingStackSize = 25 And EffectiveMzone < 14*f$Mfactor Return true FORCE
+When isspin And Not ismtt And StartingStackSize = 15 And EffectiveMzone < 8*f$Mfactor Return true FORCE
+When isspin And ismtt And StartingStackSize = 25 And EffectiveMzone <= 12*f$Mfactor Return true FORCE
+When isspin And ismtt And StartingStackSize = 15 And EffectiveMzone <= 5*f$Mfactor Return true FORCE
+
+
+// Worth thinking about //
+// More specific to STT SNG or MTT Final Table
+// 1 = EarlyStage, 2 = MiddleStage, 3 = LateStage, 4 = BubbleStage, 5 = ITMStage, 6 = HUStage, and special ShortStackStage
+##STTGameStage##
+When HUStage 		Return 6 Force
+When ITMStage 		Return 5 Force
+When BubbleStage 	Return 4 Force
+When LateStage 		Return 3 Force 
+When MiddleStage 	Return 2 Force   
+When EarlyStage 	Return 1 Force 
+
+//////////////////////////////////////////////////////
+
+
+##f$Stack_12P##
+// WHEN EffectiveActiveStackInBigBlinds >= 12 Return true FORCE
+EffectiveMzone >= 12*f$Mfactor
+
+
+##Mzone##
+balance / (bblind + sblind + (ante*nplayersseated))
+
+##ActiveMzone##
+(balance / (bblind + sblind) + (ante*nplayersseated)) * (nplayersseated / nchairs)
+
+##EffectiveMzone##
+((EffectiveActiveStackInBigBlinds * bblind) / (bblind + sblind + (ante*nplayersseated)))
+
+##EffectiveActiveMzone##
+((EffectiveActiveStackInBigBlinds * bblind) / (bblind + sblind + (ante*nplayersseated))) * (nplayersseated/nchairs)
+
+##TableMzone##
+((f$TableAverageStackAtStartOfHand*bblind)  / (bblind + sblind + ante))
+
+##f$Mfactor##
+bblind / (bblind + sblind + (ante*nplayersseated))
+
+##f$TheBiggestActiveOpponentsChipsLegacy##
+// This can be simplified from 13.1.3
+bigstackchair == ep1chair ? balance_ep1chair + currentbet_ep1chair :
+bigstackchair == ep2chair ? balance_ep2chair + currentbet_ep2chair :
+bigstackchair == ep3chair ? balance_ep3chair + currentbet_ep3chair :
+bigstackchair == mp1chair ? balance_mp1chair + currentbet_mp1chair :
+bigstackchair == mp2chair ? balance_mp2chair + currentbet_mp2chair :
+bigstackchair == mp3chair ? balance_mp3chair + currentbet_mp3chair :
+bigstackchair == cutoffchair ? balance_cutoffchair + currentbet_cutoffchair :
+bigstackchair == dealerchair ? balance_dealerchair + currentbet_dealerchair :
+bigstackchair == smallblindchair ? balance_smallblindchair + currentbet_smallblindchair :
+bigstackchair == bigblindchair ? balance_bigblindchair + currentbet_bigblindchair :
+balance + currentbet
+
+##f$TheBiggestActiveOpponentsChips##
+balance_bigstackchair + currentbet_bigstackchair
+
+##f$TheBiggestActiveOpponentsStack##
+f$TheBiggestActiveOpponentsChips / bblind
+
+##EffectiveActiveStackInBigBlinds##
+balance + currentbet < f$TheBiggestActiveOpponentsChips ? (balance + currentbet) / bblind :
+f$TheBiggestActiveOpponentsStack
+
+##EffectiveStackInBigBlinds##
+balance + currentbet < balance_bigstackchair + currentbet_bigstackchair ? (balance + currentbet) / bblind :
+(balance_bigstackchair + currentbet_bigstackchair) / bblind
+
+##EffectiveActiveStack##
+balance + currentbet < f$TheBiggestActiveOpponentsChips ? balance + currentbet :
+f$TheBiggestActiveOpponentsChips
+
+##EffectiveStack##
+balance + currentbet < balance_bigstackchair + currentbet_bigstackchair ? balance + currentbet :
+balance_bigstackchair + currentbet_bigstackchair
+
+##f$TotalDollarsAtThisTable##
+// Different to TotalChipsAtTheTable this is not effective just relative
+  pot
++ balance0
++ balance1
++ balance2
++ balance3
++ balance4
++ balance5
++ balance6
++ balance7
++ balance8
++ balance9
+
+##f$TableAverageStackAtStartOfHand##
+// Different to AverageStackSize, as that is based on effective pot size
+(f$TotalDollarsAtThisTable/bblind) / nplayersdealt 
+
+
+// More specific to MTT except Final Table
+// 1 = Green Zone, 2 = Yellow Zone, 3 = Orange Zone, 4 = Red Zone, 5 = Dead Zone
+##MTTGameStage##
+When EffectiveMzone >= 20 							Return 1 Force 
+When EffectiveMzone >= 13 And EffectiveMzone < 20 	Return 2 Force 
+When EffectiveMzone >= 6 And EffectiveMzone < 13 	Return 3 Force 
+When EffectiveMzone >= 3 And EffectiveMzone < 6 	Return 4 Force 
+When EffectiveMzone>= 0 And EffectiveMzone < 3 		Return 5 Force 
+
+//////////////////////////////////////////////////////
+
+
+// Specific to Spin Games
+// 1 = 3-Handed, 2 = Heads-Up
+##STTSPinGameStage##
+When TableIsThreeHanded Return 1 FORCE
+When TableIsHeadsup 	Return 2 FORCE
+
+// 1 = EarlyStage, 2 = MiddleStage, 3 = Heads-Up
+##MTTSPinGameStage##
+When StartingStackSize = 25 And EffectiveMzone > 17*f$Mfactor Return 1 FORCE
+When StartingStackSize = 15 And EffectiveMzone > 10*f$Mfactor Return 1 FORCE
+When StartingStackSize = 25 And EffectiveMzone > 12*f$Mfactor And EffectiveMzone <= 17*f$Mfactor Return 2 FORCE
+When StartingStackSize = 15 And EffectiveMzone > 5*f$Mfactor And EffectiveMzone <= 10*f$Mfactor  Return 2 FORCE
+When TableIsHeadsup Return 3 FORCE
+
+//////////////////////////////////////////////////////
+
+
 ##PreBubble##
 When TableIsHeadsup Return false FORCE
 // Above is ok for now but maybe...
@@ -82,7 +250,8 @@ WHEN NOT istournament RETURN false FORCE
 WHEN (PlayersLeftInTournament == (PaidPlaces + 1)) RETURN true FORCE
 
 ##TableIsThreeHanded##
-WHEN istournament AND maxnplayersdealt = 3 RETURN true FORCE
+WHEN isspin AND nplayersseated = 3 RETURN true FORCE
+WHEN istournament AND (NOT isspin) AND maxnplayersdealt = 3 RETURN true FORCE
 WHEN (NOT istournament) AND (nplayersdealt = 3) RETURN true FORCE
 
 ##TableIsShortHanded##
@@ -129,6 +298,7 @@ WHEN (mtt_paid_places > 0) RETURN mtt_paid_places FORCE
 WHEN Others	RETURN HINT_UnknownPaidPlacesMultiTable FORCE
 
 ##PlayersLeftInTournament##
+WHEN isspin RETURN nplayersseated FORCE
 WHEN NOT istournament RETURN nplayersseated FORCE
 WHEN NOT ismtt RETURN nplayersseated FORCE
 WHEN Others RETURN PlayersLeftInMultiTableTournament FORCE

@@ -37,6 +37,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEnginePrwin.h"
 #include "CTableState.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -229,6 +230,9 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	ExecuteBeep();
   assert(p_engine_container->symbol_engine_autoplayer()->isfinalanswer());
 	assert(p_engine_container->symbol_engine_autoplayer()->ismyturn());
+	// Log EnhancedPrwin HandRank info if enhanced prwin is used
+	if (p_iterator_thread->UseEnhancedPrWin() && Preferences()->debug_enhanced_prwin())
+		p_engine_container->symbol_engine_prwin()->LogHandRank();
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
@@ -499,6 +503,8 @@ AutoPlayerCleanupAndFinalization:
 
 bool CAutoplayer::DoBetsize() { 
   double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
+  double betsize_for_allin = p_table_state->User()->_bet.GetValue()
+	  + p_table_state->User()->_balance.GetValue();
 	if (betsize > 0) 	{
     if (!_already_executing_allin_adjustment) {
       // We have to prevent a potential endless loop here>
@@ -511,7 +517,11 @@ bool CAutoplayer::DoBetsize() {
         return success;
       }
     }
-		int success = p_casino_interface->EnterBetsize(betsize);
+		// Try the slider
+		int success = p_casino_interface->UseSliderForBetsize(betsize, betsize_for_allin);
+		if (!success) {
+			success = p_casino_interface->EnterBetsize(betsize);
+		}
 		if (success) {
       write_log(Preferences()->debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
         betsize);

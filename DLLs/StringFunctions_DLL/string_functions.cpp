@@ -48,6 +48,8 @@
 #include "..\Debug_DLL\debug.h"
 #include "..\..\Shared\MagicNumbers\MagicNumbers.h"
 #include "Psapi.h"
+#include <string>
+#include <regex>
 
 const char kUnprintableBeepChar = 0x07;
 const char kCharToBeRemoved = kUnprintableBeepChar;
@@ -430,6 +432,12 @@ void RemoveExtraDotsInNumbers(CString *s) {
   }
   // Finally remove all superfluous characters
   s->Remove(kCharToBeRemoved);
+}
+
+void RemoveHtmlTagsAndContexts(CString* s) {
+    std::regex tags("<[^>]*>[^>]*<[^>]*>");
+    std::string remove{};
+    *s = std::regex_replace(s->GetString(), tags, remove).c_str();
 }
 
 void StringFunctionsTest() {

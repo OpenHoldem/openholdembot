@@ -23,6 +23,7 @@ struct STableLimit {
 	double sblind;
 	double bblind;
 	double bbet;
+	double ante;
 	// We don't deal with antes here, as they are very rarely used.
 	// They get stored separately and not auto-locked.
 };

@@ -15,6 +15,7 @@
 #define INC_DIALOGSAPREFS4_H
 
 #include "resource.h"
+#include "afxvslistbox.h"
 
 #include "SAPrefsDialog.h"
 
@@ -37,6 +38,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_ScrapeDelay;
+	CVSListBox m_UnwantedScrape;
 	CSpinButtonCtrl m_ScrapeDelay_Spin;
 	virtual BOOL OnInitDialog();
 

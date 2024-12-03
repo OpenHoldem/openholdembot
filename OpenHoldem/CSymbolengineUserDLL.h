@@ -26,9 +26,12 @@ class CSymbolEngineUserDLL : public CVirtualSymbolEngine {
 	void UpdateOnNewRound();
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
+	int sum_betround_action();
  public:
 	// Public accessors
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();;
- public:
+private:
+	double previous_result = 0.0;
+	int previous_sum_betround_action = -1;
 };

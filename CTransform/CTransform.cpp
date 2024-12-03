@@ -268,8 +268,8 @@ int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text)
 
 int CTransform::WTypeTransform(RMapCI region, const HDC hdc, CString *text) {
   // Just take the colour of the pixel in the middle of the region
-  int x_pos = (region->second.right + region->second.left) / 2;
-  int y_pos = (region->second.bottom + region->second.top) / 2;
+  int x_pos = (region->second.right - region->second.left) / 2;
+  int y_pos = (region->second.bottom - region->second.top) / 2;
   int colour = GetPixel(hdc, x_pos, y_pos); 
   int web_safe_colour = ClosestWebSafeColour(colour);
   // Now transform the result to text, 

@@ -19,6 +19,7 @@
 #include "CBlindGuesser.h"
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
+#include "CHandresetDetector.h"
 
 #include "CScraper.h"
 #include "CSymbolEngineDealerchair.h"
@@ -65,9 +66,11 @@ void CSymbolEngineTableLimits::UpdateOnConnection() {
   tablelimit_best_guess.bbet = 0;
   tablelimit_best_guess.bblind  = 0;
   tablelimit_best_guess.sblind = 0;
+  tablelimit_best_guess.ante = 0;
   tablelimit_locked_for_complete_session.bbet = 0;
   tablelimit_locked_for_complete_session.bblind = 0;
-	tablelimit_locked_for_complete_session.sblind = 0;
+  tablelimit_locked_for_complete_session.sblind = 0;
+  tablelimit_locked_for_complete_session.ante = 0;
   blinds_locked_for_complete_session = false;
   // UpdateOnHandreset also cares about tablelimit_locked_for_current_hand
 	UpdateOnHandreset();
@@ -80,6 +83,7 @@ void CSymbolEngineTableLimits::UpdateOnHandreset() {
 	tablelimit_locked_for_current_hand.sblind = 0;
 	tablelimit_locked_for_current_hand.bblind = 0;
 	tablelimit_locked_for_current_hand.bbet   = 0;
+	tablelimit_locked_for_current_hand.ante = 0;
 	// We have to reset the known good values also,
 	// * as the blinds could change (tournament)
 	// * as they could be wrong and we would assume,
@@ -87,6 +91,7 @@ void CSymbolEngineTableLimits::UpdateOnHandreset() {
 	tablelimit_best_guess.sblind = 0;
 	tablelimit_best_guess.bblind = 0;
 	tablelimit_best_guess.bbet   = 0;
+	tablelimit_best_guess.ante = 0;
 }
 
 void CSymbolEngineTableLimits::UpdateOnNewRound() {
@@ -96,26 +101,28 @@ void CSymbolEngineTableLimits::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineTableLimits::UpdateOnHeartbeat() {
-	write_log(Preferences()->debug_table_limits(), 
-    "[CSymbolEngineTableLimits] UpdateOnHeartbeat()\n");
-  if (TableLimitsNeedToBeComputed()) {
-    CBlindGuesser _blind_guesser;
-    _blind_guesser.Guess(&tablelimit_best_guess.sblind,
-      &tablelimit_best_guess.bblind,
-      &tablelimit_best_guess.bbet);
-    if (p_table_state->_s_limit_info.ante() > 0) {
-      if (p_table_state->_s_limit_info.ante() > sblind()) {
-        write_log(k_always_log_errors,
-          "[CSymbolEngineTableLimits] WARNING! ante larger than small blind\n");
-        write_log(k_always_log_errors,
-          "[CSymbolEngineTableLimits] This looks like a problem in your tablemap.\n");
-        _ante = kUndefinedZero;
-      } else {
-        _ante = p_table_state->_s_limit_info.ante();
-      }
-    }
-    AutoLockBlinds();
-  }
+	write_log(Preferences()->debug_table_limits(),
+		"[CSymbolEngineTableLimits] UpdateOnHeartbeat()\n");
+	if (TableLimitsNeedToBeComputed()) {
+		CBlindGuesser _blind_guesser;
+		_blind_guesser.Guess(&tablelimit_best_guess.sblind,
+			&tablelimit_best_guess.bblind,
+			&tablelimit_best_guess.bbet,
+			&tablelimit_best_guess.ante);
+		if (p_table_state->_s_limit_info.ante() > 0) {
+			if (p_table_state->_s_limit_info.ante() > sblind()) {
+				write_log(k_always_log_errors,
+					"[CSymbolEngineTableLimits] WARNING! ante larger than small blind\n");
+				write_log(k_always_log_errors,
+					"[CSymbolEngineTableLimits] This looks like a problem in your tablemap.\n");
+				_ante = kUndefinedZero;
+			}
+			else {
+				_ante = p_table_state->_s_limit_info.ante();
+			}
+		}
+		AutoLockBlinds();
+	}
 }
 
 bool CSymbolEngineTableLimits::TableLimitsNeedToBeComputed() {
@@ -202,11 +209,13 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand() {
 	tablelimit_locked_for_current_hand.sblind = tablelimit_best_guess.sblind;
 	tablelimit_locked_for_current_hand.bblind = tablelimit_best_guess.bblind;
 	tablelimit_locked_for_current_hand.bbet	  = tablelimit_best_guess.bbet;
+	tablelimit_locked_for_current_hand.ante	  = tablelimit_best_guess.ante;
 	write_log(Preferences()->debug_table_limits(), 
-    "[CSymbolEngineTableLimits] Locked blinds at %.2f / %.2f / %.2f\n", 
+    "[CSymbolEngineTableLimits] Locked blinds at %.2f / %.2f / %.2f / %.2f\n", 
     tablelimit_locked_for_current_hand.sblind,
-		tablelimit_locked_for_current_hand.bblind, 
-    tablelimit_locked_for_current_hand.bbet);
+	tablelimit_locked_for_current_hand.bblind, 
+    tablelimit_locked_for_current_hand.bbet,
+	tablelimit_locked_for_current_hand.ante);
 	RememberBlindsForCashgames();
 }
 
@@ -217,8 +226,9 @@ void CSymbolEngineTableLimits::AutoLockBlinds() {
     "[CSymbolEngineTableLimits] blinds_locked_for_current_hand: %s\n", 
     Bool2CString(blinds_locked_for_current_hand));
 	// Reasonable blinds guaranteed by the way we guess.
-  // And IsMyTurn guarantees stable input
-  if (!blinds_locked_for_current_hand && p_casino_interface->IsMyTurn()) {
+	// Previously we was considering IsMyTurn guarantees stable input
+	// and now we rather consider IsHandreset() as some casinos don't let blinds and antes displayed on table until our turn
+  if (!blinds_locked_for_current_hand && p_handreset_detector->IsHandreset()) {
 		AutoLockBlindsForCurrentHand();
 		AutoLockBlindsForCashgamesAfterNHands();
 	}
@@ -252,7 +262,7 @@ double CSymbolEngineTableLimits::bigbet(){
 }
 
 double CSymbolEngineTableLimits::ante() {
-	return _ante; 
+	return BestTableLimitsToBeUsed().ante;
 }
 
 double CSymbolEngineTableLimits::buyin() {

@@ -138,6 +138,14 @@
 #define VERSION_NUMBER			14.10
 #define VERSION_TEXT				"14.0.2.0"  // change version number in OpenHoldem.rc also, when needed
 
+// Auto OCR headers
+#include "NumericalFunctions.h"
+#include <allheaders.h>
+#include <baseapi.h>
+#include <opencv.hpp>
+#include <imgproc\imgproc.hpp>
+//#include <core\types_c.h>
+
 // PokerEval
 #include "poker_defs.h"
 #include "pokereval_export.h"
@@ -149,7 +157,6 @@
 // Important project headers
 #include "CValidator.h"
 #include "FloatingPoint_Comparisions.h"
-#include "NumericalFunctions.h"
 #include "..\DLLs\Debug_DLL\debug.h"
 #include "..\DLLs\Files_DLL\files.h"
 #include "..\DLLs\Globals_DLL\globals.h"
@@ -158,6 +165,8 @@
 #include "..\Shared\CCritSec\CCritSec.h"
 #include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\StructsDefines\structs_defines.h"
+
+using namespace std;
 
 // To avoid some race-conditions
 #define WAIT_FOR_CONDITION(condition) { while (!(condition)) { Sleep(250); } }
