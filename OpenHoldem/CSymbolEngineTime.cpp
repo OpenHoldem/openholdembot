@@ -33,6 +33,7 @@ CSymbolEngineTime::~CSymbolEngineTime() {
 
 void CSymbolEngineTime::InitOnStartup() {
   // Initilizing all "old" values to time of startup for reasonability
+  time(&_elapsedstarthold);
   UpdateOnConnection();
 }
 
@@ -104,6 +105,15 @@ double CSymbolEngineTime::elapsedauto() {
   return result;
 }
 
+double CSymbolEngineTime::elapsedstart() {
+	// current time
+	time_t t_now_time;
+	time(&t_now_time);
+	double result = t_now_time - _elapsedstarthold;
+	assert(result < 100000);	// Heuristic: max 30 hours up-time in debug-mode
+	return result;
+}
+
 double CSymbolEngineTime::elapsedtoday() {
   // current time
   time_t t_now_time;
@@ -140,7 +150,11 @@ bool CSymbolEngineTime::EvaluateSymbol(const CString name, double *result, bool 
     }
 	else if (memcmp(name, "elapsedauto", 11)==0 && strlen(name)==11) {
       *result = elapsedauto();
-	} else if (memcmp(name, "elapsedtoday", 12)==0 && strlen(name)==12)	{
+	}
+	else if (memcmp(name, "elapsedstart", 12)==0 && strlen(name)==12) {
+		*result = elapsedstart();
+	}
+	else if (memcmp(name, "elapsedtoday", 12)==0 && strlen(name)==12)	{
       *result = elapsedtoday();
 	} else {
 	  // Invalid symbol
@@ -154,5 +168,5 @@ bool CSymbolEngineTime::EvaluateSymbol(const CString name, double *result, bool 
 }
 
 CString CSymbolEngineTime::SymbolsProvided() {
-  return "elapsed elapsedhand elapsedauto elapsedtoday";
+  return "elapsed elapsedhand elapsedauto elapsedstart elapsedtoday";
 }

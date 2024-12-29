@@ -32,9 +32,13 @@ public:
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
 public:
+	// public accessors
+	int games_played() { return _games_played; };
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();
 private:
+	// private functions and variables - not available via accessors or mutators
+	int _games_played;
 };
 
 #endif /* INC_CSYMBOLS_H */
