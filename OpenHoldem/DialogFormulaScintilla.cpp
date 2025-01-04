@@ -2287,6 +2287,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "elapsedhand", "time in seconds since end of previous hand");
 	AddSymbol(parent, "elapsedauto", "time in seconds since autoplayer took action");
 	AddSymbol(parent, "elapsedtoday", "time in seconds since midnight GMT");
+	AddSymbol(parent, "elapsedstart", "time in seconds since this OpenHoldem instance started");
 
 	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
 	AddSymbol(parent, "myturnbits", "bits 01234 correspond to buttons FCKRA (check allin raise call fold)");
@@ -2378,7 +2379,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "tablepfr", "pfr percentage preflop for the last 15 hands");
 	AddSymbol(parent, "maxbalance", "my highest balance during the session");
 	AddSymbol(parent, "handsplayed", "number of hands played this session by this OpenHoldem instance");
-  AddSymbol(parent, "handsplayed_headsup", "number of consecutive hands played headsup");
+    AddSymbol(parent, "handsplayed_headsup", "number of consecutive hands played headsup");
+	AddSymbol(parent, "gamesplayed", "number of games played this session by this OpenHoldem instance");
 	AddSymbol(parent, "balance_rankx (x=0-9)", "ranked list of player balances (includes players not currently in hand, and includes currentbet for each player as well).  rank0 has highest balance.");
 
 	PopulatePokerTrackerSymbols();	

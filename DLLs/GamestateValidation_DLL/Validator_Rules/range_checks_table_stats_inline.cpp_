@@ -75,6 +75,16 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0291")
     HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol gamesplayed")
+    PRECONDITION (true)
+    POSTCONDITION (gws("gamesplayed") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("gamesplayed")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0292")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols balance_rank0..balance_rank9")
     PRECONDITION (true)
     POSTCONDITION ((gws("balance_rank0") >= gws("balance_rank1")) && (gws("balance_rank1") >= gws("balance_rank2")) && (gws("balance_rank2") >= gws("balance_rank3")) && (gws("balance_rank3") >= gws("balance_rank4")) && (gws("balance_rank4") >= gws("balance_rank5")) && (gws("balance_rank5") >= gws("balance_rank6")) && (gws("balance_rank6") >= gws("balance_rank7")) && (gws("balance_rank7") >= gws("balance_rank8")) && (gws("balance_rank8") >= gws("balance_rank9")) && (gws("balance_rank9") >= 0))
