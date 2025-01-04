@@ -37,12 +37,14 @@ class CSymbolEngineTime: public CVirtualSymbolEngine {
  public:
   double elapsed(); 
   double elapsedhand(); 
-  double elapsedauto(); 
+  double elapsedauto();
+  double elapsedstart();
   double elapsedtoday(); 
  public:
   // for the f$delay-function
   double elapsedmyturn();
  private:
+  time_t _elapsedstarthold;	 // The time since start of OH instance
   time_t _elapsedautohold;	 // The last time autoplayer acted
   time_t _elapsedhold;		   // The time we "sat down"
   time_t _elapsedhandhold;	 // The time since start of last hand

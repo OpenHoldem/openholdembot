@@ -42,6 +42,16 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
+BEGIN_TESTCASE
+    TESTCASE_ID ("0184")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol elapsedstart")
+    PRECONDITION (true)
+    POSTCONDITION (gws("elapsedstart") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsedstart")
+END_TESTCASE
+
+
 
 
 

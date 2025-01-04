@@ -57,6 +57,7 @@ CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
   assert(p_handreset_detector != NULL);
   assert(p_formula_parser != NULL);
   assert(p_sessioncounter != NULL);
+  assert(p_gamecounter != NULL);
   assert(p_tablemap != NULL);
   assert(p_table_title != NULL);
   assert(p_white_info_box != NULL);
@@ -72,9 +73,12 @@ CSymbolEngineVariousDataLookup::~CSymbolEngineVariousDataLookup() {
 }
 
 void CSymbolEngineVariousDataLookup::InitOnStartup() {
+    _games_played = 0;
 }
 
 void CSymbolEngineVariousDataLookup::UpdateOnConnection() {
+    if (p_autoconnector->attached_hwnd() != NULL)
+        ++_games_played;
 }
 
 void CSymbolEngineVariousDataLookup::UpdateOnHandreset() {
@@ -105,6 +109,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   // Handreset
   else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11) *result = p_handreset_detector->hands_played();
   else if (memcmp(name, "handsplayed_headsup", 19)==0 && strlen(name)==19)  *result = p_handreset_detector->hands_played_headsup();
+  // Gamecounter
+  else if (memcmp(name, "gamesplayed", 11) == 0 && strlen(name) == 11) *result = games_played();
   else if (name == kEmptyExpression_False_Zero_WhenOthersFoldForce) { *result = kUndefinedZero; }
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
@@ -180,7 +186,7 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
     "betround currentround previousround "
     "fmax flagbits "
     "session version islobby ispopup"
-    "handsplayed handsplayed_headsup ";
+    "gamesplayed handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;
 }

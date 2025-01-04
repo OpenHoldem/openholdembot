@@ -132,6 +132,7 @@ static const char* all_symbol_names[] = {
   "elapsed",
   "elapsedauto",
   "elapsedhand",
+  "elapsedstart",
   "elapsedtoday",
   "f",
   "f0",
@@ -166,6 +167,8 @@ static const char* all_symbol_names[] = {
   "foldbits4",
   "fourofakind",
   "fullhouse",
+  //"game$"
+  "gamesplayed",
   //"hand$",
   "handrank1000",
   "handrank1326",

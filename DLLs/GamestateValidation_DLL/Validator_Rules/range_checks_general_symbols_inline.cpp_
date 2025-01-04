@@ -36,6 +36,16 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0008")
     HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol gamesplayed")
+    PRECONDITION (true)
+    POSTCONDITION (gws("gamesplayed") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("gamesplayed")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0009")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol version")
     PRECONDITION (true)
     POSTCONDITION (gws("version") > 0)
