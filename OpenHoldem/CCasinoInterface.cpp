@@ -12,6 +12,8 @@
 //******************************************************************************
 
 #include "stdafx.h"
+#include <oleacc.h>
+#include <atlbase.h>
 #include "CCasinoInterface.h"
 
 #include "CEngineContainer.h"
@@ -140,23 +142,63 @@ bool CCasinoInterface::ClickButtonSequence(int first_button, int second_button, 
 }
 
 bool CCasinoInterface::CloseWindow() {
+	// Now we attempt to close first attached window with SendMessage method, then with TerminateProcess
+	// and finally search the close window region and click into it,
+	// for universal compatibility with all kind of windows with their personalised
+	// title bar: https://www.maxinmontreal.com/forums/viewtopic.php?p=192212#p192212
+
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close is true.\n");
+
+	// SendMessage method
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] preparing to execute f$close, first with SendMessage method.\n");
+
+	DWORD_PTR dwResult;
+
+	if (SendMessageTimeout(p_autoconnector->attached_hwnd(), WM_CLOSE, 0, 0, SMTO_NOTIMEOUTIFNOTHUNG, 1000, &dwResult) != NULL) {
+		write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close successfully executed with SendMessage method.\n");
+		return true;
+	}
+
+	// Fallback to TerminateProcess method
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close failed to execute with SendMessage method, fallback to TerminateProcess method.\n");
+
+	DWORD procId;
+	HANDLE hProc;
+
+	if (GetWindowThreadProcessId(p_autoconnector->attached_hwnd(), &procId))
+	{
+
+		if (hProc = OpenProcess(PROCESS_TERMINATE, FALSE, procId))
+		{
+			if (TerminateProcess(hProc, 0)) {
+				write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close successfully executed with TerminateProcess method.\n");
+				CloseHandle(hProc);
+				return true;
+			}
+
+			CloseHandle(hProc);
+		}
+	}
+
+	// Fallback to search the close window region
 	// Hard-coded click to the "X" at the top-right
 	// of the title-bar
 	// ToDo (maybe): make it work for different settings.
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close failed to execute with TerminateProcess method, fallback to search the close window region.\n");
 
 	RECT table_size, close_region;
 	// http://msdn.microsoft.com/en-us/library/ms633503.aspx
 	GetClientRect(p_autoconnector->attached_hwnd(), &table_size);
 
-	close_region.top    = -3;
+	close_region.top = -3;
 	close_region.bottom = -15;
-	close_region.left   = table_size.right - 18;
-	close_region.right  = table_size.right -  6;
-	
-	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close is true.\n");
-	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] preparing to execute f$close.\n");
+	close_region.left = table_size.right - 18;
+	close_region.right = table_size.right - 6;
+
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] preparing to finally execute f$close searching and click to the close window region.\n");
 	ClickRect(close_region);
 
+	
 	return true;
 }
 
