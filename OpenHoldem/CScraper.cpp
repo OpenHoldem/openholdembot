@@ -243,29 +243,37 @@ void CScraper::ScrapeBetsAndBalances() {
 void CScraper::ScrapeSeated(int chair) {
 	CString seated;
 	CString result;
-  // Me must NOT set_seated(false) here,
+  // if chair is not seated we call a reset for this chair in CPlayer  
+  // by setting this cahir to false we call set_seated first 
+  // that will call reset - All ok up the empty chair is the dealer 
+  // we must not reset the dealer data in this case 
+  // this is possible since the lazy-sceaper look for dealer first 
+  // we check here if the chair is dealer and we pass this value
+  // to the CPlayer object and that s all we need
+  // https://www.maxinmontreal.com/forums/viewtopic.php?t=24182&start=90
+	bool this_cahir_is_dealer = p_table_state->Player(chair)->dealer();
+  // We must NOT set_seated(false) here,
   // as that would reset all player data.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
+  // http://www.maxinmontreal.com/forums/viewtopic.php?p=191043
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
-		if (result != "")	{
-			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
+		if ((result != "") && (p_string_match->IsStringSeated(result)))	{
+			p_table_state->Player(chair)->set_seated(true, this_cahir_is_dealer);
+			return;
 		}
-	}
-	if (p_table_state->Player(chair)->seated()) {
-		return;
 	}
 	// try u region next uXseated,
 	// but only if we didn't get a positive result from the p region
 	seated.Format("u%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
-		if (result != "")	{
-			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
-      return;
+		if ((result != "") && (p_string_match->IsStringSeated(result)))	{
+			p_table_state->Player(chair)->set_seated(true, this_cahir_is_dealer);
+            return;
 		}
 	}
   // Failed. Not seated
-  p_table_state->Player(chair)->set_seated(false);
+  p_table_state->Player(chair)->set_seated(false, this_cahir_is_dealer);
 }
 
 void CScraper::ScrapeDealer() {
