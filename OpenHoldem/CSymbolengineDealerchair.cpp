@@ -72,6 +72,9 @@ void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
   int smallblindchair = SmallBlindChair();
   if (smallblindchair >= 0) {
     _dealerchair = RightHandActiveChair(smallblindchair);
+	write_log(k_always_log_errors, "[CSymbolengineDealerchair] No dealer-button found - Probably occluded or bad TM - setting to: %i\n",
+		_dealerchair);
+	write_log(k_always_log_errors, "[CSymbolengineDealerchair] Standard search for dealer failed - Please get in contact with the development team\n");
   }
 	// Otherwise: do nothing and keep the dealer as is.
 	// Do not reset, as this might cause a hand-reset.
