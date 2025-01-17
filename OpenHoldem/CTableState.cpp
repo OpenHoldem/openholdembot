@@ -35,8 +35,12 @@ void CTableState::Reset() {
   for (int i=0; i<kNumberOfCommunityCards; ++i) {
     _common_cards[i].ClearValue();
   }
+  // we made reset function for CPlayer object
+  // accept 1 argument to keep the delaer char saved
+  // in case the dealer is assigned to an empty seat
+  // since here we destroy all data this is false by default
   for (int i=0; i<kNumberOfPlayerEntries; ++i) {
-    Player(i)->Reset();
+    Player(i)->Reset(false);
   }
   for (int i=0; i<kMaxNumberOfPots; ++i) {
     _pot[i].Reset();
