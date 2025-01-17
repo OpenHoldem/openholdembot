@@ -22,7 +22,7 @@ class CPlayer {
   CPlayer();
   ~CPlayer();
  public:
-  void Reset(); 
+  void Reset(bool is_resetting_dealer_data); 
  public:
   bool HasAnyCards();
   bool HasKnownCards();
@@ -56,7 +56,7 @@ class CPlayer {
   void set_colourcode(int new_colourcode) { _colourcode = new_colourcode; }
  public:
   // Public setters (must only be used by CScraper)
-  void set_seated(bool is_seated);
+  void set_seated(bool is_seated, bool is_dealer);
   void set_active(bool is_active) { _active = is_active; }
   void set_dealer(bool is_dealer) { _dealer = is_dealer; }
  public:
