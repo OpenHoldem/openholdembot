@@ -28,7 +28,7 @@ CPlayer::CPlayer() {
 CPlayer::~CPlayer() {
 }
 
-void CPlayer::Reset() {
+void CPlayer::Reset(bool is_resetting_dealer_data) {
   set_name("");
   _balance.Reset();
   _bet.Reset();
@@ -39,7 +39,11 @@ void CPlayer::Reset() {
   // will call Reset() again; endless recursion
   _seated = false;
   set_active(false);
-  set_dealer(false);
+  // we can t reset the data for the dealer 
+  // even if the chair is empty
+  if (!is_resetting_dealer_data) {
+	  set_dealer(false);
+  }
   set_colourcode(kUndefinedZero);
 }
 
@@ -168,16 +172,23 @@ bool CPlayer::PostingAnte() {
   return true;
 }
 
-void CPlayer::set_seated(bool is_seated) { 
+void CPlayer::set_seated(bool is_seated, bool is_dealer) { 
   if ((is_seated == false)) {
     // Change from seated to non-seated
     // We should clear all player data in this case
     // as the lazy-scraper stops on empty seats
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
-    Reset();
+    // again : the scraper engine can find the dealer button in an empty seat
+    // in this case we can t reset dealer postion as this will    
+    // send a bad input to all engines that contribute to determine the chairs position
+    // this is possible since the lazy-scraper scrape dealer position first 
+    // and will finally fix a very old bug for dealer position and false blind chairs inversion
+    // https://www.maxinmontreal.com/forums/viewtopic.php?t=24182&start=90
+    Reset(is_dealer);
   }
   _seated = is_seated; 
 }
+
 
 CString CPlayer::DataDump() {
   CString result = "";
