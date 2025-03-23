@@ -98,6 +98,36 @@ nopponentsallin > 0
 ##NumberOfOpponentsAllin##
 nopponentsallin 
 
+##PlayerIsAllin0##
+(playersallinbits >> 0) & 1 == 1
+
+##PlayerIsAllin1##
+(playersallinbits >> 1) & 1 == 1
+
+##PlayerIsAllin2##
+(playersallinbits >> 2) & 1 == 1
+
+##PlayerIsAllin3##
+(playersallinbits >> 3) & 1 == 1
+
+##PlayerIsAllin4##
+(playersallinbits >> 4) & 1 == 1
+
+##PlayerIsAllin5##
+(playersallinbits >> 5) & 1 == 1
+
+##PlayerIsAllin6##
+(playersallinbits >> 6) & 1 == 1
+
+##PlayerIsAllin7##
+(playersallinbits >> 7) & 1 == 1
+
+##PlayerIsAllin8##
+(playersallinbits >> 8) & 1 == 1
+
+##PlayerIsAllin9##
+(playersallinbits >> 9) & 1 == 1
+
 ##OpponentsLeft##
 // Does also consider players who are allin 
 // (contrary to Shankys, who consider players allin in this round, but not from previous rounds).

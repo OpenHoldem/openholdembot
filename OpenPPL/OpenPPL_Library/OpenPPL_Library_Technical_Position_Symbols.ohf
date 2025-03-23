@@ -134,3 +134,118 @@ AND [SmallBlindCurrentBet >= 1.01]
 ##BigBlindRaising##
     [(raisbits_preflop >> bigblindchair) & 1 == 1]
 AND [BigBlindCurrentBet >= 1.01]
+
+##NumberOfBlindsPlaying##
+SmallBlindIsPlaying + BigBlindIsPlaying
+
+##SmallBlindIsPlaying##
+// No error if smallblind chair is unknown, it may be missing.
+(smallblindchair < 0) ? false :
+playersplayingbits >> smallblindchair & 1
+
+##BigBlindIsPlaying##
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+playersplayingbits >> bigblindchair & 1
+
+##PreflopBetPosition##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN BigBlind RETURN nplayersplaying FORCE
+WHEN InSmallBlind RETURN (nplayersplaying - BigBlindIsPlaying) FORCE        
+WHEN Others RETURN (betposition - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPositionRaiser##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == lastraiserchair) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == lastraiserchair) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos_lastraiserchair - NumberOfBlindsPlaying) FORCE
+
+
+##PreflopBetPosition0##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 0) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 0) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos0 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition1##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 1) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 1) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos1 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition2##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 2) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 2) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos2 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition3##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 3) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 3) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos3 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition4##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 4) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 4) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos4 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition5##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 5) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 5) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos5 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition6##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 6) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 6) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos6 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition7##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 7) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 7) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos7 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition8##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 8) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 8) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos8 - NumberOfBlindsPlaying) FORCE
+
+##PreflopBetPosition9##
+WHEN NOT IsPreflop RETURN ERROR_Betround_Out_Of_Range FORCE
+WHEN (bigblindchair == 9) RETURN nplayersplaying FORCE
+WHEN (smallblindchair == 9) RETURN (nplayersplaying - BigBlindIsPlaying) FORCE
+WHEN Others RETURN (ac_betpos9 - NumberOfBlindsPlaying) FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop0##
+WHEN (PreflopBetPosition0 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition0) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop1##
+WHEN (PreflopBetPosition1 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition1) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop2##
+WHEN (PreflopBetPosition2 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition2) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop3##
+WHEN (PreflopBetPosition3 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition3) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop4##
+WHEN (PreflopBetPosition4 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition4) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop5##
+WHEN (PreflopBetPosition5 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition5) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop6##
+WHEN (PreflopBetPosition6 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition6) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop7##
+WHEN (PreflopBetPosition7 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition7) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop8##
+WHEN (PreflopBetPosition8 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition8) RETURN true FORCE
+
+##PlayerActedAfterTheLastRaiserPreflop9##
+WHEN (PreflopBetPosition9 > PreflopBetPositionRaiser) AND (PreflopBetPosition > PreflopBetPosition9) RETURN true FORCE

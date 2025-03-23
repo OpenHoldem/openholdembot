@@ -131,6 +131,7 @@ WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FO
 
 ##UpdateMemorySymbolsOnHandReset##
 WHEN ResetOldGameStateAtHandReset
+WHEN ResetPlayersWentAllinBeforeLastRaise
 WHEN Others
 WHEN Others SET me_st_MemRaisesBeforeFlop_0
 WHEN Others SET me_st_MemRaisesOnFlop_0
@@ -146,6 +147,7 @@ WHEN (handsplayed <= 1) SET me_st_MemStartingStackSize_0
 WHEN (handsplayed <= 1) SET me_st_MemStartingBigBlindSize_0
 // Execute UpdateMemorySymbolsOnNewRound unconditionally, but don't do anything
 WHEN UpdateMemorySymbolsOnNewRound
+
 
 ##UpdateMemorySymbolsOnNewRound##
 WHEN Others SET me_st_MemRaises_0
@@ -182,6 +184,9 @@ WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
 WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MinOpponentStackSize
+// Remember if a player went allin on a previous orbit, so we can know when a player goes
+// allin by calling a smaller amount than the last raise size in the current orbit.
+WHEN MemUpdatePlayersWentAllinBeforeLastRaise
 // Finally remember a heartbeat ID so that be become able to detect
 // if a symbol gets used before the next scrape (e.g by the debug-tab).
 // In this case we have to return the new value (e.g. of "Raises")
@@ -275,3 +280,36 @@ XOR me_st_MemOldGameStateDealerChair__dealerchair
 XOR me_st_MemOldGameStateCurrentBet_0
 XOR me_st_MemOldGameStatePotSize_0
 XOR me_st_MemOldGameStateBetround_0
+
+//*****************************************************************************
+//
+// Symbols necessary so CallsSinceLastRaise can count players who goes allin
+// by calling a smaller amount than the last raise size in the current orbit.
+//
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=184&t=23703
+//
+//*****************************************************************************
+
+##ResetPlayersWentAllinBeforeLastRaise##
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise0_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise1_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise2_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise3_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise4_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise5_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise6_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise7_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise8_false
+WHEN Others SET me_st_MemPlayerWentAllinBeforeLastRaise9_false
+
+##MemUpdatePlayersWentAllinBeforeLastRaise##
+WHEN PlayerIsAllin0 SET me_st_MemPlayerWentAllinBeforeLastRaise0_true
+WHEN PlayerIsAllin1 SET me_st_MemPlayerWentAllinBeforeLastRaise1_true
+WHEN PlayerIsAllin2 SET me_st_MemPlayerWentAllinBeforeLastRaise2_true
+WHEN PlayerIsAllin3 SET me_st_MemPlayerWentAllinBeforeLastRaise3_true
+WHEN PlayerIsAllin4 SET me_st_MemPlayerWentAllinBeforeLastRaise4_true
+WHEN PlayerIsAllin5 SET me_st_MemPlayerWentAllinBeforeLastRaise5_true
+WHEN PlayerIsAllin6 SET me_st_MemPlayerWentAllinBeforeLastRaise6_true
+WHEN PlayerIsAllin7 SET me_st_MemPlayerWentAllinBeforeLastRaise7_true
+WHEN PlayerIsAllin8 SET me_st_MemPlayerWentAllinBeforeLastRaise8_true
+WHEN PlayerIsAllin9 SET me_st_MemPlayerWentAllinBeforeLastRaise9_true
