@@ -65,16 +65,86 @@ OR (prevaction == 5) // Jamming the slider
 ##PlayersRaisingOrColdCallingTheLastRaise##
 // Counting the last raiser + all cold callers
 (currentbet_lastraiserchair <= 0) ? 0 :
-  (currentbet0 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet1 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet2 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet3 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet4 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet5 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet6 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet7 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet8 == currentbet_lastraiserchair ? 1 : 0)
-+ (currentbet9 == currentbet_lastraiserchair ? 1 : 0)
+  PlayerRaisingOrColdCallingTheLastRaise0
++ PlayerRaisingOrColdCallingTheLastRaise1
++ PlayerRaisingOrColdCallingTheLastRaise2
++ PlayerRaisingOrColdCallingTheLastRaise3
++ PlayerRaisingOrColdCallingTheLastRaise4
++ PlayerRaisingOrColdCallingTheLastRaise5
++ PlayerRaisingOrColdCallingTheLastRaise6
++ PlayerRaisingOrColdCallingTheLastRaise7
++ PlayerRaisingOrColdCallingTheLastRaise8
++ PlayerRaisingOrColdCallingTheLastRaise9
+
+##PlayerRaisingOrColdCallingTheLastRaise0##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise0 RETURN 0 FORCE
+WHEN (currentbet0 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin0 AND PlayerActedAfterTheLastRaiserPreflop0 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise1##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise1 RETURN 0 FORCE
+WHEN (currentbet1 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin1 AND PlayerActedAfterTheLastRaiserPreflop1 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise2##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise2 RETURN 0 FORCE
+WHEN (currentbet2 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin2 AND PlayerActedAfterTheLastRaiserPreflop2 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise3##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise3 RETURN 0 FORCE
+WHEN (currentbet3 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin3 AND PlayerActedAfterTheLastRaiserPreflop3 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise4##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise4 RETURN 0 FORCE
+WHEN (currentbet4 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin4 AND PlayerActedAfterTheLastRaiserPreflop4 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise5##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise5 RETURN 0 FORCE
+WHEN (currentbet5 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin5 AND PlayerActedAfterTheLastRaiserPreflop5 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise6##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise6 RETURN 0 FORCE
+WHEN (currentbet6 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin6 AND PlayerActedAfterTheLastRaiserPreflop6 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise7##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise7 RETURN 0 FORCE
+WHEN (currentbet7 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin7 AND PlayerActedAfterTheLastRaiserPreflop7 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise8##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise8 RETURN 0 FORCE
+WHEN (currentbet8 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin8 AND PlayerActedAfterTheLastRaiserPreflop8 RETURN 1 FORCE
+
+##PlayerRaisingOrColdCallingTheLastRaise9##
+WHEN me_re_MemPlayerWentAllinBeforeLastRaise9 RETURN 0 FORCE
+WHEN (currentbet9 == currentbet_lastraiserchair) RETURN 1 FORCE
+// Counting cases where a player goes allin by calling
+// a smaller amount than the last raise size.
+WHEN PlayerIsAllin9 AND PlayerActedAfterTheLastRaiserPreflop9 RETURN 1 FORCE
 
 ##ChecksAfterHero##
 // No checks preflop. Not even big blind can check (game over).
