@@ -35,6 +35,7 @@ class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
 	CString SymbolsProvided();
  public:
 	bool istournament()		{ return _istournament == int(true); }
+	bool IsSNG();
  private:
 	void TryToDetectTournament();
 	bool BetsAndBalancesAreTournamentLike();
@@ -43,7 +44,6 @@ class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
     const char *identifiers[], int number_of_identifiers);
  private:
   bool IsMTT();
-  bool IsSNG();
   bool IsDON();
  private:
 	// Internally we have an extra state, kUndefined (-1).  But that's
