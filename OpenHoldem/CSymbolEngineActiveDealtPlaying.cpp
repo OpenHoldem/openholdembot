@@ -23,6 +23,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CSymbolEngineIsTournament.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 
@@ -137,6 +138,24 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
     if (p_table_state->Player(chair_to_consider)->HasAnyCards()) {
       this_player_got_dealt = true;
     }
+	// The dealer is always dealt
+	if (chair_to_consider == DEALER_CHAIR) {
+		if (p_table_state->Player(chair_to_consider)->seated()) {
+			write_log(Preferences()->debug_symbolengine(),
+				"[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is the dealer, therefore dealt\n",
+				chair_to_consider);
+			this_player_got_dealt = true;
+		}
+	}
+	// All players on Single-Table SNGs are dealt
+	if (p_engine_container->symbol_engine_istournament()->IsSNG()) {
+		if (p_table_state->Player(chair_to_consider)->seated()) {
+			write_log(Preferences()->debug_symbolengine(),
+				"[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is seated on a single-table SNG, therefore dealt\n",
+				chair_to_consider);
+			this_player_got_dealt = true;
+		}
+	}
 		// First we search the blinds only, 
 		// i.e. players with a positive bet.
 		// We don't consider players who are only "active",
