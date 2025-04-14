@@ -18,7 +18,7 @@
  * Author: Horst Br�ckner, hb@ec-logic.com<nl>
  * Environment: VisualC++ Version 6, static Build of Scintilla, SciLexer.dll as Lexer<nl>
  */
-#include "stdafx.h"
+#include "pch.h"
 #include "ScintillaWnd.h"
 #include "..\scintilla\include\scintilla.h"
 #include "..\scintilla\include\SciLexer.h"

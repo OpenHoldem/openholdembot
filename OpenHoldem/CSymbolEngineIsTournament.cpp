@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineIsTournament.h"
 
 #include <assert.h>

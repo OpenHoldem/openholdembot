@@ -30,7 +30,7 @@
 // SAPrefsStatic.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "resource.h"
 #include "SAPrefsStatic.h"
 

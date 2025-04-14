@@ -15,7 +15,7 @@
 //
 //******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "Bitmaps.h"
 
 bool BitmapsAreEqual(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) 

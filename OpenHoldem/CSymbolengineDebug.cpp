@@ -14,7 +14,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineDebug.h"
 
 #include "CBetroundCalculator.h"

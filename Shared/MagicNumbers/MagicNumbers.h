@@ -471,6 +471,10 @@ const int BETCONF_ENTER		 = 1;
 const int BETCONF_CLICKBET = 2;
 const int BETCONF_NOTHING	 = TEXTSEL_NOTHING;
 
+// Bet pot options
+const int BETPOT_DEFAULT = 1;
+const int BETPOT_RAISE = 2;
+
 // Button click options
 const int BUTTON_SINGLECLICK = TEXTSEL_SINGLECLICK;
 const int BUTTON_DOUBLECLICK = TEXTSEL_DOUBLECLICK;

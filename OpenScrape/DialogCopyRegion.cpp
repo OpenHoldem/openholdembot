@@ -15,7 +15,7 @@
 // DialogCopyRegion.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogCopyRegion.h"
 
 

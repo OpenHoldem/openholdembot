@@ -14,7 +14,7 @@
 // OpenHoldemView.cpp : implementation of the COpenHoldemView class
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenHoldemView.h"
 
 #include "CAutoplayerTrace.h"

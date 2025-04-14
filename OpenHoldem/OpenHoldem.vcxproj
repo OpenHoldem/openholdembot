@@ -23,31 +23,31 @@
     <ProjectGuid>{4B4F8898-50C6-4F07-8771-B140482DBA69}</ProjectGuid>
     <RootNamespace>pokbot</RootNamespace>
     <Keyword>MFCProj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -79,10 +79,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -105,6 +109,9 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <EnablePREfast>false</EnablePREfast>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -112,7 +119,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;windowsapp.lib;Dwmapi.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -149,6 +156,9 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -156,7 +166,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;windowsapp.lib;Dwmapi.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -187,6 +197,9 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -194,7 +207,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\Release\Preferences.lib;..\Release\globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;..\Release\string_functions.lib;..\Release\debug.lib;..\Release\GameStateValidation.lib;..\Release\files.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;..\Release\Preferences.lib;..\Release\globals.lib;secur32.lib;windowsapp.lib;Dwmapi.lib;D3D11.lib;dxgi.lib;dxguid.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;..\Release\string_functions.lib;..\Release\debug.lib;..\Release\GameStateValidation.lib;..\Release\files.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -207,8 +220,15 @@
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AllinAdjustment.cpp" />
+    <ClCompile Include="AllinAdjustment.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="BetpotCalculations.cpp" />
     <ClCompile Include="CAllinSlider.cpp" />
     <ClCompile Include="Card.cpp" />
@@ -280,13 +300,13 @@
     <ClCompile Include="OpenHoldemDoc.cpp" />
     <ClCompile Include="COpenHoldemStarter.cpp" />
     <ClCompile Include="CWatchdog.cpp" />
-    <ClCompile Include="Singletons.cpp" />
-    <ClCompile Include="SLimitInfo.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Singletons.cpp" />
+    <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="..\winmgr\SizerBar.cpp" />
     <ClCompile Include="..\winmgr\WinMgr.cpp" />
     <ClCompile Include="..\winmgr\WinRect.cpp" />
@@ -490,6 +510,9 @@
     <None Include="..\Checklist_Release_OpenPPL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CCapture\capture.interop.h" />
+    <ClInclude Include="..\CCapture\d3dHelpers.h" />
+    <ClInclude Include="..\CCapture\direct3d11.interop.h" />
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
@@ -557,6 +580,7 @@
     <ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
+    <ClInclude Include="framework.h" />
     <ClInclude Include="MD5_Checksum.h" />
     <ClInclude Include="Median.h" />
     <ClInclude Include="MemoryLogging.h" />
@@ -566,10 +590,10 @@
     <ClInclude Include="OpenHoldemDoc.h" />
     <ClInclude Include="COpenHoldemStarter.h" />
     <ClInclude Include="CWatchdog.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\winmgr\SizerBar.h" />
     <ClInclude Include="..\winmgr\WinMgr.h" />
     <ClInclude Include="..\pokereval\include\combinations.h" />
@@ -604,12 +628,12 @@
     <ClInclude Include="..\CTransform\pdiff\LPyramid.h" />
     <ClInclude Include="..\CTransform\pdiff\Metric.h" />
     <ClInclude Include="..\CTransform\pdiff\RGBAImage.h" />
-    <ClInclude Include="..\CTransform\hash\stdint.h" />
     <ClInclude Include="..\StructsDefines\structs_defines.h" />
     <ClInclude Include="CBetroundCalculator.h" />
     <ClInclude Include="CEngineContainer.h" />
     <ClInclude Include="Chair$Symbols.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
+    <ClInclude Include="targetver.h" />
     <ClInclude Include="UnknownSymbols.h" />
     <ClInclude Include="CSymbolEngineActiveDealtPlaying.h" />
     <ClInclude Include="CSymbolEngineAutoplayer.h" />
@@ -750,8 +774,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties RESOURCE_FILE="OpenHoldem.rc" />

@@ -14,7 +14,7 @@
 //
 //*******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineFormulaSwitching.h"
 #include <io.h>
 #include "CFormulaParser.h"

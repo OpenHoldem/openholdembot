@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineCasino.h"
 
 #include <assert.h>

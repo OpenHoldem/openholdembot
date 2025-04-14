@@ -11,7 +11,7 @@
 //
 //*******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineUserDLL.h"
 
 CSymbolEngineUserDLL *p_symbol_engine_formula_loading = NULL;

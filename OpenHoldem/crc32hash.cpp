@@ -16,7 +16,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "crc32hash.h"
 
 #include <string.h>

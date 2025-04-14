@@ -13,7 +13,7 @@
 //
 //******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "CScraper.h"
 
 #include "Bitmaps.h" 
@@ -37,9 +37,11 @@
 #include "CTitleEvaluator.h"
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 #include "MainFrm.h"
 #include "OpenHoldem.h"
+
 
 CScraper *p_scraper = NULL;
 
@@ -60,6 +62,9 @@ CScraper::CScraper(void) {
   _leaking_GDI_objects = 0;
   total_region_counter = 0;
   identical_region_counter = 0;
+  
+  // Init COM
+  winrt::init_apartment(winrt::apartment_type::single_threaded);
 }
 
 CScraper::~CScraper(void) {
@@ -784,14 +789,236 @@ void CScraper::ScrapeLimits() {
   p_title_evaluator->EvaluateScrapedGameInfo(); 
 }
 
+BOOL CScraper::SaveHBITMAPToFile(HBITMAP hBitmap, LPCTSTR lpszFileName)
+{
+	HDC hDC;
+	int iBits;
+	WORD wBitCount;
+	DWORD dwPaletteSize = 0, dwBmBitsSize = 0, dwDIBSize = 0, dwWritten = 0;
+	BITMAP Bitmap0;
+	BITMAPFILEHEADER bmfHdr;
+	BITMAPINFOHEADER bi;
+	LPBITMAPINFOHEADER lpbi;
+	HANDLE fh, hDib, hPal, hOldPal2 = NULL;
+	hDC = CreateDC(TEXT("DISPLAY"), NULL, NULL, NULL);
+	iBits = GetDeviceCaps(hDC, BITSPIXEL) * GetDeviceCaps(hDC, PLANES);
+	DeleteDC(hDC);
+	if (iBits <= 1)
+		wBitCount = 1;
+	else if (iBits <= 4)
+		wBitCount = 4;
+	else if (iBits <= 8)
+		wBitCount = 8;
+	else
+		wBitCount = 24;
+	GetObject(hBitmap, sizeof(Bitmap0), (LPSTR)&Bitmap0);
+	bi.biSize = sizeof(BITMAPINFOHEADER);
+	bi.biWidth = Bitmap0.bmWidth;
+	bi.biHeight = -Bitmap0.bmHeight;
+	bi.biPlanes = 1;
+	bi.biBitCount = wBitCount;
+	bi.biCompression = BI_RGB;
+	bi.biSizeImage = 0;
+	bi.biXPelsPerMeter = 0;
+	bi.biYPelsPerMeter = 0;
+	bi.biClrImportant = 0;
+	bi.biClrUsed = 256;
+	dwBmBitsSize = ((Bitmap0.bmWidth * wBitCount + 31) & ~31) / 8
+		* Bitmap0.bmHeight;
+	hDib = GlobalAlloc(GHND, dwBmBitsSize + dwPaletteSize + sizeof(BITMAPINFOHEADER));
+	lpbi = (LPBITMAPINFOHEADER)GlobalLock(hDib);
+	*lpbi = bi;
+
+	hPal = GetStockObject(DEFAULT_PALETTE);
+	if (hPal)
+	{
+		hDC = GetDC(NULL);
+		hOldPal2 = SelectPalette(hDC, (HPALETTE)hPal, FALSE);
+		RealizePalette(hDC);
+	}
+
+
+	GetDIBits(hDC, hBitmap, 0, (UINT)Bitmap0.bmHeight, (LPSTR)lpbi + sizeof(BITMAPINFOHEADER)
+		+ dwPaletteSize, (BITMAPINFO*)lpbi, DIB_RGB_COLORS);
+
+	if (hOldPal2)
+	{
+		SelectPalette(hDC, (HPALETTE)hOldPal2, TRUE);
+		RealizePalette(hDC);
+		ReleaseDC(NULL, hDC);
+	}
+
+	fh = CreateFile(lpszFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+
+	if (fh == INVALID_HANDLE_VALUE)
+		return FALSE;
+
+	bmfHdr.bfType = 0x4D42; // "BM"
+	dwDIBSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + dwPaletteSize + dwBmBitsSize;
+	bmfHdr.bfSize = dwDIBSize;
+	bmfHdr.bfReserved1 = 0;
+	bmfHdr.bfReserved2 = 0;
+	bmfHdr.bfOffBits = (DWORD)sizeof(BITMAPFILEHEADER) + (DWORD)sizeof(BITMAPINFOHEADER) + dwPaletteSize;
+
+	WriteFile(fh, (LPSTR)&bmfHdr, sizeof(BITMAPFILEHEADER), &dwWritten, NULL);
+
+	WriteFile(fh, (LPSTR)lpbi, dwDIBSize, &dwWritten, NULL);
+	GlobalUnlock(hDib);
+	GlobalFree(hDib);
+	CloseHandle(fh);
+	return TRUE;
+}
+
+HBITMAP CScraper::CaptureWindowToHBITMAP()
+{
+	HWND hwnd = p_autoconnector->attached_hwnd();
+
+	// Create Direct 3D Device
+	winrt::com_ptr<ID3D11Device> d3d_device;
+
+	winrt::check_hresult(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
+		nullptr, 0, D3D11_SDK_VERSION, d3d_device.put(), nullptr, nullptr));
+
+	winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice device;
+	const auto dxgiDevice = d3d_device.as<IDXGIDevice>();
+	{
+		winrt::com_ptr<IInspectable> inspectable;
+		winrt::check_hresult(CreateDirect3D11DeviceFromDXGIDevice(dxgiDevice.get(), inspectable.put()));
+		device = inspectable.as<winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice>();
+	}
+
+	auto idxgi_device2 = dxgiDevice.as<IDXGIDevice2>();
+	winrt::com_ptr<IDXGIAdapter> adapter;
+	winrt::check_hresult(idxgi_device2->GetParent(winrt::guid_of<IDXGIAdapter>(), adapter.put_void()));
+	winrt::com_ptr<IDXGIFactory2> factory;
+	winrt::check_hresult(adapter->GetParent(winrt::guid_of<IDXGIFactory2>(), factory.put_void()));
+
+	ID3D11DeviceContext* d3d_context = nullptr;
+	d3d_device->GetImmediateContext(&d3d_context);
+
+	const auto activation_factory = winrt::get_activation_factory<
+		GraphicsCaptureItem>();
+	auto interop_factory = activation_factory.as<IGraphicsCaptureItemInterop>();
+	GraphicsCaptureItem capture_item = { nullptr };
+	interop_factory->CreateForWindow(hwnd, winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(),
+		winrt::put_abi(capture_item));
+
+	Direct3D11CaptureFramePool m_frame_pool =
+		Direct3D11CaptureFramePool::CreateFreeThreaded(
+			device,
+			winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized,
+			2,
+			capture_item.Size());
+
+	auto is_frame_arrived = false;
+	winrt::com_ptr<ID3D11Texture2D> texture;
+	const auto session = m_frame_pool.CreateCaptureSession(capture_item);
+	m_frame_pool.FrameArrived([&](auto& frame_pool, auto&)
+		{
+			if (is_frame_arrived)
+			{
+				return;
+			}
+			auto frame = frame_pool.TryGetNextFrame();
+
+			struct __declspec(uuid("A9B3D012-3DF2-4EE3-B8D1-8695F457D3C1"))
+				IDirect3DDxgiInterfaceAccess : ::IUnknown
+			{
+				virtual HRESULT __stdcall GetInterface(GUID const& id, void** object) = 0;
+			};
+
+			auto access = frame.Surface().as<IDirect3DDxgiInterfaceAccess>();
+			access->GetInterface(winrt::guid_of<ID3D11Texture2D>(), texture.put_void());
+			is_frame_arrived = true;
+			return;
+		});
+	
+	session.IsBorderRequired(false);
+	session.StartCapture();
+
+	// Message pump
+	MSG message;
+	while (!is_frame_arrived)
+	{
+		if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE) > 0)
+		{
+			DispatchMessage(&message);
+		}
+	}
+
+	//session.Close();
+
+	d3d_context->CopyResource(texture.get(), texture.get());
+	winrt::com_ptr<ID3D11Texture2D> rect_texture = nullptr;
+	CopyWindowClientRectToTexture(d3d_device.get(), d3d_context, texture.get(), hwnd, rect_texture.put());
+
+	D3D11_MAPPED_SUBRESOURCE resource;
+	winrt::check_hresult(d3d_context->Map(rect_texture.get(), NULL, D3D11_MAP_READ, 0, &resource));
+	D3D11_TEXTURE2D_DESC rect_texture_desc;
+	rect_texture->GetDesc(&rect_texture_desc);
+
+	rect_texture_desc.Usage = D3D11_USAGE_STAGING;
+	rect_texture_desc.BindFlags = 0;
+	rect_texture_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	rect_texture_desc.MiscFlags = 0;
+
+	BITMAPINFO l_bmp_info;
+
+	// BMP 32 bpp
+	ZeroMemory(&l_bmp_info, sizeof(BITMAPINFO));
+	l_bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	l_bmp_info.bmiHeader.biBitCount = 32;
+	l_bmp_info.bmiHeader.biCompression = BI_RGB;
+	l_bmp_info.bmiHeader.biWidth = rect_texture_desc.Width;
+	l_bmp_info.bmiHeader.biHeight = rect_texture_desc.Height;
+	l_bmp_info.bmiHeader.biPlanes = 1;
+	l_bmp_info.bmiHeader.biSizeImage = rect_texture_desc.Width * rect_texture_desc.Height * 4;
+
+	std::unique_ptr<BYTE> p_buf(new BYTE[l_bmp_info.bmiHeader.biSizeImage]);
+	UINT l_bmp_row_pitch = rect_texture_desc.Width * 4;
+	auto sptr = static_cast<BYTE*>(resource.pData);
+	auto dptr = p_buf.get() + l_bmp_info.bmiHeader.biSizeImage - l_bmp_row_pitch;
+
+	UINT l_row_pitch = std::min<UINT>(l_bmp_row_pitch, resource.RowPitch);
+
+	for (size_t h = 0; h < rect_texture_desc.Height; ++h)
+	{
+		memcpy_s(dptr, l_bmp_row_pitch, sptr, l_row_pitch);
+		sptr += resource.RowPitch;
+		dptr -= l_bmp_row_pitch;
+	}
+
+	BITMAPINFOHEADER bmih = l_bmp_info.bmiHeader;
+
+	void* bits;
+	bits = (void*)(p_buf.get());
+
+	HDC hdc = ::GetDC(hwnd);
+
+	HBITMAP hbmp = CreateDIBitmap(hdc, &bmih, CBM_INIT, bits, &l_bmp_info, DIB_RGB_COLORS);
+
+
+	// **Release all resources**
+	::ReleaseDC(NULL, hdc);
+	d3d_context->Release();
+	session.Close();
+	m_frame_pool.Close();
+
+	return hbmp;
+}
+
 void CScraper::CreateBitmaps(void) {
+
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 
 	// Whole window
 	RECT			cr = {0};
 	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
-	_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
-	_entire_window_cur = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
+	//_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
+	//_entire_window_cur = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
+	_entire_window_last = _entire_window_cur = CaptureWindowToHBITMAP();
+	//SaveHBITMAPToFile(_entire_window_cur, "output.bmp");
 
 	// r$regions
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
@@ -893,7 +1120,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter) {
 	HDC hdcCompat = CreateCompatibleDC(hdcScreen);
 	RECT rect;
 	GetClientRect(p_autoconnector->attached_hwnd(), &rect);
-	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
+	HBITMAP attached_bitmap = CaptureWindowToHBITMAP(); // CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
 	HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
 	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
 	
@@ -1030,17 +1257,13 @@ bool CScraper::IsExtendedNumberic(CString text) {
 }
 
 bool CScraper::IsIdenticalScrape() {
-  __HDC_HEADER
-
-	// Get bitmap of whole window
-	RECT		cr = {0};
-	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
-
-	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
-	SelectObject(hdcCompatible, old_bitmap);
-
-  p_table_state->TableTitle()->UpdateTitle();
+	__HDC_HEADER
+		// Skip if attached window is minimized (else winrt capture throws exception error)
+		if (WinIsMinimized(p_autoconnector->attached_hwnd()))
+			return false;
+		_entire_window_cur = CaptureWindowToHBITMAP();
+	//SaveHBITMAPToFile(_entire_window_cur, "output.bmp");
+	p_table_state->TableTitle()->UpdateTitle();
 	
 	// If the bitmaps are the same, then return now
 	// !! How often does this happen?
@@ -1054,10 +1277,13 @@ bool CScraper::IsIdenticalScrape() {
     __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
-	// Copy into "last" bitmap
+	/* Copy into "last" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);
 	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
 	SelectObject(hdc, old_bitmap);
+	*/
+	_entire_window_last = CaptureWindowToHBITMAP();
+	//SaveHBITMAPToFile(_entire_window_last, "output.bmp");
 
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	write_log(Preferences()->debug_scraper(), "[CScraper] IsIdenticalScrape() false\n");

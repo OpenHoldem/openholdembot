@@ -13,7 +13,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineCards.h"
 
 #include <assert.h>

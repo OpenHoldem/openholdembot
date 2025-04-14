@@ -15,7 +15,7 @@
 // EditDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogEdit.h"
 
 // CDlgEdit dialog

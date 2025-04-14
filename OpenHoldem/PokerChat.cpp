@@ -29,14 +29,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <stdafx.h>
+#include "pch.h"
 #include "PokerChat.hpp"
 
 #include <math.h>
 #include <String>
 #include <time.h>
-#include <windows.h>
-#include <winuser.h>
+//#include <windows.h>
+//#include <winuser.h>
 
 #include "..\DLLs\User_DLL\user.h"
 

@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSessionCounter.h"
 
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"

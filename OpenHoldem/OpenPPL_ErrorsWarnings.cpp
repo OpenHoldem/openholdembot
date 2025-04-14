@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenPPL_ErrorsWarnings.h"
 
 #include "CPreferences.h"

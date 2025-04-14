@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "CValidator.h"
 
 #include "CAutoplayer.h"

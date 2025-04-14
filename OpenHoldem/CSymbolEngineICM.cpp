@@ -23,7 +23,7 @@
 	  ICM assumes that P(i,n|j,1) = (P(i,n-1) in a game where j has been removed)
 */
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineICM.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"

@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "BringKeyBoard.h"
 
 #include "CAutoConnector.h"

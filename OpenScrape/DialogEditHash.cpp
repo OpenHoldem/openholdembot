@@ -1,7 +1,7 @@
 // DialogEditHash.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogEditHash.h"
 
 // CDlgEditHash dialog

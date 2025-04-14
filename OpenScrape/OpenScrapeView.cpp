@@ -13,7 +13,7 @@
 
 // OpenScrapeView.cpp : implementation of the COpenScrapeView class
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"

@@ -13,7 +13,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineReplayFrameController.h"
 
 #include <assert.h>

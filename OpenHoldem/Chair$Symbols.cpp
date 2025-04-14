@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "Chair$Symbols.h"
 
 #include "CScraper.h"

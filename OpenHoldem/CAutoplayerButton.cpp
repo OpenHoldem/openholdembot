@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CAutoplayerButton.h"
 
 #include "CCasinoHotkey.h"

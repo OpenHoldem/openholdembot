@@ -13,7 +13,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CWatchdog.h"
 
 #include "CSessionCounter.h"

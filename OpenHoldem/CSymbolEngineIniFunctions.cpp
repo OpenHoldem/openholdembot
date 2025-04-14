@@ -15,7 +15,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineIniFunctions.h"
 
 #include <assert.h>

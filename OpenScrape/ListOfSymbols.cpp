@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include <vector>
 #include "ListOfSymbols.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"

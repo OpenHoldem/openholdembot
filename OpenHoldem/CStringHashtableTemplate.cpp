@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CStringHashtableTemplate.h"
 
 // CString hashtable below by Sam NG

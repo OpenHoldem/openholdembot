@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h" 
+#include "pch.h" 
 #include "CParseTreeNode.h"
 
 #include "CFunction.h"

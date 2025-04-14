@@ -13,7 +13,7 @@
 
 // CDlgSAPrefs15.cpp : implementation file
 
-#include "stdafx.h"
+#include "pch.h"
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs15.h"
 

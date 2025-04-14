@@ -15,7 +15,7 @@
 // SelectTableDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenScrape.h"
 #include "DialogSelectTable.h"
 

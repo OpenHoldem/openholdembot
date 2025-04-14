@@ -11,13 +11,13 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "MemoryLogging.h"
 
 
 
 #include <psapi.h>
-#include "Windows.h"
+//#include "Windows.h"
 
 int last_working_set_size = 0;
 

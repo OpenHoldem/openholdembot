@@ -14,7 +14,7 @@
 // MainToolBar.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenHoldem.h"
 #include "MyCToolBar.h"
 

@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CAutoplayerFunctions.h"
 
 #include <assert.h>

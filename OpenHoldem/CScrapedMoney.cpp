@@ -17,7 +17,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CScrapedMoney.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 

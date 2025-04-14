@@ -12,7 +12,7 @@
 //*******************************************************************************
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CTableMapAccess.h"
 
 #include "..\CTablemap\CTablemap.h"

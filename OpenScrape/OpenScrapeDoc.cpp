@@ -15,7 +15,7 @@
 // OpenScrapeDoc.cpp : implementation of the COpenScrapeDoc class
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenScrapeDoc.h"
 
 #include "../CTransform/hash/lookup3.h"

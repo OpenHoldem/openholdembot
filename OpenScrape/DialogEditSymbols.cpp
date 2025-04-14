@@ -14,7 +14,7 @@
 // DialogEditSymbols.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogEditSymbols.h"
 #include "OpenScrapeDoc.h"
 #include "..\OpenHoldem\CTableTitle.h"

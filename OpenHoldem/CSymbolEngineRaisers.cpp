@@ -37,7 +37,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineRaisers.h"
 
 #include <assert.h>

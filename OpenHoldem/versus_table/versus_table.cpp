@@ -1,5 +1,5 @@
 
-#include "stdafx.h"
+#include "pch.h"
 #include "poker_defs.h"
 #include "inlines/eval.h"
 #include <conio.h>

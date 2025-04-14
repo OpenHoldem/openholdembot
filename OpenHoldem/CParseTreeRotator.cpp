@@ -35,7 +35,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CParseTreeRotator.h"
 
 #include "CFunction.h"

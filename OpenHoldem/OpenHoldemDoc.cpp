@@ -14,7 +14,7 @@
 // OpenHoldemDoc.cpp : implementation of the COpenHoldemDoc class
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CAutoplayer.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"

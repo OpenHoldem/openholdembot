@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h" 
+#include "pch.h" 
 #include "CParseTreeTerminalNodeBetsizeAction.h"
 
 #include <math.h>

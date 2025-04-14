@@ -14,7 +14,7 @@
 
 // DialogTableMap.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include <assert.h>
 #include <math.h>
 

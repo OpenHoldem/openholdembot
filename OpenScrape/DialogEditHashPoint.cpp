@@ -15,7 +15,7 @@
 // DialogEditHashPoint.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogEditHashPoint.h"
 
 // CDlgEditHashPoint dialog

@@ -14,7 +14,7 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "MainFrm.h"
 #include <io.h>
 #include <process.h>

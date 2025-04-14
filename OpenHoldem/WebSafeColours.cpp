@@ -15,7 +15,7 @@
 //
 //*******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "WebSafeColours.h"
 #include <assert.h>
 

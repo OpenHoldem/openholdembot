@@ -12,7 +12,7 @@
 //******************************************************************************
 
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "StickyButton.h"
 
 const UINT WM_STICKYBUTTONDOWN = RegisterWindowMessage("WM_STICKYBUTTONDOWN");

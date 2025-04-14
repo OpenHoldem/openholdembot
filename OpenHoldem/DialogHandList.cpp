@@ -14,7 +14,7 @@
 // DialogHandList.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogHandList.h"
 
 

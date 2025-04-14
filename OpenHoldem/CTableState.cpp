@@ -14,7 +14,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CTableState.h"
 
 #include "CEngineContainer.h"

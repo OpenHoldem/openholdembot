@@ -21,7 +21,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "MD5_Checksum.h"
 
 #include <wincrypt.h>

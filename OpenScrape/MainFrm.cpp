@@ -15,11 +15,8 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
-#ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-#include <windows.h>
+#include "pch.h"
 
-#include "stdafx.h"
 #include "MainFrm.h"
 
 #include "CRegionCloner.h"
@@ -31,6 +28,10 @@
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
 #include "registry.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+
+#include <windows.graphics.directx.direct3d11.interop.h>
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -180,6 +181,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.cx = reg.main_dx;
 	cs.cy = reg.main_dy;
 
+	// Initialize WinRT/COM
+	winrt::init_apartment();
+
 	return true;
 }
 
@@ -265,6 +269,12 @@ void CMainFrame::OnViewConnecttowindow()
 		// Display table select dialog
 		if (cstd.DoModal() == IDOK) 
 		{
+			RECT rc_client = { 0 };
+			::GetClientRect(g_tlist[cstd.selected_item].hwnd, &rc_client);
+			HWND tst = g_tlist[cstd.selected_item].hwnd;
+			if (rc_client == RECT{ 0 })
+				return;
+			
 			// Save hwnd and rect of window we are attached to
 			pDoc->attached_hwnd = g_tlist[cstd.selected_item].hwnd;
 			pDoc->attached_rect.left = g_tlist[cstd.selected_item].crect.left;
@@ -755,14 +765,236 @@ void CMainFrame::OnUpdateGroupregionsByname(CCmdUI *pCmdUI)
 	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==BY_NAME);
 }
 
+
+BOOL SaveHBITMAPToFile(HBITMAP hBitmap, LPCTSTR lpszFileName)
+{
+	HDC hDC;
+	int iBits;
+	WORD wBitCount;
+	DWORD dwPaletteSize = 0, dwBmBitsSize = 0, dwDIBSize = 0, dwWritten = 0;
+	BITMAP Bitmap0;
+	BITMAPFILEHEADER bmfHdr;
+	BITMAPINFOHEADER bi;
+	LPBITMAPINFOHEADER lpbi;
+	HANDLE fh, hDib, hPal, hOldPal2 = NULL;
+	hDC = CreateDC(TEXT("DISPLAY"), NULL, NULL, NULL);
+	iBits = GetDeviceCaps(hDC, BITSPIXEL) * GetDeviceCaps(hDC, PLANES);
+	DeleteDC(hDC);
+	if (iBits <= 1)
+		wBitCount = 1;
+	else if (iBits <= 4)
+		wBitCount = 4;
+	else if (iBits <= 8)
+		wBitCount = 8;
+	else
+		wBitCount = 24;
+	GetObject(hBitmap, sizeof(Bitmap0), (LPSTR)&Bitmap0);
+	bi.biSize = sizeof(BITMAPINFOHEADER);
+	bi.biWidth = Bitmap0.bmWidth;
+	bi.biHeight = -Bitmap0.bmHeight;
+	bi.biPlanes = 1;
+	bi.biBitCount = wBitCount;
+	bi.biCompression = BI_RGB;
+	bi.biSizeImage = 0;
+	bi.biXPelsPerMeter = 0;
+	bi.biYPelsPerMeter = 0;
+	bi.biClrImportant = 0;
+	bi.biClrUsed = 256;
+	dwBmBitsSize = ((Bitmap0.bmWidth * wBitCount + 31) & ~31) / 8
+		* Bitmap0.bmHeight;
+	hDib = GlobalAlloc(GHND, dwBmBitsSize + dwPaletteSize + sizeof(BITMAPINFOHEADER));
+	lpbi = (LPBITMAPINFOHEADER)GlobalLock(hDib);
+	*lpbi = bi;
+
+	hPal = GetStockObject(DEFAULT_PALETTE);
+	if (hPal)
+	{
+		hDC = ::GetDC(NULL);
+		hOldPal2 = SelectPalette(hDC, (HPALETTE)hPal, FALSE);
+		RealizePalette(hDC);
+	}
+
+
+	GetDIBits(hDC, hBitmap, 0, (UINT)Bitmap0.bmHeight, (LPSTR)lpbi + sizeof(BITMAPINFOHEADER)
+		+ dwPaletteSize, (BITMAPINFO*)lpbi, DIB_RGB_COLORS);
+
+	if (hOldPal2)
+	{
+		SelectPalette(hDC, (HPALETTE)hOldPal2, TRUE);
+		RealizePalette(hDC);
+		::ReleaseDC(NULL, hDC);
+	}
+
+	fh = CreateFile(lpszFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+
+	if (fh == INVALID_HANDLE_VALUE)
+		return FALSE;
+
+	bmfHdr.bfType = 0x4D42; // "BM"
+	dwDIBSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + dwPaletteSize + dwBmBitsSize;
+	bmfHdr.bfSize = dwDIBSize;
+	bmfHdr.bfReserved1 = 0;
+	bmfHdr.bfReserved2 = 0;
+	bmfHdr.bfOffBits = (DWORD)sizeof(BITMAPFILEHEADER) + (DWORD)sizeof(BITMAPINFOHEADER) + dwPaletteSize;
+
+	WriteFile(fh, (LPSTR)&bmfHdr, sizeof(BITMAPFILEHEADER), &dwWritten, NULL);
+
+	WriteFile(fh, (LPSTR)lpbi, dwDIBSize, &dwWritten, NULL);
+	GlobalUnlock(hDib);
+	GlobalFree(hDib);
+	CloseHandle(fh);
+	return TRUE;
+}
+
+
+
+// Capture the client area of a window
+void CMainFrame::CaptureWindow()
+{
+	COpenScrapeDoc* pDoc = COpenScrapeDoc::GetDocument();
+
+	HWND hwnd = pDoc->attached_hwnd;
+
+	// Create Direct 3D Device
+	winrt::com_ptr<ID3D11Device> d3d_device;
+
+	winrt::check_hresult(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
+		nullptr, 0, D3D11_SDK_VERSION, d3d_device.put(), nullptr, nullptr));
+
+	winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice device;
+	const auto dxgiDevice = d3d_device.as<IDXGIDevice>();
+	{
+		winrt::com_ptr<IInspectable> inspectable;
+		winrt::check_hresult(CreateDirect3D11DeviceFromDXGIDevice(dxgiDevice.get(), inspectable.put()));
+		device = inspectable.as<winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice>();
+	}
+
+	auto idxgi_device2 = dxgiDevice.as<IDXGIDevice2>();
+	winrt::com_ptr<IDXGIAdapter> adapter;
+	winrt::check_hresult(idxgi_device2->GetParent(winrt::guid_of<IDXGIAdapter>(), adapter.put_void()));
+	winrt::com_ptr<IDXGIFactory2> factory;
+	winrt::check_hresult(adapter->GetParent(winrt::guid_of<IDXGIFactory2>(), factory.put_void()));
+
+	ID3D11DeviceContext* d3d_context = nullptr;
+	d3d_device->GetImmediateContext(&d3d_context);
+
+	const auto activation_factory = winrt::get_activation_factory<GraphicsCaptureItem>();
+	auto interop_factory = activation_factory.as<IGraphicsCaptureItemInterop>();
+	GraphicsCaptureItem capture_item = { nullptr };
+	interop_factory->CreateForWindow(hwnd, winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(),
+		winrt::put_abi(capture_item));
+
+	Direct3D11CaptureFramePool m_frame_pool =
+		Direct3D11CaptureFramePool::CreateFreeThreaded(
+			device,
+			winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized,
+			2,
+			capture_item.Size());
+
+	auto is_frame_arrived = false;
+	winrt::com_ptr<ID3D11Texture2D> texture;
+	const auto session = m_frame_pool.CreateCaptureSession(capture_item);
+	m_frame_pool.FrameArrived([&](auto& frame_pool, auto&)
+		{
+			if (is_frame_arrived)
+			{
+				return;
+			}
+			auto frame = frame_pool.TryGetNextFrame();
+
+			struct __declspec(uuid("A9B3D012-3DF2-4EE3-B8D1-8695F457D3C1"))
+				IDirect3DDxgiInterfaceAccess : ::IUnknown
+			{
+				virtual HRESULT __stdcall GetInterface(GUID const& id, void** object) = 0;
+			};
+
+			auto access = frame.Surface().as<IDirect3DDxgiInterfaceAccess>();
+			access->GetInterface(winrt::guid_of<ID3D11Texture2D>(), texture.put_void());
+			is_frame_arrived = true;
+			return;
+		});
+
+	session.IsBorderRequired(false);
+	session.StartCapture();
+
+	// Message pump
+	MSG message;
+	while (!is_frame_arrived)
+	{
+		if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE) > 0)
+		{
+			DispatchMessage(&message);
+		}
+	}
+
+	//session.Close();
+
+	winrt::com_ptr<ID3D11Texture2D> rect_texture = nullptr;
+	CopyWindowClientRectToTexture(d3d_device.get(), d3d_context, texture.get(), hwnd, rect_texture.put());
+
+	D3D11_MAPPED_SUBRESOURCE resource;
+	winrt::check_hresult(d3d_context->Map(rect_texture.get(), NULL, D3D11_MAP_READ, 0, &resource));
+	D3D11_TEXTURE2D_DESC rect_texture_desc;
+	rect_texture->GetDesc(&rect_texture_desc);
+
+	rect_texture_desc.Usage = D3D11_USAGE_STAGING;
+	rect_texture_desc.BindFlags = 0;
+	rect_texture_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	rect_texture_desc.MiscFlags = 0;
+
+	BITMAPINFO l_bmp_info;
+
+	// BMP 32 bpp
+	ZeroMemory(&l_bmp_info, sizeof(BITMAPINFO));
+	l_bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	l_bmp_info.bmiHeader.biBitCount = 32;
+	l_bmp_info.bmiHeader.biCompression = BI_RGB;
+	l_bmp_info.bmiHeader.biWidth = rect_texture_desc.Width;
+	l_bmp_info.bmiHeader.biHeight = rect_texture_desc.Height;
+	l_bmp_info.bmiHeader.biPlanes = 1;
+	l_bmp_info.bmiHeader.biSizeImage = rect_texture_desc.Width * rect_texture_desc.Height * 4;
+
+	std::unique_ptr<BYTE> p_buf(new BYTE[l_bmp_info.bmiHeader.biSizeImage]);
+	UINT l_bmp_row_pitch = rect_texture_desc.Width * 4;
+	auto sptr = static_cast<BYTE*>(resource.pData);
+	auto dptr = p_buf.get() + l_bmp_info.bmiHeader.biSizeImage - l_bmp_row_pitch;
+
+	UINT l_row_pitch = std::min<UINT>(l_bmp_row_pitch, resource.RowPitch);
+
+	for (size_t h = 0; h < rect_texture_desc.Height; ++h)
+	{
+		memcpy_s(dptr, l_bmp_row_pitch, sptr, l_row_pitch);
+		sptr += resource.RowPitch;
+		dptr -= l_bmp_row_pitch;
+	}
+
+	BITMAPINFOHEADER bmih = l_bmp_info.bmiHeader;
+
+	void* bits;
+	bits = (void*)(p_buf.get());
+
+	HDC hdc = ::GetDC(hwnd);
+
+	pDoc->attached_bitmap = CreateDIBitmap(hdc, &bmih, CBM_INIT, bits, &l_bmp_info, DIB_RGB_COLORS);
+	pDoc->attached_pBits = p_buf.get();
+
+
+	// **Release all resources**
+	::ReleaseDC(NULL, hdc);
+	d3d_context->Release();
+	session.Close();
+	m_frame_pool.Close();
+}
+
+
 void CMainFrame::SaveBmpPbits(void)
 {
-	HDC					hdc;
-	HDC					hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-	HDC					hdcCompatible = CreateCompatibleDC(hdcScreen); 
-	HBITMAP				old_bitmap;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	int					width, height;
+
+	// Skip if attached window is minimized (else winrt capture throws exception error)
+	if (WinIsMinimized(pDoc->attached_hwnd))
+		return;
 
 	// Clean up from a previous connect, if needed
 	if (pDoc->attached_bitmap != NULL)
@@ -773,44 +1005,13 @@ void CMainFrame::SaveBmpPbits(void)
 
 	if (pDoc->attached_pBits) 
 	{
-		delete []pDoc->attached_pBits;
+		//delete []pDoc->attached_pBits;
 		pDoc->attached_pBits = NULL;
 	}
 
-	// Get DC for connected window
-	hdc = ::GetDC(pDoc->attached_hwnd);
-
-	// Save bitmap of connected window
-	width = pDoc->attached_rect.right - pDoc->attached_rect.left;
-	height = pDoc->attached_rect.bottom - pDoc->attached_rect.top;
-	pDoc->attached_bitmap = CreateCompatibleBitmap(hdcScreen, width, height);
-	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, pDoc->attached_bitmap);
-	BitBlt(hdcCompatible, 0, 0, width, height, hdc, 
-		   pDoc->attached_rect.left, pDoc->attached_rect.top, SRCCOPY);
-
-	// Get pBits of connected window
-	// Allocate heap space for BITMAPINFO
-	BITMAPINFO	*bmi;
-	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
-	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
-
-	// Populate BITMAPINFOHEADER
-	bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
-	bmi->bmiHeader.biBitCount = 0;
-	::GetDIBits(hdc, pDoc->attached_bitmap, 0, 0, NULL, bmi, DIB_RGB_COLORS);
-
-	// Get the actual argb bit information
-	bmi->bmiHeader.biHeight = -bmi->bmiHeader.biHeight;
-	pDoc->attached_pBits = new BYTE[bmi->bmiHeader.biSizeImage];
-	::GetDIBits(hdc, pDoc->attached_bitmap, 0, height, pDoc->attached_pBits, bmi, DIB_RGB_COLORS);
-
-	// Clean up
-	HeapFree(GetProcessHeap(), NULL, bmi);
-	SelectObject(hdcCompatible, old_bitmap);
-	::ReleaseDC(pDoc->attached_hwnd, hdc);
-	DeleteDC(hdcCompatible);
-	DeleteDC(hdcScreen);
+	CaptureWindow();
 }
+
 
 CArray <STableList, STableList>		g_tlist; 
 

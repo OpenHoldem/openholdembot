@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSpaceOptimizedFormulaObject.h"
 
 #include <assert.h>

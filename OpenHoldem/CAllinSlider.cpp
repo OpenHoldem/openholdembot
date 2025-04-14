@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CAllinSlider.h"
 
 #include "CAutoConnector.h"

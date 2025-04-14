@@ -17,7 +17,7 @@
 //
 //******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "CFileSystemMonitor.h"
 
 

@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"
 

@@ -15,7 +15,7 @@
 // DialogEditRegion.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogEditRegion.h"
 
 // CDlgEditRegion dialog

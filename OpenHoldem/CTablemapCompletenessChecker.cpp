@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CTablemapCompletenessChecker.h"
 
 #include "CSessionCounter.h"

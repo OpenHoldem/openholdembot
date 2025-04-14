@@ -13,7 +13,7 @@
 
 
 
-#include "stdafx.h"
+#include "pch.h"
 
 #include "registry.h"
 #include "stdio.h"

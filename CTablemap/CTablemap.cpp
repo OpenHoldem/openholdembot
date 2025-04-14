@@ -11,7 +11,7 @@
 //
 //*******************************************************************************
 
-#include "StdAfx.h"
+#include "pch.h"
 #include "CTablemap.h"
 
 #include <assert.h>

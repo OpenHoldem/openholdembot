@@ -14,7 +14,7 @@
 // DlgSAPrefs16.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 
 #include "DialogSAPrefs16.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"

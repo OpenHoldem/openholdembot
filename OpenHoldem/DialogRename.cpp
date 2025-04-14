@@ -14,7 +14,7 @@
 // RenameDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogRename.h"
 
 #include "COHScriptObject.h"

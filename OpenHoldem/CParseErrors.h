@@ -14,7 +14,7 @@
 #ifndef INC_CPARSEERRORS_H
 #define INC_CPARSEERRORS_H
 
-#include "stdafx.h"
+#include "pch.h"
 
 class CParseErrors {
  public:

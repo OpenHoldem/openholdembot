@@ -15,7 +15,7 @@
 //
 //*******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineMultiplexer.h"
 
 #include "CEngineContainer.h"

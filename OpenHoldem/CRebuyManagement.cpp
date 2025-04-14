@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include <atlstr.h>
 #include <time.h>
 #include "CAutoconnector.h"

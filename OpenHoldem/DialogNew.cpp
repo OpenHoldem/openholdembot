@@ -14,7 +14,7 @@
 // NewDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenHoldem.h"
 #include "DialogNew.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"

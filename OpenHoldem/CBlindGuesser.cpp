@@ -12,7 +12,7 @@
 //
 //****************************************************************************** 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CBlindGuesser.h"
 
 #include "CBlindLevels.h"

@@ -13,7 +13,7 @@
 //
 //*******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolengineNutFullhouseOrFourOfAKind.h"
 
 #include "inlines/eval.h"

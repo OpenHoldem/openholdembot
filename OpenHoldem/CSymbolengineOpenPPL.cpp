@@ -13,7 +13,7 @@
 //
 //***************************************************************************** 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CSymbolEngineOpenPPL.h"
 
 #include "CEngineContainer.h"

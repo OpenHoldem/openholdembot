@@ -18,7 +18,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CHandHistoryWriter.h"
 
 #include "CHandHistoryDealPhase.h"

@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CLimitScraper.h"
 
 CLimitScraper *p_limit_scraper = NULL;

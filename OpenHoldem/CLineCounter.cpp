@@ -11,7 +11,7 @@
 //
 //*******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CLineCounter.h"
 
 CLineCounter line_counter;

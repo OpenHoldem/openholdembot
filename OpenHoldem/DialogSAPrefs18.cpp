@@ -14,7 +14,7 @@
 // DialogSAPrefs1.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogSAPrefs18.h"
 
 #include "SAPrefsSubDlg.h"

@@ -15,7 +15,7 @@
 // DialogEditFont.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include <math.h>
 
 #include "OpenScrapeDoc.h"

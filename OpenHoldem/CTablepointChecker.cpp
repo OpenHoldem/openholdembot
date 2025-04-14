@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CTablepointChecker.h"
 
 #include "CAutoConnector.h"

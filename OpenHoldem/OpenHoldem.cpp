@@ -13,10 +13,10 @@
 
 // OpenHoldem.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "OpenHoldem.h"
 #include <psapi.h>
-#include <windows.h>
+//#include <windows.h>
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTablemap\CTableMapAccess.h"
 #include "CAutoConnector.h"

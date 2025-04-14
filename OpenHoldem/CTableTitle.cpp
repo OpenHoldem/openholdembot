@@ -17,7 +17,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CTableTitle.h"
 
 #ifdef OPENHOLDEM_PROGRAM

@@ -31,7 +31,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "pch.h"
 #include "SAPrefsSubDlg.h"
 
 #ifdef _DEBUG

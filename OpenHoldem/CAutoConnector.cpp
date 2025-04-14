@@ -12,7 +12,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CAutoConnector.h"
 
 #include <afxwin.h>
@@ -233,6 +233,44 @@ void CAutoConnector::GoIntoPopupBlockingMode() {
   }
 }
 
+void CAutoConnector::StartCaptureSession(HWND hwnd) {
+
+	// Init COM
+	winrt::init_apartment();
+
+	// Create Direct 3D Device
+	winrt::check_hresult(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
+		nullptr, 0, D3D11_SDK_VERSION, d3d_device.put(), nullptr, nullptr));
+
+	const auto dxgiDevice = d3d_device.as<IDXGIDevice>();
+	{
+		winrt::com_ptr<IInspectable> inspectable;
+		winrt::check_hresult(CreateDirect3D11DeviceFromDXGIDevice(dxgiDevice.get(), inspectable.put()));
+		device = inspectable.as<winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice>();
+	}
+
+	auto idxgi_device2 = dxgiDevice.as<IDXGIDevice2>();
+	winrt::check_hresult(idxgi_device2->GetParent(winrt::guid_of<IDXGIAdapter>(), adapter.put_void()));
+	winrt::check_hresult(adapter->GetParent(winrt::guid_of<IDXGIFactory2>(), factory.put_void()));
+
+	d3d_device->GetImmediateContext(&d3d_context);
+
+	interop_factory->CreateForWindow(hwnd, winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(),
+		winrt::put_abi(capture_item));
+
+	m_frame_pool =
+		winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool::CreateFreeThreaded(
+			device,
+			winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized,
+			2,
+			capture_item.Size());
+
+	session = m_frame_pool.CreateCaptureSession(capture_item);
+
+	session.IsBorderRequired(false);
+	session.StartCapture();
+}
+
 bool CAutoConnector::Connect(HWND targetHWnd) {
 	int					line = 0, ret = 0;
 	char				title[MAX_WINDOW_TITLE] = {0};
@@ -284,44 +322,53 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 		SelectedItem = SelectTableMapAndWindowAutomatically();
 		if (SelectedItem == kUndefined) {
 			FailedToConnectProbablyBecauseAllTablesAlreadyServed();
-		}	else {
+		}
+		else {
 			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
-      // Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
+			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
-      CheckIfWindowMatchesMoreThanOneTablemap(attached_hwnd());
-			assert(p_tablemap != NULL);
-      CString tablemap_to_load = p_tablemap_loader->GetTablemapPathToLoad(g_tlist[SelectedItem].tablemap_index);
-			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
-			p_tablemap->LoadTablemap(tablemap_to_load);
-			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Tablemap successfully loaded\n");
-  		// Create bitmaps
-			p_scraper->CreateBitmaps();
-			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Scraper-bitmaps created\n");
-      // Clear scraper fields
-			p_table_state->Reset();
-      p_casino_interface->Reset();
-			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Table state cleared\n");
-      // Reset symbols
-			p_engine_container->UpdateOnConnection();
-      write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] UpdateOnConnection executed (during connection)\n");
-			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Going to continue with scraper output and scraper DLL\n");
-      // Reset "ScraperOutput" dialog, if it is live
-			if (m_ScraperOutputDlg) {
-				m_ScraperOutputDlg->Reset();
+			if (WinIsMinimized(attached_hwnd())) {
+				// Skip if attached window is minimized (else winrt capture throws exception error)
+				FailedToConnectBecauseNoWindowInList();
 			}
-			p_flags_toolbar->ResetButtonsOnConnect();
-      // The main GUI gets created by another thread.
-      // This can be slowed down if there are popups (parse-errors).
-      // Handle the race-condition
-      WAIT_FOR_CONDITION(PMainframe() != NULL)
-      assert(PMainframe() != NULL);
-			// Reset display
-			PMainframe()->ResetDisplay();
-      // log OH title bar text and table reset
-      WriteLogTableReset("NEW CONNECTION");
-      p_table_positioner->ResizeToTargetSize();
-			p_table_positioner->PositionMyWindow();
-			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
+			else {
+				CheckIfWindowMatchesMoreThanOneTablemap(attached_hwnd());
+				assert(p_tablemap != NULL);
+				CString tablemap_to_load = p_tablemap_loader->GetTablemapPathToLoad(g_tlist[SelectedItem].tablemap_index);
+				write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
+				p_tablemap->LoadTablemap(tablemap_to_load);
+				write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Tablemap successfully loaded\n");
+				// Start capture
+				StartCaptureSession(attached_hwnd());
+				// Create bitmaps
+				p_scraper->CreateBitmaps();
+				write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Scraper-bitmaps created\n");
+				// Clear scraper fields
+				p_table_state->Reset();
+				p_casino_interface->Reset();
+				write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Table state cleared\n");
+				// Reset symbols
+				p_engine_container->UpdateOnConnection();
+				write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] UpdateOnConnection executed (during connection)\n");
+				write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Going to continue with scraper output and scraper DLL\n");
+				// Reset "ScraperOutput" dialog, if it is live
+				if (m_ScraperOutputDlg) {
+					m_ScraperOutputDlg->Reset();
+				}
+				p_flags_toolbar->ResetButtonsOnConnect();
+				// The main GUI gets created by another thread.
+				// This can be slowed down if there are popups (parse-errors).
+				// Handle the race-condition
+				WAIT_FOR_CONDITION(PMainframe() != NULL)
+					assert(PMainframe() != NULL);
+				// Reset display
+				PMainframe()->ResetDisplay();
+				// log OH title bar text and table reset
+				WriteLogTableReset("NEW CONNECTION");
+				p_table_positioner->ResizeToTargetSize();
+				p_table_positioner->PositionMyWindow();
+				p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
+			}
 		}
 	}
 	write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");

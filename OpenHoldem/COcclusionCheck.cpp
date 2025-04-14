@@ -13,7 +13,7 @@
 
 // Heuristic occlusion-check for rebuy.
 
-#include "stdafx.h"
+#include "pch.h"
 #include "COcclusionCheck.h"
 
 #include "CEngineContainer.h"

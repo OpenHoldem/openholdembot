@@ -14,7 +14,7 @@
 // CDlgSAPrefs19.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogSAPrefs19.h"
 
 #include "SAPrefsSubDlg.h"

@@ -13,7 +13,7 @@
 //
 //******************************************************************************
 
-#include "stdafx.h"
+#include "pch.h"
 #include "UnknownSymbols.h"
 #include "CParseErrors.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"

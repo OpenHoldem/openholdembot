@@ -15,7 +15,7 @@
 // DialogEditSizes.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogEditSizes.h"
 
 // CDlgEditSizes dialog

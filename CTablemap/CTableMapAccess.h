@@ -14,7 +14,7 @@
 #ifndef INC_CTABLEMAPACCESS_H
 #define INC_CTABLEMAPACCESS_H
 
-#include <windows.h>
+//#include <windows.h>
 #include "CTablemap.h"
 
 enum dim {width, height};

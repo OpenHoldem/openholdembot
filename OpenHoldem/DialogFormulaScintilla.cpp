@@ -16,7 +16,7 @@
 
 // menu options, menu edit commands
 
-#include "stdafx.h"
+#include "pch.h"
 #include "DialogFormulaScintilla.h"
 
 #include <io.h>
@@ -1137,7 +1137,7 @@ void CDlgFormulaScintilla::DoFind(bool DirDown)
 		m_pActiveScinCtrl->SearchBackward((char *)m_FindLastSearch.GetString());
 }
 
-LRESULT CDlgFormulaScintilla::OnFindReplace(WPARAM, LPARAM lParam)
+LRESULT CDlgFormulaScintilla::OnFindReplace(WPARAM wParam, LPARAM lParam)
 {
 	LPFINDREPLACE lpFindReplace = (LPFINDREPLACE) lParam;
 
