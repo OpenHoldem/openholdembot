@@ -41,6 +41,10 @@
 #define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
 #endif
 
+
+// D3D
+#include <dwmapi.h>
+
 #include "window_functions.h"
 #include <assert.h>
 #include <math.h>
@@ -223,6 +227,50 @@ bool WinIsMaximized(HWND window) {
 }
 
 bool WinIsMinimized(HWND window) {
+    // Improved code for also handling winRT/UWP app windows
+    HWND hwnd = window;
+    HWND shellWindow = GetShellWindow();
+
+    DWORD dlugosc = GetWindowTextLength(hwnd);
+    LPSTR title = (LPSTR)GlobalAlloc(GPTR, dlugosc + 1);
+    GetWindowText(hwnd, title, dlugosc + 1);
+    //TCHAR className[MAX_PATH];
+    //GetClassName(hwnd, className, _countof(className));
+
+    if (hwnd == shellWindow)
+    {
+        return true;
+    }
+
+    if (strlen(title) == 0)
+    {
+        return true;
+    }
+
+    if (!IsWindowVisible(hwnd))
+    {
+        return true;
+    }
+
+    if (GetAncestor(hwnd, GA_ROOT) != hwnd)
+    {
+        return true;
+    }
+
+    LONG style = GetWindowLong(hwnd, GWL_STYLE);
+    if (!((style & WS_DISABLED) != WS_DISABLED))
+    {
+        return true;
+    }
+
+    DWORD cloaked = FALSE;
+    HRESULT hrTemp = DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, &cloaked, sizeof(cloaked));
+    if (SUCCEEDED(hrTemp) &&
+        cloaked == DWM_CLOAKED_SHELL)
+    {
+        return true;
+    }
+    //
   return ::IsIconic(window);
 }
 

@@ -52,6 +52,23 @@ class CAutoConnector: public CSpaceOptimizedGlobalObject {
  private:
 	// Mutex used for cross-instance autoconnector coordination
 	CMutex *_autoconnector_mutex;
+
+private:
+	void StartCaptureSession(HWND hwnd);
+
+public:
+	// Create Direct 3D Device
+	winrt::com_ptr<ID3D11Device> d3d_device;
+	winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice device;
+	ID3D11DeviceContext* d3d_context = nullptr;
+	winrt::com_ptr<IDXGIAdapter> adapter;
+	winrt::com_ptr<IDXGIFactory2> factory;
+	winrt::impl::com_ref<IGraphicsCaptureItemInterop> interop_factory = winrt::get_activation_factory<
+		winrt::Windows::Graphics::Capture::GraphicsCaptureItem>().as<IGraphicsCaptureItemInterop>();
+	winrt::Windows::Graphics::Capture::GraphicsCaptureItem capture_item = { nullptr };
+	winrt::com_ptr<ID3D11Texture2D> texture;
+	GraphicsCaptureSession session = { nullptr };
+	winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool m_frame_pool = { nullptr };
 };
 
 extern  CAutoConnector *p_autoconnector;

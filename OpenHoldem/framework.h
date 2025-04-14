@@ -34,8 +34,42 @@
 
 #include <afxmt.h>			// CMutex
 
-//#include <windows.h>
-#include <stdlib.h>
+#include <Unknwn.h>
+#include <inspectable.h>
+
+// WinRT
+#include <winrt/base.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Graphics.Capture.h>
+#include <winrt/Windows.Graphics.DirectX.h>
+#include <winrt/Windows.Graphics.DirectX.Direct3D11.h>
+#include <windows.graphics.directx.direct3d11.interop.h>
+#include <windows.graphics.capture.interop.h>
+#include <windows.graphics.capture.h>
+//#include <DispatcherQueue.h>
+
+// STL
+#include <atomic>
+#include <memory>
+
+// D3D
+#include <d3d11.h>
+#include <dxgi1_2.h>
+//#include <wincodec.h>
+
+// DWM
+#include <dwmapi.h>
+
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "Dwmapi.lib")
+#pragma comment(lib, "windowsapp.lib") // Required for WinRT
+
+//using namespace winrt;
+using namespace winrt::Windows::Graphics::Capture;
+//using namespace Windows::Graphics::DirectX;
+//using namespace Windows::Graphics::DirectX::Direct3D11;
 
 #define OPENHOLDEM_PROGRAM
 

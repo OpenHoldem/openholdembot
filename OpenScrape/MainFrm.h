@@ -56,12 +56,67 @@ class CMainFrame : public CFrameWnd {
 	void ResizeWindow(COpenScrapeDoc *pDoc);
 	void BringOpenScrapeBackToFront();
 	void SetTablemapSizeIfUnknown(int size_x, int size_y);
-  void CheckIfOHReplayRunning();
-  void capture_window(HWND window_handle, const std::wstring& output_file_path);
+	void CheckIfOHReplayRunning();
+	void CaptureWindow();
+  BOOL SaveHBITMAPToFile(HBITMAP hBitmap, LPCTSTR lpszFileName);
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+
+	bool CopyWindowClientRectToTexture(
+		ID3D11Device* device,
+		ID3D11DeviceContext* context,
+		ID3D11Texture2D* sourceTexture,
+		HWND hwnd,
+		ID3D11Texture2D** outTexture)
+	{
+		if (!device || !context || !sourceTexture || !hwnd) return false;
+
+		// Step 1: Get client rect and convert to screen coordinates
+		RECT clientRect;
+		RECT winRect;
+		if (!::GetClientRect(hwnd, &clientRect))
+			return false;
+		if (!::GetWindowRect(hwnd, &winRect))
+			return false;
+
+		POINT topLeft = { clientRect.left, clientRect.top };
+		::ClientToScreen(hwnd, &topLeft);
+
+		int width = clientRect.right - clientRect.left;
+		int height = clientRect.bottom - clientRect.top;
+
+		// Step 2: Create destination texture
+		D3D11_TEXTURE2D_DESC srcDesc;
+		sourceTexture->GetDesc(&srcDesc);
+
+		D3D11_TEXTURE2D_DESC dstDesc = srcDesc;
+		dstDesc.Width = width;
+		dstDesc.Height = height;
+		dstDesc.BindFlags = 0;
+		dstDesc.MiscFlags = 0;
+		dstDesc.Usage = D3D11_USAGE_STAGING;
+		dstDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+
+		ID3D11Texture2D* destTexture = nullptr;
+		HRESULT hr = device->CreateTexture2D(&dstDesc, nullptr, &destTexture);
+		if (FAILED(hr)) return false;
+
+		// Step 3: Copy region from source to destination
+		D3D11_BOX srcBox;
+		srcBox.left = 0;         // adjust if sourceTexture isn't full screen
+		srcBox.top = topLeft.y - winRect.top;
+		srcBox.front = 0;
+		srcBox.right = srcBox.left + width;
+		srcBox.bottom = srcBox.top + height;
+		srcBox.back = 1;
+
+		context->CopySubresourceRegion(destTexture, 0, 0, 0, 0, sourceTexture, 0, &srcBox);
+
+		*outTexture = destTexture; // return the new texture
+		return true;
+	}
 };
 
 // used by EnumProcTopLevelWindowList function

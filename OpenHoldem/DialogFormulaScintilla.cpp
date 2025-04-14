@@ -1137,7 +1137,7 @@ void CDlgFormulaScintilla::DoFind(bool DirDown)
 		m_pActiveScinCtrl->SearchBackward((char *)m_FindLastSearch.GetString());
 }
 
-LRESULT CDlgFormulaScintilla::OnFindReplace(WPARAM, LPARAM lParam)
+LRESULT CDlgFormulaScintilla::OnFindReplace(WPARAM wParam, LPARAM lParam)
 {
 	LPFINDREPLACE lpFindReplace = (LPFINDREPLACE) lParam;
 

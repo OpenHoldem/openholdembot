@@ -30,24 +30,38 @@
 
 // ======================================================================================
 
-// WinRT
-#pragma comment(lib, "Dwmapi.lib")
-#pragma comment(lib, "windowsapp.lib")
-
-#include <dxgi.h>
+#include <Unknwn.h>
 #include <inspectable.h>
-#include <dxgi1_2.h>
-#include <d3d11.h>
+
+// WinRT
+//#include <winrt/base.h>
 #include <winrt/Windows.System.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Graphics.Capture.h>
-#include <windows.graphics.capture.interop.h>
-#include <windows.graphics.capture.h>
+#include <winrt/Windows.Graphics.DirectX.h>
+#include <winrt/Windows.Graphics.DirectX.Direct3D11.h>
 #include <windows.graphics.directx.direct3d11.interop.h>
-#include <roerrorapi.h>
-#include <ShlObj_core.h>
+#include <windows.graphics.capture.interop.h>
+
+// STL
+#include <atomic>
+#include <memory>
+
+// D3D
+#include <d3d11.h>
+#include <dxgi1_2.h>
+//#include <wincodec.h>
+
+// DWM
 #include <dwmapi.h>
-#include <filesystem>
+
+#pragma comment(lib, "Dwmapi.lib")
+#pragma comment(lib, "windowsapp.lib") // Required for WinRT
+
+//using namespace winrt;
+using namespace winrt::Windows::Graphics::Capture;
+//using namespace Windows::Graphics::DirectX;
+//using namespace Windows::Graphics::DirectX::Direct3D11;
 
 // Version
 #define VERSION_NUMBER			14.10
