@@ -191,7 +191,7 @@ void COpenHoldemView::OnTimer(UINT_PTR nIDEvent) {
 		// Only do this if we are not in the middle of a scraper/symbol update
 		if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 		{
-			UpdateDisplay(false);
+			this->UpdateDisplay(false);
       write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_2\n");
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 		}
