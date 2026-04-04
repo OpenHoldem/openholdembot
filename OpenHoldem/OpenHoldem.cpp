@@ -125,15 +125,26 @@ BOOL COpenHoldemApp::InitInstance() {
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).
-  /*fn.Format("%s\\oh%d.log", _startup_path, theApp.sessionnum);
-  struct stat file_stats = { 0 };
-  if (stat(fn.GetString(), &file_stats) == 0) {
-    unsigned long int max_file_size = 1E06 * Preferences()->log_max_logsize();
-    size_t file_size = file_stats.st_size;
-    if (file_size > max_file_size) {
-      delete_log();
-    }*/
-	start_log(p_sessioncounter->session_id(), false); //!!!!!
+	// Evaluate if the log file should be reset based on size preferences
+	bool should_delete_log = false;
+
+	// Get the correct log path
+	CString fn_check = LogFilePath(p_sessioncounter->session_id());
+
+	struct stat file_stats;
+	if (stat(fn_check.GetString(), &file_stats) == 0)
+	{
+		long max_mb = Preferences()->log_max_logsize();
+
+		// Convert MB preference to bytes (1024 * 1024)
+		if (max_mb > 0 && file_stats.st_size >= (max_mb * 1024 * 1024))
+		{
+			should_delete_log = true;
+		}
+	}
+
+	// Initialize logging with our calculated decision
+	start_log(p_sessioncounter->session_id(), should_delete_log);
   // ...then re-Load the preferences immediately after creation 
   // of the log-file again, as We might want to log the preferences too,
   // which was not yet possible some lines above.
