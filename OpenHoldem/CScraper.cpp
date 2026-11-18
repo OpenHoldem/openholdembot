@@ -1057,7 +1057,8 @@ bool CScraper::IsIdenticalScrape() {
 	// Copy into "last" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);
 	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
-	SelectObject(hdc, old_bitmap);
+	// Restore the bitmap of the memory DC (was: of the window DC)
+	SelectObject(hdcCompatible, old_bitmap);
 
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	write_log(Preferences()->debug_scraper(), "[CScraper] IsIdenticalScrape() false\n");

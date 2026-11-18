@@ -267,9 +267,11 @@ int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text)
 }
 
 int CTransform::WTypeTransform(RMapCI region, const HDC hdc, CString *text) {
-  // Just take the colour of the pixel in the middle of the region
-  int x_pos = (region->second.right + region->second.left) / 2;
-  int y_pos = (region->second.bottom + region->second.top) / 2;
+  // Just take the colour of the pixel in the middle of the region.
+  // The DC holds a bitmap of the region only (all callers),
+  // so the coordinates are relative to the region, not to the window.
+  int x_pos = (region->second.right - region->second.left) / 2;
+  int y_pos = (region->second.bottom - region->second.top) / 2;
   int colour = GetPixel(hdc, x_pos, y_pos); 
   int web_safe_colour = ClosestWebSafeColour(colour);
   // Now transform the result to text, 
@@ -507,7 +509,7 @@ int CTransform::DoPlainFontScan(RMapCI region, const int width, const int height
 
 	while (vert_band_left<width && backg_band==true) 
 	{
-		for (y = 0; y<=height; y++) 
+		for (y = 0; y<height; y++) 
 		{
 			if (ch[vert_band_left][y]) 
 			{
@@ -536,8 +538,9 @@ int CTransform::DoPlainFontScan(RMapCI region, const int width, const int height
 		// start at vert_band_left+MAX_SINGLE_CHAR_WIDTH
 		temp_right = vert_band_left + MAX_SINGLE_CHAR_WIDTH;
 
-		if (temp_right>width)
-			temp_right = width;
+		// Last valid column is width-1 (CalcHexmash includes temp_right)
+		if (temp_right>width-1)
+			temp_right = width-1;
 
 		bool continue_looping = true;
 		do 
@@ -601,7 +604,7 @@ int CTransform::DoFuzzyFontScan(RMapCI region, const int width, const int height
 		backg_band = true;
 		while (vert_band_left<width && backg_band==true) 
 		{
-			for (y = 0; y<=height; y++) 
+			for (y = 0; y<height; y++) 
 			{
 				if (ch[vert_band_left][y]) 
 				{

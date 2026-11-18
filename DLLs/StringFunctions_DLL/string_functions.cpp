@@ -123,6 +123,18 @@ inline bool IsStandardASCII(char c) {
   return ((c >= 0) && (c <= 0x7F));
 }
 
+inline bool ExtendedIsAlpha(char c) {
+  if (!IsStandardASCII(c)) return false;
+  return (isalpha(c) != 0);
+}
+
+// "5c", "2.5K", "1M" are multipliers, "5 chips" or "2 more" are not.
+// pos is the index of the multiplier letter.
+inline bool IsStandaloneMultiplier(const CString *s, int pos) {
+  int next = pos + 1;
+  return ((next >= s->GetLength()) || !ExtendedIsAlpha(s->GetAt(next)));
+}
+
 inline bool ExtendedIsDigit(char c) {
   // Characters from the extended ASCII-set >= 0x80 (non-english currencies)
   // could cause assertions for (signed) chars inside isdigit()
@@ -221,15 +233,21 @@ void RemoveSpacesInsideNumbers(CString *s) {
 }
 
 void ReplaceCommasInNumbersByDots(CString *s) {
-  int length = s->GetLength();
-  int last_index = length - 1;
-  if (length > 0) {
+  if (s->GetLength() > 0) {
     char first_char = s->GetAt(0);
     if ((first_char == '.') || (first_char == ',')) {
-      s->SetAt(0, kCharToBeRemoved);
-      s->Remove(kCharToBeRemoved);
+      if ((s->GetLength() > 1) && ExtendedIsDigit(s->GetAt(1))) {
+        // ".50" or ",50": decimal separator without leading zero
+        *s = "0." + s->Mid(1);
+      } else {
+        s->SetAt(0, kCharToBeRemoved);
+        s->Remove(kCharToBeRemoved);
+      }
     }
   }
+  // Length may have changed above
+  int length = s->GetLength();
+  int last_index = length - 1;
   for (int i = 1; i < last_index; ++i) {
     if ((s->GetAt(i) == ',')
       && isdigit(s->GetAt(i - 1))
@@ -384,12 +402,14 @@ void ReplaceOutlandischCurrencyByDollarsandCents(CString *s) {
 }
 
 void RemoveSpacesInFrontOfCentMultipliers(CString *s) {
+  // Also for thousands and millions: "2.5 K", "1.2 M"
   int length = s->GetLength();
   int last_index = length - 2;
   for (int i = 0; i < last_index; ++i) {
-    if (isdigit(s->GetAt(i))
+    if (ExtendedIsDigit(s->GetAt(i))
       && (isspace(s->GetAt(i + 1)))
-      && (s->GetAt(i + 2) == 'c')) {
+      && (strchr("cCkKmM", s->GetAt(i + 2)) != NULL)
+      && IsStandaloneMultiplier(s, i + 2)) {
       s->SetAt(i + 1, kCharToBeRemoved);
     }
   }
@@ -416,8 +436,13 @@ void RemoveExtraDotsInNumbers(CString *s) {
       // or if we already saw more than 2 digits, e.g. 1.234 
       // then we found an extra dot, separating 1000s or milions.
       // This extra dot has to be removed.
-      if ((dot_inside_number_seen) 
-        || (digits_seen > 2)) {
+      // "0.125" is a decimal number: a thousands separator
+      // never follows a single leading zero
+      bool after_single_leading_zero = (i >= 1)
+        && (s->GetAt(i - 1) == '0')
+        && ((i == 1) || !ExtendedIsDigit(s->GetAt(i - 2)));
+      if ((dot_inside_number_seen)
+        || ((digits_seen > 2) && !after_single_leading_zero)) {
         s->SetAt(i, kCharToBeRemoved);
       }
       dot_inside_number_seen = true;
@@ -532,31 +557,49 @@ double StringToMoney(const CString inStr) {
     case '€':
     case '£':
       if (activeValue.GetLength() > 0) {
-        possibleValues.Add(activeValue);
+        // Postfix currency, e.g. "25" + Euro: this number has the symbol
+        int index = (int)possibleValues.Add(activeValue);
         possibleValuesMultiplier.Add(1);
         activeValue.Empty();
+        if (iValueWithCurrencySymbol < 0) {
+          iValueWithCurrencySymbol = index;
+        }
+      } else {
+        // Symbol not directly after a number:
+        // prefix ("$25", "$ 25") if a number follows, else postfix ("25 " + Euro)
+        const char *next = str + 1;
+        while (*next == ' ') ++next;
+        bool number_follows = (ExtendedIsDigit(*next) || (*next == '.'));
+        if (number_follows || (possibleValues.GetSize() == 0)) {
+          currencySymbol = true;
+        } else if (iValueWithCurrencySymbol < 0) {
+          iValueWithCurrencySymbol = (int)possibleValues.GetSize() - 1;
+        }
       }
-      currencySymbol = true;
       break;
     default:
       if (activeValue.GetLength() > 0) {
         int index = (int)possibleValues.Add(activeValue);
-        if (currencySymbol) {
+        if (currencySymbol && (iValueWithCurrencySymbol < 0)) {
           iValueWithCurrencySymbol = index;
         }
+        // Only the number directly after the symbol
+        currencySymbol = false;
+        // Multiplier letters only as a unit, not as the start of a word ("5 chips")
+        bool standalone = ((str[1] == '\0') || !ExtendedIsAlpha(str[1]));
         // Support for multiplier-symbols in bets and balances
         // k = $1.000
         // m = $1.000.000
         // c = $0.01
         // Both upper and lower cases
         // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18939
-        if (*str == '¢' || *str == 'c' || *str == 'C') {
+        if (standalone && (*str == '¢' || *str == 'c' || *str == 'C')) {
           possibleValuesMultiplier.Add(-100);
         }
-        else if (*str == 'k' || *str == 'K') {
+        else if (standalone && (*str == 'k' || *str == 'K')) {
           possibleValuesMultiplier.Add(1000);
         }
-        else if (*str == 'm' || *str == 'M') {
+        else if (standalone && (*str == 'm' || *str == 'M')) {
           possibleValuesMultiplier.Add(1000000);
         }
         else {
@@ -571,7 +614,7 @@ double StringToMoney(const CString inStr) {
   if (activeValue.GetLength() > 0) {
     int index = (int)possibleValues.Add(activeValue);
     possibleValuesMultiplier.Add(1);
-    if (currencySymbol) {
+    if (currencySymbol && (iValueWithCurrencySymbol < 0)) {
       iValueWithCurrencySymbol = index;
     }
   }
