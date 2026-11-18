@@ -123,8 +123,8 @@ WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) RETURN Ca
 WHEN (prevaction == -1) RETURN Fold FORCE
 // No autoplayer-actions, but human being acting at ManualMode
 WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) FORCE
-// None
-WHEN (prevaction == -1) RETURN None FORCE
+// None (k_prevaction_undefined = -2)
+WHEN (prevaction == -2) RETURN None FORCE
 WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 
 ##BotsLastPreflopAction##

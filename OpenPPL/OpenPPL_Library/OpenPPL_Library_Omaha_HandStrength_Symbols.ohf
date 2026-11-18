@@ -340,9 +340,6 @@ Omaha_FlushDraw_Counter == 2
 OR (RankOfTopPairInHand > 0 AND TripsOnBoard)
 OR (HaveTrips AND BitCount(rankbitsplayer & rankbitscommon & ConstAllRanksWithoutAceLow)>=2)
 
-##Omaha_NutFullHouseOrFourOfAKind##
-msgbox$NutFullHouseOrFourOfAKind_Unot_Uyet_Uimplemented_D
-
 ##Omaha_HaveNutStraight##
 WHEN NOT Omaha_HaveStraight RETURN false FORCE
 WHEN Omaha_NumberOfPossibleBetterStraights = 0 RETURN true FORCE

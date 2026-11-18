@@ -288,6 +288,10 @@ Fold
 // as it indicates the weakness and avoids any pitfalls.
 999
 
+##HINT_Omaha_NutFullHouseOrFourOfAKind_Not_Yet_Implemented##
+// Conservative default: treat it like "no full house at all"
+HINT_We_Dont_Have_A_FullHouse_At_All
+
 ##HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function##
 -1
 
