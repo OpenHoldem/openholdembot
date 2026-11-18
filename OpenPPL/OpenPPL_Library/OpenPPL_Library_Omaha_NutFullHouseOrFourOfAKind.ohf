@@ -66,3 +66,11 @@
 
 
 ##Omaha_NutFullHouseOrFourOfAKind##
+// Not yet implemented for Omaha.
+// Previously this function was empty and evaluated to 0,
+// i.e. "better than the nuts", so conditions like
+// "NutFullHouseOrFourOfAKind <= 2" were always true for Omaha.
+// Now we return a named hint (value 999, same as "no full house at all"),
+// which is a conservative default and visible in the autoplayer-trace.
+// (A msgbox$ would block the autoplayer on every heartbeat.)
+HINT_Omaha_NutFullHouseOrFourOfAKind_Not_Yet_Implemented

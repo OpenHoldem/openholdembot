@@ -92,7 +92,8 @@ double CFunction::Evaluate(bool log /* = false */) {
       "Last function: %s", _name);
 	  MessageBox_Error_Warning(error_message);
 	  p_autoplayer->EngageAutoplayer(false);
-	  ++recursion_depth;
+	  // Undo the increment above, as we leave early
+	  --recursion_depth;
 	  return kUndefinedZero;
   }
   // Keep track of the currently evaluated function

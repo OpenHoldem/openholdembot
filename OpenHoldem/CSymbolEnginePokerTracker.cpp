@@ -78,7 +78,8 @@ void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s) {
 }
 
 bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s) {
-  if (s.Left(2) == "pt") {
+  if (s.Left(2) != "pt") {
+    // Not a PokerTracker symbol at all
     return false;
   }
   if (s.Left(3) != "pt_") {

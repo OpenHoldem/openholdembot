@@ -83,7 +83,10 @@ AND rankhiplayer < TopFlopCard
 AND rankhiplayer > SecondTopFlopCard
 
 ##HoldEm_HadSecondOverPairOnTurn##
-HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
+// Still second overpair on the turn, if the turn either pairs the top flop card
+// or is lower than our pair. A turn between our pair and the top flop card
+// (e.g. TT on K72-J) makes us third pair.
+HadSecondOverPairOnFlop AND (($$cr3 == TopFlopCard) OR ($$cr3 < rankhiplayer))
 
 ##HoldEm_HadPairOnFlop##
 // Pair in the hand

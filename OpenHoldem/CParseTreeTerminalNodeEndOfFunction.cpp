@@ -59,9 +59,15 @@ CParseTreeTerminalNodeEndOfFunction::~CParseTreeTerminalNodeEndOfFunction() {
 
 double CParseTreeTerminalNodeEndOfFunction::Evaluate(bool log /* = false */) {
   if (memcmp(_terminal_name, "Default", 7) == 0) {
+    // Remember the previous state (default logic might be nested)
+    // and restore it after evaluation.
+    // Previously the flag got reset after the return-statement,
+    // i.e. never, which disabled the PokerTracker-warning for user-code.
+    bool previously_evaluating_default_logic = _evaluating_defailt_logic;
     _evaluating_defailt_logic = true;
-    return CParseTreeTerminalNodeIdentifier::Evaluate(log);
-    _evaluating_defailt_logic = false;
+    double result = CParseTreeTerminalNodeIdentifier::Evaluate(log);
+    _evaluating_defailt_logic = previously_evaluating_default_logic;
+    return result;
   } else {
     return CParseTreeTerminalNodeIdentifier::Evaluate(log);
   }
