@@ -213,8 +213,10 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
 		  return IsGreater(value_of_first_sibbling, value_of_second_sibbling);
 	  case kTokenOperatorGreaterOrEqual: 
 		  return IsGreaterOrEqual(value_of_first_sibbling, value_of_second_sibbling);
-	  case kTokenOperatorNotEqual: 
-      return value_of_first_sibbling != value_of_second_sibbling;
+	  case kTokenOperatorNotEqual:
+      // Must be the exact negation of kTokenOperatorEquality,
+      // i.e. use the same epsilon-comparison.
+      return !IsEqual(value_of_first_sibbling, value_of_second_sibbling);
 	  case kTokenOperatorLogicalXOr: 
       VerifyBooleanOperand(value_of_first_sibbling);
       VerifyBooleanOperand(value_of_second_sibbling);

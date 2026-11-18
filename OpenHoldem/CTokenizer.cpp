@@ -466,12 +466,15 @@ NegativeNumber:
 char* CTokenizer::GetTokenString() {
 	assert(SIZE_OF_TOKEN >= 0);
 	// >= because we need one additional char for \0.
-	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)	{
-		CParseErrors::Error("Identifier exceeds technical maximum of 256 characters.\n"
+	int size_to_copy = SIZE_OF_TOKEN;
+	if (size_to_copy >= kMaxSizeOfToken)	{
+		CParseErrors::Error("Identifier exceeds technical maximum of 1023 characters.\n"
       "WeHaveAVerbosityFetishTooButWhatYouDidIsProbablyABitTooMuch.\n");
+		// Truncate to avoid a buffer-overflow
+		size_to_copy = kMaxSizeOfToken - 1;
 	}
-	memcpy(last_token_string, TOKEN_ADDRESS, SIZE_OF_TOKEN);
-	last_token_string[SIZE_OF_TOKEN] = '\0';
+	memcpy(last_token_string, TOKEN_ADDRESS, size_to_copy);
+	last_token_string[size_to_copy] = '\0';
 	return last_token_string;
 }
 
@@ -498,34 +501,41 @@ inline void CTokenizer::SkipNextCharacter() {
   _token_end_pointer++;
 }
 
+// Comments may contain any byte (e.g. non-ASCII characters
+// copy-pasted from web-pages), so we access the input-buffer directly
+// instead of using CURRENT_CHARACTER() / SkipNextCharacter(),
+// which would report errors and advance the input-pointer
+// a second time on non-ASCII characters, swallowing line-breaks.
 void CTokenizer::SkipToEndOfLine() {
-	while (CURRENT_CHARACTER() != '\n')	{
-		SkipNextCharacter();
+	while ((input_buffer[_token_end_pointer] != '\n')
+	    && (input_buffer[_token_end_pointer] != '\0'))	{
+		_token_end_pointer++;
 	}
-	// And skip the end of line too
-	SkipNextCharacter();
-  line_relative++;
+	if (input_buffer[_token_end_pointer] == '\n') {
+	  // And skip the end of line too
+	  _token_end_pointer++;
+	  line_relative++;
+	}
 }
 
 void CTokenizer::SkipToEndOfMultiLineComment() {
-	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
-		  && (CURRENT_CHARACTER() != '\0'))	{
-    if (CURRENT_CHARACTER() == '\n') {
+	while (((input_buffer[_token_end_pointer] != '*') || (NEXT_CHARACTER != '/'))
+		  && (input_buffer[_token_end_pointer] != '\0'))	{
+    if (input_buffer[_token_end_pointer] == '\n') {
       line_relative++;
     }
-		SkipNextCharacter();
+		_token_end_pointer++;
 	}
-	if (CURRENT_CHARACTER() == '\0') {
+	if (input_buffer[_token_end_pointer] == '\0') {
 		CParseErrors::Error("End of function reached while looking for end of comment.\n"
       "/*\n"
       "  Every multi-line comment needs to be terminated\n"
       "  by a star and a slash.\n"
       "*/\n");
-		SkipNextCharacter();
+		// Stay at the terminating null, never skip beyond the end of the buffer
 	}	else	{
 		// Skip the remaining "*/"
-		SkipNextCharacter();
-		SkipNextCharacter();
+		_token_end_pointer += 2;
 	}
 }
 

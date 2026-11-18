@@ -23,6 +23,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
+#include "NumericalFunctions.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 const int prime_coded_card_ranks[k_rank_ace+1] = {
@@ -177,7 +178,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const CString na
 	int prime_coded_search_expression = PrimeCodedRanks(hand_or_board_expression);
   write_log(Preferences()->debug_hand_and_board_expressions(), 
     "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded searched ranks: %i\n",
-    prime_coded_available_ranks);
+    prime_coded_search_expression);
 	if ((prime_coded_available_ranks % prime_coded_search_expression) != 0)	{
 		// Division without reminder not possible.
 		// Therefore different primes in the search-expression
@@ -195,8 +196,42 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const CString na
 		write_log(Preferences()->debug_hand_and_board_expressions(), 
 			"[CSymbolEngineOpenPPLHandAndBoardExpression] rank bits for %s = %i\n",
 			hand_or_board_expression.GetString(), rankbits_to_be_searched);
-		if (is_hand_expression)	{
-			// Suited hand-expression
+		if (is_hand_expression && p_engine_container->symbol_engine_isomaha()->isomaha()) {
+			// Suited hand-expression for Omaha.
+			// issuited() only compares the first two hole-cards,
+			// so we have to check that all searched ranks are suited together,
+			// i.e. that they exist in hole-cards of one and the same suit.
+			bool suited_ranks_found = false;
+			for (int i = 0; i < kNumberOfCardsPerPlayerOmaha; ++i) {
+				Card* reference_card = p_table_state->User()->hole_cards(i);
+				if (!reference_card->IsKnownCard()) {
+					continue;
+				}
+				int suit = reference_card->GetSuit();
+				int rankbits_of_this_suit = 0;
+				for (int j = 0; j < kNumberOfCardsPerPlayerOmaha; ++j) {
+					Card* card = p_table_state->User()->hole_cards(j);
+					if (card->IsKnownCard() && (card->GetSuit() == suit)) {
+						int rank = card->GetOpenHoldemRank();
+						SetBit(&rankbits_of_this_suit, rank);
+						if (rank == k_rank_ace) {
+							SetBit(&rankbits_of_this_suit, k_rank_ace_low);
+						}
+					}
+				}
+				if ((rankbits_to_be_searched & rankbits_of_this_suit) == rankbits_to_be_searched) {
+					suited_ranks_found = true;
+					break;
+				}
+			}
+			if (!suited_ranks_found) {
+				write_log(Preferences()->debug_hand_and_board_expressions(),
+					"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, because searched ranks are not suited (Omaha)\n");
+				*result = false;
+				return true;
+			}
+		}	else if (is_hand_expression)	{
+			// Suited hand-expression (HoldEm)
 			// Ranks already checked, there are only 2, this simplifies things
 			if (!p_engine_container->symbol_engine_cards()->issuited()) {
         write_log(Preferences()->debug_hand_and_board_expressions(), 

@@ -605,7 +605,7 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     return NULL;
   }
   token_ID = _tokenizer.GetToken();
-  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenNumber) || (token_ID = kTokenCards)) {
+  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenNumber) || (token_ID == kTokenCards)) {
     CString next_symbol = _tokenizer.GetTokenString();
     if (!SymbolLooksLikePartOfShankyHandOrBoardExpression(next_symbol)) {
       break;
@@ -634,7 +634,7 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpr
   // We don't handle other valid code like "In Bigbli n d" ;-)
   CString position_symbol = "In";
   int token_ID = _tokenizer.GetToken();
-  assert(token_ID = kTokenShankyKeywordIn);
+  assert(token_ID == kTokenShankyKeywordIn);
   token_ID = _tokenizer.GetToken();
   if (token_ID != kTokenIdentifier) {
     CParseErrors::UnexpectedToken("Unexpected token after keyword \"In\".\n",
