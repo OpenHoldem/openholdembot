@@ -132,6 +132,7 @@
 #define PT4_QUERY_SUPPORT__RFI_MP1_9MAX     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__RFI_MP2_9MAX     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__RFI_EP_9MAX     				(TRUE)	// ""
+#define PT4_QUERY_SUPPORT__RFI_UTG_9MAX     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__RFI_EP1_9MAX     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__RFI_SB_9MAX     				(TRUE)	// ""
 
@@ -240,6 +241,7 @@ const int k_number_of_pokertracker_stats =  //GENERAL STATS
 + (PT4_QUERY_SUPPORT__RFI_MP1_9MAX ? 1 : 0)
 + (PT4_QUERY_SUPPORT__RFI_MP2_9MAX ? 1 : 0)
 + (PT4_QUERY_SUPPORT__RFI_EP_9MAX ? 1 : 0)
++ (PT4_QUERY_SUPPORT__RFI_UTG_9MAX ? 1 : 0)
 + (PT4_QUERY_SUPPORT__RFI_EP1_9MAX ? 1 : 0)
 + (PT4_QUERY_SUPPORT__RFI_SB_9MAX ? 1 : 0)
 // OPP
@@ -314,10 +316,10 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						 as ActionCount, \
 				sum(CASE WHEN LA.action LIKE '__%' OR (LA.action LIKE '_' AND (S.amt_before > (CL.amt_bb + S.amt_ante)) AND (S.amt_p_raise_facing < (S.amt_before - (S.amt_blind + S.amt_ante))) AND (S.flg_p_open_opp OR S.cnt_p_face_limpers > 0 OR S.flg_p_3bet_opp OR S.flg_p_4bet_opp) ) THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_player_statistics as S, lookup_actions as LA, cash_limit as CL \
+				 FROM	player as P, %TYPE%_hand_player_statistics as S, lookup_actions as LA, %LIMIT_TABLE% as CL \
 				 WHERE	S.id_player = P.id_player AND \
 					LA.id_action = S.id_action_p AND \
-					CL.id_limit = S.id_limit AND \
+					CL.%LIMIT_ID% = S.%LIMIT_ID% AND \
 					S.id_gametype = %GAMETYPE% AND \
 					P.id_site = %SITEID% AND \
 					P.player_name LIKE '%SCREENNAME%') foo",
@@ -462,12 +464,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_btn AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -491,12 +493,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_co AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -520,12 +522,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -549,12 +551,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_ep AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -578,12 +580,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_sb AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -607,12 +609,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_btn AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -636,12 +638,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_co AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -665,12 +667,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 						S.position = 2 AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
@@ -695,12 +697,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 						S.position = 3 AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
@@ -725,12 +727,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
 			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 						S.position = 4 AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
@@ -755,12 +757,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
-			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      lookup_positions.flg_ep AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 						S.position = 5 AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
@@ -785,13 +787,43 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
-			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      lookup_positions.flg_ep AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 						S.position = 6 AND \
+			            S.id_gametype = %GAMETYPE% AND \
+						P.id_site = %SITEID% AND \
+						P.player_name LIKE '%SCREENNAME%') foo",
+			// stat_group
+	        pt_group_basic
+	},
+#endif
+
+#if PT4_QUERY_SUPPORT__RFI_UTG_9MAX
+	// PT4 query to get pre-flop raise first in
+	{
+		// name
+		"rfi_utg_9max",
+		// description_for_editor
+		"Poker Tracker pre-flop raise first in - Position UTG _9max",
+		// query
+		"SELECT(case when ActionOpportunities = 0 then - 1 \
+			 else cast(ActionCount as real) / ActionOpportunities \
+			      end) as result \
+			FROM(SELECT   sum(case when(s.flg_p_first_raise AND s.flg_p_open_opp) then  1 else  0 end) \
+			      as ActionCount, \
+			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
+			      as ActionOpportunities \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
+			WHERE   S.id_player = P.id_player AND \
+			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
+			      lookup_positions.flg_ep AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
+						S.position = 7 AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
 						P.player_name LIKE '%SCREENNAME%') foo",
@@ -815,12 +847,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			      as ActionCount, \
 			sum((case when(s.flg_p_open_opp) then  1 else  0 end)) \
 			      as ActionOpportunities \
-			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %TYPE%_limit AS TL \
+			FROM   player as P, %TYPE%_hand_player_statistics as S, lookup_positions, %LIMIT_TABLE% AS TL \
 			WHERE   S.id_player = P.id_player AND \
 			(lookup_positions.position = S.position  AND lookup_positions.cnt_players = S.cnt_players_lookup_position) AND \
-			      lookup_positions.flg_mp AND \
-			      TL.id_limit = S.id_limit AND \
-			      TL.limit_name NOT LIKE '%(6 max)' AND \
+			      lookup_positions.flg_sb AND \
+			      TL.%LIMIT_ID% = S.%LIMIT_ID% AND \
+			      TL.%LIMIT_NAME% NOT LIKE '%(6 max)' AND \
 						S.position = 9 AND \
 			            S.id_gametype = %GAMETYPE% AND \
 						P.id_site = %SITEID% AND \
@@ -1935,9 +1967,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker 4bet + ratio",
 		// query
 		"SELECT (cast(sum(case when S.cnt_p_raise > 0 then 1 else 0 end) as decimal) / \
-		(cast(sum(case when S.id_hand > 0 then 1 else 0 end) as decimal) - cast(sum(case when LA.action = '' then 1 else 0 end) as decimal))) * \
+		NULLIF(cast(sum(case when S.id_hand > 0 then 1 else 0 end) as decimal) - cast(sum(case when LA.action = '' then 1 else 0 end) as decimal), 0)) * \
 		(cast(sum(case when S.flg_p_first_raise and S.flg_p_4bet then 1 else 0 end) as decimal) / \
-			cast(sum(case when S.flg_p_4bet_opp AND S.flg_p_first_raise then 1 else 0 end) as decimal)) as result \
+			NULLIF(cast(sum(case when S.flg_p_4bet_opp AND S.flg_p_first_raise then 1 else 0 end) as decimal), 0)) as result \
 			FROM	player as P, %TYPE%_hand_player_statistics as S, lookup_actions as LA \
 			WHERE	S.id_player = P.id_player AND \
 			LA.id_action = S.id_action_p AND \
@@ -1958,7 +1990,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker fold to pf squeeze",
 		// query
 		"SELECT ( cast(sum(case when S.flg_p_squeeze_def_opp AND S.enum_p_squeeze_action='F' then 1 else 0 end) as decimal) / \
-		cast(sum(case when S.flg_p_squeeze_def_opp then 1 else 0 end) as decimal) ) as result \
+		NULLIF(cast(sum(case when S.flg_p_squeeze_def_opp then 1 else 0 end) as decimal), 0) ) as result \
 		FROM	player as P, %TYPE%_hand_player_statistics as S \
 			WHERE	S.id_player = P.id_player AND \
 			S.id_gametype = %GAMETYPE% AND \
@@ -1978,7 +2010,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker fold to squeeze as raiser",
 		// query
 		"SELECT ( cast(sum(case when S.flg_p_squeeze_def_opp AND S.enum_p_squeeze_action='F' AND S.flg_p_first_raise then 1 else 0 end) as decimal) / \
-		cast(sum(case when S.flg_p_squeeze_def_opp AND S.flg_p_first_raise then 1 else 0 end) as decimal) ) as result \
+		NULLIF(cast(sum(case when S.flg_p_squeeze_def_opp AND S.flg_p_first_raise then 1 else 0 end) as decimal), 0) ) as result \
 		FROM	player as P, %TYPE%_hand_player_statistics as S \
 			WHERE	S.id_player = P.id_player AND \
 			S.id_gametype = %GAMETYPE% AND \
@@ -1998,7 +2030,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker fold to squeeze as caller",
 		// query
 		"SELECT ( cast(sum(case when S.flg_p_squeeze_def_opp AND S.enum_p_squeeze_action='F' AND NOT S.flg_p_first_raise then 1 else 0 end) as decimal) / \
-		cast(sum(case when S.flg_p_squeeze_def_opp AND NOT S.flg_p_first_raise then 1 else 0 end) as decimal) ) as result \
+		NULLIF(cast(sum(case when S.flg_p_squeeze_def_opp AND NOT S.flg_p_first_raise then 1 else 0 end) as decimal), 0) ) as result \
 		FROM	player as P, %TYPE%_hand_player_statistics as S \
 			WHERE	S.id_player = P.id_player AND \
 			S.id_gametype = %GAMETYPE% AND \
@@ -2020,13 +2052,13 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		FROM (SELECT sum(CASE WHEN(S.flg_p_3bet_def_opp OR S.flg_p_4bet_def_opp) AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND S.flg_f_bet AND NOT(S.flg_f_cbet_opp) AND((cash_hand_summary.cnt_players > 2 AND S.val_p_raise_aggressor_pos < S.position) or (cash_hand_summary.cnt_players = 2 and S.flg_blind_b)) THEN 1 ELSE 0 END) \
+		FROM (SELECT sum(CASE WHEN(S.flg_p_3bet_def_opp OR S.flg_p_4bet_def_opp) AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND S.flg_f_bet AND NOT(S.flg_f_cbet_opp) AND((%TYPE%_hand_summary.cnt_players > 2 AND S.val_p_raise_aggressor_pos < S.position) or (%TYPE%_hand_summary.cnt_players = 2 and S.flg_blind_b)) THEN 1 ELSE 0 END) \
 				 as ActionCount, \
-				 sum(CASE WHEN(S.flg_p_3bet_def_opp OR S.flg_p_4bet_def_opp) AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND(S.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND((cash_hand_summary.cnt_players > 2 AND S.val_p_raise_aggressor_pos < S.position) or (cash_hand_summary.cnt_players = 2 AND S.flg_blind_b)) THEN 1 ELSE 0 END) \
+				 sum(CASE WHEN(S.flg_p_3bet_def_opp OR S.flg_p_4bet_def_opp) AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND(S.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND((%TYPE%_hand_summary.cnt_players > 2 AND S.val_p_raise_aggressor_pos < S.position) or (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_blind_b)) THEN 1 ELSE 0 END) \
 				 as ActionOpportunities \
-			FROM	player as P, cash_hand_player_statistics as S, cash_hand_summary \
+			FROM	player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary \
 			WHERE	S.id_player = P.id_player AND \
-				 cash_hand_summary.id_hand = S.id_hand AND \
+				 %TYPE%_hand_summary.id_hand = S.id_hand AND \
 				 S.id_gametype = %GAMETYPE% AND \
 				 P.id_site = %SITEID% AND \
 				 P.player_name LIKE '%SCREENNAME%') foo",
@@ -2146,13 +2178,13 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		 FROM	(SELECT	sum(CASE WHEN substring(LA.action from 2 for 1) = 'F' AND S.flg_f_bet AND S.flg_f_face_raise AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_f from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_blind_s)) THEN 1 ELSE 0 END) \
+		 FROM	(SELECT	sum(CASE WHEN substring(LA.action from 2 for 1) = 'F' AND S.flg_f_bet AND S.flg_f_face_raise AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_f from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_blind_s)) THEN 1 ELSE 0 END) \
 						 as ActionCount, \
-				sum(CASE WHEN S.flg_f_bet AND S.flg_f_face_raise AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_f from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_blind_s)) THEN 1 ELSE 0 END) \
+				sum(CASE WHEN S.flg_f_bet AND S.flg_f_face_raise AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_f from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_blind_s)) THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_player_statistics as S, cash_hand_summary, lookup_actions as LA \
+				 FROM	player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary, lookup_actions as LA \
 				 WHERE	S.id_player = P.id_player AND \
-					cash_hand_summary.id_hand = S.id_hand AND \
+					%TYPE%_hand_summary.id_hand = S.id_hand AND \
 					LA.id_action = S.id_action_f AND \
 					S.id_gametype = %GAMETYPE% AND \
 					P.id_site = %SITEID% AND \
@@ -2173,13 +2205,13 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		 FROM	(SELECT	sum(CASE WHEN substring(LA.action from 2 for 1) = 'F' AND S.flg_f_bet AND S.flg_f_face_raise AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_f from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_blind_s)) AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
+		 FROM	(SELECT	sum(CASE WHEN substring(LA.action from 2 for 1) = 'F' AND S.flg_f_bet AND S.flg_f_face_raise AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_f from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_blind_s)) AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
 						 as ActionCount, \
-				sum(CASE WHEN S.flg_f_bet AND S.flg_f_face_raise AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_f from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_blind_s)) AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
+				sum(CASE WHEN S.flg_f_bet AND S.flg_f_face_raise AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_f from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_blind_s)) AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_player_statistics as S, cash_hand_summary, lookup_actions as LA \
+				 FROM	player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary, lookup_actions as LA \
 				 WHERE	S.id_player = P.id_player AND \
-					cash_hand_summary.id_hand = S.id_hand AND \
+					%TYPE%_hand_summary.id_hand = S.id_hand AND \
 					LA.id_action = S.id_action_f AND \
 					S.id_gametype = %GAMETYPE% AND \
 					P.id_site = %SITEID% AND \
@@ -2200,13 +2232,13 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		 FROM	(SELECT	sum(CASE WHEN (LA.action = 'C' OR LA.action = 'CC') AND S.flg_p_face_raise AND S.flg_f_bet AND char_length(cash_hand_summary.str_aggressors_p) = 2 AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_p from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_f_has_position)) THEN 1 ELSE 0 END) \
+		 FROM	(SELECT	sum(CASE WHEN (LA.action = 'C' OR LA.action = 'CC') AND S.flg_p_face_raise AND S.flg_f_bet AND char_length(%TYPE%_hand_summary.str_aggressors_p) = 2 AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_p from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_f_has_position)) THEN 1 ELSE 0 END) \
 						 as ActionCount, \
-				sum(CASE WHEN (LA.action = 'C' OR LA.action = 'CC') AND S.flg_p_face_raise AND S.flg_f_open_opp AND char_length(cash_hand_summary.str_aggressors_p) = 2 AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_p from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_f_has_position)) THEN 1 ELSE 0 END) \
+				sum(CASE WHEN (LA.action = 'C' OR LA.action = 'CC') AND S.flg_p_face_raise AND S.flg_f_open_opp AND char_length(%TYPE%_hand_summary.str_aggressors_p) = 2 AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_p from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_f_has_position)) THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_player_statistics as S, cash_hand_summary, lookup_actions as LA \
+				 FROM	player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary, lookup_actions as LA \
 				 WHERE	S.id_player = P.id_player AND \
-					cash_hand_summary.id_hand = S.id_hand AND \
+					%TYPE%_hand_summary.id_hand = S.id_hand AND \
 					LA.id_action = S.id_action_p AND \
 					S.id_gametype = %GAMETYPE% AND \
 					P.id_site = %SITEID% AND \
@@ -2280,9 +2312,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		 FROM	(SELECT	sum(CASE WHEN not(S.flg_p_face_raise) AND LA_P.action LIKE '%R' and S.flg_f_open_opp AND S.amt_f_bet_facing > 0 AND substring(LA_F.action from 1 for 2) = 'XC' AND S.flg_p_3bet THEN 1 ELSE 0 END) \
+		 FROM	(SELECT	sum(CASE WHEN LA_P.action LIKE '%R' and S.flg_f_open_opp AND S.amt_f_bet_facing > 0 AND substring(LA_F.action from 1 for 2) = 'XC' AND S.flg_p_3bet THEN 1 ELSE 0 END) \
 						 as ActionCount, \
-				sum(CASE WHEN not(S.flg_p_face_raise) AND LA_P.action LIKE '%R' AND S.flg_f_open_opp AND S.flg_f_check AND S.amt_f_bet_facing > 0 AND S.flg_p_3bet THEN 1 ELSE 0 END) \
+				sum(CASE WHEN LA_P.action LIKE '%R' AND S.flg_f_open_opp AND S.flg_f_check AND S.amt_f_bet_facing > 0 AND S.flg_p_3bet THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
 				 FROM	player as P, %TYPE%_hand_player_statistics as S, lookup_actions as LA_P, lookup_actions as LA_F \
 				 WHERE	S.id_player = P.id_player AND \
@@ -2307,9 +2339,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		 FROM	(SELECT	sum(CASE WHEN not(S.flg_p_face_raise) AND LA_P.action LIKE '%R' and S.flg_f_open_opp AND S.amt_f_bet_facing > 0 AND substring(LA_F.action from 1 for 2) = 'XF' AND S.flg_p_3bet THEN 1 ELSE 0 END) \
+		 FROM	(SELECT	sum(CASE WHEN LA_P.action LIKE '%R' and S.flg_f_open_opp AND S.amt_f_bet_facing > 0 AND substring(LA_F.action from 1 for 2) = 'XF' AND S.flg_p_3bet THEN 1 ELSE 0 END) \
 						 as ActionCount, \
-				sum(CASE WHEN not(S.flg_p_face_raise) AND LA_P.action LIKE '%R' AND S.flg_f_open_opp AND S.flg_f_check AND S.amt_f_bet_facing > 0 AND S.flg_p_3bet THEN 1 ELSE 0 END) \
+				sum(CASE WHEN LA_P.action LIKE '%R' AND S.flg_f_open_opp AND S.flg_f_check AND S.amt_f_bet_facing > 0 AND S.flg_p_3bet THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
 				 FROM	player as P, %TYPE%_hand_player_statistics as S, lookup_actions as LA_P, lookup_actions as LA_F \
 				 WHERE	S.id_player = P.id_player AND \
@@ -2334,9 +2366,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT (case when ActionOpportunities = 0 then -1 \
 				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
-		 FROM	(SELECT	sum(CASE WHEN not(S.flg_p_face_raise) AND LA_P.action LIKE '%R' and S.flg_f_open_opp AND S.amt_f_bet_facing > 0 AND substring(LA_F.action from 1 for 2) = 'XF' AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
+		 FROM	(SELECT	sum(CASE WHEN LA_P.action LIKE '%R' and S.flg_f_open_opp AND S.amt_f_bet_facing > 0 AND substring(LA_F.action from 1 for 2) = 'XF' AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
 						 as ActionCount, \
-				sum(CASE WHEN not(S.flg_p_face_raise) AND LA_P.action LIKE '%R' AND S.flg_f_open_opp AND S.flg_f_check AND S.amt_f_bet_facing > 0 AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
+				sum(CASE WHEN LA_P.action LIKE '%R' AND S.flg_f_open_opp AND S.flg_f_check AND S.amt_f_bet_facing > 0 AND (S.flg_p_3bet or S.flg_p_4bet) THEN 1 ELSE 0 END) \
 						 as ActionOpportunities \
 				 FROM	player as P, %TYPE%_hand_player_statistics as S, lookup_actions as LA_P, lookup_actions as LA_F \
 				 WHERE	S.id_player = P.id_player AND \
@@ -2457,7 +2489,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			AND(S.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND \
 			((HSum.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or \
 			(HSum.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) as result \
-		FROM	player as P, %TYPE%_hand_player_statistics as S, cash_hand_summary as HSum \
+		FROM	player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary as HSum \
 				 WHERE	S.id_player = P.id_player AND \
 					HSum.id_hand = S.id_hand AND \
 					S.id_gametype = %GAMETYPE% AND \
@@ -2495,10 +2527,10 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Fold to Flop Ckeck raise Opportunities",
 		// query
-		"SELECT sum(CASE WHEN S.flg_f_bet AND S.flg_f_face_raise AND ((cash_hand_summary.cnt_players > 2 AND substring(cash_hand_summary.str_aggressors_f from 2 for 1)::int > S.position) OR (cash_hand_summary.cnt_players = 2 AND S.flg_blind_s)) THEN 1 ELSE 0 END) as result \
-		FROM	player as P, %TYPE%_hand_player_statistics as S , cash_hand_summary \
+		"SELECT sum(CASE WHEN S.flg_f_bet AND S.flg_f_face_raise AND ((%TYPE%_hand_summary.cnt_players > 2 AND NULLIF(substring(%TYPE%_hand_summary.str_aggressors_f from 2 for 1), '')::int > S.position) OR (%TYPE%_hand_summary.cnt_players = 2 AND S.flg_blind_s)) THEN 1 ELSE 0 END) as result \
+		FROM	player as P, %TYPE%_hand_player_statistics as S , %TYPE%_hand_summary \
 				 WHERE	S.id_player = P.id_player AND \
-					cash_hand_summary.id_hand = S.id_hand AND \
+					%TYPE%_hand_summary.id_hand = S.id_hand AND \
 					S.id_gametype = %GAMETYPE% AND \
 					P.id_site = %SITEID% AND \
 					P.player_name LIKE '%SCREENNAME%'",

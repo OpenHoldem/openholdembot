@@ -57,6 +57,26 @@ const char* const k_holdem_id  = "1";
 const char* const k_omaha_id  = "2";
 const char* const k_tournament_infix = "tourney";
 const char* const k_cashgame_infix = "cash";
+// The limit table differs between cash games and tournaments.
+// Both have amt_bb and a name ending with "(N max)".
+const char* const k_cashgame_limit_table = "cash_limit";
+const char* const k_cashgame_limit_id = "id_limit";
+const char* const k_cashgame_limit_name = "limit_name";
+const char* const k_tournament_limit_table = "tourney_blinds";
+const char* const k_tournament_limit_id = "id_blinds";
+const char* const k_tournament_limit_name = "blinds_name";
+
+// Not exported
+// The player name is used inside 'LIKE ...' in single quotes.
+// A quote would break the query (and let a crafted name inject SQL),
+// "_" would match any character and "\" is the LIKE escape character.
+// "%" is kept: it is used on purpose for truncated names.
+CString EscapePlayerNameForLike(CString player_name) {
+	player_name.Replace("\\", "\\\\");
+	player_name.Replace("_", "\\_");
+	player_name.Replace("'", "''");
+	return player_name;
+}
 
 // Values of all stats for all players
 double stats[k_number_of_pokertracker_stats][kMaxNumberOfPlayers];
@@ -73,9 +93,13 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	CString site_id_as_string;
 	site_id_as_string.Format("%i", site_id);
 	query.Replace("%SITEID%", site_id_as_string);
-	query.Replace("%SCREENNAME%", player_name);
 	query.Replace("%GAMETYPE%", (isomaha ? k_omaha_id : k_holdem_id) );
 	query.Replace("%TYPE%", (istournament ? k_tournament_infix : k_cashgame_infix));
+	query.Replace("%LIMIT_TABLE%", (istournament ? k_tournament_limit_table : k_cashgame_limit_table));
+	query.Replace("%LIMIT_ID%", (istournament ? k_tournament_limit_id : k_cashgame_limit_id));
+	query.Replace("%LIMIT_NAME%", (istournament ? k_tournament_limit_name : k_cashgame_limit_name));
+	// Last, so that a player name can't contain placeholders
+	query.Replace("%SCREENNAME%", EscapePlayerNameForLike(player_name));
 	return query;
 }
 

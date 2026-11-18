@@ -242,9 +242,9 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 		return false;
 	}
 
-	if (p_table_state->Player(chair)->name().GetLength() <= kMaxLengthOfPlayername) 	{
-		strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_table_state->Player(chair)->name());
-	}
+	// strcpy_s needs room for the terminating zero and aborts the program
+	// on longer names; truncate instead (same as in CheckIfNameHasChanged)
+	strncpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_table_state->Player(chair)->name(), _TRUNCATE);
 
 	write_log(Preferences()->debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Scraped name: [%s]\n", oh_scraped_name);
 
@@ -291,7 +291,8 @@ bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 	
   //!!!!! bad code, copying to char-array
 	if (p_table_state->Player(chair)->name() == "") return false;
-	strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_table_state->Player(chair)->name());
+	// Truncate over-long names instead of aborting in strcpy_s
+	strncpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_table_state->Player(chair)->name(), _TRUNCATE);
 
 	if (NameLooksLikeBadScrape(oh_scraped_name))return false;
 	// We already have the name, and it has not changed since we last checked, so do nothing
@@ -467,6 +468,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 			write_log(Preferences()->debug_pokertracker(), "[PokerTracker] GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		}
+		// The result must be freed on errors too (PQclear(NULL) is a no-op)
+		PQclear(res);
 	}
 	else
 	{
@@ -506,9 +509,17 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	if (0 == strlen(query_name))
 		return false;
 
+	// The scraped name goes into a quoted LIKE pattern:
+	// escape quotes (they would break the query or inject SQL),
+	// backslashes (LIKE escape character) and "_" (LIKE wildcard).
+	// "%" is kept, the name escalations use it on purpose.
+	CString pattern(query_name);
+	pattern.Replace("\\", "\\\\");
+	pattern.Replace("_", "\\_");
+	pattern.Replace("'", "''");
 	CString query;
 	query.Format("SELECT player_name FROM player WHERE player_name like '%s' AND id_site=%i",
-		query_name, siteid);
+		pattern, siteid);
 	res = PQexec(_pgconn, query);
 
   // We got nothing, return false
